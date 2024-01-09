@@ -52,7 +52,8 @@ while True:
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             ch.MouseHandler()
     g.MasterGame.SpriteGroup.update()
-            
+    for sprite in g.MasterGame.SpriteGroup:
+        sprite.MvmHandler.calcNewPosition(sprite)
     # Clear the screen
     g.MasterGame.screen.fill((255, 255, 255))
     # Display the timer
@@ -62,7 +63,7 @@ while True:
             # ActiveTimerBars.remove(timer)
             # assignedTargets = jc.Job.GetAssignedFromID(JobList, timer.jobID)
             # KillList = [SpriteGroup.remove(x) for x in SpriteGroup if x.correspondingID in assignedTargets]
-            
+    
     g.MasterGame.SpriteGroup.draw(g.MasterGame.screen)
     # Update the display
     pygame.display.update()

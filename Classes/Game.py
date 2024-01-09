@@ -24,6 +24,10 @@ class Game():
                 pygame.display.set_caption("Poppa Pizza Clone")
 
                 self.font = pygame.font.Font(None, 36)
+                
+                
+                
+            
         
 
 MasterGame = Game('Medium')

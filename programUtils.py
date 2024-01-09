@@ -13,4 +13,11 @@ def checkInternet(host="8.8.8.8", port=53, timeout=30):
     except Exception as ex:
         print(ex)
         return False
+        
+def inTolerance(num1,num2, tolerance):
+    return abs(num1-num2) <= tolerance
+
+def inPercentTolerance(num1,num2, tolerance):
+    return abs(1-(num1/num2)) <= tolerance
+
 

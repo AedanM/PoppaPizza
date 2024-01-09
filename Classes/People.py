@@ -16,7 +16,6 @@ class Person():
     body: None = None
     isAssigned: bool = False
     currentJobId: int = 0
-
     @classmethod
     def Create(self):
         if(util.checkInternet):

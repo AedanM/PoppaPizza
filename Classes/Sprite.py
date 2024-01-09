@@ -1,6 +1,8 @@
 import pygame
 from dataclasses import dataclass
 from enum import Enum
+import Handlers.MovementHandler as mh
+
 workerPath = r"C:\Users\mchaae01\OneDrive - Nidec\Pictures\waiter_110620211.jpg"
 customerPath = r"C:\Users\mchaae01\OneDrive - Nidec\Pictures\Picture1.png"
 
@@ -11,6 +13,7 @@ class ImageSprite(pygame.sprite.Sprite):
     correspondingID: int = 0
     imageType: ImageTypes = None
     rect: pygame.Rect = None
+    MvmHandler: mh.CharacterMovementHandler = None
     
     
     def __init__(self, position, path, objID):
@@ -20,7 +23,7 @@ class ImageSprite(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = position[0]
         self.rect.y = position[1]
-        
+        self.MvmHandler = mh.CharacterMovementHandler()
         if(path == workerPath):
             self.imageType = ImageTypes.Worker
         elif(path == customerPath):
