@@ -9,8 +9,14 @@ class TimerBarClass:
     startTime: int = 0
     completionPercentage: float = 0.0
     jobID: int = 0
-    
-    def __init__(self, duration: float, displayScreen: pygame.surface.Surface, position: tuple, jobID: int):
+
+    def __init__(
+        self,
+        duration: float,
+        displayScreen: pygame.surface.Surface,
+        position: tuple,
+        jobID: int,
+    ):
         self.Rect = pygame.Rect(position[0], position[1], self.width, self.height)
         self.startTime = pygame.time.get_ticks()
         self.duration = duration

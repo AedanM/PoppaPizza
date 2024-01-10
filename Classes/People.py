@@ -1,56 +1,64 @@
 from dataclasses import dataclass
-import Classes.Job as jc
 import pygame_menu
 import programUtils as util
 import names
-
-WorkerIDCount = 0
-CustomerIDCount = 0
+import random
+import Classes.Jobs as Jobs
+import Classes.Game as Game
+import Classes.Sprite as Sprite
+IDCount = 0
 
 
 @dataclass
-class Person():
+class Person:
     firstName: str
     lastName: str
     idNum: int
     body: None = None
     isAssigned: bool = False
     currentJobId: int = 0
+
     @classmethod
     def Create(self):
-        if(util.checkInternet):
+        if util.checkInternet:
             lName = names.get_first_name(gender="female")
             fName = names.get_last_name()
         else:
-            lName,fName = ('A','A')
+            lName, fName = ("A", "A")
         selfid = self.GenerateID()
         return self(firstName=fName, lastName=lName, idNum=selfid)
-
+    
+    @staticmethod
+    def GenerateID():
+        global IDCount
+        IDCount += 1
+        return IDCount
 
 @dataclass
 class Worker(Person):
     basePay: float = 1.0
 
-    @staticmethod
-    def GenerateID():
-        global WorkerIDCount
-        WorkerIDCount += 1
-        return WorkerIDCount
+    
 
 
 @dataclass
 class Customer(Person):
-    desiredJob: jc.Job = None
+    desiredJob: Jobs.Job = None
 
-    @staticmethod
-    def GenerateID():
-        global CustomerIDCount
-        CustomerIDCount += 1
-        return CustomerIDCount
-
+    @classmethod
+    def CreateCustomer(self):
+        customer = self.Create()
+        Game.MasterGame.JobList.append(Jobs.Job.SpawnJob())
+        Game.MasterGame.JobList[-1].Assign(customer)
+        customerSprite = Sprite.CharImageSprite(
+        (800, random.randint(1, 12) * 50), Sprite.iPaths.customerPath, customer.idNum
+        )
+        Game.MasterGame.CharSpriteGroup.add(customerSprite)
+        Game.MasterGame.CustomerList.append(customer)
+        return customer
 
 if __name__ == "__main__":
-    currentJob = jc.Job.SpawnJob()
+    currentJob = Jobs.Job.SpawnJob()
     worker = Worker(idNum=Worker.GenerateID(), firstName="Anne", lastName="Smith")
     customer = Customer(idNum=Customer.GenerateID(), firstName="Anne", lastName="Smith")
     currentJob.Assign(customer)

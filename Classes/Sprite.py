@@ -1,38 +1,59 @@
 import pygame
 from dataclasses import dataclass
 from enum import Enum
-import Handlers.MovementHandler as mh
+from Handlers import *
+import Classes.People as People
+import Classes.GameObject as GameObj
 
-workerPath = r"C:\Users\mchaae01\OneDrive - Nidec\Pictures\waiter_110620211.jpg"
-customerPath = r"C:\Users\mchaae01\OneDrive - Nidec\Pictures\Picture1.png"
+@dataclass
+class ImagePaths():
+    workerPath = r"C:\Users\mchaae01\OneDrive - Nidec\Pictures\waiter_110620211.jpg"
+    customerPath = r"C:\Users\mchaae01\OneDrive - Nidec\Pictures\Picture1.png"
+    tablePath = r"C:\Users\mchaae01\OneDrive - Nidec\Pictures\table.jpg"
+    
+iPaths = ImagePaths()
 
 class ImageTypes(Enum):
-    Worker,Customer = range(2)
+    Worker, Customer, Table = range(3)
 
-class ImageSprite(pygame.sprite.Sprite):
+PathToTypeDict = {
+    iPaths.workerPath: ImageTypes.Worker,
+    iPaths.customerPath: ImageTypes.Customer,
+    iPaths.tablePath: ImageTypes.Table
+}
+
+class CharImageSprite(GameObj.GameObject):
     correspondingID: int = 0
     imageType: ImageTypes = None
     rect: pygame.Rect = None
-    MvmHandler: mh.CharacterMovementHandler = None
-    
-    
+    MvmHandler: MovementHandler.CharacterMovementHandler = None
+
     def __init__(self, position, path, objID):
-        super().__init__()
-        self.image = pygame.image.load(path)  # Replace with the actual sprite image file
-        self.image = pygame.transform.scale_by(self.image,0.25)
+        super().__init__(False, True, True)
+        self.image = pygame.image.load(
+            path
+        )  # Replace with the actual sprite image file
+        self.image = pygame.transform.scale_by(self.image, 0.25)
         self.rect = self.image.get_rect()
         self.rect.x = position[0]
         self.rect.y = position[1]
-        self.MvmHandler = mh.CharacterMovementHandler()
-        if(path == workerPath):
-            self.imageType = ImageTypes.Worker
-        elif(path == customerPath):
-            self.imageType = ImageTypes.Customer
-        
+        self.MvmHandler = MovementHandler.CharacterMovementHandler()
+        self.imageType = PathToTypeDict[path]
+
         self.correspondingID = objID
+
+    
         
-        
-    def UpdatePosition(self, position):
-        self.x = position[0]
-        self.y = position[1]
+class BackgroundElementSprite(GameObj.GameObject):
+    imageType: ImageTypes = None
+
+    def __init__(self, position, path):
+        super().__init__(True, False, False)
+        self.image = pygame.image.load(
+            path
+        )  # Replace with the actual sprite image file
+        self.rect = self.image.get_rect()
+        self.rect.x = position[0]
+        self.rect.y = position[1]
+        self.imageType = PathToTypeDict[path]
         

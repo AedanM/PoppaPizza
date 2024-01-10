@@ -1,10 +1,10 @@
 import pygame
 import pygame.gfxdraw
-import Classes.People as pc
-import Classes.Job as jc
-import Classes.Sprite as sc
-import Classes.Game as g
 from enum import Enum
+import Classes.People as People
+import Classes.Game as Game
+import Classes.Sprite as Sprite
+import Handlers.CustomerHandler as CustomerHandler
 
 
 class ClickState(Enum):
@@ -18,33 +18,34 @@ GlobalSelectedID = 0
 def MouseHandler():
     global GlobalClickState, GlobalSelectedID
     mouse_x, mouse_y = pygame.mouse.get_pos()
-    print(mouse_x, mouse_y, GlobalClickState)
-    for sprite in g.MasterGame.SpriteGroup:
-        if sprite.rect.collidepoint(mouse_x, mouse_y):
-            print("Connected")
-            if sprite.imageType == sc.ImageTypes.Customer:
-                CustomerClickRoutine(sprite)
-            elif sprite.imageType == sc.ImageTypes.Worker:
-                WorkerClickRoutine(sprite)
-            break
-        elif GlobalClickState is ClickState.Clicked_Worker:
-            for worker in g.MasterGame.SpriteGroup:
-                if (
-                    worker.correspondingID == GlobalSelectedID
-                    and worker.imageType is sc.ImageTypes.Worker
-                ):
-                    worker.MvmHandler.startNewMotion(worker,(mouse_x,mouse_y))
-            GlobalClickState = ClickState.Neutral
-            break
-        else:
-            GlobalClickState = ClickState.Neutral
+    for sprite in Game.MasterGame.CharSpriteGroup:
+        if( not sprite.isBackground):
+            if sprite.rect.collidepoint(mouse_x, mouse_y):
+                if sprite.imageType == Sprite.ImageTypes.Customer:
+                    CustomerClickRoutine(sprite)
+                elif sprite.imageType == Sprite.ImageTypes.Worker:
+                    WorkerClickRoutine(sprite)
+                break
+            elif GlobalClickState is ClickState.Clicked_Worker:
+                for worker in Game.MasterGame.CharSpriteGroup:
+                    if (
+                        worker.correspondingID == GlobalSelectedID
+                        and worker.imageType is Sprite.ImageTypes.Worker
+                    ):
+                        worker.MvmHandler.startNewMotion((mouse_x, mouse_y))
+                GlobalClickState = ClickState.Neutral
+                break
+            else:
+                GlobalClickState = ClickState.Neutral
 
 
 def CustomerClickRoutine(target):
     global GlobalClickState
     if GlobalClickState is ClickState.Neutral:
-        for sprite in g.MasterGame.SpriteGroup:
-            GlobalClickState = ClickState.Clicked_Customer
+        CustomerHandler.AssignWorker(target)
+        
+        
+    GlobalClickState = ClickState.Clicked_Customer
             # this is where you make all other sprites glow
 
 
@@ -52,6 +53,6 @@ def WorkerClickRoutine(target):
     global GlobalClickState, GlobalSelectedID
     if GlobalClickState is ClickState.Clicked_Customer:
         pass
-    elif GlobalClickState is ClickState.Neutral:
+    elif GlobalClickState is ClickState.Neutral or GlobalClickState is ClickState.Clicked_Worker:
         GlobalSelectedID = target.correspondingID
     GlobalClickState = ClickState.Clicked_Worker
