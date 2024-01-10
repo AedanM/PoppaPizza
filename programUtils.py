@@ -38,8 +38,10 @@ def UtilsUnitTest():
     print(ProRateValue(5, (0, 10), (0, 100)))
     print(Bind(110, (0, 100)))
 
+
 def sign(num):
-    return int(num/abs(num)) if num != 0 else 0
+    return int(num / abs(num)) if num != 0 else 0
+
 
 if __name__ == "__main__":
     UtilsUnitTest()

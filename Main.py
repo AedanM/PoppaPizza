@@ -9,37 +9,13 @@ import programUtils as util
 import random
 
 
-Game.MasterGame.WorkerList.append(People.Worker.Create())
-# g.MasterGame.WorkerList.append(pc.Worker.Create())
-# g.MasterGame.WorkerList.append(pc.Worker.Create())
+People.Worker.CreateWorker()
 People.Customer.CreateCustomer()
-# g.MasterGame.CustomerList.append(pc.Customer.Create())
-# g.MasterGame.CustomerList.append(pc.Customer.Create())
 
-for worker in Game.MasterGame.WorkerList:
-    workerSprite = Sprite.CharImageSprite(
-        (100, random.randint(1, 12) * 50), Sprite.iPaths.workerPath, worker.idNum
-    )
-    Game.MasterGame.CharSpriteGroup.add(workerSprite)
-
-
-
-
-
-table = Sprite.BackgroundElementSprite((250,250), Sprite.iPaths.tablePath)
+table = Sprite.BackgroundElementSprite((250, 250), Sprite.iPaths.tablePath)
 Game.MasterGame.BackgroundSpriteGroup.add(table)
 
 
-# for c in CustomerList:
-# ActiveTimerBars.append(
-# TimerBarClass(
-# duration=c.desiredJob.Length, displayScreen=screen, position=(50, 100), jobID=c.desiredJob.JobId
-# )
-# )
-
-
-# for timerBar in ActiveTimerBars:
-# timerBar.startTimer()
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -47,12 +23,11 @@ while True:
             exit()
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             ClickHandler.MouseHandler()
-    
+
     for group in Game.MasterGame.SpriteGroups:
         group.update()
         for sprite in group:
-            if(sprite.Moveable):
-                sprite.MvmHandler.calcNewPosition(sprite)
+            sprite.update()
     # Clear the screen
     Game.MasterGame.screen.fill((255, 255, 255))
     # Display the timer

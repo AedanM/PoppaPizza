@@ -19,7 +19,7 @@ def MouseHandler():
     global GlobalClickState, GlobalSelectedID
     mouse_x, mouse_y = pygame.mouse.get_pos()
     for sprite in Game.MasterGame.CharSpriteGroup:
-        if( not sprite.isBackground):
+        if not sprite.isBackground:
             if sprite.rect.collidepoint(mouse_x, mouse_y):
                 if sprite.imageType == Sprite.ImageTypes.Customer:
                     CustomerClickRoutine(sprite)
@@ -43,16 +43,18 @@ def CustomerClickRoutine(target):
     global GlobalClickState
     if GlobalClickState is ClickState.Neutral:
         CustomerHandler.AssignWorker(target)
-        
-        
+
     GlobalClickState = ClickState.Clicked_Customer
-            # this is where you make all other sprites glow
+    # this is where you make all other sprites glow
 
 
 def WorkerClickRoutine(target):
     global GlobalClickState, GlobalSelectedID
     if GlobalClickState is ClickState.Clicked_Customer:
         pass
-    elif GlobalClickState is ClickState.Neutral or GlobalClickState is ClickState.Clicked_Worker:
+    elif (
+        GlobalClickState is ClickState.Neutral
+        or GlobalClickState is ClickState.Clicked_Worker
+    ):
         GlobalSelectedID = target.correspondingID
     GlobalClickState = ClickState.Clicked_Worker

@@ -5,22 +5,27 @@ from Handlers import *
 import Classes.People as People
 import Classes.GameObject as GameObj
 
+
 @dataclass
-class ImagePaths():
+class ImagePaths:
     workerPath = r"C:\Users\mchaae01\OneDrive - Nidec\Pictures\waiter_110620211.jpg"
     customerPath = r"C:\Users\mchaae01\OneDrive - Nidec\Pictures\Picture1.png"
     tablePath = r"C:\Users\mchaae01\OneDrive - Nidec\Pictures\table.jpg"
-    
+
+
 iPaths = ImagePaths()
+
 
 class ImageTypes(Enum):
     Worker, Customer, Table = range(3)
 
+
 PathToTypeDict = {
     iPaths.workerPath: ImageTypes.Worker,
     iPaths.customerPath: ImageTypes.Customer,
-    iPaths.tablePath: ImageTypes.Table
+    iPaths.tablePath: ImageTypes.Table,
 }
+
 
 class CharImageSprite(GameObj.GameObject):
     correspondingID: int = 0
@@ -42,8 +47,7 @@ class CharImageSprite(GameObj.GameObject):
 
         self.correspondingID = objID
 
-    
-        
+
 class BackgroundElementSprite(GameObj.GameObject):
     imageType: ImageTypes = None
 
@@ -56,4 +60,3 @@ class BackgroundElementSprite(GameObj.GameObject):
         self.rect.x = position[0]
         self.rect.y = position[1]
         self.imageType = PathToTypeDict[path]
-        

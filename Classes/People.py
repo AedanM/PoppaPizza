@@ -6,6 +6,7 @@ import random
 import Classes.Jobs as Jobs
 import Classes.Game as Game
 import Classes.Sprite as Sprite
+
 IDCount = 0
 
 
@@ -27,18 +28,27 @@ class Person:
             lName, fName = ("A", "A")
         selfid = self.GenerateID()
         return self(firstName=fName, lastName=lName, idNum=selfid)
-    
+
     @staticmethod
     def GenerateID():
         global IDCount
         IDCount += 1
         return IDCount
 
+
 @dataclass
 class Worker(Person):
     basePay: float = 1.0
 
-    
+    @classmethod
+    def CreateWorker(self):
+        worker = self.Create()
+        workerSprite = Sprite.CharImageSprite(
+            (400, random.randint(1, 12) * 50), Sprite.iPaths.workerPath, worker.idNum
+        )
+        Game.MasterGame.CharSpriteGroup.add(workerSprite)
+        Game.MasterGame.WorkerList.append(worker)
+        return worker
 
 
 @dataclass
@@ -51,11 +61,14 @@ class Customer(Person):
         Game.MasterGame.JobList.append(Jobs.Job.SpawnJob())
         Game.MasterGame.JobList[-1].Assign(customer)
         customerSprite = Sprite.CharImageSprite(
-        (800, random.randint(1, 12) * 50), Sprite.iPaths.customerPath, customer.idNum
+            (800, random.randint(1, 12) * 50),
+            Sprite.iPaths.customerPath,
+            customer.idNum,
         )
         Game.MasterGame.CharSpriteGroup.add(customerSprite)
         Game.MasterGame.CustomerList.append(customer)
         return customer
+
 
 if __name__ == "__main__":
     currentJob = Jobs.Job.SpawnJob()
