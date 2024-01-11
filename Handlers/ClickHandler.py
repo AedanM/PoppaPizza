@@ -4,6 +4,7 @@ from enum import Enum
 import Classes.People as People
 import Classes.Game as Game
 import Classes.Sprite as Sprite
+import Classes.ColorTools as ColorTools
 import Handlers.CustomerHandler as CustomerHandler
 
 
@@ -49,6 +50,7 @@ def CustomerClickRoutine(target):
 
 
 def WorkerClickRoutine(target):
+    target.image = ColorTools.ChangeColorToColor(target, 0, 128)
     global GlobalClickState, GlobalSelectedID
     if GlobalClickState is ClickState.Clicked_Customer:
         pass
