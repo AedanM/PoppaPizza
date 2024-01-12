@@ -77,12 +77,15 @@ class Game:
     CharSpriteGroup = pygame.sprite.Group()
     BackgroundSpriteGroup = pygame.sprite.Group()
     SpriteGroups: list = [BackgroundSpriteGroup, CharSpriteGroup]
+    LineList: list = [(-1,-1),(1,1)]
     WorkerList: list = []
     CustomerList: list = []
     JobList: list = []
-    Money: int = []
+    Money: int = 0
+    TimerBars: list = []
+    
 
-    def __init__(self, size):
+    def __init__(self, size=std_dimensions['Medium']):
         pygame.init()
 
         self.Clock = GameClock(pygame.time.Clock())

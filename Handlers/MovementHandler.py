@@ -15,14 +15,13 @@ class MovementSpeeds(Enum):
 
 class CharacterMovementHandler:
     dest: tuple = (0,0)
-    MaxMovementSpeed: int = MovementSpeeds.Slow
+    MaxMovementSpeed: int = MovementSpeeds.Medium
     MovementTolerance: float = 0.01
     InMotion: bool = False
     dstSet: bool = False
     finalDst: bool = False
     PointsList: list = []
     currentPointIdx: int = 0
-    
     @property 
     def destY(self):
         return (self.dest[1])
@@ -31,11 +30,13 @@ class CharacterMovementHandler:
     def destX(self):
         return (self.dest[0])
     
-    def startNewMotion(self, start, dest, speed=MovementSpeeds.Medium):
+    def startNewMotion(self, start, dest, speed=MovementSpeeds.Slow):
         if not self.InMotion:
+            self.OnComplete = lambda: None
             backgroundObs = [x.rect for x in Game.MasterGame.BackgroundSpriteGroup if x.Collision]
             self.PointsList = Path.CreatePath(start,dest, self.MaxMovementSpeed.value, backgroundObs)
             self.dest = self.PointsList[0]
+            Game.MasterGame.LineList += self.PointsList
             self.dstSet = True
             self.InMotion: bool = True
             self.MaxMovementSpeed = speed
@@ -59,11 +60,11 @@ class CharacterMovementHandler:
             xDir = utils.sign(self.destX - obj.rect.centerx)
             yDir = utils.sign(self.destY - obj.rect.centery)
             obj.rect.centerx += (
-                min(self.MaxMovementSpeed.value * Game.MasterGame.Clock.ClockMul, abs(self.destX - obj.rect.centerx))
+                max(min(self.MaxMovementSpeed.value * Game.MasterGame.Clock.ClockMul, abs(self.destX - obj.rect.centerx)),1)
                 * xDir
             )
             obj.rect.centery += (
-                min(self.MaxMovementSpeed.value * Game.MasterGame.Clock.ClockMul, abs(self.destY - obj.rect.centery))
+                max(min(self.MaxMovementSpeed.value * Game.MasterGame.Clock.ClockMul, abs(self.destY - obj.rect.centery)),1)
                 * yDir
             )
             # Collision.checkCollision(obj)
@@ -79,3 +80,4 @@ class CharacterMovementHandler:
         self.InMotion = False
         self.PointsList = []
         self.currentPointIdx = 0
+        self.OnComplete()

@@ -21,11 +21,11 @@ def inTolerance(num1, num2, tolerance) -> bool:
 
 
 def inPercentTolerance(num1, num2, tolerance) -> bool:
-    return abs(1 - (num1 / num2)) <= tolerance
+    return abs(1 - (num1 / num2)) <= tolerance if num2 != 0 else 1
 
 
 def ProRateValue(value, inRange, outRange):
-    return value * abs(outRange[1] - outRange[0]) / abs(inRange[1] - inRange[0])
+    return value * abs(outRange[1] - outRange[0]) / abs(inRange[1] - inRange[0]) if inRange[1] - inRange[0] != 0 else 1
 
 
 def Bind(val, inRange):
