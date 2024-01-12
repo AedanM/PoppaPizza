@@ -1,5 +1,8 @@
 import pygame
 import programUtils as utils
+import Classes.Game as Game
+import Handlers.CollisionHandler as Collision
+import Handlers.PathfindingHandler   as Path
 from enum import Enum
 
 
@@ -11,17 +14,28 @@ class MovementSpeeds(Enum):
 
 
 class CharacterMovementHandler:
-    destX: int = 0
-    destY: int = 0
+    dest: tuple = (0,0)
     MaxMovementSpeed: int = MovementSpeeds.Slow
     MovementTolerance: float = 0.01
     InMotion: bool = False
     dstSet: bool = False
-
-    def startNewMotion(self, dest, speed=MovementSpeeds.Medium):
+    finalDst: bool = False
+    PointsList: list = []
+    currentPointIdx: int = 0
+    
+    @property 
+    def destY(self):
+        return (self.dest[1])
+    
+    @property 
+    def destX(self):
+        return (self.dest[0])
+    
+    def startNewMotion(self, start, dest, speed=MovementSpeeds.Medium):
         if not self.InMotion:
-            self.destX = dest[0]
-            self.destY = dest[1]
+            backgroundObs = [x.rect for x in Game.MasterGame.BackgroundSpriteGroup if x.Collision]
+            self.PointsList = Path.CreatePath(start,dest, self.MaxMovementSpeed.value, backgroundObs)
+            self.dest = self.PointsList[0]
             self.dstSet = True
             self.InMotion: bool = True
             self.MaxMovementSpeed = speed
@@ -35,26 +49,33 @@ class CharacterMovementHandler:
 
     def calcNewPosition(self, obj):
         if self.dstSet:
-            print(
-                obj.rect.centerx,
-                obj.rect.centery,
-                self.destX,
-                self.destY,
-                self.InMotion,
-            )
+            # print(
+                # obj.rect.centerx,
+                # obj.rect.centery,
+                # self.destX,
+                # self.destY,
+                # self.InMotion,
+            # )
             xDir = utils.sign(self.destX - obj.rect.centerx)
             yDir = utils.sign(self.destY - obj.rect.centery)
             obj.rect.centerx += (
-                min(self.MaxMovementSpeed.value, abs(self.destX - obj.rect.centerx))
+                min(self.MaxMovementSpeed.value * Game.MasterGame.Clock.ClockMul, abs(self.destX - obj.rect.centerx))
                 * xDir
             )
             obj.rect.centery += (
-                min(self.MaxMovementSpeed.value, abs(self.destY - obj.rect.centery))
+                min(self.MaxMovementSpeed.value * Game.MasterGame.Clock.ClockMul, abs(self.destY - obj.rect.centery))
                 * yDir
             )
+            # Collision.checkCollision(obj)
             if self.isFinished(obj):
-                self.finishMovement()
+                if(self.dest == self.PointsList[len(self.PointsList)-1]):
+                    self.finishMovement()
+                else:
+                    self.currentPointIdx += 1
+                    self.dest = self.PointsList[self.currentPointIdx]
 
     def finishMovement(self):
         self.dstSet = False
         self.InMotion = False
+        self.PointsList = []
+        self.currentPointIdx = 0

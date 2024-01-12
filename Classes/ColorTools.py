@@ -2,7 +2,9 @@ import pygame
 import cv2
 import numpy as np
 from dataclasses import dataclass
-
+white = (255, 255, 255)
+green = (0, 255, 0)
+blue = (0, 0, 128)
 
 @dataclass
 class Color:
@@ -104,3 +106,6 @@ def ToOpenCV(image):
     image_array = pygame.surfarray.array3d(image)
     opencv_image = cv2.cvtColor(image_array, cv2.COLOR_RGB2HSV)
     return opencv_image
+
+
+

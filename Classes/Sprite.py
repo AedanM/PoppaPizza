@@ -8,7 +8,7 @@ import Classes.GameObject as GameObj
 
 @dataclass
 class ImagePaths:
-    workerPath = r"C:\Users\mchaae01\OneDrive - Nidec\Pictures\waiter_110620211.jpg"
+    workerPath = r"C:\Users\mchaae01\OneDrive - Nidec\Pictures\waiter.png"
     customerPath = r"C:\Users\mchaae01\OneDrive - Nidec\Pictures\Picture1.png"
     tablePath = r"C:\Users\mchaae01\OneDrive - Nidec\Pictures\table.jpg"
 
@@ -46,6 +46,9 @@ class CharImageSprite(GameObj.GameObject):
         self.imageType = PathToTypeDict[path]
 
         self.correspondingID = objID
+    
+    def __repr__(self):
+        return str(self.correspondingID) + ' ' + str( self.imageType)
 
 
 class BackgroundElementSprite(GameObj.GameObject):

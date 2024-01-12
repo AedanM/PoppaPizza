@@ -33,7 +33,7 @@ def MouseHandler():
                         worker.correspondingID == GlobalSelectedID
                         and worker.imageType is Sprite.ImageTypes.Worker
                     ):
-                        worker.MvmHandler.startNewMotion((mouse_x, mouse_y))
+                        worker.MvmHandler.startNewMotion((worker.rect.center),(mouse_x, mouse_y))
                 GlobalClickState = ClickState.Neutral
                 break
             else:
@@ -50,7 +50,7 @@ def CustomerClickRoutine(target):
 
 
 def WorkerClickRoutine(target):
-    target.image = ColorTools.ChangeColorToColor(target, 0, 128)
+    # target.image = ColorTools.ChangeColorToColor(target, 0, 128)
     global GlobalClickState, GlobalSelectedID
     if GlobalClickState is ClickState.Clicked_Customer:
         pass

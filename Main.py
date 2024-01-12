@@ -12,7 +12,8 @@ import random
 People.Worker.CreateWorker()
 People.Customer.CreateCustomer()
 
-table = Sprite.BackgroundElementSprite((250, 250), Sprite.iPaths.tablePath)
+table = Sprite.BackgroundElementSprite((100, 250), Sprite.iPaths.tablePath)
+table.Collision = False
 Game.MasterGame.BackgroundSpriteGroup.add(table)
 
 
@@ -23,25 +24,28 @@ while True:
             exit()
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             ClickHandler.MouseHandler()
+        if(event.type == pygame.KEYDOWN and event.key == pygame.K_t):
+            Game.MasterGame.Clock.ChangeClockMul(-1)
+            print(Game.MasterGame.Clock.ClockMul)
+        if(event.type == pygame.KEYDOWN and event.key == pygame.K_y):
+            Game.MasterGame.Clock.ChangeClockMul(1)
+            print(Game.MasterGame.Clock.ClockMul)
 
     for group in Game.MasterGame.SpriteGroups:
         group.update()
         for sprite in group:
             sprite.update()
-    # Clear the screen
     Game.MasterGame.screen.fill((255, 255, 255))
-    # Display the timer
-    # for timer in ActiveTimerBars:
-    # timer.ageTimer()
-    # if(timer.completionPercentage >= 1):
-    # ActiveTimerBars.remove(timer)
-    # assignedTargets = jc.Job.GetAssignedFromID(JobList, timer.jobID)
-    # KillList = [SpriteGroup.remove(x) for x in SpriteGroup if x.correspondingID in assignedTargets]
-
+    
+    text = Game.MasterGame.font.render(str(Game.MasterGame.Clock.dateTime), True, ColorTools.white, ColorTools.blue)
+    textRect = text.get_rect()
+    textRect.x = 0
+    textRect.y = 0
+    Game.MasterGame.screen.blit(text, textRect)
     for group in Game.MasterGame.SpriteGroups:
         group.draw(Game.MasterGame.screen)
     # Update the display
     pygame.display.update()
 
     # Control the frame rate
-    Game.MasterGame.gameClock.tick(30)
+    Game.MasterGame.Clock.UpdateClock()
