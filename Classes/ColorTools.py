@@ -2,9 +2,11 @@ import pygame
 import cv2
 import numpy as np
 from dataclasses import dataclass
+
 white = (255, 255, 255)
 green = (0, 255, 0)
 blue = (0, 0, 128)
+
 
 @dataclass
 class Color:
@@ -13,7 +15,7 @@ class Color:
     v: int
 
     def getNumPy(self):
-        return np.array([self.h, self.s, self.v],dtype=np.uint8)
+        return np.array([self.h, self.s, self.v], dtype=np.uint8)
 
     def to_rgb(self):
         """
@@ -44,6 +46,7 @@ class Color:
         """
         rgb = self.to_rgb()
         return rgb[2], rgb[1], rgb[0]
+
 
 def opencv_to_pygame(opencv_image):
     # Convert the OpenCV image to RGB
@@ -81,31 +84,31 @@ def shift_hue(img, color_from, color_to):
 
 def ChangeColorToColor(image, orginalHue, newHue):
     openCVimage = pygame_to_opencv(image.image)
-    orginalColor = Color(h=orginalHue, s=255,v=128)
-    newColor = Color(h=newHue, s=255,v=128)
+    orginalColor = Color(h=orginalHue, s=255, v=128)
+    newColor = Color(h=newHue, s=255, v=128)
     hueshifted = shift_hue(openCVimage, orginalColor.getNumPy(), newColor.getNumPy())
     return opencv_to_pygame(hueshifted)
 
 
 def pygame_to_opencv(pygame_image):
     # Convert Pygame image to string
-    pygame_str = pygame.image.tostring(pygame_image, 'RGB')
+    pygame_str = pygame.image.tostring(pygame_image, "RGB")
 
     # Create a NumPy array from the string
     pygame_array = np.frombuffer(pygame_str, dtype=np.uint8)
 
     # Reshape the array to match the Pygame image dimensions
-    pygame_array = pygame_array.reshape((pygame_image.get_height(), pygame_image.get_width(), 3))
+    pygame_array = pygame_array.reshape(
+        (pygame_image.get_height(), pygame_image.get_width(), 3)
+    )
 
     # Convert the NumPy array to an OpenCV image
     opencv_image = cv2.cvtColor(pygame_array, cv2.COLOR_RGB2BGR)
 
     return opencv_image
 
+
 def ToOpenCV(image):
     image_array = pygame.surfarray.array3d(image)
     opencv_image = cv2.cvtColor(image_array, cv2.COLOR_RGB2HSV)
     return opencv_image
-
-
-

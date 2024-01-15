@@ -33,7 +33,9 @@ def MouseHandler():
                         worker.correspondingID == GlobalSelectedID
                         and worker.imageType is Sprite.ImageTypes.Worker
                     ):
-                        worker.MvmHandler.startNewMotion((worker.rect.center),(mouse_x, mouse_y))
+                        worker.MvmHandler.startNewMotion(
+                            (worker.rect.center), (mouse_x, mouse_y)
+                        )
                 GlobalClickState = ClickState.Neutral
                 break
             else:

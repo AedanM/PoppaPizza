@@ -7,8 +7,9 @@ from Classes import *
 from Handlers import *
 import programUtils as util
 import random
+from multiprocessing import Process
 
-
+People.Worker.CreateWorker()
 People.Worker.CreateWorker()
 People.Customer.CreateCustomer()
 
@@ -24,13 +25,14 @@ while True:
             exit()
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             ClickHandler.MouseHandler()
-        if(event.type == pygame.KEYDOWN and event.key == pygame.K_t):
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_t:
             Game.MasterGame.Clock.ChangeClockMul(-1)
             print(Game.MasterGame.Clock.ClockMul)
-        if(event.type == pygame.KEYDOWN and event.key == pygame.K_y):
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_y:
             Game.MasterGame.Clock.ChangeClockMul(1)
             print(Game.MasterGame.Clock.ClockMul)
     Game.MasterGame.screen.fill((255, 255, 255))
+
     for group in Game.MasterGame.SpriteGroups:
         group.update()
         for sprite in group:
@@ -38,14 +40,11 @@ while True:
     for timer in Game.MasterGame.TimerBars:
         timer.ageTimer()
         pygame.draw.rect(Game.MasterGame.screen, timer.color, timer.Rect)
-        
-    
-    pygame.draw.lines(Game.MasterGame.screen, (255,0,0), False, Game.MasterGame.LineList)
-    text = Game.MasterGame.font.render(str(Game.MasterGame.Clock.dateTime), True, ColorTools.white, ColorTools.blue)
-    textRect = text.get_rect()
-    textRect.x = 0
-    textRect.y = 0
-    Game.MasterGame.screen.blit(text, textRect)
+
+    pygame.draw.lines(
+        Game.MasterGame.screen, (255, 0, 0), False, Game.MasterGame.LineList
+    )
+    Game.MasterGame.DrawScreenClock((0, 0), ColorTools.white, ColorTools.blue)
     for group in Game.MasterGame.SpriteGroups:
         group.draw(Game.MasterGame.screen)
     # Update the display

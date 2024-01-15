@@ -46,9 +46,9 @@ class CharImageSprite(GameObj.GameObject):
         self.imageType = PathToTypeDict[path]
 
         self.correspondingID = objID
-    
+
     def __repr__(self):
-        return str(self.correspondingID) + ' ' + str( self.imageType)
+        return str(self.correspondingID) + " " + str(self.imageType)
 
 
 class BackgroundElementSprite(GameObj.GameObject):
