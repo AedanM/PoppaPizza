@@ -1,5 +1,6 @@
 # PoppaPizza
 
+'''
    /.---.\
    |`````|
    \     /
@@ -7,7 +8,8 @@
       |    /\     .'   /\
     __|__  |K----;    |  |
    `-----` \/     '.___\/
-  
+'''
+
 Work on a fun little restaurant sim. 
 
 ## Concept:
