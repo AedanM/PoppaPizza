@@ -45,7 +45,7 @@ class CharacterMovementHandler:
             self.dstSet = True
             self.InMotion: bool = True
             self.MaxMovementSpeed = speed
-    
+
     def startNewListedMotion(self, pointList, speed=MovementSpeeds.Slow):
         if not self.InMotion:
             self.OnComplete = lambda: None
@@ -54,7 +54,7 @@ class CharacterMovementHandler:
             self.dstSet = True
             self.InMotion: bool = True
             self.MaxMovementSpeed = speed
-            
+
     def isFinished(self, obj) -> bool:
         return utils.inPercentTolerance(
             obj.rect.centerx, self.destX, self.MovementTolerance

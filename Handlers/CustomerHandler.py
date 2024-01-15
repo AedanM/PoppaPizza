@@ -3,6 +3,7 @@ import Classes.Sprite as Sprite
 import Classes.TimerBar as TB
 import Classes.DefinedLocations as DL
 
+
 def FindAvailableWorker() -> bool:
     try:
         worker = Game.MasterGame.WorkerList[0]
@@ -32,8 +33,7 @@ def AssignWorker(target):
     if worker is not None:
         customer.desiredJob.Assign(worker)
         workerSprite.MvmHandler.startNewListedMotion(
-           DL.DefinedPaths.KitchenToCustomer(workerSprite, target)
-
+            DL.DefinedPaths.KitchenToCustomer(workerSprite, target)
         )
         returnHome = lambda: workerSprite.MvmHandler.startNewListedMotion(
             DL.DefinedPaths.BackToKitchen(workerSprite)

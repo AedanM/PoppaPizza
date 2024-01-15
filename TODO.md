@@ -12,7 +12,7 @@
 - Buy Workers
 - buying/shop
 - rent
-- game clock
-- occupied symbol / progress
-- Assigning Jobs
+- ~~game clock~~
+- occupied symbol ~~/ progress~~
+- ~~Assigning Jobs~~
 - Implement C# from home
