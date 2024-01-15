@@ -1,11 +1,13 @@
 from dataclasses import dataclass
 import pygame_menu
-import programUtils as util
 import names
 import random
 import Classes.Jobs as Jobs
 import Classes.Game as Game
 import Classes.Sprite as Sprite
+import Classes.utils as utils
+import Classes.DefinedLocations as DL
+
 
 IDCount = 0
 
@@ -21,7 +23,7 @@ class Person:
 
     @classmethod
     def Create(self):
-        if util.checkInternet:
+        if utils.checkInternet:
             lName = names.get_first_name(gender="female")
             fName = names.get_last_name()
         else:
@@ -44,7 +46,9 @@ class Worker(Person):
     def CreateWorker(self):
         worker = self.Create()
         workerSprite = Sprite.CharImageSprite(
-            (400, random.randint(1, 12) * 50), Sprite.iPaths.workerPath, worker.idNum
+            utils.PositionRandomVariance(DL.LocationDefs.KitchenLocation, (0.1,1)),
+            Sprite.iPaths.workerPath, 
+            worker.idNum
         )
         Game.MasterGame.CharSpriteGroup.add(workerSprite)
         Game.MasterGame.WorkerList.append(worker)
@@ -54,14 +58,14 @@ class Worker(Person):
 @dataclass
 class Customer(Person):
     desiredJob: Jobs.Job = None
-
+    workerAssigned: bool = False
     @classmethod
     def CreateCustomer(self):
         customer = self.Create()
         Game.MasterGame.JobList.append(Jobs.Job.SpawnJob())
         Game.MasterGame.JobList[-1].Assign(customer)
         customerSprite = Sprite.CharImageSprite(
-            (800, random.randint(1, 12) * 50),
+            utils.PositionRandomVariance(DL.LocationDefs.CustomerEntrance, (0.1,1)),
             Sprite.iPaths.customerPath,
             customer.idNum,
         )

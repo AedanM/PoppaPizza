@@ -5,7 +5,6 @@ os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "True"
 import pygame
 from Classes import *
 from Handlers import *
-import programUtils as util
 import random
 from multiprocessing import Process
 

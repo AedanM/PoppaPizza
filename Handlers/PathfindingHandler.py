@@ -7,7 +7,7 @@ if __name__ == "__main__":
     import Game as Game
 else:
     import Classes.Game as Game
-import programUtils as utils
+import Classes.utils as utils
 import pygame
 import random
 

@@ -1,5 +1,6 @@
+import math
 import socket
-
+import random
 
 def checkInternet(host="8.8.8.8", port=53, timeout=30):
     """
@@ -14,6 +15,18 @@ def checkInternet(host="8.8.8.8", port=53, timeout=30):
     except Exception as ex:
         print(ex)
         return False
+
+
+def InRandomVariance(num, percentVariance):
+    varyAmount = random.randint(-100,100) * percentVariance
+    return num*varyAmount
+    
+def PositionRandomVariance(position, percentVarianceTuple):
+    varyAmountX = math.ceil((random.randint(-100,100) * percentVarianceTuple[0]) + position[0])
+    varyAmountY = math.ceil((random.randint(-100,100) * percentVarianceTuple[1]) + position[1])
+    out  = (varyAmountX, varyAmountY)
+    print(out)
+    return out
 
 
 def inTolerance(num1, num2, tolerance) -> bool:

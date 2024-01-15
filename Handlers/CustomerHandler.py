@@ -30,20 +30,24 @@ def AssignWorker(target):
         x for x in Game.MasterGame.CustomerList if (x.idNum == target.correspondingID)
     ][0]
     worker, workerSprite = FindAvailableWorker()
-    if worker is not None:
+    if customer.workerAssigned == False and worker is None:
+        AllWorkersBusy(customer, target)
+    elif worker is not None:
+        customer.workerAssigned = True
         customer.desiredJob.Assign(worker)
         workerSprite.MvmHandler.startNewListedMotion(
             DL.DefinedPaths.KitchenToCustomer(workerSprite, target)
         )
-        returnHome = lambda: workerSprite.MvmHandler.startNewListedMotion(
-            DL.DefinedPaths.BackToKitchen(workerSprite)
-        )
+        returnHome = lambda: FinishCustomer(customer, target, worker, workerSprite)
         workerSprite.MvmHandler.OnComplete = lambda: TB.CreatePersonTimerBar(
             workerSprite, worker, returnHome, 5
         )
-    else:
-        AllWorkersBusy(customer, target)
 
+def FinishCustomer(customer, custSprite, worker, workerSprite):
+    workerSprite.MvmHandler.startNewListedMotion(
+            DL.DefinedPaths.BackToKitchen(workerSprite)
+    )
+    GetUpAndGo(customer, custSprite)
 
 def AllWorkersBusy(customer, target):
     taskComplete = lambda: GetUpAndGo(customer, target)

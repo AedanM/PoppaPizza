@@ -17,6 +17,10 @@ class DefinedLocations:
     @property
     def CustomerExit(self):
         return (1200, 1000)
+    
+    @property
+    def CustomerEntrance(self):
+        return (1050, 500)
 
 
 LocationDefs = DefinedLocations()

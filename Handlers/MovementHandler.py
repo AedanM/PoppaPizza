@@ -1,5 +1,5 @@
 import pygame
-import programUtils as utils
+import Classes.utils as utils
 import Classes.Game as Game
 import Handlers.CollisionHandler as Collision
 import Handlers.PathfindingHandler as Path

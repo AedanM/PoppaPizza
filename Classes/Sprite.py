@@ -47,6 +47,10 @@ class CharImageSprite(GameObj.GameObject):
 
         self.correspondingID = objID
 
+    def updateSprite(self):
+        ## Place to add Dynamic Sprites
+        pass
+
     def __repr__(self):
         return str(self.correspondingID) + " " + str(self.imageType)
 

@@ -3,7 +3,7 @@ import math
 import sys
 
 sys.path.insert(0, "..")
-import programUtils as utils
+import Classes.utils as utils
 from dataclasses import dataclass
 
 std_dimensions = {"Medium": (1200, 800), "Small": (600, 400), "Large": (2400, 1600)}
