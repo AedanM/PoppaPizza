@@ -1,6 +1,8 @@
 import math
 import socket
 import random
+import Classes.Game as Game
+
 
 def checkInternet(host="8.8.8.8", port=53, timeout=30):
     """
@@ -18,14 +20,35 @@ def checkInternet(host="8.8.8.8", port=53, timeout=30):
 
 
 def InRandomVariance(num, percentVariance):
-    varyAmount = random.randint(-100,100) * percentVariance
-    return num*varyAmount
-    
+    varyAmount = random.randint(-100, 100) * percentVariance
+    return num * varyAmount
+
+
 def PositionRandomVariance(position, percentVarianceTuple):
-    varyAmountX = math.ceil((random.randint(-100,100) * percentVarianceTuple[0]) + position[0])
-    varyAmountY = math.ceil((random.randint(-100,100) * percentVarianceTuple[1]) + position[1])
-    out  = (varyAmountX, varyAmountY)
-    print(out)
+    varyAmountX = math.ceil(
+        (
+            random.randint(-100, 100)
+            * 0.01
+            * percentVarianceTuple[0]
+            * Game.MasterGame.screen.get_width()
+        )
+        + position[0]
+    )
+    varyAmountY = math.ceil(
+        (
+            random.randint(-100, 100)
+            * 0.01
+            * percentVarianceTuple[1]
+            * Game.MasterGame.screen.get_height()
+        )
+        + position[1]
+    )
+    print(Game.MasterGame.screen.get_width())
+    out = (
+        Bind(varyAmountX, (0, Game.MasterGame.screen.get_width())),
+        Bind(varyAmountY, (0, Game.MasterGame.screen.get_height())),
+    )
+    print(position, percentVarianceTuple, out)
     return out
 
 

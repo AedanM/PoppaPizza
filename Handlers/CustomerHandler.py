@@ -5,23 +5,20 @@ import Classes.DefinedLocations as DL
 
 
 def FindAvailableWorker() -> bool:
-    try:
-        worker = Game.MasterGame.WorkerList[0]
-        while worker.isAssigned and worker is not None:
-            worker = next(Game.MasterGame.WorkerList, None)
-    except:
-        worker = None
-    try:
-        workerSprite = [
+    availWorkers = [x for x in Game.MasterGame.WorkerList if x.isAssigned == False]
+    if len(availWorkers) < 1:
+        worker, workerSprite = None, None
+    else:
+        worker = availWorkers[0]
+        workerSprites = [
             x
             for x in Game.MasterGame.CharSpriteGroup
             if (
                 x.imageType == Sprite.ImageTypes.Worker
                 and x.correspondingID == worker.idNum
             )
-        ][0]
-    except:
-        workerSprite = None
+        ]
+        workerSprite = None if len(workerSprites) < 1 else workerSprites[0]
     return worker, workerSprite
 
 
@@ -40,14 +37,16 @@ def AssignWorker(target):
         )
         returnHome = lambda: FinishCustomer(customer, target, worker, workerSprite)
         workerSprite.MvmHandler.OnComplete = lambda: TB.CreatePersonTimerBar(
-            workerSprite, worker, returnHome, 5
+            workerSprite, worker, returnHome, customer.desiredJob.Length
         )
+
 
 def FinishCustomer(customer, custSprite, worker, workerSprite):
     workerSprite.MvmHandler.startNewListedMotion(
-            DL.DefinedPaths.BackToKitchen(workerSprite)
+        DL.DefinedPaths.BackToKitchen(workerSprite)
     )
     GetUpAndGo(customer, custSprite)
+
 
 def AllWorkersBusy(customer, target):
     taskComplete = lambda: GetUpAndGo(customer, target)
@@ -57,3 +56,10 @@ def AllWorkersBusy(customer, target):
 def GetUpAndGo(customer, spriteImg):
     spriteImg.MvmHandler.startNewListedMotion(DL.DefinedPaths.CustomerToExit(spriteImg))
     spriteImg.MvmHandler.OnComplete = lambda: Game.MasterGame.RemoveObj(spriteImg)
+
+
+
+def CustomerStateMachine(customer, spriteImg):
+    match customer.State:
+        case 1:
+            pass

@@ -4,6 +4,7 @@ import sys
 
 sys.path.insert(0, "..")
 import Classes.utils as utils
+import Classes.Chances as Chances
 from dataclasses import dataclass
 
 std_dimensions = {"Medium": (1200, 800), "Small": (600, 400), "Large": (2400, 1600)}
@@ -14,21 +15,22 @@ class Month:
     Days: int = 31
     Name: str = ""
     MonthOrder: int = 0
+    PreceedingDays: int = 0
 
 
 Months = [
-    Month(Name="January", MonthOrder=1),
-    Month(Name="February", MonthOrder=2, Days=28),
-    Month(Name="March", MonthOrder=3),
-    Month(Name="April", MonthOrder=4, Days=30),
-    Month(Name="May", MonthOrder=5),
-    Month(Name="June", MonthOrder=6, Days=30),
-    Month(Name="July", MonthOrder=7),
-    Month(Name="August", MonthOrder=8),
-    Month(Name="September", MonthOrder=9, Days=30),
-    Month(Name="October", MonthOrder=10),
-    Month(Name="November", MonthOrder=11, Days=30),
-    Month(Name="December", MonthOrder=0),
+    Month(Name="January", MonthOrder=1, PreceedingDays=0),
+    Month(Name="February", MonthOrder=2, Days=28, PreceedingDays=31),
+    Month(Name="March", MonthOrder=3, PreceedingDays=59),
+    Month(Name="April", MonthOrder=4, Days=30, PreceedingDays=90),
+    Month(Name="May", MonthOrder=5, PreceedingDays=120),
+    Month(Name="June", MonthOrder=6, Days=30, PreceedingDays=151),
+    Month(Name="July", MonthOrder=7, PreceedingDays=181),
+    Month(Name="August", MonthOrder=8, PreceedingDays=212),
+    Month(Name="September", MonthOrder=9, Days=30, PreceedingDays=243),
+    Month(Name="October", MonthOrder=10,PreceedingDays=273),
+    Month(Name="November", MonthOrder=11, Days=30, PreceedingDays=304),
+    Month(Name="December", MonthOrder=0, PreceedingDays = 334),
 ]
 
 
@@ -52,7 +54,7 @@ class GameClock:
         self.lastTime = pygame.time.get_ticks()
         if self.Hour >= 24:
             self.DayChange()
-        if self.Day >= 31:
+        if self.Day >= self.CurrentMonth.Days:
             self.MonthChange()
 
     def DayChange(self):
@@ -62,7 +64,6 @@ class GameClock:
         self.lastTime = pygame.time.get_ticks()
 
     def MonthChange(self):
-        self.Day = 1
         self.CurrentMonth = [
             x
             for x in Months
@@ -74,6 +75,9 @@ class GameClock:
         self.ClockMul = utils.Bind(self.ClockMul * newVal, self.clockMulRange)
 
     @property
+    def DayOfMonth(self):
+        return self.Day - self.CurrentMonth.PreceedingDays
+    @property
     def Minute(self):
         return math.floor(self.Second / 60)
 
@@ -83,8 +87,11 @@ class GameClock:
 
     @property
     def dateTime(self):
-        return f"{self.CurrentMonth.Name} {self.Day} {self.Hour:02d}:{(self.Minute % 60):02d}"
-
+        return f"{self.CurrentMonth.Name} {self.DayOfMonth} {self.Hour:02d}:{(self.Minute % 60):02d}"
+    
+    @property
+    def unixTime(self):
+        return self.Hour + ((self.Day-1) * 24)
 
 class Game:
     ActiveTimerBars: list = []
@@ -97,10 +104,11 @@ class Game:
     JobList: list = []
     Money: int = 0
     TimerBars: list = []
+    ShowScreen: bool = True
 
     def __init__(self, size=std_dimensions["Medium"]):
         pygame.init()
-
+        self.Chances = Chances.LuckChances()
         self.Clock = GameClock(pygame.time.Clock())
         self.startTime = pygame.time.get_ticks()
 

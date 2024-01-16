@@ -26,10 +26,14 @@ while True:
             ClickHandler.MouseHandler()
         if event.type == pygame.KEYDOWN and event.key == pygame.K_t:
             Game.MasterGame.Clock.ChangeClockMul(-1)
-            print(Game.MasterGame.Clock.ClockMul)
         if event.type == pygame.KEYDOWN and event.key == pygame.K_y:
             Game.MasterGame.Clock.ChangeClockMul(1)
-            print(Game.MasterGame.Clock.ClockMul)
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_w:
+            People.Worker.CreateWorker()
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_c:
+            People.Customer.CreateCustomer()
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_d:
+            Game.MasterGame.ShowScreen = not Game.MasterGame.ShowScreen
     Game.MasterGame.screen.fill((255, 255, 255))
 
     for group in Game.MasterGame.SpriteGroups:
@@ -39,7 +43,7 @@ while True:
     for timer in Game.MasterGame.TimerBars:
         timer.ageTimer()
         pygame.draw.rect(Game.MasterGame.screen, timer.color, timer.Rect)
-
+    SpawnHandler.SpawnHandler()
     pygame.draw.lines(
         Game.MasterGame.screen, (255, 0, 0), False, Game.MasterGame.LineList
     )
@@ -47,7 +51,8 @@ while True:
     for group in Game.MasterGame.SpriteGroups:
         group.draw(Game.MasterGame.screen)
     # Update the display
-    pygame.display.update()
+    if(Game.MasterGame.ShowScreen):
+        pygame.display.update()
 
     # Control the frame rate
     Game.MasterGame.Clock.UpdateClock()

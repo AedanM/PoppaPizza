@@ -12,12 +12,11 @@ class GameObject(pygame.sprite.Sprite):
         self.isBackground = backgroundFlag
         self.Moveable = moveFlag
         self.Collision = collisionFlag
-    
+
     def updateSprite(self):
         pass
-    
+
     def update(self):
         if self.Moveable and "MvmHandler" in dir(self):
             self.MvmHandler.calcNewPosition(self)
         self.updateSprite()
-            
