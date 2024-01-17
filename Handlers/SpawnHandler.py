@@ -1,16 +1,21 @@
-import pygame
+"""Handler for Spawning Elements"""
 import random
+import pygame
 import Classes.Game as Game
 import Classes.People as People
-lastSpawnTime = 0
+
+LastSpawnTime = 0
+
 
 def CustomerSpawner():
-    global lastSpawnTime
-    currentTime = Game.MasterGame.Clock.unixTime
-    chanceOfSpawn = Game.MasterGame.Chances.customerSpawn * float(currentTime-lastSpawnTime)
-    if(random.random() < chanceOfSpawn):
+    global LastSpawnTime
+    currentTime = Game.MasterGame.Clock.UnixTime
+    chanceOfSpawn = Game.MasterGame.Chances.CustomerSpawn * float(
+        currentTime - LastSpawnTime
+    )
+    if random.random() < chanceOfSpawn:
         People.Customer.CreateCustomer()
-        lastSpawnTime = currentTime
+        LastSpawnTime = currentTime
 
 
 def SpawnHandler():

@@ -1,18 +1,20 @@
+"""Handler for finding paths"""
 import math
 import sys
+import random
+import pygame
+import Utilities.Utils as utils
+
 
 if __name__ == "__main__":
     sys.path.insert(0, "../Classes")
     sys.path.insert(0, "..")
-    import Game as Game
+    import Game
 else:
     import Classes.Game as Game
-import Classes.utils as utils
-import pygame
-import random
 
 
-def removeDupes(l):
+def RemoveDupes(l):
     for idx, i in enumerate(l):
         if l.count(i) > 1:
             del l[idx]
@@ -25,9 +27,9 @@ def GenLandmarksBetween(point1, point2, speed):
     xsteps = abs((point2[0] - point1[0]) / speed)
     if xsteps < 1 and ysteps < 1:
         return pointList
-    elif xsteps != ysteps and xsteps != 0 and ysteps != 0:
+    if xsteps != ysteps and xsteps != 0 and ysteps != 0:
         reachToNew = abs(point2[1] - point1[1])
-        signX = utils.sign(point2[0] - point1[0])
+        signX = utils.Sign(point2[0] - point1[0])
         # print(point2, point1, reachToNew , signX)
         newX = point1[0] + (reachToNew * signX)
         newX = point2[1] if (newX * signX) > (point2[0] * signX) else point2[0]
@@ -35,10 +37,7 @@ def GenLandmarksBetween(point1, point2, speed):
         pointList = GenLandmarksBetween(point1, newPoint, speed) + GenLandmarksBetween(
             newPoint, point2, speed
         )
-        return removeDupes(pointList)
-    else:
-        return pointList
-    return removeDupes(pointList)
+    return RemoveDupes(pointList)
 
 
 def RectInLine(rect, point1, point2):
@@ -49,7 +48,7 @@ def RectInLine(rect, point1, point2):
 
 def CheckCollision(pointPath, rectList):
     print(pointPath)
-    for i in range(len(pointPath)):
+    for i in enumerate(len(pointPath)):
         if i != 0:
             p1 = pointPath[i - 1]
             p2 = pointPath[i]
@@ -57,7 +56,7 @@ def CheckCollision(pointPath, rectList):
                 if RectInLine(rect, p1, p2):
                     print("hit")
                     pointPath.insert(i, (1, 1))
-    return removeDupes(pointPath)
+    return RemoveDupes(pointPath)
 
 
 def CleanTweenPoints(pointList):
@@ -76,11 +75,11 @@ def CleanTweenPoints(pointList):
 
 
 def CreatePath(startPoint, endPoint, speed, backgroundObs):
-    print()
     tightPath = [
         startPoint,
         endPoint,
-    ]  # GenLandmarksBetween(startPoint, endPoint, speed)
+    ]
+    _ = GenLandmarksBetween(startPoint, endPoint, speed)
     finalPath = CheckCollision(tightPath, backgroundObs)
     print(finalPath)
     return finalPath
@@ -88,10 +87,10 @@ def CreatePath(startPoint, endPoint, speed, backgroundObs):
 
 class Ctest:
     def __init__(self, p1: tuple, p2: tuple, speed, result: list):
-        self.p1 = p1
-        self.p2 = p2
-        self.speed = speed
-        self.result = result
+        self.P1 = p1
+        self.P2 = p2
+        self.Speed = speed
+        self.Result = result
 
 
 def GenLandmarksBetweenUnitTest():
@@ -132,29 +131,29 @@ def GenLandmarksBetweenUnitTest():
         ),
     ]
     for test in tests:
-        points = GenLandmarksBetween(test.p1, test.p2, test.speed)
-        pygame.draw.circle(Game.MasterGame.screen, (0, 255, 0), (600, 400), 25)
+        points = GenLandmarksBetween(test.P1, test.P2, test.Speed)
+        pygame.draw.circle(Game.MasterGame.Screen, (0, 255, 0), (600, 400), 25)
         col = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
         pygame.draw.lines(
-            Game.MasterGame.screen,
+            Game.MasterGame.Screen,
             col,
             False,
             points,
         )
-        text = Game.MasterGame.font.render(
+        text = Game.MasterGame.Font.render(
             str(tests.index(test)), True, col, (255, 255, 255)
         )
         textRect = text.get_rect()
         textRect.center = (300, 200)
-        Game.MasterGame.screen.blit(text, textRect)
+        Game.MasterGame.Screen.blit(text, textRect)
         pygame.display.update()
-        assert points == test.result, str(points) + " Failed"
+        assert points == test.Result, str(points) + " Failed"
         print(str(tests.index(test)) + " Passed")
-        x = input()
+        holdUntilUser = input()
 
 
 if __name__ == "__main__":
     while True:
-        Game.MasterGame.screen.fill((255, 255, 255))
+        Game.MasterGame.Screen.fill((255, 255, 255))
         GenLandmarksBetweenUnitTest()
         pygame.display.update()

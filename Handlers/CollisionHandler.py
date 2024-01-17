@@ -1,7 +1,8 @@
+"""Handler for Collision"""
 import Classes.Game as Game
 
 
-def findCollisionAxis(sprite, obj):
+def FindCollisionAxis(sprite, obj):
     obj = obj.rect
     x, y = 0, 0
     if sprite.rect.collidepoint(obj.topleft):
@@ -20,7 +21,7 @@ def findCollisionAxis(sprite, obj):
     return {"x": x, "y": y}
 
 
-def checkCollision(obj):
+def CheckCollision(obj):
     for group in Game.MasterGame.SpriteGroups:
         for sprite in group:
             if (
@@ -29,7 +30,7 @@ def checkCollision(obj):
                 and sprite is not obj
             ):
                 print(sprite)
-                adjustments = findCollisionAxis(sprite, obj)
+                adjustments = FindCollisionAxis(sprite, obj)
                 print(adjustments)
                 obj.rect.x += adjustments["x"]
                 obj.rect.y += adjustments["y"]

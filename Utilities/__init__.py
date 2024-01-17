@@ -1,4 +1,4 @@
-"""Init file for Handlers"""
+"""Utils Init"""
 from os.path import dirname, basename, isfile, join
 import glob
 

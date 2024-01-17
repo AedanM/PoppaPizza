@@ -1,8 +1,9 @@
+"""Class for jobs"""
 from dataclasses import dataclass
 from enum import Enum
 import random
 
-JobIdCount = 0
+JOBIDCOUNT = 0
 
 
 class UrgencyRatings(Enum):
@@ -24,9 +25,9 @@ class Job:
     JobId: int
 
     @classmethod
-    def SpawnJob(self):
-        global JobIdCount
-        JobIdCount += 1
+    def SpawnJob(cls):
+        global JOBIDCOUNT
+        JOBIDCOUNT += 1
         urgency = random.choice(list(UrgencyRatings))
         jobtype = random.choice(list(JobTypes))
         length = random.randint(2, 10)
@@ -45,22 +46,22 @@ class Job:
             AssignedWorker=assignedWorker,
             JobCustomer=customer,
             Urgency=urgency,
-            JobId=JobIdCount,
+            JobId=JOBIDCOUNT,
         )
         return job
 
     @staticmethod
-    def GetAssignedFromID(JobList, targetID):
-        for job in JobList:
+    def GetAssignedFromID(jobList, targetID):
+        for job in jobList:
             if job.JobId == targetID:
                 return [job.AssignedWorker, job.JobCustomer]
         return []
 
     def Assign(self, target):
-        if "desiredJob" in dir(target):
-            target.desiredJob = self
-            self.JobCustomer = target.idNum
+        if "DesiredJob" in dir(target):
+            target.DesiredJob = self
+            self.JobCustomer = target.IdNum
         else:
-            self.AssignedWorker = target.idNum
-        target.isAssigned = True
-        target.currentJobId = self.JobId
+            self.AssignedWorker = target.IdNum
+        target.IsAssigned = True
+        target.CurrentJobId = self.JobId

@@ -1,3 +1,5 @@
+"""Class for DefinedLocations"""
+
 import pygame
 
 

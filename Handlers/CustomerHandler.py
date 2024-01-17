@@ -1,3 +1,4 @@
+"""Handler for Customer Tasks"""
 import Classes.Game as Game
 import Classes.Sprite as Sprite
 import Classes.TimerBar as TB
@@ -5,7 +6,7 @@ import Classes.DefinedLocations as DL
 
 
 def FindAvailableWorker() -> bool:
-    availWorkers = [x for x in Game.MasterGame.WorkerList if x.isAssigned == False]
+    availWorkers = [x for x in Game.MasterGame.WorkerList if x.IsAssigned is False]
     if len(availWorkers) < 1:
         worker, workerSprite = None, None
     else:
@@ -14,8 +15,8 @@ def FindAvailableWorker() -> bool:
             x
             for x in Game.MasterGame.CharSpriteGroup
             if (
-                x.imageType == Sprite.ImageTypes.Worker
-                and x.correspondingID == worker.idNum
+                x.ImageType == Sprite.ImageTypes.Worker
+                and x.CorrespondingID == worker.IdNum
             )
         ]
         workerSprite = None if len(workerSprites) < 1 else workerSprites[0]
@@ -24,42 +25,35 @@ def FindAvailableWorker() -> bool:
 
 def AssignWorker(target):
     customer = [
-        x for x in Game.MasterGame.CustomerList if (x.idNum == target.correspondingID)
+        x for x in Game.MasterGame.CustomerList if (x.IdNum == target.CorrespondingID)
     ][0]
     worker, workerSprite = FindAvailableWorker()
-    if customer.workerAssigned == False and worker is None:
-        AllWorkersBusy(customer, target)
+    if customer.WorkerAssigned is False and worker is None:
+        AllWorkersBusy(target)
     elif worker is not None:
-        customer.workerAssigned = True
-        customer.desiredJob.Assign(worker)
-        workerSprite.MvmHandler.startNewListedMotion(
+        customer.WorkerAssigned = True
+        customer.DesiredJob.Assign(worker)
+        workerSprite.MvmHandler.StartNewListedMotion(
             DL.DefinedPaths.KitchenToCustomer(workerSprite, target)
         )
-        returnHome = lambda: FinishCustomer(customer, target, worker, workerSprite)
+        returnHome = lambda: FinishCustomer(target, workerSprite)
         workerSprite.MvmHandler.OnComplete = lambda: TB.CreatePersonTimerBar(
-            workerSprite, worker, returnHome, customer.desiredJob.Length
+            workerSprite, returnHome, customer.DesiredJob.Length
         )
 
 
-def FinishCustomer(customer, custSprite, worker, workerSprite):
-    workerSprite.MvmHandler.startNewListedMotion(
+def FinishCustomer(custSprite, workerSprite):
+    workerSprite.MvmHandler.StartNewListedMotion(
         DL.DefinedPaths.BackToKitchen(workerSprite)
     )
-    GetUpAndGo(customer, custSprite)
+    GetUpAndGo(custSprite)
 
 
-def AllWorkersBusy(customer, target):
-    taskComplete = lambda: GetUpAndGo(customer, target)
-    TB.CreatePersonTimerBar(target, customer, taskComplete, 10)
+def AllWorkersBusy(target):
+    taskComplete = lambda: GetUpAndGo(target)
+    TB.CreatePersonTimerBar(target, taskComplete, 10)
 
 
-def GetUpAndGo(customer, spriteImg):
-    spriteImg.MvmHandler.startNewListedMotion(DL.DefinedPaths.CustomerToExit(spriteImg))
+def GetUpAndGo(spriteImg):
+    spriteImg.MvmHandler.StartNewListedMotion(DL.DefinedPaths.CustomerToExit(spriteImg))
     spriteImg.MvmHandler.OnComplete = lambda: Game.MasterGame.RemoveObj(spriteImg)
-
-
-
-def CustomerStateMachine(customer, spriteImg):
-    match customer.State:
-        case 1:
-            pass

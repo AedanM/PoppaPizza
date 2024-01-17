@@ -1,55 +1,56 @@
+"""Class for People DataClasses"""
 from dataclasses import dataclass
-import pygame_menu
-import names
 import random
 from enum import Enum
+import names
 import Classes.Jobs as Jobs
 import Classes.Game as Game
 import Classes.Sprite as Sprite
-import Classes.utils as utils
 import Classes.DefinedLocations as DL
+import Utilities.Utils as utils
 
-
-IDCount = 0
+IDCOUNT = 0
 
 
 @dataclass
 class Person:
-    firstName: str
-    lastName: str
-    idNum: int
-    body: None = None
-    isAssigned: bool = False
-    currentJobId: int = 0
+    FirstName: str
+    LastName: str
+    IdNum: int
+    Body: None = None
+    IsAssigned: bool = False
+    CurrentJobId: int = 0
 
     @classmethod
-    def Create(self):
-        if utils.checkInternet:
+    def Create(cls):
+        if utils.CheckInternet():
             lName = names.get_first_name(gender="female")
             fName = names.get_last_name()
         else:
             lName, fName = ("A", "A")
-        selfid = self.GenerateID()
-        return self(firstName=fName, lastName=lName, idNum=selfid)
+        selfid = cls.GenerateID()
+        return cls(FirstName=fName, LastName=lName, IdNum=selfid)
 
     @staticmethod
     def GenerateID():
-        global IDCount
-        IDCount += 1
-        return IDCount
+        global IDCOUNT
+        IDCOUNT += 1
+        return IDCOUNT
 
 
 @dataclass
 class Worker(Person):
-    basePay: float = 1.0
+    BasePay: float = 1.0
 
     @classmethod
-    def CreateWorker(self):
-        worker = self.Create()
+    def CreateWorker(cls):
+        worker = cls.Create()
         workerSprite = Sprite.CharImageSprite(
-            utils.PositionRandomVariance(DL.LocationDefs.KitchenLocation, (0.1, 1)),
-            Sprite.iPaths.workerPath,
-            worker.idNum,
+            utils.PositionRandomVariance(
+                DL.LocationDefs.KitchenLocation, (0.05, 0.75), Game.MasterGame.ScreenSize
+            ),
+            Sprite.iPaths.WorkerPath,
+            worker.IdNum,
         )
         Game.MasterGame.CharSpriteGroup.add(workerSprite)
         Game.MasterGame.WorkerList.append(worker)
@@ -62,29 +63,34 @@ class CustomerStates(Enum):
 
 @dataclass
 class Customer(Person):
-    desiredJob: Jobs.Job = None
-    workerAssigned: bool = False
+    DesiredJob: Jobs.Job = None
+    WorkerAssigned: bool = False
+    CurrentState: CustomerStates = None
 
     @classmethod
-    def CreateCustomer(self):
-        customer = self.Create()
+    def CreateCustomer(cls):
+        cust = cls.Create()
         Game.MasterGame.JobList.append(Jobs.Job.SpawnJob())
-        Game.MasterGame.JobList[-1].Assign(customer)
+        Game.MasterGame.JobList[-1].Assign(cust)
         customerSprite = Sprite.CharImageSprite(
-            utils.PositionRandomVariance(DL.LocationDefs.CustomerEntrance, (0.1, 1)),
-            Sprite.iPaths.customerPath,
-            customer.idNum,
+            utils.PositionRandomVariance(
+                DL.LocationDefs.CustomerEntrance, (0.05, 0.1), Game.MasterGame.ScreenSize
+            ),
+            Sprite.iPaths.CustomerPath,
+            cust.IdNum,
         )
         Game.MasterGame.CharSpriteGroup.add(customerSprite)
-        Game.MasterGame.CustomerList.append(customer)
-        return customer
+        Game.MasterGame.CustomerList.append(cust)
+        return cust
+
+
+def UnitTest():
+    currentJob = Jobs.Job.SpawnJob()
+    w = Worker(IdNum=Worker.GenerateID(), FirstName="Anne", LastName="Smith")
+    customer = Customer(IdNum=Customer.GenerateID(), FirstName="Anne", LastName="Smith")
+    currentJob.Assign(customer)
+    currentJob.Assign(w)
 
 
 if __name__ == "__main__":
-    currentJob = Jobs.Job.SpawnJob()
-    worker = Worker(idNum=Worker.GenerateID(), firstName="Anne", lastName="Smith")
-    customer = Customer(idNum=Customer.GenerateID(), firstName="Anne", lastName="Smith")
-    currentJob.Assign(customer)
-    currentJob.Assign(worker)
-    print(worker)
-    print(customer)
+    UnitTest()

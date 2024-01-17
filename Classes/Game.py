@@ -1,11 +1,11 @@
-import pygame
+"""Class for Game"""
 import math
 import sys
-
-sys.path.insert(0, "..")
-import Classes.utils as utils
-import Classes.Chances as Chances
 from dataclasses import dataclass
+import pygame
+import Utilities.Utils as utils
+import Classes.Chances as Chances
+
 
 std_dimensions = {"Medium": (1200, 800), "Small": (600, 400), "Large": (2400, 1600)}
 
@@ -28,14 +28,14 @@ Months = [
     Month(Name="July", MonthOrder=7, PreceedingDays=181),
     Month(Name="August", MonthOrder=8, PreceedingDays=212),
     Month(Name="September", MonthOrder=9, Days=30, PreceedingDays=243),
-    Month(Name="October", MonthOrder=10,PreceedingDays=273),
+    Month(Name="October", MonthOrder=10, PreceedingDays=273),
     Month(Name="November", MonthOrder=11, Days=30, PreceedingDays=304),
-    Month(Name="December", MonthOrder=0, PreceedingDays = 334),
+    Month(Name="December", MonthOrder=0, PreceedingDays=334),
 ]
 
 
 class GameClock:
-    clockMulRange: tuple = (0.0625, 16)
+    ClockMulRange: tuple = (0.0625, 16)
     ClockMul: float = 0.5
     Day: int = 1
     CurrentMonth: Month = Months[0]
@@ -43,15 +43,15 @@ class GameClock:
     Second: int = 1
 
     def __init__(self, clock):
-        self.pygameClock = clock
-        self.lastTime = pygame.time.get_ticks()
+        self.PygameClock = clock
+        self.LastTime = pygame.time.get_ticks()
 
     def UpdateClock(self):
-        self.pygameClock.tick(60)
+        self.PygameClock.tick(60)
         self.Second += math.floor(
-            (pygame.time.get_ticks() - self.lastTime) * self.ClockMul
+            (pygame.time.get_ticks() - self.LastTime) * self.ClockMul
         )
-        self.lastTime = pygame.time.get_ticks()
+        self.LastTime = pygame.time.get_ticks()
         if self.Hour >= 24:
             self.DayChange()
         if self.Day >= self.CurrentMonth.Days:
@@ -61,7 +61,7 @@ class GameClock:
         self.Day += 1
         self.Second = 0
 
-        self.lastTime = pygame.time.get_ticks()
+        self.LastTime = pygame.time.get_ticks()
 
     def MonthChange(self):
         self.CurrentMonth = [
@@ -72,11 +72,12 @@ class GameClock:
 
     def ChangeClockMul(self, value):
         newVal = pow(2, value)
-        self.ClockMul = utils.Bind(self.ClockMul * newVal, self.clockMulRange)
+        self.ClockMul = utils.Bind(self.ClockMul * newVal, self.ClockMulRange)
 
     @property
     def DayOfMonth(self):
         return self.Day - self.CurrentMonth.PreceedingDays
+
     @property
     def Minute(self):
         return math.floor(self.Second / 60)
@@ -86,12 +87,13 @@ class GameClock:
         return math.floor(self.Minute / 60)
 
     @property
-    def dateTime(self):
+    def DateTime(self):
         return f"{self.CurrentMonth.Name} {self.DayOfMonth} {self.Hour:02d}:{(self.Minute % 60):02d}"
-    
+
     @property
-    def unixTime(self):
-        return self.Hour + ((self.Day-1) * 24)
+    def UnixTime(self):
+        return self.Hour + ((self.Day - 1) * 24)
+
 
 class Game:
     ActiveTimerBars: list = []
@@ -110,30 +112,33 @@ class Game:
         pygame.init()
         self.Chances = Chances.LuckChances()
         self.Clock = GameClock(pygame.time.Clock())
-        self.startTime = pygame.time.get_ticks()
+        self.StartTime = pygame.time.get_ticks()
 
         width, height = std_dimensions[size]
-        self.screen = pygame.display.set_mode((width, height))
+        self.Screen = pygame.display.set_mode((width, height))
         pygame.display.set_caption("Poppa Pizza Clone")
 
-        self.font = pygame.font.Font(None, 36)
+        self.Font = pygame.font.Font(None, 36)
 
     def DrawScreenClock(self, locationTopLeft, foreColor, backColor):
-        text = self.font.render(str(self.Clock.dateTime), True, foreColor, backColor)
-        textRect = text.get_rect()
-        textRect.x = locationTopLeft[0]
-        textRect.y = locationTopLeft[1]
-        self.screen.blit(text, textRect)
+        text = self.Font.render(str(self.Clock.DateTime), True, foreColor, backColor)
+        textrect = text.get_rect()
+        textrect.x = locationTopLeft[0]
+        textrect.y = locationTopLeft[1]
+        self.Screen.blit(text, textrect)
 
     def RemoveObj(self, targetSprite):
         targetSprite.kill()
         self.CustomerList = [
-            x for x in self.CustomerList if x.idNum != targetSprite.correspondingID
+            x for x in self.CustomerList if x.IdNum != targetSprite.CorrespondingID
         ]
         self.WorkerList = [
-            x for x in self.WorkerList if x.idNum != targetSprite.correspondingID
+            x for x in self.WorkerList if x.IdNum != targetSprite.CorrespondingID
         ]
-        print(self.CharSpriteGroup)
+
+    @property
+    def ScreenSize(self):
+        return (self.Screen.get_width(), self.Screen.get_width())
 
 
 MasterGame = Game("Medium")

@@ -1,18 +1,19 @@
-import pygame
+"""Class for visibile sprites"""
 from dataclasses import dataclass
 from enum import Enum
+import pygame
 import Classes.People as People
 import Classes.GameObject as GameObj
 import Classes.Game as Game
-import Classes.utils as utils
+import Utilities.Utils as utils
 from Handlers.MovementHandler import CharacterMovementHandler
 
 
 @dataclass
 class ImagePaths:
-    workerPath = r"C:\Users\mchaae01\OneDrive - Nidec\Pictures\waiter.png"
-    customerPath = r"C:\Users\mchaae01\OneDrive - Nidec\Pictures\Picture1.png"
-    tablePath = r"C:\Users\mchaae01\OneDrive - Nidec\Pictures\table.jpg"
+    WorkerPath = r"C:\Users\mchaae01\OneDrive - Nidec\Pictures\waiter.png"
+    CustomerPath = r"C:\Users\mchaae01\OneDrive - Nidec\Pictures\Picture1.png"
+    TablePath = r"C:\Users\mchaae01\OneDrive - Nidec\Pictures\table.jpg"
 
 
 iPaths = ImagePaths()
@@ -23,16 +24,16 @@ class ImageTypes(Enum):
 
 
 PathToTypeDict = {
-    iPaths.workerPath: ImageTypes.Worker,
-    iPaths.customerPath: ImageTypes.Customer,
-    iPaths.tablePath: ImageTypes.Table,
+    iPaths.WorkerPath: ImageTypes.Worker,
+    iPaths.CustomerPath: ImageTypes.Customer,
+    iPaths.TablePath: ImageTypes.Table,
 }
 
 
 class CharImageSprite(GameObj.GameObject):
-    correspondingID: int = 0
-    imageType: ImageTypes = None
-    rect: pygame.Rect = None
+    CorrespondingID: int = 0
+    ImageType: ImageTypes = None
+    rect: pygame.rect = None
     MvmHandler: CharacterMovementHandler = None
 
     def __init__(self, position, path, objID):
@@ -45,30 +46,30 @@ class CharImageSprite(GameObj.GameObject):
         self.rect.x = position[0]
         self.rect.y = position[1]
         self.MvmHandler = CharacterMovementHandler()
-        self.imageType = PathToTypeDict[path]
-        self.checkSpawnCollision()
+        self.ImageType = PathToTypeDict[path]
+        self.CheckSpawnCollision()
 
-        self.correspondingID = objID
+        self.CorrespondingID = objID
 
-    def checkSpawnCollision(self):
+    def CheckSpawnCollision(self):
         currentCenter = self.rect.center
         for group in Game.MasterGame.SpriteGroups:
             for sprite in group:
                 while sprite.rect.colliderect(self.rect) and sprite is not self:
                     self.rect.center = utils.PositionRandomVariance(
-                        currentCenter, (0.1, 1)
+                        currentCenter, (0.1, 1), Game.MasterGame.ScreenSize
                     )
 
-    def updateSprite(self):
+    def UpdateSprite(self):
         ## Place to add Dynamic Sprites
         pass
 
     def __repr__(self):
-        return str(self.correspondingID) + " " + str(self.imageType)
+        return str(self.CorrespondingID) + " " + str(self.ImageType)
 
 
 class BackgroundElementSprite(GameObj.GameObject):
-    imageType: ImageTypes = None
+    ImageType: ImageTypes = None
 
     def __init__(self, position, path):
         super().__init__(backgroundFlag=True, moveFlag=False, collisionFlag=False)
@@ -78,4 +79,4 @@ class BackgroundElementSprite(GameObj.GameObject):
         self.rect = self.image.get_rect()
         self.rect.x = position[0]
         self.rect.y = position[1]
-        self.imageType = PathToTypeDict[path]
+        self.ImageType = PathToTypeDict[path]
