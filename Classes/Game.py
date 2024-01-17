@@ -39,7 +39,6 @@ class GameClock:
     ClockMul: float = 0.5
     Day: int = 1
     CurrentMonth: Month = Months[0]
-    Minute: int = 1
     Second: int = 1
 
     def __init__(self, clock):
@@ -97,8 +96,8 @@ class GameClock:
 
 class Game:
     ActiveTimerBars: list = []
-    CharSpriteGroup = pygame.sprite.Group()
-    BackgroundSpriteGroup = pygame.sprite.Group()
+    CharSpriteGroup: pygame.sprite.Group = pygame.sprite.Group()
+    BackgroundSpriteGroup: pygame.sprite.Group = pygame.sprite.Group()
     SpriteGroups: list = [BackgroundSpriteGroup, CharSpriteGroup]
     LineList: list = [(-1, -1), (1, 1)]
     WorkerList: list = []

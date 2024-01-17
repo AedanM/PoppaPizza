@@ -20,7 +20,7 @@ iPaths = ImagePaths()
 
 
 class ImageTypes(Enum):
-    Worker, Customer, Table = range(3)
+    Null, Worker, Customer, Table = range(4)
 
 
 PathToTypeDict = {
@@ -32,8 +32,8 @@ PathToTypeDict = {
 
 class CharImageSprite(GameObj.GameObject):
     CorrespondingID: int = 0
-    ImageType: ImageTypes = None
-    rect: pygame.rect = None
+    ImageType: ImageTypes = ImageTypes.Null
+    rect: pygame.rect.Rect = pygame.rect.Rect(0, 0, 0, 0)
     MvmHandler: CharacterMovementHandler = None
 
     def __init__(self, position, path, objID):
@@ -41,6 +41,7 @@ class CharImageSprite(GameObj.GameObject):
         self.image = pygame.image.load(
             path
         )  # Replace with the actual sprite image file
+
         self.image = pygame.transform.scale_by(self.image, 0.1)
         self.rect = self.image.get_rect()
         self.rect.x = position[0]
@@ -69,7 +70,7 @@ class CharImageSprite(GameObj.GameObject):
 
 
 class BackgroundElementSprite(GameObj.GameObject):
-    ImageType: ImageTypes = None
+    ImageType: ImageTypes = ImageTypes.Null
 
     def __init__(self, position, path):
         super().__init__(backgroundFlag=True, moveFlag=False, collisionFlag=False)

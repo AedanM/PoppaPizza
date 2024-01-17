@@ -9,7 +9,7 @@ import Classes.Sprite as Sprite
 import Classes.DefinedLocations as DL
 import Utilities.Utils as utils
 
-IDCOUNT = 0
+IDCOUNT = 1
 
 
 @dataclass
@@ -47,7 +47,9 @@ class Worker(Person):
         worker = cls.Create()
         workerSprite = Sprite.CharImageSprite(
             utils.PositionRandomVariance(
-                DL.LocationDefs.KitchenLocation, (0.05, 0.75), Game.MasterGame.ScreenSize
+                DL.LocationDefs.KitchenLocation,
+                (0.05, 0.75),
+                Game.MasterGame.ScreenSize,
             ),
             Sprite.iPaths.WorkerPath,
             worker.IdNum,
@@ -58,14 +60,14 @@ class Worker(Person):
 
 
 class CustomerStates(Enum):
-    Queuing, Waiting, BeingServed, Served, LeavingAngry, *_ = range(100)
+    Null, Queuing, Waiting, BeingServed, Served, LeavingAngry, *_ = range(100)
 
 
 @dataclass
 class Customer(Person):
     DesiredJob: Jobs.Job = None
     WorkerAssigned: bool = False
-    CurrentState: CustomerStates = None
+    CurrentState: CustomerStates = CustomerStates.Null
 
     @classmethod
     def CreateCustomer(cls):
@@ -74,7 +76,9 @@ class Customer(Person):
         Game.MasterGame.JobList[-1].Assign(cust)
         customerSprite = Sprite.CharImageSprite(
             utils.PositionRandomVariance(
-                DL.LocationDefs.CustomerEntrance, (0.05, 0.1), Game.MasterGame.ScreenSize
+                DL.LocationDefs.CustomerEntrance,
+                (0.05, 0.1),
+                Game.MasterGame.ScreenSize,
             ),
             Sprite.iPaths.CustomerPath,
             cust.IdNum,

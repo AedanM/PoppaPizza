@@ -1,5 +1,5 @@
 """Class for Timer Bars"""
-
+import math
 import pygame
 import Classes.Game as Game
 
@@ -29,7 +29,9 @@ class TimerBar:
         self.CompletionPercentage = (
             (Game.MasterGame.Clock.Minute - self.StartTime)
         ) / self.Duration
-        self.Width = min(self.CompletionPercentage * self.MaxWidth, self.MaxWidth)
+        self.Width = int(
+            math.floor(min(self.CompletionPercentage * self.MaxWidth, self.MaxWidth))
+        )
         self.Rect.width = self.Width
         self.Rect.height = self.Height
         if self.CompletionPercentage >= 1:

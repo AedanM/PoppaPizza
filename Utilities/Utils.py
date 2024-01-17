@@ -4,7 +4,7 @@ import socket
 import random
 
 
-def CheckInternet(host="8.8.8.8", port=53, timeout=30):
+def CheckInternet(host="8.8.8.8", port=53, timeout=30) -> bool:
     """
     Host: 8.8.8.8 (google-public-dns-a.google.com)
     OpenPort: 53/tcp
@@ -18,12 +18,14 @@ def CheckInternet(host="8.8.8.8", port=53, timeout=30):
     return True
 
 
-def InRandomVariance(num, percentVariance):
+def InRandomVariance(num, percentVariance) -> float:
     varyAmount = random.randint(-100, 100) * percentVariance
     return num * varyAmount
 
 
-def PositionRandomVariance(position, percentVarianceTuple, screenSize):
+def PositionRandomVariance(
+    position, percentVarianceTuple, screenSize
+) -> tuple[int, int]:
     varyAmountX = math.ceil(
         (random.randint(-100, 100) * 0.01 * percentVarianceTuple[0] * screenSize[0])
         + position[0]
@@ -48,7 +50,7 @@ def InPercentTolerance(num1, num2, tolerance) -> bool:
     return abs(1 - (num1 / num2)) <= tolerance if num2 != 0 else 1
 
 
-def ProRateValue(value, inRange, outRange):
+def ProRateValue(value, inRange, outRange) -> int:
     return (
         value * abs(outRange[1] - outRange[0]) / abs(inRange[1] - inRange[0])
         if inRange[1] - inRange[0] != 0
@@ -56,7 +58,7 @@ def ProRateValue(value, inRange, outRange):
     )
 
 
-def Bind(val, inRange):
+def Bind(val, inRange) -> int:
     return min(inRange[1], max(inRange[0], val))
 
 

@@ -3,15 +3,15 @@ from dataclasses import dataclass
 from enum import Enum
 import random
 
-JOBIDCOUNT = 0
+JOBIDCOUNT = 1
 
 
 class UrgencyRatings(Enum):
-    Trivial, Urgent = range(2)
+    Null, Trivial, Urgent = range(3)
 
 
 class JobTypes(Enum):
-    Standard, Deluxe = range(2)
+    Null, Standard, Deluxe = range(3)
 
 
 @dataclass
@@ -37,8 +37,8 @@ class Job:
             * (jobtype.value + 1)
             * (urgency.value + 1)
         )
-        assignedWorker = None
-        customer = None
+        assignedWorker = 0
+        customer = 0
         job = Job(
             Type=jobtype,
             Price=price,

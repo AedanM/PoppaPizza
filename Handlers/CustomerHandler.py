@@ -1,11 +1,12 @@
 """Handler for Customer Tasks"""
 import Classes.Game as Game
 import Classes.Sprite as Sprite
+import Classes.People as People
 import Classes.TimerBar as TB
 import Classes.DefinedLocations as DL
 
 
-def FindAvailableWorker() -> bool:
+def FindAvailableWorker() -> tuple[People.Worker, Sprite.CharImageSprite]:
     availWorkers = [x for x in Game.MasterGame.WorkerList if x.IsAssigned is False]
     if len(availWorkers) < 1:
         worker, workerSprite = None, None
