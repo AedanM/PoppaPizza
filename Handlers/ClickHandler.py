@@ -3,7 +3,9 @@ from enum import Enum
 import pygame
 from Classes import Game, Sprite
 from Handlers import CustomerHandler
-#pylint: disable=global-statement
+
+# pylint: disable=global-statement
+
 
 class ClickState(Enum):
     Neutral, ClickedCustomer, ClickedWorker = range(3)

@@ -3,6 +3,7 @@ from dataclasses import dataclass
 import colorsys
 import numpy as np
 
+
 @dataclass
 class Color:
     H: int
@@ -19,27 +20,30 @@ class Color:
     @property
     def RGB(self):
         return tuple(
-           round(i * 255) for i in
-                colorsys.hsv_to_rgb(
-                    float(self.H,)/255,
-                    float(self.S)/255,
-                    float(self.V)/255
+            round(i * 255)
+            for i in colorsys.hsv_to_rgb(
+                float(
+                    self.H,
+                )
+                / 255,
+                float(self.S) / 255,
+                float(self.V) / 255,
             )
-       )
+        )
 
     @property
     def BGR(self):
         rgb = self.RGB
         return (rgb[2], rgb[1], rgb[0])
 
-white = Color(0,0,255)
-black = Color(0,0,0)
+
+white = Color(0, 0, 255)
+black = Color(0, 0, 0)
 blue = Color(128, 200, 128)
 green = Color(70, 200, 128)
 
 
-
-'''
+"""
 
 def OpenCVToPygame(opencv_image):
     # Convert the OpenCV image to RGB
@@ -106,4 +110,4 @@ def ToOpenCV(image):
     opencv_image = cv2.cvtColor(image_array, cv2.COLOR_RGB2HSV)
     return opencv_image
 
-'''
+"""

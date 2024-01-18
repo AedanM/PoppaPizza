@@ -8,7 +8,7 @@ import sys
 # pylint: disable=wrong-import-position
 os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "True"
 import pygame
-from Classes import People, Sprite, Game, DefinedLocations, ColorTools
+from Classes import People, Sprite, Game, DefinedLocations, ColorTools, Settings
 from Handlers import ClickHandler
 from Generators import CharSpawner, BackgroundPopulator
 
@@ -30,9 +30,9 @@ while True:
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             ClickHandler.MouseHandler()
         if event.type == pygame.KEYDOWN and event.key == pygame.K_t:
-            Game.MasterGame.Clock.ChangeClockMul(-1)
+            Settings.GameSettings.ChangeClockMul(-1)
         if event.type == pygame.KEYDOWN and event.key == pygame.K_y:
-            Game.MasterGame.Clock.ChangeClockMul(1)
+            Settings.GameSettings.ChangeClockMul(1)
         if event.type == pygame.KEYDOWN and event.key == pygame.K_w:
             People.Worker.CreateWorker()
         if event.type == pygame.KEYDOWN and event.key == pygame.K_c:
