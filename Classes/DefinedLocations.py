@@ -1,9 +1,8 @@
 """Class for DefinedLocations"""
 
 import pygame
-import Utilities.Utils as Utils
-import Classes.Game as Game
-import Classes.ColorTools as ColorTools
+from Classes import Game, ColorTools
+from Utilities import Utils
 
 
 class DefinedLocations:
@@ -61,5 +60,5 @@ def DebugLocations():
     attrs = [x for x in dir(LocationDefs) if "__" not in x]
     for attr in attrs:
         pygame.draw.circle(
-            Game.MasterGame.Screen, ColorTools.blue, getattr(LocationDefs, attr), 25
+            Game.MasterGame.Screen, ColorTools.blue.RGB, getattr(LocationDefs, attr), 25
         )

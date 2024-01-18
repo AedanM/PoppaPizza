@@ -2,21 +2,23 @@
 
 import os
 import sys
-import random
-from multiprocessing import Process
 
+# pylint: disable=wrong-import-position
 os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "True"
 import pygame
 from Classes import People, Sprite, Game, DefinedLocations, ColorTools
 from Handlers import ClickHandler, SpawnHandler
 
-People.Worker.CreateWorker()
-People.Worker.CreateWorker()
-People.Customer.CreateCustomer()
+DEBUGFLAG = True
 
-table = Sprite.BackgroundElementSprite((500, 250), Sprite.iPaths.TablePath)
-table.Collision = True
-Game.MasterGame.BackgroundSpriteGroup.add(table)
+if DEBUGFLAG:
+    People.Worker.CreateWorker()
+    People.Worker.CreateWorker()
+    People.Customer.CreateCustomer()
+
+    table = Sprite.BackgroundElementSprite((500, 250), Sprite.iPaths.TablePath)
+    table.Collision = True
+    Game.MasterGame.BackgroundSpriteGroup.add(table)
 
 
 while True:
@@ -49,10 +51,10 @@ while True:
         timer.UpdateAndDraw()
 
     SpawnHandler.SpawnHandler()
+    if DEBUGFLAG:
+        DefinedLocations.DebugLocations()
 
-    DefinedLocations.DebugLocations()
-
-    Game.MasterGame.DrawScreenClock((0, 0), ColorTools.white, ColorTools.blue)
+    Game.MasterGame.DrawScreenClock((0, 0), ColorTools.white.RGB, ColorTools.blue.RGB)
     # Update the display
     if Game.MasterGame.ShowScreen:
         pygame.display.update()

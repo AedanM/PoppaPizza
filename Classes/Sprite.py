@@ -2,10 +2,8 @@
 from dataclasses import dataclass
 from enum import Enum
 import pygame
-import Classes.People as People
-import Classes.GameObject as GameObj
-import Classes.Game as Game
-import Utilities.Utils as utils
+from Classes import Game, GameObject
+from Utilities import Utils as utils
 from Handlers.MovementHandler import CharacterMovementHandler
 
 
@@ -32,7 +30,8 @@ PathToTypeDict = {
 }
 
 
-class CharImageSprite(GameObj.GameObject):
+class CharImageSprite(GameObject.GameObject):
+    # pylint: disable=invalid-name
     CorrespondingID: int = 0
     ImageType: ImageTypes = ImageTypes.Null
     rect: pygame.rect.Rect = pygame.rect.Rect(0, 0, 0, 0)
@@ -71,9 +70,10 @@ class CharImageSprite(GameObj.GameObject):
         return str(self.CorrespondingID) + " " + str(self.ImageType)
 
 
-class BackgroundElementSprite(GameObj.GameObject):
+class BackgroundElementSprite(GameObject.GameObject):
     ImageType: ImageTypes = ImageTypes.Null
 
+    # pylint: disable=invalid-name
     def __init__(self, position, path):
         super().__init__(backgroundFlag=True, moveFlag=False, collisionFlag=False)
         self.image = pygame.image.load(

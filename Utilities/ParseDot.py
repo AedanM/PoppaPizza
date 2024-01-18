@@ -14,7 +14,7 @@ class Module:
 
 ModuleList: list[Module] = []
 
-with open("packages.dot", "r") as fp:
+with open("packages.dot", "r", encoding="utf8") as fp:
     for line in fp:
         if "->" in line:
             importer = line.split(" ")[0].replace('"', "")

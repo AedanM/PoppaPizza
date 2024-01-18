@@ -1,6 +1,5 @@
 """Class for Game"""
 import math
-import sys
 from dataclasses import dataclass
 import pygame
 import Utilities.Utils as utils
@@ -88,7 +87,9 @@ class GameClock:
 
     @property
     def DateTime(self):
-        return f"{self.CurrentMonth.Name} {self.DayOfMonth} {self.Hour:02d}:{(self.Minute % 60):02d}"
+        return f"{self.CurrentMonth.Name} {self.DayOfMonth} {self.Hour:02d}:{(
+                self.Minute % 60
+            ):02d}"
 
     @property
     def UnixTime(self):

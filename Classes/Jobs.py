@@ -26,6 +26,7 @@ class Job:
 
     @classmethod
     def SpawnJob(cls):
+        # pylint: disable=global-statement
         global JOBIDCOUNT
         JOBIDCOUNT += 1
         urgency = random.choice(list(UrgencyRatings))

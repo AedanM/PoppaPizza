@@ -1,7 +1,7 @@
 """Class for Timer Bars"""
 import math
 import pygame
-import Classes.Game as Game
+from Classes import Game
 
 
 class TimerBar:

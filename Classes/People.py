@@ -1,12 +1,8 @@
 """Class for People DataClasses"""
 from dataclasses import dataclass
-import random
 from enum import Enum
 import names
-import Classes.Jobs as Jobs
-import Classes.Game as Game
-import Classes.Sprite as Sprite
-import Classes.DefinedLocations as DL
+from Classes import Jobs, Game, Sprite, DefinedLocations
 import Utilities.Utils as utils
 
 IDCOUNT = 1
@@ -33,6 +29,7 @@ class Person:
 
     @staticmethod
     def GenerateID():
+        # pylint: disable=global-statement
         global IDCOUNT
         IDCOUNT += 1
         return IDCOUNT
@@ -47,7 +44,7 @@ class Worker(Person):
         worker = cls.Create()
         workerSprite = Sprite.CharImageSprite(
             utils.PositionRandomVariance(
-                DL.LocationDefs.KitchenLocation,
+                DefinedLocations.LocationDefs.KitchenLocation,
                 (0.05, 0.75),
                 Game.MasterGame.ScreenSize,
             ),
@@ -76,7 +73,7 @@ class Customer(Person):
         Game.MasterGame.JobList[-1].Assign(cust)
         customerSprite = Sprite.CharImageSprite(
             utils.PositionRandomVariance(
-                DL.LocationDefs.CustomerEntrance,
+                DefinedLocations.LocationDefs.CustomerEntrance,
                 (0.05, 0.1),
                 Game.MasterGame.ScreenSize,
             ),

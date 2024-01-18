@@ -1,5 +1,5 @@
 """Handler for Collision"""
-import Classes.Game as Game
+from Classes import Game
 
 
 def FindCollisionAxis(sprite, obj):

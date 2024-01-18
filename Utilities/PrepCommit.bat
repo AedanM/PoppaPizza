@@ -13,3 +13,10 @@ pyreverse -o png --source-roots ..\..\PoppaPizza ..\..\PoppaPizza
 move packages.png ..\..\PoppaPizza\Utilities
 move classes.png ..\..\PoppaPizza\Utilities
 pause
+
+"pylint.args": [--attr-naming-style PascalCase, --method-naming-style PascalCase, --function-naming-style PascalCase]
+"pylint.args": [--disable missing-class-docstring,missing-function-docstring]
+
+
+
+ --class-const-naming-style=PascalCase --class-attribute-naming-style=PascalCase

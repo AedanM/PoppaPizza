@@ -1,9 +1,8 @@
 """Handler for Sprite Movement Tasks"""
 from enum import Enum
-import pygame
 import Utilities.Utils as utils
-import Classes.Game as Game
-import Handlers.PathfindingHandler as Path
+from Classes import Game
+from Handlers import PathfindingHandler as Path
 
 
 class MovementSpeeds(Enum):

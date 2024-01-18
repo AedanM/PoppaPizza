@@ -1,18 +1,15 @@
 """Handler for User Clicks"""
 from enum import Enum
 import pygame
-import Classes.People as People
-import Classes.Game as Game
-import Classes.Sprite as Sprite
-import Handlers.CustomerHandler as CustomerHandler
-
+from Classes import Game, Sprite
+from Handlers import CustomerHandler
+#pylint: disable=global-statement
 
 class ClickState(Enum):
     Neutral, ClickedCustomer, ClickedWorker = range(3)
 
 
 GlobalClickState = ClickState.Neutral
-GSELECTED = 0
 
 
 def MouseHandler():
@@ -26,14 +23,6 @@ def MouseHandler():
                 elif sprite.ImageType == Sprite.ImageTypes.Worker:
                     WorkerClickRoutine(sprite)
             elif GlobalClickState is ClickState.ClickedWorker:
-                for worker in Game.MasterGame.CharSpriteGroup:
-                    if (
-                        worker.CorrespondingID == GSELECTED
-                        and worker.ImageType is Sprite.ImageTypes.Worker
-                    ):
-                        worker.MvmHandler.StartNewMotion(
-                            (worker.rect.center), (mouseX, mouseY)
-                        )
                 GlobalClickState = ClickState.Neutral
             else:
                 GlobalClickState = ClickState.Neutral
@@ -49,12 +38,7 @@ def CustomerClickRoutine(target):
 
 
 def WorkerClickRoutine(target):
-    global GlobalClickState, GSELECTED
+    global GlobalClickState
     if GlobalClickState is ClickState.ClickedCustomer:
-        pass
-    elif (
-        GlobalClickState is ClickState.Neutral
-        or GlobalClickState is ClickState.ClickedWorker
-    ):
-        GSELECTED = target.CorrespondingID
+        target.IsAssigned = target.IsAssigned
     GlobalClickState = ClickState.ClickedWorker

@@ -1,11 +1,7 @@
 """Handler for Customer Tasks"""
 import random
-import Classes.Game as Game
-import Classes.Sprite as Sprite
-import Classes.People as People
-import Classes.TimerBar as TB
-import Classes.DefinedLocations as DL
-import Handlers.WorkerHandler as WH
+from Classes import Game, Sprite, People, TimerBar as TB, DefinedLocations as DL
+from Handlers import WorkerHandler as WH
 
 
 def FindAvailableWorker() -> tuple[People.Worker, Sprite.CharImageSprite]:

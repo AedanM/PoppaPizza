@@ -1,5 +1,4 @@
 """Handler for Worker Tasks"""
-import pygame
 import Classes.DefinedLocations as DL
 import Classes.TimerBar as TB
 
@@ -12,7 +11,7 @@ def GoToCustomer(c, cs, w, ws):
     )
 
 
-def ServeCustomer(ws):
+def ServeCustomer():
     pass
 
 
