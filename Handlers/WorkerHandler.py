@@ -1,10 +1,12 @@
 """Handler for Worker Tasks"""
 import pygame
+import Classes.DefinedLocations as DL
+import Classes.TimerBar as TB
 
 
 def GoToCustomer(c, cs, w, ws):
     ws.MvmHandler.startNewListedMotion(DL.DefinedPaths.KitchenToCustomer(ws, cs))
-    returnHome = lambda: FinishCustomer(c, cs, w, ws)
+    returnHome = lambda: FinishCustomer(w, ws)
     ws.MvmHandler.OnComplete = lambda: TB.CreatePersonTimerBar(
         ws, returnHome, c.desiredJob.Length
     )
@@ -14,8 +16,10 @@ def ServeCustomer(ws):
     pass
 
 
-def FinishCustomer(c, cs, w, ws):
-    pass
+def FinishCustomer(w, ws):
+    w.IsAssigned = False
+    w.CurrentJobId = 0
+    ws.MvmHandler.StartNewListedMotion(DL.DefinedPaths.BackToKitchen(ws))
 
 
 def ReturnToKitchen():

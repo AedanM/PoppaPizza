@@ -7,14 +7,14 @@ from multiprocessing import Process
 
 os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "True"
 import pygame
-from Classes import *
-from Handlers import *
+from Classes import People, Sprite, Game, DefinedLocations, ColorTools
+from Handlers import ClickHandler, SpawnHandler
 
 People.Worker.CreateWorker()
 People.Worker.CreateWorker()
 People.Customer.CreateCustomer()
 
-table = Sprite.BackgroundElementSprite((100, 250), Sprite.iPaths.TablePath)
+table = Sprite.BackgroundElementSprite((500, 250), Sprite.iPaths.TablePath)
 table.Collision = True
 Game.MasterGame.BackgroundSpriteGroup.add(table)
 
@@ -37,26 +37,22 @@ while True:
         if event.type == pygame.KEYDOWN and event.key == pygame.K_d:
             Game.MasterGame.ShowScreen = not Game.MasterGame.ShowScreen
 
-    Game.MasterGame.Screen.fill((255, 255, 255))
+    Game.MasterGame.DrawBackground()
 
     for group in Game.MasterGame.SpriteGroups:
         group.update()
         for sprite in group:
             sprite.Update()
+        group.draw(Game.MasterGame.Screen)
 
     for timer in Game.MasterGame.TimerBars:
-        timer.AgeTimer()
-        pygame.draw.rect(Game.MasterGame.Screen, timer.Color, timer.Rect)
+        timer.UpdateAndDraw()
 
     SpawnHandler.SpawnHandler()
 
-    pygame.draw.lines(
-        Game.MasterGame.Screen, (255, 0, 0), False, Game.MasterGame.LineList
-    )
-    Game.MasterGame.DrawScreenClock((0, 0), ColorTools.white, ColorTools.blue)
+    DefinedLocations.DebugLocations()
 
-    for group in Game.MasterGame.SpriteGroups:
-        group.draw(Game.MasterGame.Screen)
+    Game.MasterGame.DrawScreenClock((0, 0), ColorTools.white, ColorTools.blue)
     # Update the display
     if Game.MasterGame.ShowScreen:
         pygame.display.update()

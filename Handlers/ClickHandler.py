@@ -4,7 +4,6 @@ import pygame
 import Classes.People as People
 import Classes.Game as Game
 import Classes.Sprite as Sprite
-import Classes.ColorTools as ColorTools
 import Handlers.CustomerHandler as CustomerHandler
 
 
@@ -50,7 +49,6 @@ def CustomerClickRoutine(target):
 
 
 def WorkerClickRoutine(target):
-    # target.image = ColorTools.ChangeColorToColor(target, 0, 128)
     global GlobalClickState, GSELECTED
     if GlobalClickState is ClickState.ClickedCustomer:
         pass

@@ -1,9 +1,11 @@
 """Handler for Customer Tasks"""
+import random
 import Classes.Game as Game
 import Classes.Sprite as Sprite
 import Classes.People as People
 import Classes.TimerBar as TB
 import Classes.DefinedLocations as DL
+import Handlers.WorkerHandler as WH
 
 
 def FindAvailableWorker() -> tuple[People.Worker, Sprite.CharImageSprite]:
@@ -11,7 +13,7 @@ def FindAvailableWorker() -> tuple[People.Worker, Sprite.CharImageSprite]:
     if len(availWorkers) < 1:
         worker, workerSprite = None, None
     else:
-        worker = availWorkers[0]
+        worker = random.choice(availWorkers)
         workerSprites = [
             x
             for x in Game.MasterGame.CharSpriteGroup
@@ -37,17 +39,13 @@ def AssignWorker(target):
         workerSprite.MvmHandler.StartNewListedMotion(
             DL.DefinedPaths.KitchenToCustomer(workerSprite, target)
         )
-        returnHome = lambda: FinishCustomer(target, workerSprite)
+        returnHome = lambda: (
+            GetUpAndGo(target),
+            WH.FinishCustomer(worker, workerSprite),
+        )
         workerSprite.MvmHandler.OnComplete = lambda: TB.CreatePersonTimerBar(
             workerSprite, returnHome, customer.DesiredJob.Length
         )
-
-
-def FinishCustomer(custSprite, workerSprite):
-    workerSprite.MvmHandler.StartNewListedMotion(
-        DL.DefinedPaths.BackToKitchen(workerSprite)
-    )
-    GetUpAndGo(custSprite)
 
 
 def AllWorkersBusy(target):

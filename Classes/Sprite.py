@@ -11,9 +11,11 @@ from Handlers.MovementHandler import CharacterMovementHandler
 
 @dataclass
 class ImagePaths:
-    WorkerPath = r"C:\Users\mchaae01\OneDrive - Nidec\Pictures\waiter.png"
-    CustomerPath = r"C:\Users\mchaae01\OneDrive - Nidec\Pictures\Picture1.png"
-    TablePath = r"C:\Users\mchaae01\OneDrive - Nidec\Pictures\table.jpg"
+    AssetFolder = r"Assets"
+    WorkerPath = AssetFolder + r"\waiter.png"
+    CustomerPath = AssetFolder + r"\person.png"
+    TablePath = AssetFolder + r"\table.png"
+    BackgroundPath = AssetFolder + r"\background.png"
 
 
 iPaths = ImagePaths()
@@ -79,5 +81,6 @@ class BackgroundElementSprite(GameObj.GameObject):
         )  # Replace with the actual sprite image file
         self.rect = self.image.get_rect()
         self.rect.x = position[0]
+        self.image = pygame.transform.scale(self.image, (50, 50))
         self.rect.y = position[1]
         self.ImageType = PathToTypeDict[path]

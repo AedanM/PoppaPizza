@@ -31,7 +31,7 @@ class CharacterMovementHandler:
     def DestX(self):
         return self.Dest[0]
 
-    def StartNewMotion(self, start, dst, speed=MovementSpeeds.Slow):
+    def StartNewMotion(self, start, dst, speed=MovementSpeeds.Medium):
         if not self.InMotion:
             self.OnComplete = lambda: None
             backgroundObs = [
@@ -45,7 +45,7 @@ class CharacterMovementHandler:
             self.InMotion: bool = True
             self.MaxMovementSpeed = speed
 
-    def StartNewListedMotion(self, pointList, speed=MovementSpeeds.Slow):
+    def StartNewListedMotion(self, pointList, speed=MovementSpeeds.Medium):
         if not self.InMotion:
             self.OnComplete = lambda: None
             self.PointsList = pointList

@@ -38,6 +38,10 @@ class TimerBar:
             self.OnComplete()
             Game.MasterGame.TimerBars.remove(self)
 
+    def UpdateAndDraw(self):
+        self.AgeTimer()
+        pygame.draw.rect(Game.MasterGame.Screen, self.Color, self.Rect)
+
 
 def CreatePersonTimerBar(sprite, completeTask, length=5.0):
     Game.MasterGame.TimerBars.append(TimerBar(length, (sprite.rect.topleft)))

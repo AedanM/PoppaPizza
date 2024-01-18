@@ -1,20 +1,23 @@
 """Class for DefinedLocations"""
 
 import pygame
+import Utilities.Utils as Utils
+import Classes.Game as Game
+import Classes.ColorTools as ColorTools
 
 
 class DefinedLocations:
     @property
     def KitchenLocation(self):
-        return (100, 100)
+        return (100, 225)
 
     @property
     def KitchenDoorLocation(self):
-        return (150, 200)
+        return (300, 225)
 
     @property
     def LockerRoomLocation(self):
-        return (500, 10)
+        return (100, 700)
 
     @property
     def CustomerExit(self):
@@ -22,7 +25,7 @@ class DefinedLocations:
 
     @property
     def CustomerEntrance(self):
-        return (1050, 500)
+        return (1150, 325)
 
 
 LocationDefs = DefinedLocations()
@@ -31,7 +34,12 @@ LocationDefs = DefinedLocations()
 class DefinedPaths:
     @staticmethod
     def KitchenToCustomer(sprite, dest):
-        return [sprite.rect.center, LocationDefs.KitchenDoorLocation, dest.rect.center]
+        return [
+            sprite.rect.center,
+            LocationDefs.KitchenLocation,
+            LocationDefs.KitchenDoorLocation,
+            dest.rect.center,
+        ]
 
     @staticmethod
     def BackToKitchen(sprite):
@@ -39,8 +47,19 @@ class DefinedPaths:
             sprite.rect.center,
             LocationDefs.KitchenDoorLocation,
             LocationDefs.KitchenLocation,
+            Utils.PositionRandomVariance(
+                LocationDefs.KitchenLocation, (0.1, 0.5), Game.MasterGame.ScreenSize
+            ),
         ]
 
     @staticmethod
     def CustomerToExit(sprite):
         return [sprite.rect.center, LocationDefs.CustomerExit]
+
+
+def DebugLocations():
+    attrs = [x for x in dir(LocationDefs) if "__" not in x]
+    for attr in attrs:
+        pygame.draw.circle(
+            Game.MasterGame.Screen, ColorTools.blue, getattr(LocationDefs, attr), 25
+        )

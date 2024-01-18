@@ -5,8 +5,9 @@ from dataclasses import dataclass
 import pygame
 import Utilities.Utils as utils
 import Classes.Chances as Chances
+from Classes.Sprite import ImagePaths
 
-
+iPaths = ImagePaths()
 std_dimensions = {"Medium": (1200, 800), "Small": (600, 400), "Large": (2400, 1600)}
 
 
@@ -125,6 +126,10 @@ class Game:
         textrect.x = locationTopLeft[0]
         textrect.y = locationTopLeft[1]
         self.Screen.blit(text, textrect)
+
+    def DrawBackground(self):
+        bg = pygame.image.load(iPaths.BackgroundPath)
+        self.Screen.blit(bg, (0, 0))
 
     def RemoveObj(self, targetSprite):
         targetSprite.kill()
