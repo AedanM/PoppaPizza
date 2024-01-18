@@ -1,13 +1,17 @@
+
 # Poppa Pizza Ripoff
+
 ---
+
 ## TODO List
+
 - Walk cycle/logic for chars to waiting area
 - Minigame for job cost
 - glow when selected
 - menus?
 - background
 - sprites
-- money 
+- money
 - Generate Customers
 - Buy Workers
 - buying/shop

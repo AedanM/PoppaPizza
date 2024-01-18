@@ -3,25 +3,26 @@
 import os
 import sys
 
+
+# *OS Call used to prevent a time printout from Pygame on first import
 # pylint: disable=wrong-import-position
 os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "True"
 import pygame
 from Classes import People, Sprite, Game, DefinedLocations, ColorTools
-from Handlers import ClickHandler, SpawnHandler
+from Handlers import ClickHandler
+from Generators import CharSpawner, BackgroundPopulator
 
+# Enables a series of functions to run automatically
 DEBUGFLAG = True
 
 if DEBUGFLAG:
     People.Worker.CreateWorker()
     People.Worker.CreateWorker()
     People.Customer.CreateCustomer()
-
-    table = Sprite.BackgroundElementSprite((500, 250), Sprite.iPaths.TablePath)
-    table.Collision = True
-    Game.MasterGame.BackgroundSpriteGroup.add(table)
-
+    BackgroundPopulator.AddTables()
 
 while True:
+    # TODO: Move to EventHandler
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -41,20 +42,17 @@ while True:
 
     Game.MasterGame.DrawBackground()
 
-    for group in Game.MasterGame.SpriteGroups:
-        group.update()
-        for sprite in group:
-            sprite.Update()
-        group.draw(Game.MasterGame.Screen)
+    Game.MasterGame.UpdateSprites()
 
-    for timer in Game.MasterGame.TimerBars:
-        timer.UpdateAndDraw()
+    Game.MasterGame.UpdateTimers()
 
-    SpawnHandler.SpawnHandler()
+    CharSpawner.SpawnHandler()
+
     if DEBUGFLAG:
         DefinedLocations.DebugLocations()
 
     Game.MasterGame.DrawScreenClock((0, 0), ColorTools.white.RGB, ColorTools.blue.RGB)
+
     # Update the display
     if Game.MasterGame.ShowScreen:
         pygame.display.update()

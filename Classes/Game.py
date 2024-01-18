@@ -140,7 +140,18 @@ class Game:
         self.WorkerList = [
             x for x in self.WorkerList if x.IdNum != targetSprite.CorrespondingID
         ]
-
+        
+    def UpdateSprites(self):
+        for group in self.SpriteGroups:
+            group.update()
+            for sprite in group:
+                sprite.Update()
+            group.draw(self.Screen)
+    
+    def UpdateTimers(self):
+        for timer in self.TimerBars:
+            timer.UpdateAndDraw()
+            
     @property
     def ScreenSize(self):
         return (self.Screen.get_width(), self.Screen.get_width())

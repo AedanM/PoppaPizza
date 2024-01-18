@@ -81,6 +81,6 @@ class BackgroundElementSprite(GameObject.GameObject):
         )  # Replace with the actual sprite image file
         self.rect = self.image.get_rect()
         self.rect.x = position[0]
-        self.image = pygame.transform.scale(self.image, (50, 50))
+        self.image = pygame.transform.scale(self.image, (60, 60))
         self.rect.y = position[1]
         self.ImageType = PathToTypeDict[path]
