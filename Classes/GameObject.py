@@ -1,18 +1,24 @@
+"""Class for Game Object BaseClass"""
+
 import pygame
 
 
 class GameObject(pygame.sprite.Sprite):
-    isBackground: bool = False
-    isRendered: bool = False
+    IsBackground: bool = False
+    IsRendered: bool = False
     Moveable: bool = False
     Collision: bool = False
 
-    def __init__(self, backgroundFlag, moveFlag, collisionFlag):
+    def __init__(self, backgroundFlag, moveFlag, collisionFlag) -> None:
         super().__init__()
-        self.isBackground = backgroundFlag
+        self.IsBackground = backgroundFlag
         self.Moveable = moveFlag
         self.Collision = collisionFlag
 
-    def update(self):
-        if self.Moveable:
-            self.MvmHandler.calcNewPosition(self)
+    def UpdateSprite(self) -> None:
+        pass
+
+    def Update(self) -> None:
+        if self.Moveable and "MvmHandler" in dir(self):
+            self.MvmHandler.CalcNewPosition(self)
+        self.UpdateSprite()

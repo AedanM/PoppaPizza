@@ -1,51 +1,51 @@
-import pygame
-import cv2
-import numpy as np
+"""Class for Altering Colors"""
 from dataclasses import dataclass
-white = (255, 255, 255)
-green = (0, 255, 0)
-blue = (0, 0, 128)
+import colorsys
+import numpy as np
+
 
 @dataclass
 class Color:
-    h: int
-    s: int
-    v: int
+    H: int
+    S: int
+    V: int
 
-    def getNumPy(self):
-        return np.array([self.h, self.s, self.v],dtype=np.uint8)
+    def GetNumPy(self) -> "np.NDArray[np.uint8]":
+        return np.array([self.H, self.S, self.V], dtype=np.uint8)
 
-    def to_rgb(self):
-        """
-        Convert HSV color to RGB.
-        """
-        hi = int(self.h / 60) % 6
-        f = self.h / 60 - hi
-        p = self.v * (1 - self.s)
-        q = self.v * (1 - f * self.s)
-        t = self.v * (1 - (1 - f) * self.s)
+    @property
+    def HSV(self) -> tuple[int, int, int]:
+        return (self.H, self.S, self.V)
 
-        if hi == 0:
-            return int(self.v * 255), int(t * 255), int(p * 255)
-        elif hi == 1:
-            return int(q * 255), int(self.v * 255), int(p * 255)
-        elif hi == 2:
-            return int(p * 255), int(self.v * 255), int(t * 255)
-        elif hi == 3:
-            return int(p * 255), int(q * 255), int(self.v * 255)
-        elif hi == 4:
-            return int(t * 255), int(p * 255), int(self.v * 255)
-        else:
-            return int(self.v * 255), int(p * 255), int(q * 255)
+    @property
+    def RGB(self) -> tuple[int, ...]:
+        return tuple(
+            round(i * 255)
+            for i in colorsys.hsv_to_rgb(
+                float(
+                    self.H,
+                )
+                / 255,
+                float(self.S) / 255,
+                float(self.V) / 255,
+            )
+        )
 
-    def to_bgr(self):
-        """
-        Convert HSV color to BGR.
-        """
-        rgb = self.to_rgb()
-        return rgb[2], rgb[1], rgb[0]
+    @property
+    def BGR(self) -> tuple[int, int, int]:
+        rgb = self.RGB
+        return (rgb[2], rgb[1], rgb[0])
 
-def opencv_to_pygame(opencv_image):
+
+white = Color(H=0, S=0, V=255)
+black = Color(H=0, S=0, V=0)
+blue = Color(H=128, S=200, V=128)
+green = Color(H=70, S=200, V=128)
+
+
+"""
+
+def OpenCVToPygame(opencv_image):
     # Convert the OpenCV image to RGB
     opencv_image_rgb = cv2.cvtColor(opencv_image, cv2.COLOR_BGR2RGB)
 
@@ -81,31 +81,33 @@ def shift_hue(img, color_from, color_to):
 
 def ChangeColorToColor(image, orginalHue, newHue):
     openCVimage = pygame_to_opencv(image.image)
-    orginalColor = Color(h=orginalHue, s=255,v=128)
-    newColor = Color(h=newHue, s=255,v=128)
+    orginalColor = Color(h=orginalHue, s=255, v=128)
+    newColor = Color(h=newHue, s=255, v=128)
     hueshifted = shift_hue(openCVimage, orginalColor.getNumPy(), newColor.getNumPy())
     return opencv_to_pygame(hueshifted)
 
 
 def pygame_to_opencv(pygame_image):
     # Convert Pygame image to string
-    pygame_str = pygame.image.tostring(pygame_image, 'RGB')
+    pygame_str = pygame.image.tostring(pygame_image, "RGB")
 
     # Create a NumPy array from the string
     pygame_array = np.frombuffer(pygame_str, dtype=np.uint8)
 
     # Reshape the array to match the Pygame image dimensions
-    pygame_array = pygame_array.reshape((pygame_image.get_height(), pygame_image.get_width(), 3))
+    pygame_array = pygame_array.reshape(
+        (pygame_image.get_height(), pygame_image.get_width(), 3)
+    )
 
     # Convert the NumPy array to an OpenCV image
     opencv_image = cv2.cvtColor(pygame_array, cv2.COLOR_RGB2BGR)
 
     return opencv_image
 
+
 def ToOpenCV(image):
     image_array = pygame.surfarray.array3d(image)
     opencv_image = cv2.cvtColor(image_array, cv2.COLOR_RGB2HSV)
     return opencv_image
 
-
-
+"""

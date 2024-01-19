@@ -1,101 +1,79 @@
+"""Class for Game"""
 import pygame
-import math
-import sys
-sys.path.insert(0,'..')
-import programUtils as utils
+from Classes import Chances, GameClock
+from Classes.Sprite import ImagePaths
 import Classes.Inventory as Inventory
-from dataclasses import dataclass
+iPaths = ImagePaths()
 std_dimensions = {"Medium": (1200, 800), "Small": (600, 400), "Large": (2400, 1600)}
 
-@dataclass  
-class Month:
-    Days: int = 31
-    Name: str = ''
-    MonthOrder: int = 0 
-
-Months = [
-    Month(Name='January', MonthOrder=1),
-    Month(Name='February', MonthOrder=2, Days=28),
-    Month(Name='March', MonthOrder=3),
-    Month(Name='April', MonthOrder=4, Days=30),
-    Month(Name='May', MonthOrder=5),
-    Month(Name='June', MonthOrder=6, Days=30),
-    Month(Name='July', MonthOrder=7),
-    Month(Name='August', MonthOrder=8),
-    Month(Name='September', MonthOrder=9, Days=30),
-    Month(Name='October', MonthOrder=10),
-    Month(Name='November', MonthOrder=11, Days=30),
-    Month(Name='December', MonthOrder=12)
-]
-
-
-class GameClock:
-    clockMulRange: tuple = (0.0625,8)
-    ClockMul: float = 0.5
-    Day: int = 1
-    CurrentMonth: Month = Months[0]
-    Minute: int = 1
-    Second: int = 1
-    
-    def __init__(self, clock):
-        self.pygameClock = clock
-        self.lastTime = pygame.time.get_ticks()
-        
-    def UpdateClock(self):
-        self.pygameClock.tick(60)
-        self.Second += math.floor((pygame.time.get_ticks() - self.lastTime)*self.ClockMul)
-        self.lastTime = pygame.time.get_ticks()
-        if(self.Hour == 24):
-            self.DayChange()
-        if(self.Day == 31):
-            self.MonthChange()
-    def DayChange(self):
-        self.Day += 1 
-        self.Second = 0
-        self.lastTime = pygame.time.get_ticks()
-    
-    def MonthChange(self):
-        self.Day = 1
-        self.CurrentMonth = [x for x in Months if x.MonthOrder == ((self.CurrentMonth.MonthOrder+1) % 12)][0]
-        
-    
-    def ChangeClockMul(self, value):
-        newVal = pow(2, value)
-        self.ClockMul = utils.Bind(self.ClockMul * newVal,self.clockMulRange)
-    
-    @property
-    def Minute(self):
-        return math.floor(self.Second/60)
-    @property
-    def Hour(self):
-        return math.floor(self.Minute/60) 
-    @property
-    def dateTime(self):
-        return f"{self.CurrentMonth.Name} {self.Day} {self.Hour:02d}:{(self.Minute % 60):02d}"
 
 class Game:
     ActiveTimerBars: list = []
-    CharSpriteGroup = pygame.sprite.Group()
-    BackgroundSpriteGroup = pygame.sprite.Group()
+    CharSpriteGroup: pygame.sprite.Group = pygame.sprite.Group()
+    BackgroundSpriteGroup: pygame.sprite.Group = pygame.sprite.Group()
     SpriteGroups: list = [BackgroundSpriteGroup, CharSpriteGroup]
-    LineList: list = [(-1,-1),(1,1)]
+    LineList: list = [(-1, -1), (1, 1)]
     WorkerList: list = []
     CustomerList: list = []
     JobList: list = []
     UserInventory: Inventory.Inventory = None
     TimerBars: list = []
-    
-    def __init__(self, size=std_dimensions['Medium']):
+    ShowScreen: bool = True
+    Clock: GameClock = GameClock.GameClock(clock=pygame.time.Clock())
+
+    def __init__(self, activateScreen=True, size=std_dimensions["Medium"]) -> None:
         pygame.init()
+        self.Chances = Chances.LuckChances()
+        self.StartTime = pygame.time.get_ticks()
+        self.ShowScreen = activateScreen
+        self.UserInventory = Inventory.Inventory()        
+        if self.ShowScreen:
+            self.StartScreen(size=size)
 
-        self.Clock = GameClock(pygame.time.Clock())
-        self.startTime = pygame.time.get_ticks()
-        self.UserInventory = Inventory.Inventory()
-        width, height = std_dimensions[size]
-        self.screen = pygame.display.set_mode((width, height))
-        pygame.display.set_caption("Poppa Pizza Clone")
+    def StartScreen(self, size) -> None:
+        if type(size) == std_dimensions:
+            width, height = std_dimensions[size]
+        else:
+            width, height = size
+        self.Screen = pygame.display.set_mode(size=(width, height))
+        pygame.display.set_caption(title="Poppa Pizza Clone")
 
-        self.font = pygame.font.Font(None, 36)
+        self.Font = pygame.font.Font(None, 36)
+
+    def DrawScreenClock(self, locationTopLeft, foreColor, backColor) -> None:
+        text = self.Font.render(str(self.Clock.DateTime), True, foreColor, backColor)
+        textrect = text.get_rect()
+        textrect.x = locationTopLeft[0]
+        textrect.y = locationTopLeft[1]
+        self.Screen.blit(source=text, dest=textrect)
+
+    def DrawBackground(self) -> None:
+        bg = pygame.image.load(iPaths.BackgroundPath)
+        self.Screen.blit(source=bg, dest=(0, 0))
+
+    def RemoveObj(self, targetSprite) -> None:
+        targetSprite.kill()
+        self.CustomerList = [
+            x for x in self.CustomerList if x.IdNum != targetSprite.CorrespondingID
+        ]
+        self.WorkerList = [
+            x for x in self.WorkerList if x.IdNum != targetSprite.CorrespondingID
+        ]
+
+    def UpdateSprites(self) -> None:
+        for group in self.SpriteGroups:
+            group.update()
+            for sprite in group:
+                sprite.Update()
+            group.draw(self.Screen)
+
+    def UpdateTimers(self) -> None:
+        for timer in self.TimerBars:
+            timer.UpdateAndDraw()
+
+    @property
+    def ScreenSize(self) -> tuple[int, int]:
+        return (self.Screen.get_width(), self.Screen.get_width())
 
 
-MasterGame = Game("Medium")
+MasterGame = None
