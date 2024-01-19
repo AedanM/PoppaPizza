@@ -52,7 +52,11 @@ while True:
     if DEBUGFLAG:
         DefinedLocations.DebugLocations()
 
-    Game.MasterGame.DrawScreenClock(locationTopLeft=(0, 0), foreColor=ColorTools.white.RGB, backColor=ColorTools.blue.RGB)
+    Game.MasterGame.DrawScreenClock(
+        locationTopLeft=(0, 0),
+        foreColor=ColorTools.white.RGB,
+        backColor=ColorTools.blue.RGB,
+    )
 
     # Update the display
     if Game.MasterGame.ShowScreen:

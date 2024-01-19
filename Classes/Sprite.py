@@ -59,7 +59,9 @@ class CharImageSprite(GameObject.GameObject):
             for sprite in group:
                 while sprite.rect.colliderect(self.rect) and sprite is not self:
                     self.rect.center = utils.PositionRandomVariance(
-                        position=currentCenter, percentVarianceTuple=(0.1, 1), screenSize=Game.MasterGame.ScreenSize
+                        position=currentCenter,
+                        percentVarianceTuple=(0.1, 1),
+                        screenSize=Game.MasterGame.ScreenSize,
                     )
 
     def UpdateSprite(self) -> None:

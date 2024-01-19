@@ -44,7 +44,9 @@ class TimerBar:
 
 
 def CreatePersonTimerBar(sprite, completeTask, length=5.0):
-    Game.MasterGame.TimerBars.append(TimerBar(duration=length, position=(sprite.rect.topleft)))
+    Game.MasterGame.TimerBars.append(
+        TimerBar(duration=length, position=(sprite.rect.topleft))
+    )
     Game.MasterGame.TimerBars[-1].OnComplete = completeTask
     Game.MasterGame.TimerBars[-1].Rect.y -= 25
     Game.MasterGame.TimerBars[-1].MaxWidth = sprite.rect.width

@@ -40,7 +40,7 @@ class Worker(Person):
     BasePay: float = 1.0
 
     @classmethod
-    def CreateWorker(cls) ->'Worker':
+    def CreateWorker(cls) -> "Worker":
         worker = cls.Create()
         workerSprite = Sprite.CharImageSprite(
             position=utils.PositionRandomVariance(

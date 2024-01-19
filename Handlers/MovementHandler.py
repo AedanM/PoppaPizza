@@ -23,11 +23,11 @@ class CharacterMovementHandler:
     CurrentPointIdx: int = 0
 
     @property
-    def DestY(self) -> int|float:
+    def DestY(self) -> int | float:
         return self.Dest[1]
 
     @property
-    def DestX(self) -> int|float:
+    def DestX(self) -> int | float:
         return self.Dest[0]
 
     def StartNewMotion(self, start, dst, speed=MovementSpeeds.Medium) -> None:
@@ -37,7 +37,10 @@ class CharacterMovementHandler:
                 x.rect for x in Game.MasterGame.BackgroundSpriteGroup if x.Collision
             ]
             self.PointsList = Path.CreatePath(
-                startPoint=start, endPoint=dst, speed=self.MaxMovementSpeed.value, backgroundObs=backgroundObs
+                startPoint=start,
+                endPoint=dst,
+                speed=self.MaxMovementSpeed.value,
+                backgroundObs=backgroundObs,
             )
             self.Dest = self.PointsList[0]
             self.DstSet = True

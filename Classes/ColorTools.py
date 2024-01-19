@@ -10,7 +10,7 @@ class Color:
     S: int
     V: int
 
-    def GetNumPy(self) -> 'np.NDArray[np.uint8]':
+    def GetNumPy(self) -> "np.NDArray[np.uint8]":
         return np.array([self.H, self.S, self.V], dtype=np.uint8)
 
     @property

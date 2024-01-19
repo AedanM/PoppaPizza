@@ -24,33 +24,39 @@ def FindAvailableWorker() -> tuple[People.Worker, Sprite.CharImageSprite]:
 
 
 # TODO - Stop 2 workers on 1 job
-def AssignWorker(target):
+def AssignWorker(target) -> None:
     customer = [
         x for x in Game.MasterGame.CustomerList if (x.IdNum == target.CorrespondingID)
     ][0]
     worker, workerSprite = FindAvailableWorker()
     if customer.WorkerAssigned is False and worker is None:
-        AllWorkersBusy(target)
+        AllWorkersBusy(target=target)
     elif worker is not None:
         customer.WorkerAssigned = True
         customer.DesiredJob.Assign(worker)
         workerSprite.MvmHandler.StartNewListedMotion(
-            DL.DefinedPaths.KitchenToCustomer(workerSprite, target)
+            pointList=DL.DefinedPaths.KitchenToCustomer(
+                sprite=workerSprite, dest=target
+            )
         )
         returnHome = lambda: (
-            GetUpAndGo(target),
-            WH.FinishCustomer(worker, workerSprite),
+            GetUpAndGo(spriteImg=target),
+            WH.FinishCustomer(w=worker, ws=workerSprite),
         )
         workerSprite.MvmHandler.OnComplete = lambda: TB.CreatePersonTimerBar(
-            workerSprite, returnHome, customer.DesiredJob.Length
+            sprite=workerSprite,
+            completeTask=returnHome,
+            length=customer.DesiredJob.Length,
         )
 
 
-def AllWorkersBusy(target):
-    taskComplete = lambda: GetUpAndGo(target)
-    TB.CreatePersonTimerBar(target, taskComplete, 10)
+def AllWorkersBusy(target) -> None:
+    taskComplete = lambda: GetUpAndGo(spriteImg=target)
+    TB.CreatePersonTimerBar(sprite=target, completeTask=taskComplete, length=10)
 
 
-def GetUpAndGo(spriteImg):
-    spriteImg.MvmHandler.StartNewListedMotion(DL.DefinedPaths.CustomerToExit(spriteImg))
+def GetUpAndGo(spriteImg) -> None:
+    spriteImg.MvmHandler.StartNewListedMotion(
+        DL.DefinedPaths.CustomerToExit(sprite=spriteImg)
+    )
     spriteImg.MvmHandler.OnComplete = lambda: Game.MasterGame.RemoveObj(spriteImg)

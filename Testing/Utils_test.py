@@ -1,4 +1,3 @@
-from tkinter import N
 from Utilities import Utils
 from Testing import TestClass as TC
 
