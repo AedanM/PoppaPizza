@@ -4,7 +4,7 @@ RowCoords = [450, 650, 850, 1050]
 ColCoords = [50, 250, 450, 650]
 
 
-def generateTablePlaces():
+def generateTablePlaces() -> list:
     locationArray = []
     for row in RowCoords:
         for col in ColCoords:
@@ -12,8 +12,8 @@ def generateTablePlaces():
     return locationArray
 
 
-def AddTables():
+def AddTables() -> None:
     for location in generateTablePlaces():
-        table = Sprite.BackgroundElementSprite(location, Sprite.iPaths.TablePath)
+        table = Sprite.BackgroundElementSprite(position=location, path=Sprite.iPaths.TablePath)
         table.Collision = True
         Game.MasterGame.BackgroundSpriteGroup.add(table)

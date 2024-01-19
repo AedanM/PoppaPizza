@@ -7,23 +7,23 @@ from Utilities import Utils
 
 class DefinedLocations:
     @property
-    def KitchenLocation(self):
+    def KitchenLocation(self) -> tuple:
         return (100, 225)
 
     @property
-    def KitchenDoorLocation(self):
+    def KitchenDoorLocation(self) -> tuple:
         return (300, 225)
 
     @property
-    def LockerRoomLocation(self):
+    def LockerRoomLocation(self) -> tuple:
         return (100, 700)
 
     @property
-    def CustomerExit(self):
+    def CustomerExit(self) -> tuple:
         return (1200, 1000)
 
     @property
-    def CustomerEntrance(self):
+    def CustomerEntrance(self) -> tuple:
         return (1150, 325)
 
 
@@ -32,33 +32,41 @@ LocationDefs = DefinedLocations()
 
 class DefinedPaths:
     @staticmethod
-    def KitchenToCustomer(sprite, dest):
-        return [
+    def KitchenToCustomer(sprite, dest) -> list:
+        path = [
             sprite.rect.center,
             LocationDefs.KitchenLocation,
             LocationDefs.KitchenDoorLocation,
             dest.rect.center,
         ]
+        return path
 
     @staticmethod
-    def BackToKitchen(sprite):
-        return [
+    def BackToKitchen(sprite) -> list:
+        path = [
             sprite.rect.center,
             LocationDefs.KitchenDoorLocation,
             LocationDefs.KitchenLocation,
             Utils.PositionRandomVariance(
-                LocationDefs.KitchenLocation, (0.1, 0.5), Game.MasterGame.ScreenSize
+                position=LocationDefs.KitchenLocation,
+                percentVarianceTuple=(0.1, 0.5),
+                screenSize=Game.MasterGame.ScreenSize,
             ),
         ]
+        return path
 
     @staticmethod
-    def CustomerToExit(sprite):
-        return [sprite.rect.center, LocationDefs.CustomerExit]
+    def CustomerToExit(sprite) -> list:
+        path = [sprite.rect.center, LocationDefs.CustomerExit]
+        return path
 
 
-def DebugLocations():
+def DebugLocations() -> None:
     attrs = [x for x in dir(LocationDefs) if "__" not in x]
     for attr in attrs:
         pygame.draw.circle(
-            Game.MasterGame.Screen, ColorTools.blue.RGB, getattr(LocationDefs, attr), 25
+            surface=Game.MasterGame.Screen,
+            color=ColorTools.blue.RGB,
+            center=getattr(LocationDefs, attr),
+            radius=25,
         )

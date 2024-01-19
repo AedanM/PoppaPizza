@@ -12,7 +12,7 @@
 - background
 - sprites
 - money
-- Generate Customers
+- ~~Generate Customers~~
 - Buy Workers
 - buying/shop
 - rent

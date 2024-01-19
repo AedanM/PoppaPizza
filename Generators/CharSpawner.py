@@ -6,7 +6,7 @@ from Classes import People, Game
 LastSpawnTime = 0
 
 
-def CustomerSpawner():
+def CustomerSpawner() -> None:
     # pylint: disable=global-statement
     global LastSpawnTime
     currentTime = Game.MasterGame.Clock.UnixTime
@@ -18,5 +18,5 @@ def CustomerSpawner():
         LastSpawnTime = currentTime
 
 
-def SpawnHandler():
+def SpawnHandler() -> None:
     CustomerSpawner()

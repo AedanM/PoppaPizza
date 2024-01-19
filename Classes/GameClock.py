@@ -35,55 +35,57 @@ class GameClock:
     Second: int = 1
     WorkingDayStart: int = 9
     WorkingDayEnd: int = 17
+    ClockMul = GameSettings.ClockSpeed
 
-    def __init__(self, clock):
+    def __init__(self, clock) -> None:
         self.PygameClock = clock
         self.LastTime = pygame.time.get_ticks()
 
-    def UpdateClock(self):
+    def UpdateClock(self) -> None:
         self.PygameClock.tick(60)
         self.Second += math.floor(
             (pygame.time.get_ticks() - self.LastTime) * GameSettings.ClockSpeed
         )
         self.LastTime = pygame.time.get_ticks()
         self.CheckWorkingDay()
+        self.ClockMul = GameSettings.ClockSpeed
         if self.Hour >= 24:
             self.DayChange()
         if self.Day >= self.CurrMonth.Days:
             self.MonthChange()
 
-    def DayChange(self):
+    def DayChange(self) -> None:
         self.Day += 1
         self.Second = 0
 
         self.LastTime = pygame.time.get_ticks()
 
-    def MonthChange(self):
+    def MonthChange(self) -> None:
         self.CurrMonth = [
             x for x in Months if x.MonthOrder == ((self.CurrMonth.MonthOrder + 1) % 12)
         ][0]
 
     @property
-    def DayOfMonth(self):
+    def DayOfMonth(self) -> int:
         return self.Day - self.CurrMonth.PreceedingDays
 
     @property
-    def Minute(self):
+    def Minute(self) -> int:
         return math.floor(self.Second / 60)
 
     @property
-    def Hour(self):
+    def Hour(self) -> int:
         return math.floor(self.Minute / 60)
 
     @property
-    def DateTime(self):
+    def DateTime(self) -> str:
         return f"{self.CurrMonth.Name} {self.DayOfMonth} {(self.Hour % GameSettings.ClockDivisor):02d}:{(self.Minute % 60):02d}{GameSettings.AMPM(self.Hour)}"
 
     @property
-    def UnixTime(self):
+    def UnixTime(self) -> int:
         return self.Hour + ((self.Day - 1) * 24)
 
-    def CheckWorkingDay(self):
+    def CheckWorkingDay(self) -> None:
         if self.Hour < self.WorkingDayStart:
             self.Second = (self.WorkingDayStart - self.Hour) * 60 * 60
         elif self.Hour >= self.WorkingDayEnd:
@@ -92,5 +94,5 @@ class GameClock:
 
             self.Second = self.WorkingDayStart * 60 * 60
 
-    def NightCycle(self):
+    def NightCycle(self) -> None:
         pass

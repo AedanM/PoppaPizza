@@ -4,6 +4,7 @@ from Classes import Game, Sprite, People, TimerBar as TB, DefinedLocations as DL
 from Handlers import WorkerHandler as WH
 
 
+# TODO - Fix getting worker who is busy
 def FindAvailableWorker() -> tuple[People.Worker, Sprite.CharImageSprite]:
     availWorkers = [x for x in Game.MasterGame.WorkerList if x.IsAssigned is False]
     if len(availWorkers) < 1:
@@ -22,6 +23,7 @@ def FindAvailableWorker() -> tuple[People.Worker, Sprite.CharImageSprite]:
     return worker, workerSprite
 
 
+# TODO - Stop 2 workers on 1 job
 def AssignWorker(target):
     customer = [
         x for x in Game.MasterGame.CustomerList if (x.IdNum == target.CorrespondingID)

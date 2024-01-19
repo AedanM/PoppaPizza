@@ -37,13 +37,13 @@ class CharImageSprite(GameObject.GameObject):
     rect: pygame.rect.Rect = pygame.rect.Rect(0, 0, 0, 0)
     MvmHandler: CharacterMovementHandler = None
 
-    def __init__(self, position, path, objID):
+    def __init__(self, position, path, objID) -> None:
         super().__init__(backgroundFlag=False, moveFlag=True, collisionFlag=True)
         self.image = pygame.image.load(
             path
         )  # Replace with the actual sprite image file
 
-        self.image = pygame.transform.scale_by(self.image, 0.1)
+        self.image = pygame.transform.scale_by(surface=self.image, factor=0.1)
         self.rect = self.image.get_rect()
         self.rect.x = position[0]
         self.rect.y = position[1]
@@ -53,20 +53,20 @@ class CharImageSprite(GameObject.GameObject):
 
         self.CorrespondingID = objID
 
-    def CheckSpawnCollision(self):
+    def CheckSpawnCollision(self) -> None:
         currentCenter = self.rect.center
         for group in Game.MasterGame.SpriteGroups:
             for sprite in group:
                 while sprite.rect.colliderect(self.rect) and sprite is not self:
                     self.rect.center = utils.PositionRandomVariance(
-                        currentCenter, (0.1, 1), Game.MasterGame.ScreenSize
+                        position=currentCenter, percentVarianceTuple=(0.1, 1), screenSize=Game.MasterGame.ScreenSize
                     )
 
-    def UpdateSprite(self):
+    def UpdateSprite(self) -> None:
         ## Place to add Dynamic Sprites
         pass
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return str(self.CorrespondingID) + " " + str(self.ImageType)
 
 
@@ -74,7 +74,7 @@ class BackgroundElementSprite(GameObject.GameObject):
     ImageType: ImageTypes = ImageTypes.Null
 
     # pylint: disable=invalid-name
-    def __init__(self, position, path):
+    def __init__(self, position, path) -> None:
         super().__init__(backgroundFlag=True, moveFlag=False, collisionFlag=False)
         self.image = pygame.image.load(
             path

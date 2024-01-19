@@ -14,32 +14,32 @@ class ClickState(Enum):
 GlobalClickState = ClickState.Neutral
 
 
-def MouseHandler():
+def MouseHandler() -> None:
     global GlobalClickState
     mouseX, mouseY = pygame.mouse.get_pos()
     for sprite in Game.MasterGame.CharSpriteGroup:
         if not sprite.IsBackground:
             if sprite.rect.collidepoint(mouseX, mouseY):
                 if sprite.ImageType == Sprite.ImageTypes.Customer:
-                    CustomerClickRoutine(sprite)
+                    CustomerClickRoutine(target=sprite)
                 elif sprite.ImageType == Sprite.ImageTypes.Worker:
-                    WorkerClickRoutine(sprite)
+                    WorkerClickRoutine(target=sprite)
             elif GlobalClickState is ClickState.ClickedWorker:
                 GlobalClickState = ClickState.Neutral
             else:
                 GlobalClickState = ClickState.Neutral
 
 
-def CustomerClickRoutine(target):
+def CustomerClickRoutine(target) -> None:
     global GlobalClickState
     if GlobalClickState is ClickState.Neutral:
-        CustomerHandler.AssignWorker(target)
+        CustomerHandler.AssignWorker(target=target)
 
     GlobalClickState = ClickState.ClickedCustomer
     # this is where you make all other sprites glow
 
 
-def WorkerClickRoutine(target):
+def WorkerClickRoutine(target) -> None:
     global GlobalClickState
     if GlobalClickState is ClickState.ClickedCustomer:
         target.IsAssigned = target.IsAssigned

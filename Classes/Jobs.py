@@ -25,7 +25,7 @@ class Job:
     JobId: int
 
     @classmethod
-    def SpawnJob(cls):
+    def SpawnJob(cls) -> "Job":
         # pylint: disable=global-statement
         global JOBIDCOUNT
         JOBIDCOUNT += 1
@@ -52,13 +52,13 @@ class Job:
         return job
 
     @staticmethod
-    def GetAssignedFromID(jobList, targetID):
+    def GetAssignedFromID(jobList, targetID) -> tuple:
         for job in jobList:
             if job.JobId == targetID:
-                return [job.AssignedWorker, job.JobCustomer]
-        return []
+                return (job.AssignedWorker, job.JobCustomer)
+        return ()
 
-    def Assign(self, target):
+    def Assign(self, target) -> None:
         if "DesiredJob" in dir(target):
             target.DesiredJob = self
             self.JobCustomer = target.IdNum

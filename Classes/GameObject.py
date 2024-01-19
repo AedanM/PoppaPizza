@@ -9,16 +9,16 @@ class GameObject(pygame.sprite.Sprite):
     Moveable: bool = False
     Collision: bool = False
 
-    def __init__(self, backgroundFlag, moveFlag, collisionFlag):
+    def __init__(self, backgroundFlag, moveFlag, collisionFlag) -> None:
         super().__init__()
         self.IsBackground = backgroundFlag
         self.Moveable = moveFlag
         self.Collision = collisionFlag
 
-    def UpdateSprite(self):
+    def UpdateSprite(self) -> None:
         pass
 
-    def Update(self):
+    def Update(self) -> None:
         if self.Moveable and "MvmHandler" in dir(self):
             self.MvmHandler.CalcNewPosition(self)
         self.UpdateSprite()

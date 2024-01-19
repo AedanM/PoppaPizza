@@ -28,7 +28,7 @@ class Person:
         return cls(FirstName=fName, LastName=lName, IdNum=selfid)
 
     @staticmethod
-    def GenerateID():
+    def GenerateID() -> int:
         # pylint: disable=global-statement
         global IDCOUNT
         IDCOUNT += 1
@@ -40,16 +40,16 @@ class Worker(Person):
     BasePay: float = 1.0
 
     @classmethod
-    def CreateWorker(cls):
+    def CreateWorker(cls) ->'Worker':
         worker = cls.Create()
         workerSprite = Sprite.CharImageSprite(
-            utils.PositionRandomVariance(
-                DefinedLocations.LocationDefs.KitchenLocation,
-                (0.05, 0.75),
-                Game.MasterGame.ScreenSize,
+            position=utils.PositionRandomVariance(
+                position=DefinedLocations.LocationDefs.KitchenLocation,
+                percentVarianceTuple=(0.05, 0.75),
+                screenSize=Game.MasterGame.ScreenSize,
             ),
-            Sprite.iPaths.WorkerPath,
-            worker.IdNum,
+            path=Sprite.iPaths.WorkerPath,
+            objID=worker.IdNum,
         )
         Game.MasterGame.CharSpriteGroup.add(workerSprite)
         Game.MasterGame.WorkerList.append(worker)
@@ -67,30 +67,30 @@ class Customer(Person):
     CurrentState: CustomerStates = CustomerStates.Null
 
     @classmethod
-    def CreateCustomer(cls):
+    def CreateCustomer(cls) -> "Customer":
         cust = cls.Create()
         Game.MasterGame.JobList.append(Jobs.Job.SpawnJob())
         Game.MasterGame.JobList[-1].Assign(cust)
         customerSprite = Sprite.CharImageSprite(
-            utils.PositionRandomVariance(
-                DefinedLocations.LocationDefs.CustomerEntrance,
-                (0.05, 0.1),
-                Game.MasterGame.ScreenSize,
+            position=utils.PositionRandomVariance(
+                position=DefinedLocations.LocationDefs.CustomerEntrance,
+                percentVarianceTuple=(0.05, 0.1),
+                screenSize=Game.MasterGame.ScreenSize,
             ),
-            Sprite.iPaths.CustomerPath,
-            cust.IdNum,
+            path=Sprite.iPaths.CustomerPath,
+            objID=cust.IdNum,
         )
         Game.MasterGame.CharSpriteGroup.add(customerSprite)
         Game.MasterGame.CustomerList.append(cust)
         return cust
 
 
-def UnitTest():
+def UnitTest() -> None:
     currentJob = Jobs.Job.SpawnJob()
     w = Worker(IdNum=Worker.GenerateID(), FirstName="Anne", LastName="Smith")
     customer = Customer(IdNum=Customer.GenerateID(), FirstName="Anne", LastName="Smith")
-    currentJob.Assign(customer)
-    currentJob.Assign(w)
+    currentJob.Assign(target=customer)
+    currentJob.Assign(target=w)
 
 
 if __name__ == "__main__":

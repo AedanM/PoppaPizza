@@ -10,15 +10,15 @@ class Color:
     S: int
     V: int
 
-    def GetNumPy(self):
+    def GetNumPy(self) -> 'np.NDArray[np.uint8]':
         return np.array([self.H, self.S, self.V], dtype=np.uint8)
 
     @property
-    def HSV(self):
+    def HSV(self) -> tuple[int, int, int]:
         return (self.H, self.S, self.V)
 
     @property
-    def RGB(self):
+    def RGB(self) -> tuple[int, ...]:
         return tuple(
             round(i * 255)
             for i in colorsys.hsv_to_rgb(
@@ -32,15 +32,15 @@ class Color:
         )
 
     @property
-    def BGR(self):
+    def BGR(self) -> tuple[int, int, int]:
         rgb = self.RGB
         return (rgb[2], rgb[1], rgb[0])
 
 
-white = Color(0, 0, 255)
-black = Color(0, 0, 0)
-blue = Color(128, 200, 128)
-green = Color(70, 200, 128)
+white = Color(H=0, S=0, V=255)
+black = Color(H=0, S=0, V=0)
+blue = Color(H=128, S=200, V=128)
+green = Color(H=70, S=200, V=128)
 
 
 """
