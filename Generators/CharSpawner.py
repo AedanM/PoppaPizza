@@ -1,13 +1,13 @@
 """Handler for Spawning Elements"""
 import random
-import pygame
-import Classes.Game as Game
-import Classes.People as People
+from Classes import People, Game
 
+# pylint: disable=C0103
 LastSpawnTime = 0
 
 
-def CustomerSpawner():
+def CustomerSpawner() -> None:
+    # pylint: disable=global-statement
     global LastSpawnTime
     currentTime = Game.MasterGame.Clock.UnixTime
     chanceOfSpawn = Game.MasterGame.Chances.CustomerSpawn * float(
@@ -18,5 +18,5 @@ def CustomerSpawner():
         LastSpawnTime = currentTime
 
 
-def SpawnHandler():
+def SpawnHandler() -> None:
     CustomerSpawner()

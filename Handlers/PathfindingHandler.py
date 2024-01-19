@@ -1,17 +1,8 @@
 """Handler for finding paths"""
-import math
-import sys
 import random
 import pygame
 import Utilities.Utils as utils
-
-
-if __name__ == "__main__":
-    sys.path.insert(0, "../Classes")
-    sys.path.insert(0, "..")
-    import Game
-else:
-    import Classes.Game as Game
+import Classes.Game as Game
 
 
 def RemoveDupes(l):
@@ -149,7 +140,6 @@ def GenLandmarksBetweenUnitTest():
         pygame.display.update()
         assert points == test.Result, str(points) + " Failed"
         print(str(tests.index(test)) + " Passed")
-        holdUntilUser = input()
 
 
 if __name__ == "__main__":

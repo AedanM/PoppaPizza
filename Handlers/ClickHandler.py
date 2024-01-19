@@ -1,11 +1,10 @@
 """Handler for User Clicks"""
 from enum import Enum
 import pygame
-import Classes.People as People
-import Classes.Game as Game
-import Classes.Sprite as Sprite
-import Classes.ColorTools as ColorTools
-import Handlers.CustomerHandler as CustomerHandler
+from Classes import Game, Sprite
+from Handlers import CustomerHandler
+
+# pylint: disable=global-statement
 
 
 class ClickState(Enum):
@@ -13,50 +12,35 @@ class ClickState(Enum):
 
 
 GlobalClickState = ClickState.Neutral
-GSELECTED = 0
 
 
-def MouseHandler():
+def MouseHandler() -> None:
     global GlobalClickState
     mouseX, mouseY = pygame.mouse.get_pos()
     for sprite in Game.MasterGame.CharSpriteGroup:
         if not sprite.IsBackground:
             if sprite.rect.collidepoint(mouseX, mouseY):
                 if sprite.ImageType == Sprite.ImageTypes.Customer:
-                    CustomerClickRoutine(sprite)
+                    CustomerClickRoutine(target=sprite)
                 elif sprite.ImageType == Sprite.ImageTypes.Worker:
-                    WorkerClickRoutine(sprite)
+                    WorkerClickRoutine(target=sprite)
             elif GlobalClickState is ClickState.ClickedWorker:
-                for worker in Game.MasterGame.CharSpriteGroup:
-                    if (
-                        worker.CorrespondingID == GSELECTED
-                        and worker.ImageType is Sprite.ImageTypes.Worker
-                    ):
-                        worker.MvmHandler.StartNewMotion(
-                            (worker.rect.center), (mouseX, mouseY)
-                        )
                 GlobalClickState = ClickState.Neutral
             else:
                 GlobalClickState = ClickState.Neutral
 
 
-def CustomerClickRoutine(target):
+def CustomerClickRoutine(target) -> None:
     global GlobalClickState
     if GlobalClickState is ClickState.Neutral:
-        CustomerHandler.AssignWorker(target)
+        CustomerHandler.AssignWorker(target=target)
 
     GlobalClickState = ClickState.ClickedCustomer
     # this is where you make all other sprites glow
 
 
-def WorkerClickRoutine(target):
-    # target.image = ColorTools.ChangeColorToColor(target, 0, 128)
-    global GlobalClickState, GSELECTED
+def WorkerClickRoutine(target) -> None:
+    global GlobalClickState
     if GlobalClickState is ClickState.ClickedCustomer:
-        pass
-    elif (
-        GlobalClickState is ClickState.Neutral
-        or GlobalClickState is ClickState.ClickedWorker
-    ):
-        GSELECTED = target.CorrespondingID
+        target.IsAssigned = target.IsAssigned
     GlobalClickState = ClickState.ClickedWorker

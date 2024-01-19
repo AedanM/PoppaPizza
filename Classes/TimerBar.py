@@ -1,7 +1,7 @@
 """Class for Timer Bars"""
-
+import math
 import pygame
-import Classes.Game as Game
+from Classes import Game
 
 
 class TimerBar:
@@ -16,29 +16,37 @@ class TimerBar:
         self,
         duration: float,
         position: tuple,
-    ):
+    ) -> None:
         self.OnComplete = lambda: None
         self.Rect = pygame.Rect(position[0], position[1], self.Width, self.Height)
         self.StartTime = Game.MasterGame.Clock.Minute
         self.Duration = duration
 
-    def StartTimer(self):
+    def StartTimer(self) -> None:
         self.StartTime = Game.MasterGame.Clock.Minute
 
-    def AgeTimer(self):
+    def AgeTimer(self) -> None:
         self.CompletionPercentage = (
             (Game.MasterGame.Clock.Minute - self.StartTime)
         ) / self.Duration
-        self.Width = min(self.CompletionPercentage * self.MaxWidth, self.MaxWidth)
+        self.Width = int(
+            math.floor(min(self.CompletionPercentage * self.MaxWidth, self.MaxWidth))
+        )
         self.Rect.width = self.Width
         self.Rect.height = self.Height
         if self.CompletionPercentage >= 1:
             self.OnComplete()
             Game.MasterGame.TimerBars.remove(self)
 
+    def UpdateAndDraw(self) -> None:
+        self.AgeTimer()
+        pygame.draw.rect(Game.MasterGame.Screen, self.Color, self.Rect)
+
 
 def CreatePersonTimerBar(sprite, completeTask, length=5.0):
-    Game.MasterGame.TimerBars.append(TimerBar(length, (sprite.rect.topleft)))
+    Game.MasterGame.TimerBars.append(
+        TimerBar(duration=length, position=(sprite.rect.topleft))
+    )
     Game.MasterGame.TimerBars[-1].OnComplete = completeTask
     Game.MasterGame.TimerBars[-1].Rect.y -= 25
     Game.MasterGame.TimerBars[-1].MaxWidth = sprite.rect.width

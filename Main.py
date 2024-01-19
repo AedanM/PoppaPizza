@@ -2,24 +2,28 @@
 
 import os
 import sys
-import random
-from multiprocessing import Process
 
+
+# *OS Call used to prevent a time printout from Pygame on first import
+# pylint: disable=wrong-import-position
 os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "True"
 import pygame
-from Classes import *
-from Handlers import *
+from Classes import People, Game, DefinedLocations, ColorTools, Settings
+from Handlers import ClickHandler
+from Generators import CharSpawner, BackgroundPopulator
 
-People.Worker.CreateWorker()
-People.Worker.CreateWorker()
-People.Customer.CreateCustomer()
+Game.MasterGame = Game.Game()
+# Enables a series of functions to run automatically
+DEBUGFLAG = True
 
-table = Sprite.BackgroundElementSprite((100, 250), Sprite.iPaths.TablePath)
-table.Collision = True
-Game.MasterGame.BackgroundSpriteGroup.add(table)
-
+if DEBUGFLAG:
+    People.Worker.CreateWorker()
+    People.Worker.CreateWorker()
+    People.Customer.CreateCustomer()
+    BackgroundPopulator.AddTables()
 
 while True:
+    # TODO: Move to EventHandler
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -27,9 +31,9 @@ while True:
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             ClickHandler.MouseHandler()
         if event.type == pygame.KEYDOWN and event.key == pygame.K_t:
-            Game.MasterGame.Clock.ChangeClockMul(-1)
+            Settings.GameSettings.ChangeClockMul(value=-1)
         if event.type == pygame.KEYDOWN and event.key == pygame.K_y:
-            Game.MasterGame.Clock.ChangeClockMul(1)
+            Settings.GameSettings.ChangeClockMul(value=1)
         if event.type == pygame.KEYDOWN and event.key == pygame.K_w:
             People.Worker.CreateWorker()
         if event.type == pygame.KEYDOWN and event.key == pygame.K_c:
@@ -37,26 +41,23 @@ while True:
         if event.type == pygame.KEYDOWN and event.key == pygame.K_d:
             Game.MasterGame.ShowScreen = not Game.MasterGame.ShowScreen
 
-    Game.MasterGame.Screen.fill((255, 255, 255))
+    Game.MasterGame.DrawBackground()
 
-    for group in Game.MasterGame.SpriteGroups:
-        group.update()
-        for sprite in group:
-            sprite.Update()
+    Game.MasterGame.UpdateSprites()
 
-    for timer in Game.MasterGame.TimerBars:
-        timer.AgeTimer()
-        pygame.draw.rect(Game.MasterGame.Screen, timer.Color, timer.Rect)
+    Game.MasterGame.UpdateTimers()
 
-    SpawnHandler.SpawnHandler()
+    CharSpawner.SpawnHandler()
 
-    pygame.draw.lines(
-        Game.MasterGame.Screen, (255, 0, 0), False, Game.MasterGame.LineList
+    if DEBUGFLAG:
+        DefinedLocations.DebugLocations()
+
+    Game.MasterGame.DrawScreenClock(
+        locationTopLeft=(0, 0),
+        foreColor=ColorTools.white.RGB,
+        backColor=ColorTools.blue.RGB,
     )
-    Game.MasterGame.DrawScreenClock((0, 0), ColorTools.white, ColorTools.blue)
 
-    for group in Game.MasterGame.SpriteGroups:
-        group.draw(Game.MasterGame.Screen)
     # Update the display
     if Game.MasterGame.ShowScreen:
         pygame.display.update()

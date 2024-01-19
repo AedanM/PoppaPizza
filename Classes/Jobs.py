@@ -3,15 +3,15 @@ from dataclasses import dataclass
 from enum import Enum
 import random
 
-JOBIDCOUNT = 0
+JOBIDCOUNT = 1
 
 
 class UrgencyRatings(Enum):
-    Trivial, Urgent = range(2)
+    Null, Trivial, Urgent = range(3)
 
 
 class JobTypes(Enum):
-    Standard, Deluxe = range(2)
+    Null, Standard, Deluxe = range(3)
 
 
 @dataclass
@@ -25,7 +25,8 @@ class Job:
     JobId: int
 
     @classmethod
-    def SpawnJob(cls):
+    def SpawnJob(cls) -> "Job":
+        # pylint: disable=global-statement
         global JOBIDCOUNT
         JOBIDCOUNT += 1
         urgency = random.choice(list(UrgencyRatings))
@@ -37,8 +38,8 @@ class Job:
             * (jobtype.value + 1)
             * (urgency.value + 1)
         )
-        assignedWorker = None
-        customer = None
+        assignedWorker = 0
+        customer = 0
         job = Job(
             Type=jobtype,
             Price=price,
@@ -51,13 +52,13 @@ class Job:
         return job
 
     @staticmethod
-    def GetAssignedFromID(jobList, targetID):
+    def GetAssignedFromID(jobList, targetID) -> tuple:
         for job in jobList:
             if job.JobId == targetID:
-                return [job.AssignedWorker, job.JobCustomer]
-        return []
+                return (job.AssignedWorker, job.JobCustomer)
+        return ()
 
-    def Assign(self, target):
+    def Assign(self, target) -> None:
         if "DesiredJob" in dir(target):
             target.DesiredJob = self
             self.JobCustomer = target.IdNum

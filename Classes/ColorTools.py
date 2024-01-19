@@ -1,14 +1,8 @@
 """Class for Altering Colors"""
 from dataclasses import dataclass
-import pygame
-import cv2
+import colorsys
 import numpy as np
 
-
-white = (255, 255, 255)
-green = (0, 255, 0)
-blue = (0, 0, 128)
-'''
 
 @dataclass
 class Color:
@@ -16,38 +10,40 @@ class Color:
     S: int
     V: int
 
-    def GetNumPy(self):
+    def GetNumPy(self) -> "np.NDArray[np.uint8]":
         return np.array([self.H, self.S, self.V], dtype=np.uint8)
 
-    def ToRGB(self):
-        """
-        Convert HSV color to RGB.
-        """
-        hi = int(self.H / 60) % 6
-        f = self.H / 60 - hi
-        p = self.V * (1 - self.S)
-        q = self.V * (1 - f * self.S)
-        t = self.V * (1 - (1 - f) * self.S)
+    @property
+    def HSV(self) -> tuple[int, int, int]:
+        return (self.H, self.S, self.V)
 
-        if hi == 0:
-            return int(self.V * 255), int(t * 255), int(p * 255)
-        if hi == 1:
-            return int(q * 255), int(self.V * 255), int(p * 255)
-        if hi == 2:
-            return int(p * 255), int(self.V * 255), int(t * 255)
-        if hi == 3:
-            return int(p * 255), int(q * 255), int(self.V * 255)
-        if hi == 4:
-            return int(t * 255), int(p * 255), int(self.V * 255)
-        return int(self.V * 255), int(p * 255), int(q * 255)
+    @property
+    def RGB(self) -> tuple[int, ...]:
+        return tuple(
+            round(i * 255)
+            for i in colorsys.hsv_to_rgb(
+                float(
+                    self.H,
+                )
+                / 255,
+                float(self.S) / 255,
+                float(self.V) / 255,
+            )
+        )
 
-    def ToBGR(self):
-        """
-        Convert HSV color to BGR.
-        """
-        rgb = self.ToRGB()
-        return rgb[2], rgb[1], rgb[0]
+    @property
+    def BGR(self) -> tuple[int, int, int]:
+        rgb = self.RGB
+        return (rgb[2], rgb[1], rgb[0])
 
+
+white = Color(H=0, S=0, V=255)
+black = Color(H=0, S=0, V=0)
+blue = Color(H=128, S=200, V=128)
+green = Color(H=70, S=200, V=128)
+
+
+"""
 
 def OpenCVToPygame(opencv_image):
     # Convert the OpenCV image to RGB
@@ -113,4 +109,5 @@ def ToOpenCV(image):
     image_array = pygame.surfarray.array3d(image)
     opencv_image = cv2.cvtColor(image_array, cv2.COLOR_RGB2HSV)
     return opencv_image
-'''
+
+"""

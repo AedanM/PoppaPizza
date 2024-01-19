@@ -1,6 +1,5 @@
 """Class for Luck"""
 
-import math
 from dataclasses import dataclass
 
 

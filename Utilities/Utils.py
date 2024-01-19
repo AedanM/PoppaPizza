@@ -2,9 +2,12 @@
 import math
 import socket
 import random
+import string
+from typing import Any
 
 
-def CheckInternet(host="8.8.8.8", port=53, timeout=30):
+# TODO- Worth a unit test?
+def CheckInternet(host="8.8.8.8", port=53, timeout=30) -> bool:
     """
     Host: 8.8.8.8 (google-public-dns-a.google.com)
     OpenPort: 53/tcp
@@ -18,12 +21,27 @@ def CheckInternet(host="8.8.8.8", port=53, timeout=30):
     return True
 
 
-def InRandomVariance(num, percentVariance):
-    varyAmount = random.randint(-100, 100) * percentVariance
-    return num * varyAmount
+def InRandomVariance(num, percentVariance) -> float:
+    percentVariance = checkDecimalPercent(percentVariance)
+    varyAmount = random.randint(a=-100, b=100) * percentVariance * 0.01 * num
+    return num + varyAmount
 
 
-def PositionRandomVariance(position, percentVarianceTuple, screenSize):
+def checkDecimalPercent(val) -> float | tuple:
+    if type(val) == tuple:
+        holdList = []
+        percentMod = True if (abs(val[0]) < 1) else False
+        for i in val:
+            holdList.append(float(i) if percentMod else float(i) / 100)
+        return tuple(holdList)
+    else:
+        return float(val) if abs(val) <= 1 else float(val) / 100
+
+
+def PositionRandomVariance(
+    position, percentVarianceTuple, screenSize
+) -> tuple[int, int]:
+    percentVarianceTuple = checkDecimalPercent(val=percentVarianceTuple)
     varyAmountX = math.ceil(
         (random.randint(-100, 100) * 0.01 * percentVarianceTuple[0] * screenSize[0])
         + position[0]
@@ -33,43 +51,35 @@ def PositionRandomVariance(position, percentVarianceTuple, screenSize):
         + position[1]
     )
     out = (
-        Bind(varyAmountX, (0, screenSize[0])),
-        Bind(varyAmountY, (0, screenSize[1])),
+        Bind(val=varyAmountX, inRange=(0, screenSize[0])),
+        Bind(val=varyAmountY, inRange=(0, screenSize[1])),
     )
-    print(position, percentVarianceTuple, out)
     return out
 
 
 def InTolerance(num1, num2, tolerance) -> bool:
-    return abs(num1 - num2) <= tolerance
+    return abs(num1 - num2) <= abs(tolerance)
 
 
 def InPercentTolerance(num1, num2, tolerance) -> bool:
-    return abs(1 - (num1 / num2)) <= tolerance if num2 != 0 else 1
+    tolerance = checkDecimalPercent(val=tolerance)
+    if num1 == 0:
+        return False
+    seperation = abs((num1 - num2) / num1)
+    return seperation <= abs(tolerance)
 
 
-def ProRateValue(value, inRange, outRange):
+def ProRateValue(value, inRange, outRange) -> int | float | str:
     return (
-        value * abs(outRange[1] - outRange[0]) / abs(inRange[1] - inRange[0])
-        if inRange[1] - inRange[0] != 0
-        else 1
+        float(value) * (outRange[1] - outRange[0]) / (inRange[1] - inRange[0])
+        if (inRange[1] - inRange[0]) != 0 and (outRange[1] - outRange[0]) != 0
+        else "Error"
     )
 
 
-def Bind(val, inRange):
+def Bind(val, inRange) -> int:
     return min(inRange[1], max(inRange[0], val))
 
 
-def UtilsUnitTest():
-    print(InTolerance(100, 110, 15))
-    print(InPercentTolerance(100, 110, 0.15))
-    print(ProRateValue(5, (0, 10), (0, 100)))
-    print(Bind(110, (0, 100)))
-
-
-def Sign(num):
+def Sign(num: int | float) -> int:
     return int(num / abs(num)) if num != 0 else 0
-
-
-if __name__ == "__main__":
-    UtilsUnitTest()
