@@ -39,5 +39,5 @@ def AssignWorker(target):
 
 
 def AllCustomersBusy(customer, target):
-    taskComplete = lambda: print("Hello")
+    taskComplete = lambda: (Game.MasterGame.UserInventory.GetPaid(customer.desiredJob.Price))
     TB.CreatePersonTimerBar(target, customer, taskComplete, 10)

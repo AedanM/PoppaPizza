@@ -18,18 +18,8 @@ Game.MasterGame.BackgroundSpriteGroup.add(table)
 
 
 while True:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            exit()
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-            ClickHandler.MouseHandler()
-        if(event.type == pygame.KEYDOWN and event.key == pygame.K_t):
-            Game.MasterGame.Clock.ChangeClockMul(-1)
-            print(Game.MasterGame.Clock.ClockMul)
-        if(event.type == pygame.KEYDOWN and event.key == pygame.K_y):
-            Game.MasterGame.Clock.ChangeClockMul(1)
-            print(Game.MasterGame.Clock.ClockMul)
+    EventHandler.MainEventHandler()
+            
     Game.MasterGame.screen.fill((255, 255, 255))
     for group in Game.MasterGame.SpriteGroups:
         group.update()
@@ -41,7 +31,7 @@ while True:
         
     
     pygame.draw.lines(Game.MasterGame.screen, (255,0,0), False, Game.MasterGame.LineList)
-    text = Game.MasterGame.font.render(str(Game.MasterGame.Clock.dateTime), True, ColorTools.white, ColorTools.blue)
+    text = Game.MasterGame.font.render(f"{Game.MasterGame.Clock.dateTime}  ${Game.MasterGame.UserInventory.Money:2.2f}" , True, ColorTools.white, ColorTools.blue)
     textRect = text.get_rect()
     textRect.x = 0
     textRect.y = 0

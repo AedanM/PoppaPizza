@@ -3,6 +3,7 @@ import math
 import sys
 sys.path.insert(0,'..')
 import programUtils as utils
+import Classes.Inventory as Inventory
 from dataclasses import dataclass
 std_dimensions = {"Medium": (1200, 800), "Small": (600, 400), "Large": (2400, 1600)}
 
@@ -81,16 +82,15 @@ class Game:
     WorkerList: list = []
     CustomerList: list = []
     JobList: list = []
-    Money: int = 0
+    UserInventory: Inventory.Inventory = None
     TimerBars: list = []
     
-
     def __init__(self, size=std_dimensions['Medium']):
         pygame.init()
 
         self.Clock = GameClock(pygame.time.Clock())
         self.startTime = pygame.time.get_ticks()
-
+        self.UserInventory = Inventory.Inventory()
         width, height = std_dimensions[size]
         self.screen = pygame.display.set_mode((width, height))
         pygame.display.set_caption("Poppa Pizza Clone")
