@@ -45,8 +45,13 @@ class Game:
 
         self.Font = pygame.font.Font(None, 36)
 
-    def DrawScreenClock(self, locationTopLeft, foreColor, backColor) -> None:
-        text = self.Font.render(str(self.Clock.DateTime), True, foreColor, backColor)
+    def DrawScreenClock(
+        self, locationTopLeft, foreColor, backColor, withMoney=False
+    ) -> None:
+        MoneyText = f" ${self.UserInventory.Money:0.2f}" if withMoney else ""
+        text = self.Font.render(
+            str(self.Clock.DateTime + MoneyText), True, foreColor, backColor
+        )
         textrect = text.get_rect()
         textrect.x = locationTopLeft[0]
         textrect.y = locationTopLeft[1]
@@ -57,13 +62,13 @@ class Game:
         self.Screen.blit(source=bg, dest=(0, 0))
 
     def RemoveObjFromSprite(self, targetSprite) -> None:
-        targetSprite.kill()
         self.CustomerList = [
             x for x in self.CustomerList if x.IdNum != targetSprite.CorrespondingID
         ]
         self.WorkerList = [
             x for x in self.WorkerList if x.IdNum != targetSprite.CorrespondingID
         ]
+        targetSprite.kill()
 
     def UpdateSprites(self) -> None:
         for group in self.SpriteGroups:

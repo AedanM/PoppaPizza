@@ -17,22 +17,20 @@ def test_PeopleIdTest() -> None:
 
 
 def test_PeopleNames() -> None:
-    Game.MasterGame = Game.Game(activateScreen=True)
+    currentGame = Game.Game(activateScreen=True)
+    currentGame.CustomerList = []
+    currentGame.WorkerList = []
     for i in range(10):
-        worker, workerSprite = People.Worker.CreateWorker()
-        customer, customerSprite = People.Customer.CreateCustomer()
+        worker, workerSprite = People.Worker.CreateWorker(activeGame=currentGame)
+        customer, customerSprite = People.Customer.CreateCustomer(
+            activeGame=currentGame
+        )
         if Utils.CheckInternet():
             assert worker.FirstName != customer.FirstName
             assert worker.LastName != customer.LastName
-        Game.MasterGame.RemoveObjFromSprite(targetSprite=workerSprite)
-        Game.MasterGame.RemoveObjFromSprite(targetSprite=customerSprite)
-    assert Game.MasterGame.WorkerList == []
-    assert Game.MasterGame.CustomerList == []
+        currentGame.RemoveObjFromSprite(targetSprite=workerSprite)
+        currentGame.RemoveObjFromSprite(targetSprite=customerSprite)
+    assert currentGame.WorkerList == []
+    assert currentGame.CustomerList == []
 
 
-def RunAllPeopleTests() -> bool:
-    Game.MasterGame = None
-    test_PeopleNames()
-    Game.MasterGame = None
-    test_PeopleIdTest()
-    return True

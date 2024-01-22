@@ -3,6 +3,7 @@ from dataclasses import dataclass
 import math
 from Utilities import Utils
 from Classes.Settings import GameSettings
+from Classes import CustomEvents
 
 
 @dataclass
@@ -29,6 +30,7 @@ Months = [
 ]
 
 
+# TODO- Weird Flickering between 1:00 and 8:00 in 24hr clock
 class GameClock:
     Day: int = 1
     CurrMonth: Month = Months[0]
@@ -78,8 +80,15 @@ class GameClock:
         return math.floor(self.Minute / 60)
 
     @property
+    def DisplayHour(self) -> int:
+        returnVal = self.Hour % GameSettings.ClockDivisor
+        if (not GameSettings.Clock24) and (self.Hour > 12 and returnVal < 12):
+            returnVal += 1
+        return returnVal
+
+    @property
     def DateTime(self) -> str:
-        return f"{self.CurrMonth.Name} {self.DayOfMonth} {(self.Hour % GameSettings.ClockDivisor):02d}:{(self.Minute % 60):02d}{GameSettings.AMPM(self.Hour)}"
+        return f"{self.CurrMonth.Name} {self.DayOfMonth} {(self.DisplayHour):02d}:{(self.Minute % 60):02d}{GameSettings.AMPM(self.Hour)}"
 
     @property
     def UnixTime(self) -> int:
@@ -95,4 +104,4 @@ class GameClock:
             self.Second = self.WorkingDayStart * 60 * 60
 
     def NightCycle(self) -> None:
-        pass
+        pygame.event.post(CustomEvents.NightCycle)

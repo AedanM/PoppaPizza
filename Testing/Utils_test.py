@@ -184,15 +184,3 @@ def test_Sign() -> None:
         except AssertionError:
             print(test, testVal)
             assert False
-
-
-def RunAllUtilsTests() -> bool:
-    test_checkDecimalPercent()
-    test_InRandomVarianceTest()
-    test_PositionRandomVarianceTest()
-    test_InTolerance()
-    test_InPercentTolerance()
-    test_ProRateValue()
-    test_Bind()
-    test_Sign()
-    return True

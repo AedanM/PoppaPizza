@@ -9,9 +9,11 @@ def test_ScreenSize() -> None:
 
 def test_Matching() -> None:
     currentGame = Game.Game()
-    for i in range(10):
-        worker, workerSprite = People.Worker.CreateWorker()
-        customer, customerSprite = People.Customer.CreateCustomer()
+    for i in range(200):
+        worker, workerSprite = People.Worker.CreateWorker(activeGame=currentGame)
+        customer, customerSprite = People.Customer.CreateCustomer(
+            activeGame=currentGame
+        )
         assert {
             "worker": worker,
             "sprite": workerSprite,
@@ -20,9 +22,3 @@ def test_Matching() -> None:
             "customer": customer,
             "sprite": customerSprite,
         } == currentGame.MatchSpriteToPerson(inputId=customerSprite.CorrespondingID)
-
-
-def RunAllGameTests() -> bool:
-    test_ScreenSize()
-    test_Matching()
-    return True

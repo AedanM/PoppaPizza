@@ -1,5 +1,5 @@
 """Class for DefinedLocations"""
-
+import random
 import pygame
 from Classes.Game import MasterGame
 from Utilities import Utils
@@ -38,7 +38,24 @@ class DefinedLocations:
 LocationDefs = DefinedLocations()
 
 
+def GetRandomSeatPosition() -> tuple:
+    yPos = random.choice(SeatingPlan.TableCols)
+    xPos = random.choice(SeatingPlan.TableRows)
+    return (xPos, yPos)
+
+
 class DefinedPaths:
+    @staticmethod
+    def CustomerToRandomSeat(sprite) -> list:
+        randomSeatPosition = GetRandomSeatPosition()
+        path = [
+            (sprite.rect.centerx, randomSeatPosition[1] - 50),
+            (randomSeatPosition[0], randomSeatPosition[1] - 50),
+            randomSeatPosition,
+        ]
+        print(path)
+        return path
+
     @staticmethod
     def KitchenToCustomer(sprite, dest) -> list:
         path = [

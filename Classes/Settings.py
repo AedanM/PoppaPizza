@@ -23,5 +23,8 @@ class Settings:
         tag = " AM" if hour < 12 else " PM"
         return tag if not self.Clock24 else ""
 
+    def ToggleClock24(self) -> None:
+        self.Clock24 = not self.Clock24
+
 
 GameSettings = Settings()

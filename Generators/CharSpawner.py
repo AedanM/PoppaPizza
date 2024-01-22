@@ -22,6 +22,7 @@ def CustomerSpawner(force=False) -> None:
         customerSprite.MvmHandler.StartNewListedMotion(
             DefinedLocations.DefinedPaths.CustomerToEntrance(sprite=customerSprite)
         )
+        customer.CurrentState = People.CustomerStates.Queuing
         LastSpawnTime = currentTime
 
 
