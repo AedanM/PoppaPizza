@@ -1,14 +1,17 @@
 """Class for Game"""
 import pygame
-from Classes import Chances, GameClock
-from Classes.Sprite import ImagePaths
+from Assets import AssetLibrary
+from Classes import Chances, GameClock, Settings
+from Assets import AssetLibrary
 import Classes.Inventory as Inventory
 
-iPaths = ImagePaths()
 std_dimensions = {"Medium": (1200, 800), "Small": (600, 400), "Large": (2400, 1600)}
 
 
 class Game:
+    ImageTypes = AssetLibrary.ImageTypes
+    ImagePath = AssetLibrary.ImagePaths()
+    PathToTypeDict: dict = AssetLibrary.PathToTypeDict
     ActiveTimerBars: list = []
     CharSpriteGroup: pygame.sprite.Group = pygame.sprite.Group()
     BackgroundSpriteGroup: pygame.sprite.Group = pygame.sprite.Group()
@@ -24,6 +27,7 @@ class Game:
 
     def __init__(self, activateScreen=True, size=std_dimensions["Medium"]) -> None:
         pygame.init()
+        self.Settings = Settings.GameSettings
         self.Chances = Chances.LuckChances()
         self.StartTime = pygame.time.get_ticks()
         self.ShowScreen = activateScreen
@@ -49,7 +53,7 @@ class Game:
         self.Screen.blit(source=text, dest=textrect)
 
     def DrawBackground(self) -> None:
-        bg = pygame.image.load(iPaths.BackgroundPath)
+        bg = pygame.image.load(self.ImagePath.BackgroundPath)
         self.Screen.blit(source=bg, dest=(0, 0))
 
     def RemoveObjFromSprite(self, targetSprite) -> None:
@@ -90,4 +94,4 @@ class Game:
         return output
 
 
-MasterGame = None
+MasterGame = Game()

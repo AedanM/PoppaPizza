@@ -3,6 +3,7 @@ from Utilities import Utils
 
 
 def test_PeopleIdTest() -> None:
+    Game.MasterGame = Game.Game(activateScreen=True)
     worker1 = People.Worker.CreateWorker()[0]
     worker2 = People.Worker.CreateWorker()[0]
     customer1 = People.Customer.CreateCustomer()[0]
@@ -16,20 +17,22 @@ def test_PeopleIdTest() -> None:
 
 
 def test_PeopleNames() -> None:
+    Game.MasterGame = Game.Game(activateScreen=True)
     for i in range(10):
         worker, workerSprite = People.Worker.CreateWorker()
         customer, customerSprite = People.Customer.CreateCustomer()
         if Utils.CheckInternet():
             assert worker.FirstName != customer.FirstName
             assert worker.LastName != customer.LastName
-        Game.MasterGame.RemoveObjFromSprite(workerSprite)
-        Game.MasterGame.RemoveObjFromSprite(customerSprite)
+        Game.MasterGame.RemoveObjFromSprite(targetSprite=workerSprite)
+        Game.MasterGame.RemoveObjFromSprite(targetSprite=customerSprite)
     assert Game.MasterGame.WorkerList == []
     assert Game.MasterGame.CustomerList == []
 
 
 def RunAllPeopleTests() -> bool:
-    Game.MasterGame = Game.Game(activateScreen=True)
+    Game.MasterGame = None
     test_PeopleNames()
+    Game.MasterGame = None
     test_PeopleIdTest()
     return True

@@ -1,33 +1,25 @@
 """Get stats from Dot file"""
-from dataclasses import dataclass
 
+bannedImportList = ["Classes", "Utilities", "Handlers", "Generators"]
 
-@dataclass
-class Module:
-    NumDepends: int = 0
-    NumImports: int = 0
-    Name: str = ""
-
-    def __repr__(self):
-        return f"{self.Name} D:{self.NumDepends} I:{self.NumImports}"
-
-
-ModuleList: list[Module] = []
-
+docString = []
 with open("packages.dot", "r", encoding="utf8") as fp:
     for line in fp:
         if "->" in line:
             importer = line.split(" ")[0].replace('"', "")
             imported = line.split(" ")[2].replace('"', "")
-            # print(ModuleList, imported, importer)
-            importerModule = [x for x in ModuleList if x.Name == importer][0]
-            importedModule = [x for x in ModuleList if x.Name == imported][0]
-            importerModule.NumImports += 1
-            importedModule.NumDepends += 1
+            if (
+                "." in importer
+                and "." in imported
+                and "Utils" not in imported
+                or ("Main" in importer and "." in imported)
+            ):
+                docString.append(line)
         elif "[" in line:
-            modName = line.split(" ")[0].replace('"', "")
-            mod = Module(Name=modName)
-            ModuleList.append(mod)
-    x = sorted(ModuleList, key=lambda x: x.NumDepends, reverse=True)
-    for i in x:
-        print(i)
+            importer = line.split(" ")[0].replace('"', "")
+            if "." in importer or "Main" in importer:
+                docString.append(line)
+        else:
+            docString.append(line)
+with open("packages.dot", "w", encoding="utf8") as fp:
+    fp.writelines(docString)

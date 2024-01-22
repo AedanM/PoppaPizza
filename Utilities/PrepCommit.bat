@@ -9,4 +9,3 @@ move packages.png ..\..\PoppaPizza\Utilities
 move packages.dot ..\..\PoppaPizza\Utilities
 move classes.png ..\..\PoppaPizza\Utilities
 move classes.dot ..\..\PoppaPizza\Utilities
-pause

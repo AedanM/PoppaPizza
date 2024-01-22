@@ -1,5 +1,5 @@
 """Handler for Collision"""
-from Classes import Game
+"""from Classes import Game
 
 
 def FindCollisionAxis(sprite, obj) -> dict[str, int]:
@@ -34,3 +34,4 @@ def CheckCollision(obj) -> None:
                 print(adjustments)
                 obj.rect.x += adjustments["x"]
                 obj.rect.y += adjustments["y"]
+"""

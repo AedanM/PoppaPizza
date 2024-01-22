@@ -8,7 +8,7 @@ import sys
 # pylint: disable=wrong-import-position
 os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "True"
 import pygame
-from Classes import People, Game, DefinedLocations, ColorTools
+from Classes import Game, DefinedLocations, ColorTools
 from Handlers import EventHandler
 from Generators import CharSpawner, BackgroundPopulator
 

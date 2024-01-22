@@ -1,21 +1,21 @@
 """Handler for Customer Tasks"""
 import random
-from Classes import Game, Jobs, Sprite, People, TimerBar as TB, DefinedLocations as DL
+from Classes import Game, TimerBar as TB, DefinedLocations as DL
 from Handlers import WorkerHandler as WH
 
 
 # TODO - Fix getting worker who is busy
-def FindAvailableWorker() -> tuple[People.Worker, Sprite.CharImageSprite]:
-    availWorkers = [x for x in Game.MasterGame.WorkerList if x.IsAssigned is False]
+def FindAvailableWorker(activeGame=Game.MasterGame) -> tuple:
+    availWorkers = [x for x in activeGame.WorkerList if x.IsAssigned is False]
     if len(availWorkers) < 1:
         worker, workerSprite = None, None
     else:
         worker = random.choice(availWorkers)
         workerSprites = [
             x
-            for x in Game.MasterGame.CharSpriteGroup
+            for x in activeGame.CharSpriteGroup
             if (
-                x.ImageType == Sprite.ImageTypes.Worker
+                x.ImageType == activeGame.ImageTypes.Worker
                 and x.CorrespondingID == worker.IdNum
             )
         ]
@@ -24,9 +24,9 @@ def FindAvailableWorker() -> tuple[People.Worker, Sprite.CharImageSprite]:
 
 
 # TODO - Stop 2 workers on 1 job
-def AssignWorker(target) -> None:
+def AssignWorker(target, activeGame=Game.MasterGame) -> None:
     customer = [
-        x for x in Game.MasterGame.CustomerList if (x.IdNum == target.CorrespondingID)
+        x for x in activeGame.CustomerList if (x.IdNum == target.CorrespondingID)
     ][0]
     worker, workerSprite = FindAvailableWorker()
     if customer.WorkerAssigned is False and worker is None:
@@ -55,13 +55,11 @@ def AllWorkersBusy(target) -> None:
     TB.CreatePersonTimerBar(sprite=target, completeTask=taskComplete, length=10)
 
 
-def GetUpAndGo(spriteImg) -> None:
+def GetUpAndGo(spriteImg, activeGame=Game.MasterGame) -> None:
     spriteImg.MvmHandler.StartNewListedMotion(
         DL.DefinedPaths.CustomerToExit(sprite=spriteImg)
     )
 
-    spriteImg.MvmHandler.OnComplete = lambda: Game.MasterGame.RemoveObj(spriteImg)
-    customer = Game.MasterGame.MatchSpriteToPerson(spriteImg.CorrespondingID)[
-        "customer"
-    ]
+    spriteImg.MvmHandler.OnComplete = lambda: activeGame.RemoveObjFromSprite(spriteImg)
+    customer = activeGame.MatchSpriteToPerson(spriteImg.CorrespondingID)["customer"]
     Game.MasterGame.UserInventory.GetPaid(customer.DesiredJob.Price)

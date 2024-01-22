@@ -1,6 +1,7 @@
 digraph "packages" {
 rankdir=BT
 charset="utf-8"
+"Assets.AssetLibrary" [color="black", label=<Assets.AssetLibrary>, shape="box", style="solid"];
 "Classes.Chances" [color="black", label=<Classes.Chances>, shape="box", style="solid"];
 "Classes.ColorTools" [color="black", label=<Classes.ColorTools>, shape="box", style="solid"];
 "Classes.DefinedLocations" [color="black", label=<Classes.DefinedLocations>, shape="box", style="solid"];
@@ -22,12 +23,15 @@ charset="utf-8"
 "Handlers.MovementHandler" [color="black", label=<Handlers.MovementHandler>, shape="box", style="solid"];
 "Handlers.PathfindingHandler" [color="black", label=<Handlers.PathfindingHandler>, shape="box", style="solid"];
 "Handlers.WorkerHandler" [color="black", label=<Handlers.WorkerHandler>, shape="box", style="solid"];
-"Classes.DefinedLocations" -> "Classes.ColorTools" [arrowhead="open", arrowtail="none"];
+"Main" [color="black", label=<Main>, shape="box", style="solid"];
+"Utilities.ParseDot" [color="black", label=<Utilities.ParseDot>, shape="box", style="solid"];
+"Utilities.Utils" [color="black", label=<Utilities.Utils>, shape="box", style="solid"];
 "Classes.DefinedLocations" -> "Classes.Game" [arrowhead="open", arrowtail="none"];
+"Classes.Game" -> "Assets.AssetLibrary" [arrowhead="open", arrowtail="none"];
 "Classes.Game" -> "Classes.Chances" [arrowhead="open", arrowtail="none"];
 "Classes.Game" -> "Classes.GameClock" [arrowhead="open", arrowtail="none"];
 "Classes.Game" -> "Classes.Inventory" [arrowhead="open", arrowtail="none"];
-"Classes.Game" -> "Classes.Sprite" [arrowhead="open", arrowtail="none"];
+"Classes.Game" -> "Classes.Settings" [arrowhead="open", arrowtail="none"];
 "Classes.GameClock" -> "Classes.Settings" [arrowhead="open", arrowtail="none"];
 "Classes.People" -> "Classes.DefinedLocations" [arrowhead="open", arrowtail="none"];
 "Classes.People" -> "Classes.Game" [arrowhead="open", arrowtail="none"];
@@ -46,21 +50,22 @@ charset="utf-8"
 "Handlers.ClickHandler" -> "Classes.Game" [arrowhead="open", arrowtail="none"];
 "Handlers.ClickHandler" -> "Classes.Sprite" [arrowhead="open", arrowtail="none"];
 "Handlers.ClickHandler" -> "Handlers.CustomerHandler" [arrowhead="open", arrowtail="none"];
-"Handlers.CollisionHandler" -> "Classes.Game" [arrowhead="open", arrowtail="none"];
 "Handlers.CustomerHandler" -> "Classes.DefinedLocations" [arrowhead="open", arrowtail="none"];
 "Handlers.CustomerHandler" -> "Classes.Game" [arrowhead="open", arrowtail="none"];
-"Handlers.CustomerHandler" -> "Classes.Jobs" [arrowhead="open", arrowtail="none"];
-"Handlers.CustomerHandler" -> "Classes.People" [arrowhead="open", arrowtail="none"];
-"Handlers.CustomerHandler" -> "Classes.Sprite" [arrowhead="open", arrowtail="none"];
 "Handlers.CustomerHandler" -> "Classes.TimerBar" [arrowhead="open", arrowtail="none"];
 "Handlers.CustomerHandler" -> "Handlers.WorkerHandler" [arrowhead="open", arrowtail="none"];
 "Handlers.EventHandler" -> "Classes.Game" [arrowhead="open", arrowtail="none"];
 "Handlers.EventHandler" -> "Classes.People" [arrowhead="open", arrowtail="none"];
-"Handlers.EventHandler" -> "Classes.Settings" [arrowhead="open", arrowtail="none"];
 "Handlers.EventHandler" -> "Handlers.ClickHandler" [arrowhead="open", arrowtail="none"];
 "Handlers.MovementHandler" -> "Classes.Game" [arrowhead="open", arrowtail="none"];
 "Handlers.MovementHandler" -> "Handlers.PathfindingHandler" [arrowhead="open", arrowtail="none"];
 "Handlers.PathfindingHandler" -> "Classes.Game" [arrowhead="open", arrowtail="none"];
 "Handlers.WorkerHandler" -> "Classes.DefinedLocations" [arrowhead="open", arrowtail="none"];
 "Handlers.WorkerHandler" -> "Classes.TimerBar" [arrowhead="open", arrowtail="none"];
+"Main" -> "Classes.ColorTools" [arrowhead="open", arrowtail="none"];
+"Main" -> "Classes.DefinedLocations" [arrowhead="open", arrowtail="none"];
+"Main" -> "Classes.Game" [arrowhead="open", arrowtail="none"];
+"Main" -> "Generators.BackgroundPopulator" [arrowhead="open", arrowtail="none"];
+"Main" -> "Generators.CharSpawner" [arrowhead="open", arrowtail="none"];
+"Main" -> "Handlers.EventHandler" [arrowhead="open", arrowtail="none"];
 }
