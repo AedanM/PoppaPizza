@@ -1,3 +1,3 @@
 @ECHO off
 python ParseDot.py
-dot -Tpng packages.dot -o packages.png
+dot -Tpng packages.dot -o packages.png -x

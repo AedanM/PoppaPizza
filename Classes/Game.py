@@ -85,6 +85,7 @@ class Game:
     def ScreenSize(self) -> tuple[int, int]:
         return (self.Screen.get_width(), self.Screen.get_height())
 
+    # TODO - BUG- Breaks after ~3 customers
     def MatchSpriteToPerson(self, inputId) -> dict:
         output = {}
         for sprite in self.CharSpriteGroup:

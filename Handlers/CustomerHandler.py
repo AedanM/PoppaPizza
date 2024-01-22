@@ -73,6 +73,8 @@ def GetUpAndGo(spriteImg, activeGame=Game.MasterGame) -> None:
     if not customer.WorkerAssigned:
         spriteImg.MvmHandler.StartNewListedMotion(
             DL.DefinedPaths.CustomerToExit(sprite=spriteImg)
+            if customer.CurrentState != People.CustomerStates.WaitingForService
+            else DL.DefinedPaths.TableToExit(sprite=spriteImg)
         )
 
         spriteImg.MvmHandler.OnComplete = lambda: activeGame.RemoveObjFromSprite(

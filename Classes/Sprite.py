@@ -23,7 +23,7 @@ class CharImageSprite(GameObject.GameObject):
             path
         )  # Replace with the actual sprite image file
 
-        self.image = pygame.transform.scale_by(surface=self.image, factor=0.1)
+        self.image = pygame.transform.scale_by(surface=self.image, factor=0.08)
         self.rect = self.image.get_rect()
         self.rect.x = position[0]
         self.rect.y = position[1]

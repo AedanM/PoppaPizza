@@ -32,5 +32,3 @@ def test_PeopleNames() -> None:
         currentGame.RemoveObjFromSprite(targetSprite=customerSprite)
     assert currentGame.WorkerList == []
     assert currentGame.CustomerList == []
-
-

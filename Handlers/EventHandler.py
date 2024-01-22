@@ -1,8 +1,9 @@
 import pygame
 import sys
-from Classes import People, CustomEvents
+from Classes import People, CustomEvents, Settings
 from Classes.Game import MasterGame
 from Handlers import ClickHandler
+from Generators import CharSpawner, BackgroundPopulator
 
 
 def MainEventHandler(activeGame=MasterGame) -> None:
@@ -26,3 +27,9 @@ def MainEventHandler(activeGame=MasterGame) -> None:
             activeGame.Settings.ToggleClock24()
         if event.type == pygame.KEYDOWN and event.key == pygame.K_d:
             activeGame.ShowScreen = not activeGame.MasterGame.ShowScreen
+
+
+def DebugSetup():
+    CharSpawner.WorkerSpawner(force=True)
+    CharSpawner.WorkerSpawner(force=True)
+    BackgroundPopulator.AddTables()

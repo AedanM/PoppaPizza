@@ -86,14 +86,24 @@ class DefinedPaths:
         return path
 
     @staticmethod
+    def TableToExit(sprite) -> list:
+        path = [
+            sprite.rect.center,
+            (sprite.rect.centerx, sprite.rect.centery - 50),
+            (LocationDefs.CustomerEntrance[0], sprite.rect.centery - 50),
+            LocationDefs.CustomerExit,
+        ]
+        return path
+
+    @staticmethod
     def CustomerToEntrance(sprite) -> list:
         path = [sprite.rect.center, LocationDefs.CustomerEntrance]
         return path
 
 
 class SeatingPlan:
-    TableRows = [450, 650, 850, 1050]
-    TableCols = [50, 250, 450, 650]
+    TableRows = [300, 450, 600, 750]
+    TableCols = [400, 500, 600, 700]
 
 
 def DebugLocations(activateGame=MasterGame) -> None:

@@ -10,16 +10,14 @@ os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "True"
 import pygame
 from Classes import Game, ColorTools
 from Handlers import EventHandler
-from Generators import CharSpawner, BackgroundPopulator
+from Generators import CharSpawner
 
 Game.MasterGame = Game.Game()
 # Enables a series of functions to run automatically
 DEBUGFLAG = True
 
 if DEBUGFLAG:
-    CharSpawner.WorkerSpawner(force=True)
-    CharSpawner.WorkerSpawner(force=True)
-    BackgroundPopulator.AddTables()
+    EventHandler.DebugSetup()
 
 while True:
     EventHandler.MainEventHandler()

@@ -62,7 +62,16 @@ class Worker(Person):
 
 
 class CustomerStates(Enum):
-    Null, Queuing, Seated,WaitingForService, BeingServed, Served, LeavingAngry, *_ = range(100)
+    (
+        Null,
+        Queuing,
+        Seated,
+        WaitingForService,
+        BeingServed,
+        Served,
+        LeavingAngry,
+        *_,
+    ) = range(100)
 
 
 @dataclass

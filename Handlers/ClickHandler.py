@@ -1,6 +1,5 @@
 """Handler for User Clicks"""
 from enum import Enum
-from pickletools import TAKEN_FROM_ARGUMENT4
 import pygame
 from Classes import Game, Sprite, People
 from Handlers import CustomerHandler
