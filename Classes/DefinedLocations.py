@@ -26,6 +26,14 @@ class DefinedLocations:
     def CustomerEntrance(self) -> tuple:
         return (1150, 325)
 
+    @property
+    def CustomerSpawn(self) -> tuple:
+        return (1300, 325)
+
+    @property
+    def TopRow(self) -> tuple:
+        return (0, 0)
+
 
 LocationDefs = DefinedLocations()
 
@@ -59,6 +67,16 @@ class DefinedPaths:
     def CustomerToExit(sprite) -> list:
         path = [sprite.rect.center, LocationDefs.CustomerExit]
         return path
+
+    @staticmethod
+    def CustomerToEntrance(sprite) -> list:
+        path = [sprite.rect.center, LocationDefs.CustomerEntrance]
+        return path
+
+
+class SeatingPlan:
+    TableRows = [450, 650, 850, 1050]
+    TableCols = [50, 250, 450, 650]
 
 
 def DebugLocations() -> None:

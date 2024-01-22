@@ -1,7 +1,7 @@
-from Classes import Game, Sprite
+from Classes import Game, Sprite, DefinedLocations
 
-RowCoords = [450, 650, 850, 1050]
-ColCoords = [50, 250, 450, 650]
+RowCoords = DefinedLocations.SeatingPlan().TableRows
+ColCoords = DefinedLocations.SeatingPlan().TableCols
 
 
 def generateTablePlaces() -> list:

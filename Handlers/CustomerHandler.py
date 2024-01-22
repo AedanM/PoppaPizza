@@ -1,6 +1,6 @@
 """Handler for Customer Tasks"""
 import random
-from Classes import Game, Sprite, People, TimerBar as TB, DefinedLocations as DL
+from Classes import Game, Jobs, Sprite, People, TimerBar as TB, DefinedLocations as DL
 from Handlers import WorkerHandler as WH
 
 
@@ -59,5 +59,9 @@ def GetUpAndGo(spriteImg) -> None:
     spriteImg.MvmHandler.StartNewListedMotion(
         DL.DefinedPaths.CustomerToExit(sprite=spriteImg)
     )
-    Game.MasterGame.UserInventory.GetPaid(customer.desiredJob.Price)
+
     spriteImg.MvmHandler.OnComplete = lambda: Game.MasterGame.RemoveObj(spriteImg)
+    customer = Game.MasterGame.MatchSpriteToPerson(spriteImg.CorrespondingID)[
+        "customer"
+    ]
+    Game.MasterGame.UserInventory.GetPaid(customer.DesiredJob.Price)

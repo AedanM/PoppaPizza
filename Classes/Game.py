@@ -3,6 +3,7 @@ import pygame
 from Classes import Chances, GameClock
 from Classes.Sprite import ImagePaths
 import Classes.Inventory as Inventory
+
 iPaths = ImagePaths()
 std_dimensions = {"Medium": (1200, 800), "Small": (600, 400), "Large": (2400, 1600)}
 
@@ -26,7 +27,7 @@ class Game:
         self.Chances = Chances.LuckChances()
         self.StartTime = pygame.time.get_ticks()
         self.ShowScreen = activateScreen
-        self.UserInventory = Inventory.Inventory()        
+        self.UserInventory = Inventory.Inventory()
         if self.ShowScreen:
             self.StartScreen(size=size)
 
@@ -51,7 +52,7 @@ class Game:
         bg = pygame.image.load(iPaths.BackgroundPath)
         self.Screen.blit(source=bg, dest=(0, 0))
 
-    def RemoveObj(self, targetSprite) -> None:
+    def RemoveObjFromSprite(self, targetSprite) -> None:
         targetSprite.kill()
         self.CustomerList = [
             x for x in self.CustomerList if x.IdNum != targetSprite.CorrespondingID
@@ -73,7 +74,20 @@ class Game:
 
     @property
     def ScreenSize(self) -> tuple[int, int]:
-        return (self.Screen.get_width(), self.Screen.get_width())
+        return (self.Screen.get_width(), self.Screen.get_height())
+
+    def MatchSpriteToPerson(self, inputId) -> dict:
+        output = {}
+        for sprite in self.CharSpriteGroup:
+            if sprite.CorrespondingID == inputId:
+                output["sprite"] = sprite
+        for worker in self.WorkerList:
+            if worker.IdNum == inputId:
+                output["worker"] = worker
+        for customer in self.CustomerList:
+            if customer.IdNum == inputId:
+                output["customer"] = customer
+        return output
 
 
 MasterGame = None

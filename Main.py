@@ -8,8 +8,8 @@ import sys
 # pylint: disable=wrong-import-position
 os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "True"
 import pygame
-from Classes import People, Game, DefinedLocations, ColorTools, Settings
-from Handlers import ClickHandler
+from Classes import People, Game, DefinedLocations, ColorTools
+from Handlers import EventHandler
 from Generators import CharSpawner, BackgroundPopulator
 
 Game.MasterGame = Game.Game()
@@ -17,13 +17,12 @@ Game.MasterGame = Game.Game()
 DEBUGFLAG = True
 
 if DEBUGFLAG:
-    People.Worker.CreateWorker()
-    People.Worker.CreateWorker()
-    People.Customer.CreateCustomer()
+    CharSpawner.WorkerSpawner(force=True)
+    CharSpawner.WorkerSpawner(force=True)
+    CharSpawner.CustomerSpawner(force=True)
     BackgroundPopulator.AddTables()
 
 while True:
-    # TODO: Move to EventHandler
     EventHandler.MainEventHandler()
 
     Game.MasterGame.DrawBackground()
