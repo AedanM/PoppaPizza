@@ -1,6 +1,6 @@
 import pygame
 import sys
-from Classes import People, CustomEvents, Settings
+from Classes import People, CustomEvents, Prices
 from Classes.Game import MasterGame
 from Handlers import ClickHandler
 from Generators import CharSpawner, BackgroundPopulator
@@ -12,7 +12,7 @@ def MainEventHandler(activeGame=MasterGame) -> None:
             pygame.quit()
             sys.exit()
         if event.type == pygame.USEREVENT and event == CustomEvents.NightCycle:
-            print("DAY CHANGE EVENT HERE")
+            DayNightEvent(activeGame)
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             ClickHandler.MouseHandler()
         if event.type == pygame.KEYDOWN and event.key == pygame.K_t:
@@ -29,7 +29,17 @@ def MainEventHandler(activeGame=MasterGame) -> None:
             activeGame.ShowScreen = not activeGame.MasterGame.ShowScreen
 
 
-def DebugSetup():
+def DebugSetup() -> None:
     CharSpawner.WorkerSpawner(force=True)
     CharSpawner.WorkerSpawner(force=True)
     BackgroundPopulator.AddTables()
+
+
+def DayNightEvent(activeGame=MasterGame) -> None:
+    print("DAY CHANGE EVENT HERE")
+    workerPay = 0.0
+    for worker in activeGame.WorkerList:
+        workerPay += worker.BasePay
+    rent = Prices.CurrentRent
+
+    activeGame.UserInventory.Money -= workerPay + rent

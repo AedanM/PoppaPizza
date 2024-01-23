@@ -2,6 +2,7 @@
 from dataclasses import dataclass
 from enum import Enum
 import names
+import random
 from Classes import Jobs, Sprite, DefinedLocations
 from Classes.Game import MasterGame
 import Utilities.Utils as utils
@@ -56,6 +57,7 @@ class Worker(Person):
             path=activeGame.ImagePath.WorkerPath,
             objID=worker.IdNum,
         )
+        worker.BasePay = random.uniform(0.25, 5.0)
         activeGame.CharSpriteGroup.add(workerSprite)
         activeGame.WorkerList.append(worker)
         return worker, workerSprite

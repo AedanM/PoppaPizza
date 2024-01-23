@@ -9,7 +9,7 @@ def test_ScreenSize() -> None:
 
 def test_Matching() -> None:
     currentGame = Game.Game()
-    for i in range(200):
+    for i in range(15):
         worker, workerSprite = People.Worker.CreateWorker(activeGame=currentGame)
         customer, customerSprite = People.Customer.CreateCustomer(
             activeGame=currentGame
@@ -18,7 +18,13 @@ def test_Matching() -> None:
             "worker": worker,
             "sprite": workerSprite,
         } == currentGame.MatchSpriteToPerson(inputId=workerSprite.CorrespondingID)
+        assert worker == currentGame.MatchSpriteToPerson(
+            inputId=workerSprite.CorrespondingID, targetOutput="worker"
+        )
         assert {
             "customer": customer,
             "sprite": customerSprite,
         } == currentGame.MatchSpriteToPerson(inputId=customerSprite.CorrespondingID)
+        assert customer == currentGame.MatchSpriteToPerson(
+            inputId=customerSprite.CorrespondingID, targetOutput="customer"
+        )

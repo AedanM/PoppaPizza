@@ -36,9 +36,10 @@ def AssignWorker(target, targetObj, activeGame=Game.MasterGame) -> None:
                 sprite=workerSprite, dest=target
             )
         )
+        targetObj.CurrentState = People.CustomerStates.Served
         returnHome = lambda: (
             GetUpAndGo(spriteImg=target),
-            WH.FinishCustomer(w=worker, ws=workerSprite),
+            WH.FinishCustomer(w=worker, ws=workerSprite, j=targetObj.DesiredJob),
         )
         workerSprite.MvmHandler.OnComplete = lambda: TB.CreatePersonTimerBar(
             sprite=workerSprite,
@@ -58,26 +59,37 @@ def SitAtTable(target, customer) -> None:
 def BeginWait(target, customer) -> None:
     customer.CurrentState = People.CustomerStates.WaitingForService
     taskComplete = lambda: GetUpAndGo(spriteImg=target)
-    TB.CreatePersonTimerBar(sprite=target, completeTask=taskComplete, length=10)
+    TB.CreatePersonTimerBar(
+        sprite=target,
+        completeTask=taskComplete,
+        length=(customer.DesiredJob.Urgency.value * 30.0),
+    )
 
 
 def AllWorkersBusy(target) -> None:
-    customer = Game.MasterGame.MatchSpriteToPerson(inputId=target.CorrespondingID)
+    customer = Game.MasterGame.MatchSpriteToPerson(
+        inputId=target.CorrespondingID, targetOutput="customer"
+    )
     taskComplete = lambda: GetUpAndGo(spriteImg=target)
     customer.CurrentState = People.CustomerStates.Waiting
     TB.CreatePersonTimerBar(sprite=target, completeTask=taskComplete, length=10)
 
 
 def GetUpAndGo(spriteImg, activeGame=Game.MasterGame) -> None:
-    customer = activeGame.MatchSpriteToPerson(spriteImg.CorrespondingID)["customer"]
-    if not customer.WorkerAssigned:
+    customer = activeGame.MatchSpriteToPerson(
+        inputId=spriteImg.CorrespondingID, targetOutput="customer"
+    )
+    if (
+        not customer.WorkerAssigned
+        or customer.CurrentState is People.CustomerStates.Served
+    ):
         spriteImg.MvmHandler.StartNewListedMotion(
             DL.DefinedPaths.CustomerToExit(sprite=spriteImg)
-            if customer.CurrentState != People.CustomerStates.WaitingForService
+            if customer.CurrentState == People.CustomerStates.Queuing
             else DL.DefinedPaths.TableToExit(sprite=spriteImg)
         )
 
         spriteImg.MvmHandler.OnComplete = lambda: activeGame.RemoveObjFromSprite(
-            spriteImg
+            targetSprite=spriteImg
         )
     # Game.MasterGame.UserInventory.GetPaid(customer.DesiredJob.Price)

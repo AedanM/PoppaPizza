@@ -4,8 +4,6 @@ import pygame
 from Classes import Game, Sprite, People
 from Handlers import CustomerHandler
 
-# pylint: disable=global-statement
-
 
 class ClickState(Enum):
     Neutral, ClickedCustomer, ClickedWorker = range(3)
@@ -32,15 +30,20 @@ def MouseHandler() -> None:
 
 def CustomerClickRoutine(target) -> None:
     global GlobalClickState
-    customerObj = Game.MasterGame.MatchSpriteToPerson(inputId=target.CorrespondingID)[
-        "customer"
-    ]
+    customerObj = Game.MasterGame.MatchSpriteToPerson(
+        inputId=target.CorrespondingID, targetOutput="customer"
+    )
     if (
         GlobalClickState is ClickState.Neutral
         and not customerObj.WorkerAssigned
         and customerObj.CurrentState == People.CustomerStates.Queuing
     ):
         CustomerHandler.SitAtTable(target=target, customer=customerObj)
+    elif (
+        GlobalClickState is ClickState.Neutral
+        and customerObj.CurrentState == People.CustomerStates.WaitingForService
+    ):
+        CustomerHandler.AssignWorker(target=target, targetObj=customerObj)
 
     GlobalClickState = ClickState.ClickedCustomer
     # this is where you make all other sprites glow

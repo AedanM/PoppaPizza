@@ -86,7 +86,7 @@ class Game:
         return (self.Screen.get_width(), self.Screen.get_height())
 
     # TODO - BUG- Breaks after ~3 customers
-    def MatchSpriteToPerson(self, inputId) -> dict:
+    def MatchSpriteToPerson(self, inputId, targetOutput="all") -> dict:
         output = {}
         for sprite in self.CharSpriteGroup:
             if sprite.CorrespondingID == inputId:
@@ -97,7 +97,7 @@ class Game:
         for customer in self.CustomerList:
             if customer.IdNum == inputId:
                 output["customer"] = customer
-        return output
+        return output if targetOutput == "all" else output[targetOutput]
 
 
 MasterGame = Game()

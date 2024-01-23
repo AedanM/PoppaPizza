@@ -10,7 +10,6 @@ class Settings:
     def ClockSpeed(self) -> float:
         return pow(base=2, exp=self.ClockPow)
 
-    # TODO - Fix 1PM on 12hr clock
     @property
     def ClockDivisor(self) -> int:
         return 13 if not self.Clock24 else 25

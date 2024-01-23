@@ -1,6 +1,5 @@
 """Handler for Worker Tasks"""
-import Classes.DefinedLocations as DL
-import Classes.TimerBar as TB
+from Classes import Game, DefinedLocations as DL, TimerBar as TB
 
 
 def GoToCustomer(c, cs, w, ws) -> None:
@@ -17,10 +16,11 @@ def ServeCustomer() -> None:
     pass
 
 
-def FinishCustomer(w, ws) -> None:
+def FinishCustomer(w, ws, j) -> None:
     w.IsAssigned = False
     w.CurrentJobId = 0
     ws.MvmHandler.StartNewListedMotion(DL.DefinedPaths.BackToKitchen(sprite=ws))
+    Game.MasterGame.UserInventory.GetPaid(amount=j.Price)
 
 
 def ReturnToKitchen() -> None:

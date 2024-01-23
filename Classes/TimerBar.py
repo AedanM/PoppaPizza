@@ -40,10 +40,12 @@ class TimerBar:
 
 
 def CreatePersonTimerBar(
-    sprite, completeTask, length=5.0, activeGame=MasterGame
+    sprite, completeTask, length=29.0, activeGame=MasterGame
 ) -> None:
     activeGame.TimerBars.append(
-        TimerBar(duration=length, position=(sprite.rect.topleft))
+        TimerBar(
+            duration=length if length != 0 else 29.0, position=(sprite.rect.topleft)
+        )
     )
     activeGame.TimerBars[-1].OnComplete = completeTask
     activeGame.TimerBars[-1].Rect.y -= 25

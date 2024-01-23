@@ -69,6 +69,7 @@ charset="utf-8"
 "Handlers.EventHandler" -> "Handlers.ClickHandler" [arrowhead="open", arrowtail="none"];
 "Handlers.MovementHandler" -> "Classes.Game" [arrowhead="open", arrowtail="none"];
 "Handlers.WorkerHandler" -> "Classes.DefinedLocations" [arrowhead="open", arrowtail="none"];
+"Handlers.WorkerHandler" -> "Classes.Game" [arrowhead="open", arrowtail="none"];
 "Handlers.WorkerHandler" -> "Classes.TimerBar" [arrowhead="open", arrowtail="none"];
 "Main" -> "Classes.ColorTools" [arrowhead="open", arrowtail="none"];
 "Main" -> "Classes.Game" [arrowhead="open", arrowtail="none"];

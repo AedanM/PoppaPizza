@@ -7,7 +7,7 @@ JOBIDCOUNT = 1
 
 
 class UrgencyRatings(Enum):
-    Null, Trivial, Urgent = range(3)
+    Null, Trivial, Normal, Urgent = range(4)
 
 
 class JobTypes(Enum):
@@ -29,8 +29,8 @@ class Job:
         # pylint: disable=global-statement
         global JOBIDCOUNT
         JOBIDCOUNT += 1
-        urgency = random.choice(list(UrgencyRatings))
-        jobtype = random.choice(list(JobTypes))
+        urgency = random.choice(list(UrgencyRatings)[1:])
+        jobtype = random.choice(list(JobTypes)[1:])
         length = random.randint(2, 10)
         price = (
             1
