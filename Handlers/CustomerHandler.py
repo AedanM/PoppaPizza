@@ -11,15 +11,10 @@ def FindAvailableWorker(activeGame=Game.MasterGame) -> tuple:
         worker, workerSprite = None, None
     else:
         worker = random.choice(availWorkers)
-        workerSprites = [
-            x
-            for x in activeGame.CharSpriteGroup
-            if (
-                x.ImageType == activeGame.ImageTypes.Worker
-                and x.CorrespondingID == worker.IdNum
-            )
-        ]
-        workerSprite = None if len(workerSprites) < 1 else workerSprites[0]
+        workerSprite = activeGame.MatchIdToPerson(
+            inputId=worker.IdNum, targetOutput="sprite"
+        )
+
     return worker, workerSprite
 
 
@@ -63,11 +58,13 @@ def BeginWait(target, customer) -> None:
         sprite=target,
         completeTask=taskComplete,
         length=(customer.DesiredJob.Urgency.value * 30.0),
+        assocId=customer.IdNum,
+        startingState=customer.CurrentState.value,
     )
 
 
 def AllWorkersBusy(target) -> None:
-    customer = Game.MasterGame.MatchSpriteToPerson(
+    customer = Game.MasterGame.MatchIdToPerson(
         inputId=target.CorrespondingID, targetOutput="customer"
     )
     taskComplete = lambda: GetUpAndGo(spriteImg=target)
@@ -76,7 +73,7 @@ def AllWorkersBusy(target) -> None:
 
 
 def GetUpAndGo(spriteImg, activeGame=Game.MasterGame) -> None:
-    customer = activeGame.MatchSpriteToPerson(
+    customer = activeGame.MatchIdToPerson(
         inputId=spriteImg.CorrespondingID, targetOutput="customer"
     )
     if (

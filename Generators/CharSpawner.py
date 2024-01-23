@@ -1,7 +1,6 @@
 """Handler for Spawning Elements"""
-import random
-import numpy
-from Classes import People, Game, DefinedLocations
+import random, numpy
+from Classes import People, Game, DefinedLocations, Prices
 
 # pylint: disable=C0103
 LastSpawnTime = 0
@@ -26,11 +25,17 @@ def CustomerSpawner(force=False) -> None:
         LastSpawnTime = currentTime
 
 
-def WorkerSpawner(force=False) -> None:
-    spawnLocation = numpy.subtract(
-        DefinedLocations.LocationDefs.KitchenLocation, (50, 0)
-    )
-    People.Worker.CreateWorker(startLocation=spawnLocation)
+def BuyWorker(free=False) -> None:
+    if Game.MasterGame.UserInventory.Money > Prices.CurrentWorkerPrice:
+        spawnLocation = numpy.subtract(
+            DefinedLocations.LocationDefs.KitchenLocation, (250, -50)
+        )
+        People.Worker.CreateWorker(startLocation=spawnLocation)
+        if not free:
+            Game.MasterGame.UserInventory.Money -= Prices.CurrentWorkerPrice
+            Prices.CurrentWorkerPrice = round(
+                Prices.CurrentWorkerPrice * random.uniform(1.0, 2.5), 2
+            )
 
 
 def SpawnHandler() -> None:

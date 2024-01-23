@@ -6,8 +6,9 @@ from Classes import GameObject
 from Classes.Game import MasterGame
 from Utilities import Utils as utils
 from Handlers.MovementHandler import CharacterMovementHandler
+from Assets import AssetLibrary
 
-ImageTypes = MasterGame.ImageTypes
+ImageTypes = AssetLibrary.ImageTypes
 
 
 class CharImageSprite(GameObject.GameObject):
@@ -28,7 +29,7 @@ class CharImageSprite(GameObject.GameObject):
         self.rect.x = position[0]
         self.rect.y = position[1]
         self.MvmHandler = CharacterMovementHandler()
-        self.ImageType = activateGame.PathToTypeDict[path]
+        self.ImageType = AssetLibrary.PathToTypeDict[path]
         self.CheckSpawnCollision()
 
         self.CorrespondingID = objID
@@ -56,13 +57,17 @@ class BackgroundElementSprite(GameObject.GameObject):
     ImageType: ImageTypes = ImageTypes.Null
 
     # pylint: disable=invalid-name
-    def __init__(self, position, path, activateGame=MasterGame) -> None:
+    def __init__(self, position, path, activateGame=MasterGame, maxSize=60) -> None:
         super().__init__(backgroundFlag=True, moveFlag=False, collisionFlag=False)
         self.image = pygame.image.load(
             path
         )  # Replace with the actual sprite image file
         self.rect = self.image.get_rect()
-        self.rect.x = position[0]
-        self.image = pygame.transform.scale(self.image, (60, 60))
-        self.rect.y = position[1]
-        self.ImageType = activateGame.PathToTypeDict[path]
+        dim = utils.ResizeMaxLength(
+            dim=(self.rect.width, self.rect.height), maxSide=maxSize
+        )
+        self.image = pygame.transform.scale(self.image, dim)
+        self.rect.x = position[0] - dim[0] / 2
+
+        self.rect.y = position[1] - dim[1] / 2
+        self.ImageType = AssetLibrary.PathToTypeDict[path]

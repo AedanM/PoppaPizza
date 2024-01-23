@@ -3,9 +3,9 @@ from dataclasses import dataclass
 from enum import Enum
 import names
 import random
-from Classes import Jobs, Sprite, DefinedLocations
-from Classes.Game import MasterGame
+from Classes import Jobs, Sprite, DefinedLocations, Game
 import Utilities.Utils as utils
+from Assets import AssetLibrary
 
 IDCOUNT = 1
 
@@ -45,7 +45,7 @@ class Worker(Person):
     def CreateWorker(
         cls,
         startLocation=DefinedLocations.LocationDefs.KitchenLocation,
-        activeGame=MasterGame,
+        activeGame=Game.MasterGame,
     ) -> "Worker":
         worker = cls.Create()
         workerSprite = Sprite.CharImageSprite(
@@ -54,7 +54,7 @@ class Worker(Person):
                 percentVarianceTuple=(0.05, 0.5),
                 screenSize=activeGame.ScreenSize,
             ),
-            path=activeGame.ImagePath.WorkerPath,
+            path=AssetLibrary.ImagePath.WorkerPath,
             objID=worker.IdNum,
         )
         worker.BasePay = random.uniform(0.25, 5.0)
@@ -86,7 +86,7 @@ class Customer(Person):
     def CreateCustomer(
         cls,
         startLocation=DefinedLocations.LocationDefs.CustomerEntrance,
-        activeGame=MasterGame,
+        activeGame=Game.MasterGame,
     ) -> "Customer":
         cust = cls.Create()
         activeGame.JobList.append(Jobs.Job.SpawnJob())
@@ -97,7 +97,7 @@ class Customer(Person):
                 percentVarianceTuple=(0.0005, 0.1),
                 screenSize=activeGame.ScreenSize,
             ),
-            path=activeGame.ImagePath.CustomerPath,
+            path=AssetLibrary.ImagePath.CustomerPath,
             objID=cust.IdNum,
         )
         activeGame.CharSpriteGroup.add(customerSprite)

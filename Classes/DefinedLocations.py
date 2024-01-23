@@ -7,16 +7,28 @@ from Utilities import Utils
 
 class DefinedLocations:
     @property
+    def YellowLockerRoom(self) -> tuple:
+        return (350, 75)
+
+    @property
+    def GreenLockerRoom(self) -> tuple:
+        return (530, 75)
+
+    @property
+    def BlueLockerRoom(self) -> tuple:
+        return (710, 75)
+
+    @property
+    def PinkLockerRoom(self) -> tuple:
+        return (890, 75)
+
+    @property
+    def GreyLockerRoom(self) -> tuple:
+        return (1070, 75)
+
+    @property
     def KitchenLocation(self) -> tuple:
-        return (100, 225)
-
-    @property
-    def KitchenDoorLocation(self) -> tuple:
-        return (300, 225)
-
-    @property
-    def LockerRoomLocation(self) -> tuple:
-        return (100, 700)
+        return (200, 225)
 
     @property
     def CustomerExit(self) -> tuple:
@@ -28,11 +40,7 @@ class DefinedLocations:
 
     @property
     def CustomerSpawn(self) -> tuple:
-        return (1300, 325)
-
-    @property
-    def TopRow(self) -> tuple:
-        return (0, 0)
+        return (1150, 1000)
 
 
 LocationDefs = DefinedLocations()
@@ -49,8 +57,8 @@ class DefinedPaths:
     def CustomerToRandomSeat(sprite) -> list:
         randomSeatPosition = GetRandomSeatPosition()
         path = [
-            (sprite.rect.centerx, randomSeatPosition[1] - 50),
-            (randomSeatPosition[0], randomSeatPosition[1] - 50),
+            (sprite.rect.centerx, randomSeatPosition[1]),
+            (randomSeatPosition[0], randomSeatPosition[1]),
             randomSeatPosition,
         ]
         print(path)
@@ -61,7 +69,8 @@ class DefinedPaths:
         path = [
             sprite.rect.center,
             LocationDefs.KitchenLocation,
-            LocationDefs.KitchenDoorLocation,
+            (LocationDefs.KitchenLocation[0] + 100, LocationDefs.KitchenLocation[1]),
+            (dest.rect.center[0] - 100, LocationDefs.KitchenLocation[1]),
             dest.rect.center,
         ]
         return path
@@ -70,7 +79,7 @@ class DefinedPaths:
     def BackToKitchen(sprite, activeGame=MasterGame) -> list:
         path = [
             sprite.rect.center,
-            LocationDefs.KitchenDoorLocation,
+            (LocationDefs.KitchenLocation[0], LocationDefs.KitchenLocation[1]),
             LocationDefs.KitchenLocation,
             Utils.PositionRandomVariance(
                 position=LocationDefs.KitchenLocation,
@@ -102,7 +111,7 @@ class DefinedPaths:
 
 
 class SeatingPlan:
-    TableRows = [300, 450, 600, 750]
+    TableRows = [350, 500, 650, 800, 950]
     TableCols = [400, 500, 600, 700]
 
 

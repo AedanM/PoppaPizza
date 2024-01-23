@@ -64,34 +64,27 @@ class CharacterMovementHandler:
             num1=obj.rect.centery, num2=self.DestY, tolerance=self.MovementTolerance
         )
 
-    def CalcNewPosition(self, obj):
-        if self.DstSet:
-            # print(
-            # obj.rect.centerx,
-            # obj.rect.centery,
-            # self.DestX,
-            # self.DestY,
-            # self.InMotion,
-            # )
+    def CalcNewPosition(self, obj) -> None:
+        if self.DstSet * Game.MasterGame.Clock.Running:
             xDir = utils.Sign(num=self.DestX - obj.rect.centerx)
             yDir = utils.Sign(num=self.DestY - obj.rect.centery)
             obj.rect.centerx += (
-                max(
-                    min(
+                utils.Bind(
+                    val=abs(self.DestX - obj.rect.centerx),
+                    inRange=(
+                        1,
                         self.MaxMovementSpeed.value * Game.MasterGame.Clock.ClockMul,
-                        abs(self.DestX - obj.rect.centerx),
                     ),
-                    1,
                 )
                 * xDir
             )
             obj.rect.centery += (
-                max(
-                    min(
+                utils.Bind(
+                    val=abs(self.DestY - obj.rect.centery),
+                    inRange=(
+                        1,
                         self.MaxMovementSpeed.value * Game.MasterGame.Clock.ClockMul,
-                        abs(self.DestY - obj.rect.centery),
                     ),
-                    1,
                 )
                 * yDir
             )

@@ -5,3 +5,4 @@ class DefaultPrices:
 
 
 CurrentRent = DefaultPrices.Rent
+CurrentWorkerPrice = DefaultPrices.NewWorker

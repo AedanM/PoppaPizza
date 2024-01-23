@@ -30,7 +30,7 @@ def MouseHandler() -> None:
 
 def CustomerClickRoutine(target) -> None:
     global GlobalClickState
-    customerObj = Game.MasterGame.MatchSpriteToPerson(
+    customerObj = Game.MasterGame.MatchIdToPerson(
         inputId=target.CorrespondingID, targetOutput="customer"
     )
     if (

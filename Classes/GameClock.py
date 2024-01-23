@@ -38,23 +38,31 @@ class GameClock:
     WorkingDayStart: int = 9
     WorkingDayEnd: int = 17
     ClockMul = GameSettings.ClockSpeed
+    Running: bool = False
 
     def __init__(self, clock) -> None:
         self.PygameClock = clock
         self.LastTime = pygame.time.get_ticks()
+        self.Running = True
+
+    def SetRunning(self, state):
+        if state != self.Running:
+            self.Running = state
+            self.LastTime = pygame.time.get_ticks()
 
     def UpdateClock(self) -> None:
-        self.PygameClock.tick(60)
-        self.Second += math.floor(
-            (pygame.time.get_ticks() - self.LastTime) * GameSettings.ClockSpeed
-        )
-        self.LastTime = pygame.time.get_ticks()
-        self.CheckWorkingDay()
-        self.ClockMul = GameSettings.ClockSpeed
-        if self.Hour >= 24:
-            self.DayChange()
-        if self.Day >= self.CurrMonth.Days:
-            self.MonthChange()
+        if self.Running:
+            self.Second += math.floor(
+                (pygame.time.get_ticks() - self.LastTime) * GameSettings.ClockSpeed
+            )
+            self.LastTime = pygame.time.get_ticks()
+            self.CheckWorkingDay()
+            self.ClockMul = GameSettings.ClockSpeed
+            if self.Hour >= 24:
+                self.DayChange()
+            if self.Day >= self.CurrMonth.Days:
+                self.MonthChange()
+            self.PygameClock.tick(60)
 
     def DayChange(self) -> None:
         self.Day += 1
