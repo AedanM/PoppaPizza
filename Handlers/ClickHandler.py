@@ -1,10 +1,8 @@
 """Handler for User Clicks"""
 from enum import Enum
 import pygame
-from Classes import Game, Sprite
+from Classes import Game, Sprite, People
 from Handlers import CustomerHandler
-
-# pylint: disable=global-statement
 
 
 class ClickState(Enum):
@@ -32,15 +30,24 @@ def MouseHandler() -> None:
 
 def CustomerClickRoutine(target) -> None:
     global GlobalClickState
-    if GlobalClickState is ClickState.Neutral:
-        CustomerHandler.AssignWorker(target=target)
+    customerObj = Game.MasterGame.MatchSpriteToPerson(
+        inputId=target.CorrespondingID, targetOutput="customer"
+    )
+    if (
+        GlobalClickState is ClickState.Neutral
+        and not customerObj.WorkerAssigned
+        and customerObj.CurrentState == People.CustomerStates.Queuing
+    ):
+        CustomerHandler.SitAtTable(target=target, customer=customerObj)
+    elif (
+        GlobalClickState is ClickState.Neutral
+        and customerObj.CurrentState == People.CustomerStates.WaitingForService
+    ):
+        CustomerHandler.AssignWorker(target=target, targetObj=customerObj)
 
     GlobalClickState = ClickState.ClickedCustomer
     # this is where you make all other sprites glow
 
 
 def WorkerClickRoutine(target) -> None:
-    global GlobalClickState
-    if GlobalClickState is ClickState.ClickedCustomer:
-        target.IsAssigned = target.IsAssigned
-    GlobalClickState = ClickState.ClickedWorker
+    pass

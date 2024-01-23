@@ -2,7 +2,8 @@
 from enum import Enum
 import Utilities.Utils as utils
 from Classes import Game
-from Handlers import PathfindingHandler as Path
+
+# from Handlers import PathfindingHandler as Path
 
 
 class MovementSpeeds(Enum):
@@ -36,12 +37,12 @@ class CharacterMovementHandler:
             backgroundObs = [
                 x.rect for x in Game.MasterGame.BackgroundSpriteGroup if x.Collision
             ]
-            self.PointsList = Path.CreatePath(
-                startPoint=start,
-                endPoint=dst,
-                speed=self.MaxMovementSpeed.value,
-                backgroundObs=backgroundObs,
-            )
+            self.PointsList = [start, dst]  # Path.CreatePath(
+            #    startPoint=start,
+            #    endPoint=dst,
+            #    speed=self.MaxMovementSpeed.value,
+            #    backgroundObs=backgroundObs,
+            # )
             self.Dest = self.PointsList[0]
             self.DstSet = True
             self.InMotion: bool = True

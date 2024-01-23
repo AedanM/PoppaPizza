@@ -1,14 +1,17 @@
 """Class for Game"""
 import pygame
-from Classes import Chances, GameClock
-from Classes.Sprite import ImagePaths
+from Assets import AssetLibrary
+from Classes import Chances, GameClock, Settings
+from Assets import AssetLibrary
 import Classes.Inventory as Inventory
 
-iPaths = ImagePaths()
 std_dimensions = {"Medium": (1200, 800), "Small": (600, 400), "Large": (2400, 1600)}
 
 
 class Game:
+    ImageTypes = AssetLibrary.ImageTypes
+    ImagePath = AssetLibrary.ImagePaths()
+    PathToTypeDict: dict = AssetLibrary.PathToTypeDict
     ActiveTimerBars: list = []
     CharSpriteGroup: pygame.sprite.Group = pygame.sprite.Group()
     BackgroundSpriteGroup: pygame.sprite.Group = pygame.sprite.Group()
@@ -24,6 +27,7 @@ class Game:
 
     def __init__(self, activateScreen=True, size=std_dimensions["Medium"]) -> None:
         pygame.init()
+        self.Settings = Settings.GameSettings
         self.Chances = Chances.LuckChances()
         self.StartTime = pygame.time.get_ticks()
         self.ShowScreen = activateScreen
@@ -41,25 +45,30 @@ class Game:
 
         self.Font = pygame.font.Font(None, 36)
 
-    def DrawScreenClock(self, locationTopLeft, foreColor, backColor) -> None:
-        text = self.Font.render(str(self.Clock.DateTime), True, foreColor, backColor)
+    def DrawScreenClock(
+        self, locationTopLeft, foreColor, backColor, withMoney=False
+    ) -> None:
+        MoneyText = f" ${self.UserInventory.Money:0.2f}" if withMoney else ""
+        text = self.Font.render(
+            str(self.Clock.DateTime + MoneyText), True, foreColor, backColor
+        )
         textrect = text.get_rect()
         textrect.x = locationTopLeft[0]
         textrect.y = locationTopLeft[1]
         self.Screen.blit(source=text, dest=textrect)
 
     def DrawBackground(self) -> None:
-        bg = pygame.image.load(iPaths.BackgroundPath)
+        bg = pygame.image.load(self.ImagePath.BackgroundPath)
         self.Screen.blit(source=bg, dest=(0, 0))
 
     def RemoveObjFromSprite(self, targetSprite) -> None:
-        targetSprite.kill()
         self.CustomerList = [
             x for x in self.CustomerList if x.IdNum != targetSprite.CorrespondingID
         ]
         self.WorkerList = [
             x for x in self.WorkerList if x.IdNum != targetSprite.CorrespondingID
         ]
+        targetSprite.kill()
 
     def UpdateSprites(self) -> None:
         for group in self.SpriteGroups:
@@ -76,7 +85,8 @@ class Game:
     def ScreenSize(self) -> tuple[int, int]:
         return (self.Screen.get_width(), self.Screen.get_height())
 
-    def MatchSpriteToPerson(self, inputId) -> dict:
+    # TODO - BUG- Breaks after ~3 customers
+    def MatchSpriteToPerson(self, inputId, targetOutput="all") -> dict:
         output = {}
         for sprite in self.CharSpriteGroup:
             if sprite.CorrespondingID == inputId:
@@ -87,7 +97,7 @@ class Game:
         for customer in self.CustomerList:
             if customer.IdNum == inputId:
                 output["customer"] = customer
-        return output
+        return output if targetOutput == "all" else output[targetOutput]
 
 
-MasterGame = None
+MasterGame = Game()

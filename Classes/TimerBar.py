@@ -1,7 +1,7 @@
 """Class for Timer Bars"""
 import math
 import pygame
-from Classes import Game
+from Classes.Game import MasterGame
 
 
 class TimerBar:
@@ -12,22 +12,18 @@ class TimerBar:
     StartTime: int = 0
     CompletionPercentage: float = 0.0
 
-    def __init__(
-        self,
-        duration: float,
-        position: tuple,
-    ) -> None:
+    def __init__(self, duration: float, position: tuple, activeGame=MasterGame) -> None:
         self.OnComplete = lambda: None
         self.Rect = pygame.Rect(position[0], position[1], self.Width, self.Height)
-        self.StartTime = Game.MasterGame.Clock.Minute
+        self.StartTime = activeGame.Clock.Minute
         self.Duration = duration
 
-    def StartTimer(self) -> None:
-        self.StartTime = Game.MasterGame.Clock.Minute
+    def StartTimer(self, activeGame=MasterGame) -> None:
+        self.StartTime = activeGame.Clock.Minute
 
-    def AgeTimer(self) -> None:
+    def AgeTimer(self, activeGame=MasterGame) -> None:
         self.CompletionPercentage = (
-            (Game.MasterGame.Clock.Minute - self.StartTime)
+            (activeGame.Clock.Minute - self.StartTime)
         ) / self.Duration
         self.Width = int(
             math.floor(min(self.CompletionPercentage * self.MaxWidth, self.MaxWidth))
@@ -36,18 +32,22 @@ class TimerBar:
         self.Rect.height = self.Height
         if self.CompletionPercentage >= 1:
             self.OnComplete()
-            Game.MasterGame.TimerBars.remove(self)
+            activeGame.TimerBars.remove(self)
 
-    def UpdateAndDraw(self) -> None:
+    def UpdateAndDraw(self, activeGame=MasterGame) -> None:
         self.AgeTimer()
-        pygame.draw.rect(Game.MasterGame.Screen, self.Color, self.Rect)
+        pygame.draw.rect(activeGame.Screen, self.Color, self.Rect)
 
 
-def CreatePersonTimerBar(sprite, completeTask, length=5.0):
-    Game.MasterGame.TimerBars.append(
-        TimerBar(duration=length, position=(sprite.rect.topleft))
+def CreatePersonTimerBar(
+    sprite, completeTask, length=29.0, activeGame=MasterGame
+) -> None:
+    activeGame.TimerBars.append(
+        TimerBar(
+            duration=length if length != 0 else 29.0, position=(sprite.rect.topleft)
+        )
     )
-    Game.MasterGame.TimerBars[-1].OnComplete = completeTask
-    Game.MasterGame.TimerBars[-1].Rect.y -= 25
-    Game.MasterGame.TimerBars[-1].MaxWidth = sprite.rect.width
-    Game.MasterGame.TimerBars[-1].StartTimer()
+    activeGame.TimerBars[-1].OnComplete = completeTask
+    activeGame.TimerBars[-1].Rect.y -= 25
+    activeGame.TimerBars[-1].MaxWidth = sprite.rect.width
+    activeGame.TimerBars[-1].StartTimer()

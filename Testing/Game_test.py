@@ -1,13 +1,30 @@
-from telnetlib import GA
-from Classes import Game
+from Classes import Game, People
 
 
 def test_ScreenSize() -> None:
     for key, size in Game.std_dimensions.items():
-        Game.MasterGame = Game.Game(activateScreen=True, size=size)
-        assert Game.MasterGame.ScreenSize == size
+        currentGame = Game.Game(activateScreen=True, size=size)
+        assert currentGame.ScreenSize == size
 
 
-def RunAllGameTests() -> bool:
-    test_ScreenSize()
-    return True
+def test_Matching() -> None:
+    currentGame = Game.Game()
+    for i in range(15):
+        worker, workerSprite = People.Worker.CreateWorker(activeGame=currentGame)
+        customer, customerSprite = People.Customer.CreateCustomer(
+            activeGame=currentGame
+        )
+        assert {
+            "worker": worker,
+            "sprite": workerSprite,
+        } == currentGame.MatchSpriteToPerson(inputId=workerSprite.CorrespondingID)
+        assert worker == currentGame.MatchSpriteToPerson(
+            inputId=workerSprite.CorrespondingID, targetOutput="worker"
+        )
+        assert {
+            "customer": customer,
+            "sprite": customerSprite,
+        } == currentGame.MatchSpriteToPerson(inputId=customerSprite.CorrespondingID)
+        assert customer == currentGame.MatchSpriteToPerson(
+            inputId=customerSprite.CorrespondingID, targetOutput="customer"
+        )

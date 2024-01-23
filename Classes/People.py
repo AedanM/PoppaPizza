@@ -2,7 +2,9 @@
 from dataclasses import dataclass
 from enum import Enum
 import names
-from Classes import Jobs, Game, Sprite, DefinedLocations
+import random
+from Classes import Jobs, Sprite, DefinedLocations
+from Classes.Game import MasterGame
 import Utilities.Utils as utils
 
 IDCOUNT = 1
@@ -20,8 +22,8 @@ class Person:
     @classmethod
     def Create(cls):
         if utils.CheckInternet():
-            lName = names.get_first_name(gender="female")
-            fName = names.get_last_name()
+            fName = names.get_first_name(gender="female")
+            lName = names.get_last_name()
         else:
             lName, fName = ("A", "A")
         selfid = cls.GenerateID()
@@ -41,25 +43,37 @@ class Worker(Person):
 
     @classmethod
     def CreateWorker(
-        cls, startLocation=DefinedLocations.LocationDefs.KitchenLocation
+        cls,
+        startLocation=DefinedLocations.LocationDefs.KitchenLocation,
+        activeGame=MasterGame,
     ) -> "Worker":
         worker = cls.Create()
         workerSprite = Sprite.CharImageSprite(
             position=utils.PositionRandomVariance(
                 position=startLocation,
                 percentVarianceTuple=(0.05, 0.5),
-                screenSize=Game.MasterGame.ScreenSize,
+                screenSize=activeGame.ScreenSize,
             ),
-            path=Sprite.iPaths.WorkerPath,
+            path=activeGame.ImagePath.WorkerPath,
             objID=worker.IdNum,
         )
-        Game.MasterGame.CharSpriteGroup.add(workerSprite)
-        Game.MasterGame.WorkerList.append(worker)
+        worker.BasePay = random.uniform(0.25, 5.0)
+        activeGame.CharSpriteGroup.add(workerSprite)
+        activeGame.WorkerList.append(worker)
         return worker, workerSprite
 
 
 class CustomerStates(Enum):
-    Null, Queuing, Waiting, BeingServed, Served, LeavingAngry, *_ = range(100)
+    (
+        Null,
+        Queuing,
+        Seated,
+        WaitingForService,
+        BeingServed,
+        Served,
+        LeavingAngry,
+        *_,
+    ) = range(100)
 
 
 @dataclass
@@ -70,20 +84,22 @@ class Customer(Person):
 
     @classmethod
     def CreateCustomer(
-        cls, startLocation=DefinedLocations.LocationDefs.CustomerEntrance
+        cls,
+        startLocation=DefinedLocations.LocationDefs.CustomerEntrance,
+        activeGame=MasterGame,
     ) -> "Customer":
         cust = cls.Create()
-        Game.MasterGame.JobList.append(Jobs.Job.SpawnJob())
-        Game.MasterGame.JobList[-1].Assign(cust)
+        activeGame.JobList.append(Jobs.Job.SpawnJob())
+        activeGame.JobList[-1].Assign(cust)
         customerSprite = Sprite.CharImageSprite(
             position=utils.PositionRandomVariance(
                 position=startLocation,
                 percentVarianceTuple=(0.0005, 0.1),
-                screenSize=Game.MasterGame.ScreenSize,
+                screenSize=activeGame.ScreenSize,
             ),
-            path=Sprite.iPaths.CustomerPath,
+            path=activeGame.ImagePath.CustomerPath,
             objID=cust.IdNum,
         )
-        Game.MasterGame.CharSpriteGroup.add(customerSprite)
-        Game.MasterGame.CustomerList.append(cust)
+        activeGame.CharSpriteGroup.add(customerSprite)
+        activeGame.CustomerList.append(cust)
         return cust, customerSprite

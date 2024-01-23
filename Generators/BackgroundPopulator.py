@@ -12,10 +12,10 @@ def generateTablePlaces() -> list:
     return locationArray
 
 
-def AddTables() -> None:
+def AddTables(activeGame=Game.MasterGame) -> None:
     for location in generateTablePlaces():
         table = Sprite.BackgroundElementSprite(
-            position=location, path=Sprite.iPaths.TablePath
+            position=location, path=activeGame.ImagePath.TablePath
         )
         table.Collision = True
         Game.MasterGame.BackgroundSpriteGroup.add(table)

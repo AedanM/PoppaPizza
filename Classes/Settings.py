@@ -10,7 +10,6 @@ class Settings:
     def ClockSpeed(self) -> float:
         return pow(base=2, exp=self.ClockPow)
 
-    # TODO - Fix 1PM on 12hr clock
     @property
     def ClockDivisor(self) -> int:
         return 13 if not self.Clock24 else 25
@@ -22,6 +21,9 @@ class Settings:
     def AMPM(self, hour) -> str:
         tag = " AM" if hour < 12 else " PM"
         return tag if not self.Clock24 else ""
+
+    def ToggleClock24(self) -> None:
+        self.Clock24 = not self.Clock24
 
 
 GameSettings = Settings()

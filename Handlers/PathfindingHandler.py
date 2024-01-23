@@ -1,8 +1,9 @@
 """Handler for finding paths"""
 import random
 import pygame
-import Utilities.Utils as utils
-import Classes.Game as Game
+
+# import Utilities.Utils as utils
+# import Classes.Game as Game
 
 
 def RemoveDupes(l):

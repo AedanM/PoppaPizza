@@ -8,19 +8,16 @@ import sys
 # pylint: disable=wrong-import-position
 os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "True"
 import pygame
-from Classes import People, Game, DefinedLocations, ColorTools
+from Classes import Game, ColorTools
 from Handlers import EventHandler
-from Generators import CharSpawner, BackgroundPopulator
+from Generators import CharSpawner
 
 Game.MasterGame = Game.Game()
 # Enables a series of functions to run automatically
 DEBUGFLAG = True
 
 if DEBUGFLAG:
-    CharSpawner.WorkerSpawner(force=True)
-    CharSpawner.WorkerSpawner(force=True)
-    CharSpawner.CustomerSpawner(force=True)
-    BackgroundPopulator.AddTables()
+    EventHandler.DebugSetup()
 
 while True:
     EventHandler.MainEventHandler()
@@ -33,13 +30,11 @@ while True:
 
     CharSpawner.SpawnHandler()
 
-    if DEBUGFLAG:
-        DefinedLocations.DebugLocations()
-
     Game.MasterGame.DrawScreenClock(
         locationTopLeft=(0, 0),
         foreColor=ColorTools.white.RGB,
         backColor=ColorTools.blue.RGB,
+        withMoney=True,
     )
 
     # Update the display
