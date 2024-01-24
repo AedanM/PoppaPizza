@@ -1,8 +1,9 @@
 """Class for DefinedLocations"""
 import random
 import pygame
-from Classes.Game import MasterGame
+from Classes import Game
 from Utilities import Utils
+from Assets import AssetLibrary
 
 
 class DefinedLocations:
@@ -44,25 +45,60 @@ class DefinedLocations:
 
 
 LocationDefs = DefinedLocations()
+RecurDepth = 0
 
 
-def GetRandomSeatPosition() -> tuple:
+def IsSeatTaken(seatLocation) -> bool:
+    for sprite in Game.MasterGame.CharSpriteGroup:
+        if sprite.ImageType == AssetLibrary.ImageTypes.Customer:
+            xCheck = Utils.InTolerance(
+                num1=sprite.rect.centerx, num2=seatLocation[0], tolerance=15
+            )
+            yCheck = Utils.InTolerance(
+                num1=sprite.rect.centery, num2=seatLocation[1], tolerance=15
+            )
+            if xCheck or yCheck:
+                return True
+    return False
+
+
+def GetRandomSeatPosition() -> tuple | None:
+    global RecurDepth
     yPos = random.choice(SeatingPlan.TableCols)
     xPos = random.choice(SeatingPlan.TableRows)
-    return (xPos, yPos)
+    coords = (xPos, yPos)
+    if IsSeatTaken(seatLocation=(xPos, yPos)):
+        RecurDepth += 1
+        if RecurDepth < 10:
+            coords = GetRandomSeatPosition()
+        else:
+            return None
+    else:
+        RecurDepth = 0
+    return coords
 
 
 class DefinedPaths:
     @staticmethod
+    def KitchenToLockerRoom(sprite, dest) -> list:
+        path = [
+            sprite.rect.center,
+            LocationDefs.KitchenLocation,
+            (dest[0], LocationDefs.KitchenLocation[1]),
+            dest,
+        ]
+        return path
+
+    @staticmethod
     def CustomerToRandomSeat(sprite) -> list:
         randomSeatPosition = GetRandomSeatPosition()
-        path = [
-            (sprite.rect.centerx, randomSeatPosition[1]),
-            (randomSeatPosition[0], randomSeatPosition[1]),
-            randomSeatPosition,
-        ]
-        print(path)
-        return path
+        if randomSeatPosition is not None:
+            path = [
+                (sprite.rect.centerx, randomSeatPosition[1]),
+                (randomSeatPosition[0], randomSeatPosition[1]),
+                randomSeatPosition,
+            ]
+            return path
 
     @staticmethod
     def KitchenToCustomer(sprite, dest) -> list:
@@ -76,14 +112,17 @@ class DefinedPaths:
         return path
 
     @staticmethod
-    def BackToKitchen(sprite, activeGame=MasterGame) -> list:
+    def BackToKitchen(sprite, activeGame=Game.MasterGame) -> list:
         path = [
             sprite.rect.center,
-            (LocationDefs.KitchenLocation[0], LocationDefs.KitchenLocation[1]),
+            (sprite.rect.center[0], LocationDefs.KitchenLocation[1]),
             LocationDefs.KitchenLocation,
             Utils.PositionRandomVariance(
-                position=LocationDefs.KitchenLocation,
-                percentVarianceTuple=(0.1, 0.5),
+                position=(
+                    LocationDefs.KitchenLocation[0] - 50,
+                    LocationDefs.KitchenLocation[1],
+                ),
+                percentVarianceTuple=(0.05, 0.1),
                 screenSize=activeGame.ScreenSize,
             ),
         ]
@@ -115,7 +154,7 @@ class SeatingPlan:
     TableCols = [400, 500, 600, 700]
 
 
-def DebugLocations(activateGame=MasterGame) -> None:
+def DebugLocations(activateGame=Game.MasterGame) -> None:
     attrs = [x for x in dir(LocationDefs) if "__" not in x]
     for attr in attrs:
         pygame.draw.circle(

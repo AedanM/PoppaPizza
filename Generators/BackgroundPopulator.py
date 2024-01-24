@@ -1,5 +1,6 @@
-from Classes import Game, Sprite, DefinedLocations
+from Classes import Game, Sprite
 from Assets import AssetLibrary
+from Definitions import DefinedLocations, LockerRooms
 
 RowCoords = DefinedLocations.SeatingPlan().TableRows
 ColCoords = DefinedLocations.SeatingPlan().TableCols
@@ -23,15 +24,9 @@ def AddTables(activeGame=Game.MasterGame) -> None:
 
 
 def AddLogos() -> None:
-    locationToLogos = {
-        DefinedLocations.LocationDefs.PinkLockerRoom: AssetLibrary.ImagePath.LuauPath,
-        DefinedLocations.LocationDefs.YellowLockerRoom: AssetLibrary.ImagePath.CoffeePath,
-        DefinedLocations.LocationDefs.BlueLockerRoom: AssetLibrary.ImagePath.CowboyPath,
-        DefinedLocations.LocationDefs.GreyLockerRoom: AssetLibrary.ImagePath.SuitPath,
-    }
-    for location, imagePath in locationToLogos.items():
+    for location, imagePath in LockerRooms.LockerRoomPaths.items():
         logo = Sprite.BackgroundElementSprite(
-            position=location, path=imagePath, maxSize=100
+            position=LockerRooms.LockerRooms[location], path=imagePath, maxSize=100
         )
         Game.MasterGame.BackgroundSpriteGroup.add(logo)
 

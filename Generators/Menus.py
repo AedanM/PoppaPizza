@@ -1,6 +1,8 @@
 import pygame
 import pygame_menu
 from Classes import Game
+from Definitions import Prices
+from Generators import CharSpawner
 from dataclasses import dataclass
 
 
@@ -25,12 +27,17 @@ def OptionsMenu(surface=Game.MasterGame.Screen) -> None:
     menu.mainloop(surface=surface, wait_for_event=True)
 
 
+def BuyNumWorkers(num) -> None:
+    for i in range(num):
+        CharSpawner.BuyWorker()
+
+
 def ShopMenu(surface=Game.MasterGame.Screen) -> None:
     Game.MasterGame.Clock.SetRunning(not Game.MasterGame.Clock.Running)
     menu = pygame_menu.Menu(
         title="Settings",
         width=800,
-        height=800,
+        height=600,
         onclose=pygame_menu.events.CLOSE,
     )
     menu.add.range_slider(
@@ -40,5 +47,10 @@ def ShopMenu(surface=Game.MasterGame.Screen) -> None:
         increment=1.0,
         onchange=Game.MasterGame.Settings.ToggleClock24(),
     )
+    menu.add.button(
+        title=f"x1",
+        action=lambda: (BuyNumWorkers(num=1)),
+    )
+
     menu.add.button(title="Return", action=pygame_menu.events.CLOSE)
-    menu.mainloop(surface=surface, wait_for_event=True)
+    menu.mainloop(surface=surface)

@@ -8,9 +8,10 @@ import sys
 # pylint: disable=wrong-import-position
 os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "True"
 import pygame
-from Classes import Game, ColorTools, DefinedLocations
+from Classes import Game
 from Handlers import EventHandler
 from Generators import CharSpawner, Menus
+from Definitions import ColorTools, DefinedLocations
 
 Game.MasterGame = Game.Game()
 # Enables a series of functions to run automatically
@@ -26,8 +27,6 @@ while True:
 
     Game.MasterGame.UpdateSprites()
 
-    Game.MasterGame.UpdateTimers()
-
     # DefinedLocations.DebugLocations()
     CharSpawner.SpawnHandler()
 
@@ -42,4 +41,4 @@ while True:
     if Game.MasterGame.ShowScreen:
         pygame.display.update()
     # Control the frame rate
-    Game.MasterGame.Clock.UpdateClock()
+    Game.MasterGame.GameClock.UpdateClock()

@@ -8,3 +8,4 @@ move packages.dot ..\..\PoppaPizza\Utilities
 move classes.dot ..\..\PoppaPizza\Utilities
 python ParseDot.py
 dot -Tpng packages.dot -o packages.png -x -y
+dot -Tpng classes.dot -o classes.png -x -y

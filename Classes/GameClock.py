@@ -3,7 +3,7 @@ from dataclasses import dataclass
 import math
 from Utilities import Utils
 from Classes.Settings import GameSettings
-from Classes import CustomEvents
+from Definitions import CustomEvents
 
 
 @dataclass

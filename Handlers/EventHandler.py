@@ -1,6 +1,7 @@
 import pygame
 import sys
-from Classes import Game, CustomEvents, Prices, DefinedLocations
+from Classes import Game
+from Definitions import CustomEvents, DefinedLocations, Prices
 from Handlers import ClickHandler
 from Generators import CharSpawner, BackgroundPopulator, Menus
 

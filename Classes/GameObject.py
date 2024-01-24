@@ -16,9 +16,8 @@ class GameObject(pygame.sprite.Sprite):
         self.Collision = collisionFlag
 
     def UpdateSprite(self) -> None:
-        pass
+        self.Update()
 
     def Update(self) -> None:
         if self.Moveable and "MvmHandler" in dir(self):
             self.MvmHandler.CalcNewPosition(self)
-        self.UpdateSprite()

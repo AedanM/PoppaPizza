@@ -3,7 +3,8 @@ from dataclasses import dataclass
 from enum import Enum
 import names
 import random
-from Classes import Jobs, Sprite, DefinedLocations, Game
+from Classes import Jobs, Sprite, Game
+from Definitions import DefinedLocations
 import Utilities.Utils as utils
 from Assets import AssetLibrary
 

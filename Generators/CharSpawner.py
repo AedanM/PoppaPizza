@@ -1,6 +1,7 @@
 """Handler for Spawning Elements"""
 import random, numpy
-from Classes import People, Game, DefinedLocations, Prices
+from Classes import People, Game
+from Definitions import DefinedLocations, Prices
 
 # pylint: disable=C0103
 LastSpawnTime = 0
@@ -9,7 +10,7 @@ LastSpawnTime = 0
 def CustomerSpawner(force=False) -> None:
     # pylint: disable=global-statement
     global LastSpawnTime
-    currentTime = Game.MasterGame.Clock.UnixTime
+    currentTime = Game.MasterGame.GameClock.UnixTime
     chanceOfSpawn = Game.MasterGame.Chances.CustomerSpawn * float(
         currentTime - LastSpawnTime
     )

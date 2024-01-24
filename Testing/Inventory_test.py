@@ -1,4 +1,5 @@
-from Classes import Inventory, Prices
+from Classes import Inventory
+from Definitions import Prices
 
 
 def test_Rent() -> None:

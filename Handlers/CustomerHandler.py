@@ -1,6 +1,8 @@
 """Handler for Customer Tasks"""
 import random
-from Classes import Game, People, TimerBar as TB, DefinedLocations as DL
+import pygame
+from Classes import Game, People
+from Definitions import CustomEvents, DefinedLocations as DL
 from Handlers import WorkerHandler as WH
 
 
@@ -36,26 +38,33 @@ def AssignWorker(target, targetObj, activeGame=Game.MasterGame) -> None:
             GetUpAndGo(spriteImg=target),
             WH.FinishCustomer(w=worker, ws=workerSprite, j=targetObj.DesiredJob),
         )
-        workerSprite.MvmHandler.OnComplete = lambda: TB.CreatePersonTimerBar(
-            sprite=workerSprite,
+        workerSprite.MvmHandler.OnComplete = lambda: workerSprite.CreatePersonTimerBar(
             completeTask=returnHome,
             length=targetObj.DesiredJob.Length,
         )
 
 
 def SitAtTable(target, customer) -> None:
-    target.MvmHandler.StartNewListedMotion(
-        DL.DefinedPaths.CustomerToRandomSeat(sprite=target)
-    )
-    customer.CurrentState = People.CustomerStates.Seated
-    target.MvmHandler.OnComplete = lambda: BeginWait(target=target, customer=customer)
+    path = DL.DefinedPaths.CustomerToRandomSeat(sprite=target)
+    if path is not None:
+        target.MvmHandler.StartNewListedMotion(path)
+        customer.CurrentState = People.CustomerStates.Seated
+        target.MvmHandler.OnComplete = lambda: BeginWait(
+            target=target, customer=customer
+        )
+    else:
+        customer.CurrentState = People.CustomerStates.LeavingAngry
+        AllTablesBusy(target=target)
+
+
+def AllTablesBusy(target) -> None:
+    GetUpAndGo(spriteImg=target)
 
 
 def BeginWait(target, customer) -> None:
     customer.CurrentState = People.CustomerStates.WaitingForService
     taskComplete = lambda: GetUpAndGo(spriteImg=target)
-    TB.CreatePersonTimerBar(
-        sprite=target,
+    target.CreatePersonTimerBar(
         completeTask=taskComplete,
         length=(customer.DesiredJob.Urgency.value * 30.0),
         assocId=customer.IdNum,
@@ -69,7 +78,7 @@ def AllWorkersBusy(target) -> None:
     )
     taskComplete = lambda: GetUpAndGo(spriteImg=target)
     customer.CurrentState = People.CustomerStates.Waiting
-    TB.CreatePersonTimerBar(sprite=target, completeTask=taskComplete, length=10)
+    target.CreatePersonTimerBar(completeTask=taskComplete, length=10)
 
 
 def GetUpAndGo(spriteImg, activeGame=Game.MasterGame) -> None:

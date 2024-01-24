@@ -5,6 +5,8 @@ from Classes import Game
 
 # from Handlers import PathfindingHandler as Path
 
+MaxLenMovement = 3
+
 
 class MovementSpeeds(Enum):
     Slow: int = 1
@@ -56,6 +58,7 @@ class CharacterMovementHandler:
             self.DstSet = True
             self.InMotion: bool = True
             self.MaxMovementSpeed = speed
+            self.StartTime = Game.MasterGame.GameClock.UnixTime
 
     def IsFinished(self, obj) -> bool:
         return utils.InPercentTolerance(
@@ -65,7 +68,7 @@ class CharacterMovementHandler:
         )
 
     def CalcNewPosition(self, obj) -> None:
-        if self.DstSet * Game.MasterGame.Clock.Running:
+        if self.DstSet and Game.MasterGame.GameClock.Running:
             xDir = utils.Sign(num=self.DestX - obj.rect.centerx)
             yDir = utils.Sign(num=self.DestY - obj.rect.centery)
             obj.rect.centerx += (
@@ -73,7 +76,8 @@ class CharacterMovementHandler:
                     val=abs(self.DestX - obj.rect.centerx),
                     inRange=(
                         1,
-                        self.MaxMovementSpeed.value * Game.MasterGame.Clock.ClockMul,
+                        self.MaxMovementSpeed.value
+                        * Game.MasterGame.GameClock.ClockMul,
                     ),
                 )
                 * xDir
@@ -83,13 +87,15 @@ class CharacterMovementHandler:
                     val=abs(self.DestY - obj.rect.centery),
                     inRange=(
                         1,
-                        self.MaxMovementSpeed.value * Game.MasterGame.Clock.ClockMul,
+                        self.MaxMovementSpeed.value
+                        * Game.MasterGame.GameClock.ClockMul,
                     ),
                 )
                 * yDir
             )
-            # Collision.checkCollision(obj)
-            if self.IsFinished(obj=obj):
+            if MaxLenMovement < (Game.MasterGame.GameClock.UnixTime - self.StartTime):
+                self.FinishMovement()
+            elif self.IsFinished(obj=obj):
                 if self.Dest == self.PointsList[len(self.PointsList) - 1]:
                     self.FinishMovement()
                 else:

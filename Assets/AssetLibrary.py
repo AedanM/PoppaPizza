@@ -19,6 +19,8 @@ class ImageTypes(Enum):
     Null, Worker, Customer, Table, CoffeeLogo, CowboyLogo, LuauLogo, SuitLogo = range(8)
 
 
+People = [ImageTypes.Worker, ImageTypes.Customer]
+
 ImagePath = ImagePaths()
 
 

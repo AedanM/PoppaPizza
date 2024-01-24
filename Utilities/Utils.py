@@ -88,5 +88,12 @@ def ResizeMaxLength(dim, maxSide) -> tuple:
     return val if dim[1] > dim[0] else val2
 
 
+# TODO - Add Test
+def PositionInTolerance(pos1, pos2, tolerance) -> bool:
+    return InTolerance(num1=pos1[1], num2=pos2[1], tolerance=tolerance) and InTolerance(
+        num1=pos1[0], num2=pos2[0], tolerance=tolerance
+    )
+
+
 def Sign(num: int | float) -> int:
     return int(num / abs(num)) if num != 0 else 0
