@@ -93,3 +93,19 @@ class BackgroundElementSprite(GameObject.GameObject):
 
         self.rect.y = position[1] - dim[1] / 2
         self.ImageType = AssetLibrary.PathToTypeDict[path]
+
+
+class RectangleObject(GameObject.GameObject):
+    # pylint: disable=invalid-name
+    def __init__(
+        self,
+        position,
+        color=(0, 0, 0),
+        size=[100, 100],
+        activateGame=Game.MasterGame,
+    ) -> None:
+        super().__init__(backgroundFlag=True, moveFlag=False, collisionFlag=False)
+        self.image = pygame.Surface(size=size)
+        self.image.fill(color.RGB)
+        self.rect = self.image.get_rect()
+        self.rect.center = position

@@ -1,7 +1,6 @@
 """Main Body of Test"""
 
 import os
-import sys
 
 
 # *OS Call used to prevent a time printout from Pygame on first import
@@ -10,8 +9,8 @@ os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "True"
 import pygame
 from Classes import Game
 from Handlers import EventHandler
-from Generators import CharSpawner, Menus
-from Definitions import ColorTools, DefinedLocations
+from Generators import CharSpawner
+from Definitions import ColorTools
 
 Game.MasterGame = Game.Game()
 # Enables a series of functions to run automatically
@@ -32,8 +31,8 @@ while True:
 
     Game.MasterGame.DrawScreenClock(
         locationTopLeft=(0, 0),
-        foreColor=ColorTools.white.RGB,
-        backColor=ColorTools.blue.RGB,
+        foreColor=ColorTools.White.RGB,
+        backColor=ColorTools.Blue.RGB,
         withMoney=True,
     )
 

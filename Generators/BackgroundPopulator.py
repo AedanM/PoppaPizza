@@ -1,3 +1,4 @@
+import pygame
 from Classes import Game, Sprite
 from Assets import AssetLibrary
 from Definitions import DefinedLocations, LockerRooms
@@ -28,9 +29,18 @@ def AddLogos() -> None:
         logo = Sprite.BackgroundElementSprite(
             position=LockerRooms.LockerRooms[location], path=imagePath, maxSize=100
         )
-        Game.MasterGame.BackgroundSpriteGroup.add(logo)
+        Game.MasterGame.ForegroundSpriteGroup.add(logo)
+
+
+def AddLockerRooms() -> None:
+    for location, color in LockerRooms.LockerRoomColors.items():
+        rectObj = Sprite.RectangleObject(
+            position=location, color=color, size=[180, 150]
+        )
+        Game.MasterGame.ForegroundSpriteGroup.add(rectObj)
 
 
 def SetupBackground(activeGame=Game.MasterGame) -> None:
     AddTables()
+    AddLockerRooms()
     AddLogos()

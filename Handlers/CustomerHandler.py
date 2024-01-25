@@ -2,7 +2,7 @@
 import random
 import pygame
 from Classes import Game, People
-from Definitions import CustomEvents, DefinedLocations as DL
+from Definitions import CustomEvents, DefinedPaths as DL
 from Handlers import WorkerHandler as WH
 
 

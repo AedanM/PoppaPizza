@@ -6,6 +6,7 @@
 ## TODO List
 
 - Walk cycle/logic for chars to waiting area
+- Queues
 - Minigame for job cost
 - glow when selected
 - menus?
@@ -15,7 +16,7 @@
 - ~~Generate Customers~~
 - Buy Workers
 - buying/shop
-- rent
+- ~~rent~~
 - ~~game clock~~
 - occupied symbol ~~/ progress~~
 - ~~Assigning Jobs~~

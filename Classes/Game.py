@@ -1,9 +1,7 @@
 """Class for Game"""
 import pygame
 from Assets import AssetLibrary
-from Classes import GameClock, Settings
-from Assets import AssetLibrary
-import Classes.Inventory as Inventory
+from Classes import GameClock, Settings, Inventory
 from Definitions import Chances
 
 std_dimensions = {"Medium": (1200, 800), "Small": (600, 400), "Large": (2400, 1600)}
@@ -13,7 +11,8 @@ class Game:
     ActiveTimerBars: list = []
     CharSpriteGroup: pygame.sprite.Group = pygame.sprite.Group()
     BackgroundSpriteGroup: pygame.sprite.Group = pygame.sprite.Group()
-    SpriteGroups: list = [BackgroundSpriteGroup, CharSpriteGroup]
+    ForegroundSpriteGroup: pygame.sprite.Group = pygame.sprite.Group()
+    SpriteGroups: list = [BackgroundSpriteGroup, CharSpriteGroup, ForegroundSpriteGroup]
     WorkerList: list = []
     CustomerList: list = []
     JobList: list = []

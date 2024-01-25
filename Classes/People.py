@@ -55,7 +55,7 @@ class Worker(Person):
                 percentVarianceTuple=(0.05, 0.5),
                 screenSize=activeGame.ScreenSize,
             ),
-            path=AssetLibrary.ImagePath.WorkerPath,
+            path=AssetLibrary.ImagePath.WorkerSuitPath,
             objID=worker.IdNum,
         )
         worker.BasePay = random.uniform(0.25, 5.0)

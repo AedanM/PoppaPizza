@@ -37,11 +37,13 @@ class Color:
         return (rgb[2], rgb[1], rgb[0])
 
 
-white = Color(H=0, S=0, V=255)
+White = Color(H=0, S=0, V=255)
 black = Color(H=0, S=0, V=0)
-blue = Color(H=128, S=200, V=128)
-green = Color(H=70, S=200, V=128)
-
+Blue = Color(H=128, S=200, V=128)
+Green = Color(H=70, S=200, V=128)
+Grey = Color(H=0, S=0, V=128)
+Pink = Color(H=220, S=200, V=128)
+Yellow = Color(H=25, S=200, V=180)
 
 """
 

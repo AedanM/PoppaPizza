@@ -33,23 +33,6 @@ class CharacterMovementHandler:
     def DestX(self) -> int | float:
         return self.Dest[0]
 
-    def StartNewMotion(self, start, dst, speed=MovementSpeeds.Medium) -> None:
-        if not self.InMotion:
-            self.OnComplete = lambda: None
-            backgroundObs = [
-                x.rect for x in Game.MasterGame.BackgroundSpriteGroup if x.Collision
-            ]
-            self.PointsList = [start, dst]  # Path.CreatePath(
-            #    startPoint=start,
-            #    endPoint=dst,
-            #    speed=self.MaxMovementSpeed.value,
-            #    backgroundObs=backgroundObs,
-            # )
-            self.Dest = self.PointsList[0]
-            self.DstSet = True
-            self.InMotion: bool = True
-            self.MaxMovementSpeed = speed
-
     def StartNewListedMotion(self, pointList, speed=MovementSpeeds.Medium) -> None:
         if not self.InMotion:
             self.OnComplete = lambda: None

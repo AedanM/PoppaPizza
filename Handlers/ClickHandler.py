@@ -1,8 +1,8 @@
 """Handler for User Clicks"""
 from enum import Enum
-import pygame
 from Utilities import Utils
-from Classes import Game, Sprite, People
+from Classes import Game, People
+from Assets import AssetLibrary
 from Handlers import CustomerHandler as CH, WorkerHandler as WH
 from Definitions import LockerRooms
 
@@ -15,23 +15,19 @@ GlobalClickState = ClickState.Neutral
 GlobalTarget = None
 
 
-def MouseHandler() -> None:
+def MouseHandler(event) -> None:
     global GlobalClickState, GlobalTarget
-    mouseX, mouseY = pygame.mouse.get_pos()
     if GlobalClickState is ClickState.ClickedWorker:
-        for imageType, location in LockerRooms.LockerRooms.items():
-            if Utils.PositionInTolerance(
-                pos1=(mouseX, mouseY), pos2=location, tolerance=75
-            ):
+        for location in LockerRooms.LockerRooms.values():
+            if Utils.PositionInTolerance(pos1=event.pos, pos2=location, tolerance=75):
                 WH.GetChanged(ws=GlobalTarget, dest=location)
-                GlobalClickState = ClickState.Neutral
+        GlobalClickState = ClickState.Neutral
     elif GlobalClickState is ClickState.Neutral:
         for sprite in Game.MasterGame.CharSpriteGroup:
-            if sprite.rect.collidepoint(mouseX, mouseY):
-                if sprite.ImageType == Sprite.ImageTypes.Customer:
+            if sprite.rect.collidepoint(event.pos[0], event.pos[1]):
+                if sprite.ImageType in AssetLibrary.CustomerOutfits:
                     CustomerClickRoutine(target=sprite)
-                    GlobalClickState = ClickState.Neutral
-                elif sprite.ImageType == Sprite.ImageTypes.Worker:
+                elif sprite.ImageType in AssetLibrary.WorkerOutfits:
                     WorkerClickRoutine(target=sprite)
     else:
         GlobalClickState = ClickState.Neutral
@@ -50,8 +46,6 @@ def CustomerClickRoutine(target) -> None:
             CH.SitAtTable(target=target, customer=customerObj)
         elif customerObj.CurrentState == People.CustomerStates.WaitingForService:
             CH.AssignWorker(target=target, targetObj=customerObj)
-
-    GlobalClickState = ClickState.ClickedCustomer
 
 
 def WorkerClickRoutine(target) -> None:

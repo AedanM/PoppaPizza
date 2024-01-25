@@ -1,6 +1,6 @@
 """Handler for Worker Tasks"""
-from Classes import Game, TimerBar as TB
-from Definitions import DefinedLocations as DL
+from Classes import Game
+from Definitions import DefinedPaths as DL
 
 
 def ServeCustomer() -> None:

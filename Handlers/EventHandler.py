@@ -1,7 +1,7 @@
 import pygame
 import sys
 from Classes import Game
-from Definitions import CustomEvents, DefinedLocations, Prices
+from Definitions import CustomEvents, Prices
 from Handlers import ClickHandler
 from Generators import CharSpawner, BackgroundPopulator, Menus
 
@@ -14,7 +14,7 @@ def MainEventHandler(activeGame=Game.MasterGame) -> None:
         if event.type == pygame.USEREVENT and event == CustomEvents.NightCycle:
             DayNightEvent()
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-            ClickHandler.MouseHandler()
+            ClickHandler.MouseHandler(event=event)
         if event.type == pygame.KEYDOWN and event.key == pygame.K_t:
             activeGame.Settings.ChangeClockMul(value=-1)
         if event.type == pygame.KEYDOWN and event.key == pygame.K_y:

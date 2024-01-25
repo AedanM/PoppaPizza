@@ -2,6 +2,7 @@
 import random, numpy
 from Classes import People, Game
 from Definitions import DefinedLocations, Prices
+import Definitions.DefinedPaths
 
 # pylint: disable=C0103
 LastSpawnTime = 0
@@ -20,7 +21,9 @@ def CustomerSpawner(force=False) -> None:
             startLocation=spawnLocation
         )
         customerSprite.MvmHandler.StartNewListedMotion(
-            DefinedLocations.DefinedPaths.CustomerToEntrance(sprite=customerSprite)
+            Definitions.DefinedPaths.DefinedPaths.CustomerToEntrance(
+                sprite=customerSprite
+            )
         )
         customer.CurrentState = People.CustomerStates.Queuing
         LastSpawnTime = currentTime
