@@ -1,11 +1,12 @@
 """Class for People DataClasses"""
 from dataclasses import dataclass
-from enum import Enum
 import names
 import random
-from Classes import Jobs, Sprite, DefinedLocations
-from Classes.Game import MasterGame
+from Classes import Jobs, Sprite, Game
+from Definitions.CustomerStates import CustomerStates
+from Definitions import DefinedLocations
 import Utilities.Utils as utils
+from Assets import AssetLibrary
 
 IDCOUNT = 1
 
@@ -17,7 +18,6 @@ class Person:
     IdNum: int
     Body: None = None
     IsAssigned: bool = False
-    CurrentJobId: int = 0
 
     @classmethod
     def Create(cls):
@@ -45,7 +45,7 @@ class Worker(Person):
     def CreateWorker(
         cls,
         startLocation=DefinedLocations.LocationDefs.KitchenLocation,
-        activeGame=MasterGame,
+        activeGame=Game.MasterGame,
     ) -> "Worker":
         worker = cls.Create()
         workerSprite = Sprite.CharImageSprite(
@@ -54,26 +54,13 @@ class Worker(Person):
                 percentVarianceTuple=(0.05, 0.5),
                 screenSize=activeGame.ScreenSize,
             ),
-            path=activeGame.ImagePath.WorkerPath,
+            path=AssetLibrary.ImagePath.WorkerSuitPath,
             objID=worker.IdNum,
         )
         worker.BasePay = random.uniform(0.25, 5.0)
         activeGame.CharSpriteGroup.add(workerSprite)
         activeGame.WorkerList.append(worker)
         return worker, workerSprite
-
-
-class CustomerStates(Enum):
-    (
-        Null,
-        Queuing,
-        Seated,
-        WaitingForService,
-        BeingServed,
-        Served,
-        LeavingAngry,
-        *_,
-    ) = range(100)
 
 
 @dataclass
@@ -86,7 +73,7 @@ class Customer(Person):
     def CreateCustomer(
         cls,
         startLocation=DefinedLocations.LocationDefs.CustomerEntrance,
-        activeGame=MasterGame,
+        activeGame=Game.MasterGame,
     ) -> "Customer":
         cust = cls.Create()
         activeGame.JobList.append(Jobs.Job.SpawnJob())
@@ -97,7 +84,7 @@ class Customer(Person):
                 percentVarianceTuple=(0.0005, 0.1),
                 screenSize=activeGame.ScreenSize,
             ),
-            path=activeGame.ImagePath.CustomerPath,
+            path=AssetLibrary.ImagePath.CustomerPath,
             objID=cust.IdNum,
         )
         activeGame.CharSpriteGroup.add(customerSprite)

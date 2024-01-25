@@ -17,14 +17,14 @@ def test_Matching() -> None:
         assert {
             "worker": worker,
             "sprite": workerSprite,
-        } == currentGame.MatchSpriteToPerson(inputId=workerSprite.CorrespondingID)
-        assert worker == currentGame.MatchSpriteToPerson(
+        } == currentGame.MatchIdToPerson(inputId=workerSprite.CorrespondingID)
+        assert worker == currentGame.MatchIdToPerson(
             inputId=workerSprite.CorrespondingID, targetOutput="worker"
         )
         assert {
             "customer": customer,
             "sprite": customerSprite,
-        } == currentGame.MatchSpriteToPerson(inputId=customerSprite.CorrespondingID)
-        assert customer == currentGame.MatchSpriteToPerson(
+        } == currentGame.MatchIdToPerson(inputId=customerSprite.CorrespondingID)
+        assert customer == currentGame.MatchIdToPerson(
             inputId=customerSprite.CorrespondingID, targetOutput="customer"
         )

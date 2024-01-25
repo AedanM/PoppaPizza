@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from Classes import Prices
+from Definitions import Prices
 
 
 @dataclass

@@ -1,29 +1,23 @@
 """Class for Game"""
 import pygame
 from Assets import AssetLibrary
-from Classes import Chances, GameClock, Settings
-from Assets import AssetLibrary
-import Classes.Inventory as Inventory
+from Classes import GameClock, Settings, Inventory
+from Definitions import Chances
 
 std_dimensions = {"Medium": (1200, 800), "Small": (600, 400), "Large": (2400, 1600)}
 
 
 class Game:
-    ImageTypes = AssetLibrary.ImageTypes
-    ImagePath = AssetLibrary.ImagePaths()
-    PathToTypeDict: dict = AssetLibrary.PathToTypeDict
-    ActiveTimerBars: list = []
     CharSpriteGroup: pygame.sprite.Group = pygame.sprite.Group()
     BackgroundSpriteGroup: pygame.sprite.Group = pygame.sprite.Group()
-    SpriteGroups: list = [BackgroundSpriteGroup, CharSpriteGroup]
-    LineList: list = [(-1, -1), (1, 1)]
+    ForegroundSpriteGroup: pygame.sprite.Group = pygame.sprite.Group()
+    SpriteGroups: list = [BackgroundSpriteGroup, CharSpriteGroup, ForegroundSpriteGroup]
     WorkerList: list = []
     CustomerList: list = []
     JobList: list = []
     UserInventory: Inventory.Inventory = None
-    TimerBars: list = []
     ShowScreen: bool = True
-    Clock: GameClock = GameClock.GameClock(clock=pygame.time.Clock())
+    GameClock = GameClock.GameClock(clock=pygame.time.Clock())
 
     def __init__(self, activateScreen=True, size=std_dimensions["Medium"]) -> None:
         pygame.init()
@@ -50,7 +44,7 @@ class Game:
     ) -> None:
         MoneyText = f" ${self.UserInventory.Money:0.2f}" if withMoney else ""
         text = self.Font.render(
-            str(self.Clock.DateTime + MoneyText), True, foreColor, backColor
+            str(self.GameClock.DateTime + MoneyText), True, foreColor, backColor
         )
         textrect = text.get_rect()
         textrect.x = locationTopLeft[0]
@@ -58,46 +52,42 @@ class Game:
         self.Screen.blit(source=text, dest=textrect)
 
     def DrawBackground(self) -> None:
-        bg = pygame.image.load(self.ImagePath.BackgroundPath)
+        bg = pygame.image.load(AssetLibrary.ImagePath.BackgroundPath)
         self.Screen.blit(source=bg, dest=(0, 0))
 
     def RemoveObjFromSprite(self, targetSprite) -> None:
-        self.CustomerList = [
-            x for x in self.CustomerList if x.IdNum != targetSprite.CorrespondingID
-        ]
-        self.WorkerList = [
-            x for x in self.WorkerList if x.IdNum != targetSprite.CorrespondingID
-        ]
+        responseDict = self.MatchIdToPerson(inputId=targetSprite.CorrespondingID)
+        if "customer" in responseDict.keys():
+            self.CustomerList.remove(responseDict["customer"])
+        elif "worker" in responseDict.keys():
+            self.WorkerList.remove(responseDict["worker"])
         targetSprite.kill()
 
     def UpdateSprites(self) -> None:
         for group in self.SpriteGroups:
             group.update()
             for sprite in group:
-                sprite.Update()
+                sprite.UpdateSprite()
             group.draw(self.Screen)
-
-    def UpdateTimers(self) -> None:
-        for timer in self.TimerBars:
-            timer.UpdateAndDraw()
 
     @property
     def ScreenSize(self) -> tuple[int, int]:
         return (self.Screen.get_width(), self.Screen.get_height())
 
-    # TODO - BUG- Breaks after ~3 customers
-    def MatchSpriteToPerson(self, inputId, targetOutput="all") -> dict:
+    def MatchIdToPerson(self, inputId, targetOutput="all") -> dict:
         output = {}
-        for sprite in self.CharSpriteGroup:
-            if sprite.CorrespondingID == inputId:
-                output["sprite"] = sprite
-        for worker in self.WorkerList:
-            if worker.IdNum == inputId:
-                output["worker"] = worker
-        for customer in self.CustomerList:
-            if customer.IdNum == inputId:
-                output["customer"] = customer
-        return output if targetOutput == "all" else output[targetOutput]
+        if inputId != 0:
+            for sprite in self.CharSpriteGroup:
+                if sprite.CorrespondingID == inputId:
+                    output["sprite"] = sprite
+            for worker in self.WorkerList:
+                if worker.IdNum == inputId:
+                    output["worker"] = worker
+            for customer in self.CustomerList:
+                if customer.IdNum == inputId:
+                    output["customer"] = customer
+            return output if targetOutput == "all" else output[targetOutput]
+        return None
 
 
 MasterGame = Game()

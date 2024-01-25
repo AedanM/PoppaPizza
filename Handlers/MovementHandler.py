@@ -1,9 +1,12 @@
 """Handler for Sprite Movement Tasks"""
 from enum import Enum
+from Definitions import CustomerStates
 import Utilities.Utils as utils
 from Classes import Game
 
 # from Handlers import PathfindingHandler as Path
+
+MaxLenMovement = 3
 
 
 class MovementSpeeds(Enum):
@@ -31,23 +34,6 @@ class CharacterMovementHandler:
     def DestX(self) -> int | float:
         return self.Dest[0]
 
-    def StartNewMotion(self, start, dst, speed=MovementSpeeds.Medium) -> None:
-        if not self.InMotion:
-            self.OnComplete = lambda: None
-            backgroundObs = [
-                x.rect for x in Game.MasterGame.BackgroundSpriteGroup if x.Collision
-            ]
-            self.PointsList = [start, dst]  # Path.CreatePath(
-            #    startPoint=start,
-            #    endPoint=dst,
-            #    speed=self.MaxMovementSpeed.value,
-            #    backgroundObs=backgroundObs,
-            # )
-            self.Dest = self.PointsList[0]
-            self.DstSet = True
-            self.InMotion: bool = True
-            self.MaxMovementSpeed = speed
-
     def StartNewListedMotion(self, pointList, speed=MovementSpeeds.Medium) -> None:
         if not self.InMotion:
             self.OnComplete = lambda: None
@@ -56,6 +42,10 @@ class CharacterMovementHandler:
             self.DstSet = True
             self.InMotion: bool = True
             self.MaxMovementSpeed = speed
+            self.StartTime = Game.MasterGame.GameClock.UnixTime
+
+    def NeedsToQueue(self) -> bool:
+        return False
 
     def IsFinished(self, obj) -> bool:
         return utils.InPercentTolerance(
@@ -64,39 +54,42 @@ class CharacterMovementHandler:
             num1=obj.rect.centery, num2=self.DestY, tolerance=self.MovementTolerance
         )
 
-    def CalcNewPosition(self, obj):
-        if self.DstSet:
-            # print(
-            # obj.rect.centerx,
-            # obj.rect.centery,
-            # self.DestX,
-            # self.DestY,
-            # self.InMotion,
-            # )
+    def CalcNewPosition(self, obj) -> None:
+        if self.DstSet and Game.MasterGame.GameClock.Running:
+            # if self.NeedsToQueue():
+            # pass
+            # else:
             xDir = utils.Sign(num=self.DestX - obj.rect.centerx)
             yDir = utils.Sign(num=self.DestY - obj.rect.centery)
             obj.rect.centerx += (
-                max(
-                    min(
-                        self.MaxMovementSpeed.value * Game.MasterGame.Clock.ClockMul,
-                        abs(self.DestX - obj.rect.centerx),
+                utils.Bind(
+                    val=abs(self.DestX - obj.rect.centerx),
+                    inRange=(
+                        1,
+                        self.MaxMovementSpeed.value
+                        * Game.MasterGame.GameClock.ClockMul,
                     ),
-                    1,
                 )
                 * xDir
             )
             obj.rect.centery += (
-                max(
-                    min(
-                        self.MaxMovementSpeed.value * Game.MasterGame.Clock.ClockMul,
-                        abs(self.DestY - obj.rect.centery),
+                utils.Bind(
+                    val=abs(self.DestY - obj.rect.centery),
+                    inRange=(
+                        1,
+                        self.MaxMovementSpeed.value
+                        * Game.MasterGame.GameClock.ClockMul,
                     ),
-                    1,
                 )
                 * yDir
             )
-            # Collision.checkCollision(obj)
-            if self.IsFinished(obj=obj):
+            if MaxLenMovement < (Game.MasterGame.GameClock.UnixTime - self.StartTime):
+                # obj = Game.MasterGame.MatchIdToPerson(
+                # inputId=1,
+                # )  # self.CorrespondingId)
+                # if obj.CurrentState != CustomerStates.CustomerStates.Queuing:
+                self.FinishMovement()
+            elif self.IsFinished(obj=obj):
                 if self.Dest == self.PointsList[len(self.PointsList) - 1]:
                     self.FinishMovement()
                 else:
