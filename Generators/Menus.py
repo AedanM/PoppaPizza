@@ -5,9 +5,9 @@ from Definitions import Prices
 from Generators import CharSpawner
 from dataclasses import dataclass
 
-
+# TODO - Fix UnPause
 def OptionsMenu(surface=Game.MasterGame.Screen) -> None:
-    Game.MasterGame.Clock.SetRunning(not Game.MasterGame.Clock.Running)
+    Game.MasterGame.GameClock.SetRunning(not Game.MasterGame.GameClock.Running)
     menu = pygame_menu.Menu(
         title="Settings",
         width=400,
@@ -22,6 +22,19 @@ def OptionsMenu(surface=Game.MasterGame.Screen) -> None:
         if Game.MasterGame.Settings.Clock24
         else ("Disabled", "Enabled"),
         onchange=Game.MasterGame.Settings.ToggleClock24(),
+    )
+    menu.add.range_slider(
+        title="Speed",
+        default=0,
+        range_values=list(
+            range(
+                Game.MasterGame.Settings.ClockPowRange[0],
+                Game.MasterGame.Settings.ClockPowRange[1] + 1,
+            )
+        ),
+        value_format=lambda x: f"{pow(base=2, exp=x)}x",
+        range_text_value_enabled=False,
+        onchange=lambda x: (Game.MasterGame.Settings.SetClockMul(value=x)),
     )
     menu.add.button(title="Return", action=pygame_menu.events.CLOSE)
     menu.mainloop(surface=surface, wait_for_event=True)

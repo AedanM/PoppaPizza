@@ -16,7 +16,9 @@ class Settings:
 
     def ChangeClockMul(self, value) -> None:
         self.ClockPow = Utils.Bind(self.ClockPow + value, inRange=self.ClockPowRange)
-        print(self.ClockPow)
+
+    def SetClockMul(self, value) -> None:
+        self.ClockPow = Utils.Bind(value, inRange=self.ClockPowRange)
 
     def AMPM(self, hour) -> str:
         tag = " AM" if hour < 12 else " PM"

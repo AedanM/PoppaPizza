@@ -26,7 +26,7 @@ def MainEventHandler(activeGame=Game.MasterGame) -> None:
         if event.type == pygame.KEYDOWN and event.key == pygame.K_2:
             activeGame.Settings.ToggleClock24()
         if event.type == pygame.KEYDOWN and event.key == pygame.K_p:
-            activeGame.Clock.SetRunning(not activeGame.Clock.Running)
+            activeGame.GameClock.SetRunning(not activeGame.GameClock.Running)
         if event.type == pygame.KEYDOWN and event.key == pygame.K_d:
             activeGame.ShowScreen = not activeGame.MasterGame.ShowScreen
         if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
