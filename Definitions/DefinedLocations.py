@@ -49,7 +49,7 @@ class SeatingPlan:
     TableCols = [400, 500, 600, 700]
 
 
-def DebugLocations(activateGame=Game.MasterGame) -> None:
+""" def DebugLocations(activateGame=Game.MasterGame) -> None:
     attrs = [x for x in dir(LocationDefs) if "__" not in x]
     for attr in attrs:
         pygame.draw.circle(
@@ -58,3 +58,4 @@ def DebugLocations(activateGame=Game.MasterGame) -> None:
             center=getattr(LocationDefs, attr),
             radius=25,
         )
+ """

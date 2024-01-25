@@ -1,10 +1,10 @@
 """Handler for User Clicks"""
 from enum import Enum
 from Utilities import Utils
-from Classes import Game, People
+from Classes import Game
 from Assets import AssetLibrary
 from Handlers import CustomerHandler as CH, WorkerHandler as WH
-from Definitions import LockerRooms
+from Definitions import CustomerStates, LockerRooms
 
 
 class ClickState(Enum):
@@ -35,24 +35,22 @@ def MouseHandler(event) -> None:
 
 def CustomerClickRoutine(target) -> None:
     global GlobalClickState
-    customerObj = Game.MasterGame.MatchIdToPerson(
-        inputId=target.CorrespondingID, targetOutput="customer"
-    )
+    
     if GlobalClickState is ClickState.Neutral:
         if (
-            not customerObj.WorkerAssigned
-            and customerObj.CurrentState is People.CustomerStates.Queuing
+            not target.DataObject.WorkerAssigned
+            and target.DataObject.CurrentState is CustomerStates.CustomerStates.Queuing
         ):
-            CH.SitAtTable(target=target, customer=customerObj)
-        elif customerObj.CurrentState == People.CustomerStates.WaitingForService:
-            CH.AssignWorker(target=target, targetObj=customerObj)
+            CH.SitAtTable(target=target)
+        elif (
+            target.DataObject.CurrentState == CustomerStates.CustomerStates.WaitingForService
+        ):
+            CH.AssignWorker(target=target)
 
 
 def WorkerClickRoutine(target) -> None:
     global GlobalClickState, GlobalTarget
-    workerObj = Game.MasterGame.MatchIdToPerson(
-        inputId=target.CorrespondingID, targetOutput="worker"
-    )
-    if GlobalClickState is ClickState.Neutral and not workerObj.IsAssigned:
+   
+    if GlobalClickState is ClickState.Neutral and not target.DataObject.IsAssigned:
         GlobalTarget = target
         GlobalClickState = ClickState.ClickedWorker

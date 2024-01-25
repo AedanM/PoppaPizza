@@ -18,7 +18,9 @@ class CharImageSprite(GameObject.GameObject):
     MvmHandler: CharacterMovementHandler = None
     PersonalTimer: TimerBar.TimerBar = None
 
-    def __init__(self, position, path, objID, activateGame=Game.MasterGame) -> None:
+    def __init__(
+        self, position, path, objID, activateGame=Game.MasterGame, maxSize=100
+    ) -> None:
         super().__init__(backgroundFlag=False, moveFlag=True, collisionFlag=True)
         self.image = pygame.image.load(
             path
@@ -30,9 +32,16 @@ class CharImageSprite(GameObject.GameObject):
         self.rect.y = position[1]
         self.MvmHandler = CharacterMovementHandler()
         self.ImageType = AssetLibrary.PathToTypeDict[path]
-        self.CheckSpawnCollision()
+        # self.CheckSpawnCollision()
 
         self.CorrespondingID = objID
+
+    @property
+    def DataObject(self):
+        objDict = Game.MasterGame.MatchIdToPerson(inputId=self.CorrespondingID)
+        objDict.pop("sprite")
+        obj = list(objDict.values())[0]
+        return obj
 
     def CheckSpawnCollision(self, activeGame=Game.MasterGame) -> None:
         currentCenter = self.rect.center
@@ -45,6 +54,17 @@ class CharImageSprite(GameObject.GameObject):
                         screenSize=activeGame.ScreenSize,
                     )
 
+    def ChangeOutfit(self, newOutfitPath) -> None:
+        newImage = pygame.image.load(newOutfitPath)
+        newImageRect = newImage.get_rect()
+        dim = utils.ResizeMaxLength(
+            dim=(newImageRect.width, newImageRect.height),
+            maxSide=max(self.rect.width, self.rect.height),
+        )
+        newImage = pygame.transform.scale(newImage, dim)
+        newImageRect = self.rect
+        self.image = newImage
+
     def UpdateSprite(self) -> None:
         if self.PersonalTimer is not None:
             self.PersonalTimer.UpdateAndDraw()
@@ -52,16 +72,13 @@ class CharImageSprite(GameObject.GameObject):
         self.Update()
 
     def CreatePersonTimerBar(
-        sprite,
-        completeTask,
-        assocId=0,
-        length=29.0,
-        startingState=0,
+        sprite, completeTask, assocId=0, length=29.0, startingState=0, offset=(0, 0)
     ) -> None:
         sprite.PersonalTimer = TimerBar.TimerBar(
             duration=length if length != 0 else 29.0,
             position=(sprite.rect.topleft),
             assocId=assocId,
+            offset=offset,
         )
         sprite.PersonalTimer.StartingState = startingState
         sprite.PersonalTimer.OnComplete = completeTask
@@ -78,7 +95,7 @@ class BackgroundElementSprite(GameObject.GameObject):
 
     # pylint: disable=invalid-name
     def __init__(
-        self, position, path, activateGame=Game.MasterGame, maxSize=60
+        self, position, path, activateGame=Game.MasterGame, maxSize=60, offset=(0, 0)
     ) -> None:
         super().__init__(backgroundFlag=True, moveFlag=False, collisionFlag=False)
         self.image = pygame.image.load(
@@ -89,9 +106,9 @@ class BackgroundElementSprite(GameObject.GameObject):
             dim=(self.rect.width, self.rect.height), maxSide=maxSize
         )
         self.image = pygame.transform.scale(self.image, dim)
-        self.rect.x = position[0] - dim[0] / 2
+        self.rect.x = position[0] + offset[0]
 
-        self.rect.y = position[1] - dim[1] / 2
+        self.rect.y = position[1] + offset[1]
         self.ImageType = AssetLibrary.PathToTypeDict[path]
 
 

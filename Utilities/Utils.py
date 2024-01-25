@@ -83,8 +83,8 @@ def Bind(val, inRange) -> int:
 
 # TODO - Add Test
 def ResizeMaxLength(dim, maxSide) -> tuple:
-    val = (dim[0] / dim[1] * maxSide, maxSide)
-    val2 = (maxSide, dim[1] / dim[0] * maxSide)
+    val = (math.floor(dim[0] / dim[1] * maxSide), maxSide)
+    val2 = (maxSide, math.floor(dim[1] / dim[0] * maxSide))
     return val if dim[1] > dim[0] else val2
 
 

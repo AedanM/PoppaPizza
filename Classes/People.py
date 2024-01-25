@@ -1,9 +1,9 @@
 """Class for People DataClasses"""
 from dataclasses import dataclass
-from enum import Enum
 import names
 import random
 from Classes import Jobs, Sprite, Game
+from Definitions.CustomerStates import CustomerStates
 from Definitions import DefinedLocations
 import Utilities.Utils as utils
 from Assets import AssetLibrary
@@ -18,7 +18,6 @@ class Person:
     IdNum: int
     Body: None = None
     IsAssigned: bool = False
-    CurrentJobId: int = 0
 
     @classmethod
     def Create(cls):
@@ -62,19 +61,6 @@ class Worker(Person):
         activeGame.CharSpriteGroup.add(workerSprite)
         activeGame.WorkerList.append(worker)
         return worker, workerSprite
-
-
-class CustomerStates(Enum):
-    (
-        Null,
-        Queuing,
-        Seated,
-        WaitingForService,
-        BeingServed,
-        Served,
-        LeavingAngry,
-        *_,
-    ) = range(100)
 
 
 @dataclass

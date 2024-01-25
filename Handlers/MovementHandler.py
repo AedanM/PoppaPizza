@@ -1,5 +1,6 @@
 """Handler for Sprite Movement Tasks"""
 from enum import Enum
+from Definitions import CustomerStates
 import Utilities.Utils as utils
 from Classes import Game
 
@@ -43,6 +44,9 @@ class CharacterMovementHandler:
             self.MaxMovementSpeed = speed
             self.StartTime = Game.MasterGame.GameClock.UnixTime
 
+    def NeedsToQueue(self) -> bool:
+        return False
+
     def IsFinished(self, obj) -> bool:
         return utils.InPercentTolerance(
             num1=obj.rect.centerx, num2=self.DestX, tolerance=self.MovementTolerance
@@ -52,6 +56,9 @@ class CharacterMovementHandler:
 
     def CalcNewPosition(self, obj) -> None:
         if self.DstSet and Game.MasterGame.GameClock.Running:
+            # if self.NeedsToQueue():
+            # pass
+            # else:
             xDir = utils.Sign(num=self.DestX - obj.rect.centerx)
             yDir = utils.Sign(num=self.DestY - obj.rect.centery)
             obj.rect.centerx += (
@@ -77,6 +84,10 @@ class CharacterMovementHandler:
                 * yDir
             )
             if MaxLenMovement < (Game.MasterGame.GameClock.UnixTime - self.StartTime):
+                # obj = Game.MasterGame.MatchIdToPerson(
+                # inputId=1,
+                # )  # self.CorrespondingId)
+                # if obj.CurrentState != CustomerStates.CustomerStates.Queuing:
                 self.FinishMovement()
             elif self.IsFinished(obj=obj):
                 if self.Dest == self.PointsList[len(self.PointsList) - 1]:

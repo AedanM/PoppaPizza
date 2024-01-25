@@ -20,9 +20,10 @@ def test_Rent() -> None:
     i.PayRent()
     assert i.Money == 7000 - Prices.CurrentRent
 
-'''
+
+"""
 def RunAllInventoryTests() -> bool:
     test_GetPaid()
     test_Rent()
     return True
-'''
+"""

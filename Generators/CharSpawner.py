@@ -1,6 +1,7 @@
 """Handler for Spawning Elements"""
 import random, numpy
 from Classes import People, Game
+import Definitions.CustomerStates
 from Definitions import DefinedLocations, Prices
 import Definitions.DefinedPaths
 
@@ -25,7 +26,7 @@ def CustomerSpawner(force=False) -> None:
                 sprite=customerSprite
             )
         )
-        customer.CurrentState = People.CustomerStates.Queuing
+        customer.CurrentState = Definitions.CustomerStates.CustomerStates.Queuing
         LastSpawnTime = currentTime
 
 

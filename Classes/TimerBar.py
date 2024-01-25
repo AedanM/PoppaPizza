@@ -6,7 +6,7 @@ from Classes import Game
 
 class TimerBar:
     Width: int = 0
-    MaxWidth: int = 300
+    MaxWidth: int = 50
     Height: int = 25
     Color: tuple = (0, 255, 0)
     StartTime: int = 0
@@ -15,11 +15,18 @@ class TimerBar:
     Running: bool = False
 
     def __init__(
-        self, duration: float, position: tuple, assocId=0, activeGame=Game.MasterGame
+        self,
+        duration: float,
+        position: tuple,
+        assocId=0,
+        activeGame=Game.MasterGame,
+        offset=(0, 0),
     ) -> None:
         self.AssocId = assocId
         self.OnComplete = lambda: None
-        self.TimerRect = pygame.Rect(position[0], position[1], self.Width, self.Height)
+        self.TimerRect = pygame.Rect(
+            position[0] + offset[0], position[1] + offset[1], self.Width, self.Height
+        )
         self.StartTime = activeGame.GameClock.Minute
         self.Duration = duration
         self.Running = True

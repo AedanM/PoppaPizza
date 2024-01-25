@@ -25,3 +25,11 @@ LockerRoomColors = {
     DefinedLocations.LocationDefs.PinkLockerRoom: ColorTools.Pink,
     DefinedLocations.LocationDefs.GreyLockerRoom: ColorTools.Grey,
 }
+
+LockerRoomOutfits = {
+    DefinedLocations.LocationDefs.YellowLockerRoom: AssetLibrary.ImagePath.WorkerCoffeePath,
+    DefinedLocations.LocationDefs.BlueLockerRoom: AssetLibrary.ImagePath.WorkerCowboyPath,
+    DefinedLocations.LocationDefs.GreenLockerRoom: AssetLibrary.ImagePath.WorkerSafariPath,
+    DefinedLocations.LocationDefs.PinkLockerRoom: AssetLibrary.ImagePath.WorkerLuauPath,
+    DefinedLocations.LocationDefs.GreyLockerRoom: AssetLibrary.ImagePath.WorkerSuitPath,
+}

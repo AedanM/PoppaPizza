@@ -18,7 +18,10 @@ def generateTablePlaces() -> list:
 def AddTables(activeGame=Game.MasterGame) -> None:
     for location in generateTablePlaces():
         table = Sprite.BackgroundElementSprite(
-            position=location, path=AssetLibrary.ImagePath.TablePath, maxSize=60
+            position=location,
+            path=AssetLibrary.ImagePath.TablePath,
+            maxSize=60,
+            offset=(-75, 25),
         )
         table.Collision = True
         Game.MasterGame.BackgroundSpriteGroup.add(table)
@@ -27,7 +30,10 @@ def AddTables(activeGame=Game.MasterGame) -> None:
 def AddLogos() -> None:
     for location, imagePath in LockerRooms.LockerRoomPaths.items():
         logo = Sprite.BackgroundElementSprite(
-            position=LockerRooms.LockerRooms[location], path=imagePath, maxSize=100
+            position=LockerRooms.LockerRooms[location],
+            path=imagePath,
+            maxSize=100,
+            offset=(-50, -50),
         )
         Game.MasterGame.ForegroundSpriteGroup.add(logo)
 

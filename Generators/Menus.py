@@ -5,6 +5,7 @@ from Definitions import Prices
 from Generators import CharSpawner
 from dataclasses import dataclass
 
+
 # TODO - Fix UnPause
 def OptionsMenu(surface=Game.MasterGame.Screen) -> None:
     Game.MasterGame.GameClock.SetRunning(not Game.MasterGame.GameClock.Running)
@@ -46,7 +47,7 @@ def BuyNumWorkers(num) -> None:
 
 
 def ShopMenu(surface=Game.MasterGame.Screen) -> None:
-    Game.MasterGame.Clock.SetRunning(not Game.MasterGame.Clock.Running)
+    Game.MasterGame.GameClock.SetRunning(not Game.GameClock.Clock.Running)
     menu = pygame_menu.Menu(
         title="Settings",
         width=800,

@@ -8,7 +8,6 @@ std_dimensions = {"Medium": (1200, 800), "Small": (600, 400), "Large": (2400, 16
 
 
 class Game:
-    ActiveTimerBars: list = []
     CharSpriteGroup: pygame.sprite.Group = pygame.sprite.Group()
     BackgroundSpriteGroup: pygame.sprite.Group = pygame.sprite.Group()
     ForegroundSpriteGroup: pygame.sprite.Group = pygame.sprite.Group()
