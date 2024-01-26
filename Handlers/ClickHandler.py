@@ -4,7 +4,7 @@ from Utilities import Utils
 from Classes import Game
 from Assets import AssetLibrary
 from Handlers import CustomerHandler as CH, WorkerHandler as WH
-from Definitions import CustomerStates, LockerRooms
+from Definitions import CustomerDefs, LockerRooms
 
 
 class ClickState(Enum):
@@ -35,22 +35,20 @@ def MouseHandler(event) -> None:
 
 def CustomerClickRoutine(target) -> None:
     global GlobalClickState
-    
+
     if GlobalClickState is ClickState.Neutral:
-        if (
-            not target.DataObject.WorkerAssigned
-            and target.DataObject.CurrentState is CustomerStates.CustomerStates.Queuing
-        ):
-            CH.SitAtTable(target=target)
-        elif (
-            target.DataObject.CurrentState == CustomerStates.CustomerStates.WaitingForService
-        ):
-            CH.AssignWorker(target=target)
+        match target.DataObject.CurrentState:
+            case CustomerDefs.CustomerStates.FirstInLine:
+                CH.SitAtTable(target=target)
+            case CustomerDefs.CustomerStates.WaitingForService:
+                CH.AssignWorker(target=target)
+            case CustomerDefs.CustomerStates.Queuing:
+                pass
 
 
 def WorkerClickRoutine(target) -> None:
     global GlobalClickState, GlobalTarget
-   
+
     if GlobalClickState is ClickState.Neutral and not target.DataObject.IsAssigned:
         GlobalTarget = target
         GlobalClickState = ClickState.ClickedWorker

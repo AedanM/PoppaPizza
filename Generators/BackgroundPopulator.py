@@ -23,7 +23,7 @@ def AddTables(activeGame=Game.MasterGame) -> None:
             maxSize=60,
             offset=(-75, 25),
         )
-        table.Collision = True
+        table.Collision = False
         Game.MasterGame.BackgroundSpriteGroup.add(table)
 
 

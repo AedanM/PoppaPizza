@@ -9,7 +9,6 @@ os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "True"
 import pygame
 from Classes import Game
 from Handlers import EventHandler
-from Generators import CharSpawner
 from Definitions import ColorTools
 
 Game.MasterGame = Game.Game()
@@ -27,7 +26,7 @@ while True:
     Game.MasterGame.UpdateSprites()
 
     # DefinedLocations.DebugLocations()
-    CharSpawner.SpawnHandler()
+    EventHandler.RandomSpawnHandler()
 
     Game.MasterGame.DrawScreenClock(
         locationTopLeft=(0, 0),

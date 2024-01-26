@@ -1,7 +1,7 @@
 import pygame
 from dataclasses import dataclass
 import math
-from Classes.Settings import GameSettings
+from Classes import Settings
 from Definitions import CustomEvents
 
 
@@ -36,7 +36,7 @@ class GameClock:
     Second: int = 1
     WorkingDayStart: int = 9
     WorkingDayEnd: int = 17
-    ClockMul = GameSettings.ClockSpeed
+    ClockMul = Settings.GameSettings.ClockSpeed
     Running: bool = False
 
     def __init__(self, clock) -> None:
@@ -52,11 +52,12 @@ class GameClock:
     def UpdateClock(self) -> None:
         if self.Running:
             self.Second += math.floor(
-                (pygame.time.get_ticks() - self.LastTime) * GameSettings.ClockSpeed
+                (pygame.time.get_ticks() - self.LastTime)
+                * Settings.GameSettings.ClockSpeed
             )
             self.LastTime = pygame.time.get_ticks()
             self.CheckWorkingDay()
-            self.ClockMul = GameSettings.ClockSpeed
+            self.ClockMul = Settings.GameSettings.ClockSpeed
             if self.Hour >= 24:
                 self.DayChange()
             if self.Day >= self.CurrMonth.Days:
@@ -88,14 +89,14 @@ class GameClock:
 
     @property
     def DisplayHour(self) -> int:
-        returnVal = self.Hour % GameSettings.ClockDivisor
-        if (not GameSettings.Clock24) and (self.Hour > 12 and returnVal < 12):
+        returnVal = self.Hour % Settings.GameSettings.ClockDivisor
+        if (not Settings.GameSettings.Clock24) and (self.Hour > 12 and returnVal < 12):
             returnVal += 1
         return returnVal
 
     @property
     def DateTime(self) -> str:
-        return f"{self.CurrMonth.Name} {self.DayOfMonth} {(self.DisplayHour):02d}:{(self.Minute % 60):02d}{GameSettings.AMPM(self.Hour)}"
+        return f"{self.CurrMonth.Name} {self.DayOfMonth} {(self.DisplayHour):02d}:{(self.Minute % 60):02d}{Settings.GameSettings.AMPM(self.Hour)}"
 
     @property
     def UnixTime(self) -> int:

@@ -46,7 +46,7 @@ LocationDefs = DefinedLocations()
 
 class SeatingPlan:
     TableRows = [350, 500, 650, 800, 950]
-    TableCols = [400, 500, 600, 700]
+    TableCols = [300, 400, 500, 600, 700]
 
 
 """ def DebugLocations(activateGame=Game.MasterGame) -> None:

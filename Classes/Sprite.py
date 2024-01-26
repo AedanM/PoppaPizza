@@ -4,7 +4,7 @@ from enum import Enum
 import pygame
 from Classes import GameObject, Game, TimerBar
 from Utilities import Utils as utils
-from Handlers.MovementHandler import CharacterMovementHandler
+from Handlers import MovementHandler
 from Assets import AssetLibrary
 
 ImageTypes = AssetLibrary.ImageTypes
@@ -15,7 +15,7 @@ class CharImageSprite(GameObject.GameObject):
     CorrespondingID: int = 0
     ImageType: ImageTypes = ImageTypes.Null
     rect: pygame.rect.Rect = pygame.rect.Rect(0, 0, 0, 0)
-    MvmHandler: CharacterMovementHandler = None
+    MvmHandler: MovementHandler.CharacterMovementHandler = None
     PersonalTimer: TimerBar.TimerBar = None
 
     def __init__(
@@ -30,7 +30,7 @@ class CharImageSprite(GameObject.GameObject):
         self.rect = self.image.get_rect()
         self.rect.x = position[0]
         self.rect.y = position[1]
-        self.MvmHandler = CharacterMovementHandler()
+        self.MvmHandler = MovementHandler.CharacterMovementHandler()
         self.ImageType = AssetLibrary.PathToTypeDict[path]
         # self.CheckSpawnCollision()
 

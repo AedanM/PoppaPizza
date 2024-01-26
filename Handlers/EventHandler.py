@@ -1,9 +1,10 @@
 import pygame
 import sys
 from Classes import Game
-from Definitions import CustomEvents, Prices
+from Definitions import CustomEvents, CustomerDefs, Prices
 from Handlers import ClickHandler
 from Generators import CharSpawner, BackgroundPopulator, Menus
+from Assets import AssetLibrary
 
 
 def MainEventHandler(activeGame=Game.MasterGame) -> None:
@@ -42,11 +43,22 @@ def DebugSetup() -> None:
     BackgroundPopulator.SetupBackground()
 
 
+def RandomSpawnHandler() -> None:
+    CharSpawner.CustomerSpawner()
+
+
 def DayNightEvent() -> None:
     print("DAY CHANGE EVENT HERE")
     workerPay = 0.0
     for worker in Game.MasterGame.WorkerList:
         workerPay += worker.BasePay * Prices.DefaultPrices.Salary
     rent = Prices.CurrentRent
-
     Game.MasterGame.UserInventory.Money -= workerPay + rent
+
+    for sprite in Game.MasterGame.CharSpriteGroup:
+        if (
+            sprite.ImageType in AssetLibrary.CustomerOutfits
+            and sprite.DataObject.CurrentState
+            is not CustomerDefs.CustomerStates.BeingServed
+        ):
+            Game.MasterGame.RemoveObjFromSprite(targetSprite=sprite)
