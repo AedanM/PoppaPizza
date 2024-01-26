@@ -3,9 +3,8 @@ from dataclasses import dataclass
 import names
 import random
 from Classes import Jobs, Sprite, Game
-from Definitions import DefinedLocations, CustomerDefs
+from Definitions import DefinedLocations, CustomerDefs, AssetLibrary
 import Utilities.Utils as utils
-from Assets import AssetLibrary
 
 IDCOUNT = 1
 

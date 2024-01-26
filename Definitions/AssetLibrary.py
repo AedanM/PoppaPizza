@@ -13,6 +13,7 @@ class ImagePaths:
     CustomerPath = AssetFolder + r"\person.png"
     TablePath = AssetFolder + r"\table.png"
     BackgroundPath = AssetFolder + r"\background.png"
+    GameOverPath = AssetFolder + r"\gameOver.png"
     CoffeePath = AssetFolder + r"\coffee.png"
     CowboyPath = AssetFolder + r"\cowboySaloon.png"
     LuauPath = AssetFolder + r"\luau.png"

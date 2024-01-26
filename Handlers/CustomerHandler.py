@@ -2,7 +2,7 @@
 import random
 import pygame
 from Classes import Game
-from Definitions import CustomerDefs, DefinedPaths, DefinedPaths as DL
+from Definitions import CustomerDefs, DefinedPaths, DefinedPaths as DL, ColorTools
 from Handlers import WorkerHandler as WH
 
 
@@ -80,6 +80,7 @@ def BeginWait(target) -> None:
         length=(target.DataObject.DesiredJob.Urgency.value * 30.0),
         assocId=target.DataObject.IdNum,
         startingState=target.DataObject.CurrentState.value,
+        fillColor=ColorTools.Red,
     )
 
 

@@ -2,9 +2,8 @@
 from enum import Enum
 from Utilities import Utils
 from Classes import Game
-from Assets import AssetLibrary
 from Handlers import CustomerHandler as CH, WorkerHandler as WH
-from Definitions import CustomerDefs, LockerRooms
+from Definitions import CustomerDefs, LockerRooms, AssetLibrary
 
 
 class ClickState(Enum):

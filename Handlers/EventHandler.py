@@ -1,10 +1,9 @@
 import pygame
 import sys
 from Classes import Game
-from Definitions import CustomEvents, CustomerDefs, Prices
+from Definitions import CustomEvents, CustomerDefs, Prices, AssetLibrary
 from Handlers import ClickHandler
 from Generators import CharSpawner, BackgroundPopulator, Menus
-from Assets import AssetLibrary
 
 
 def MainEventHandler(activeGame=Game.MasterGame) -> None:
@@ -14,6 +13,8 @@ def MainEventHandler(activeGame=Game.MasterGame) -> None:
             sys.exit()
         if event.type == pygame.USEREVENT and event == CustomEvents.NightCycle:
             DayNightEvent()
+        if event.type == pygame.USEREVENT and event == CustomEvents.GameOver:
+            GameOver()
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             ClickHandler.MouseHandler(event=event)
         if event.type == pygame.KEYDOWN and event.key == pygame.K_t:
@@ -54,7 +55,8 @@ def DayNightEvent() -> None:
         workerPay += worker.BasePay * Prices.DefaultPrices.Salary
     rent = Prices.CurrentRent
     Game.MasterGame.UserInventory.Money -= workerPay + rent
-
+    if Game.MasterGame.UserInventory.Money < 0:
+        pygame.event.post(CustomEvents.GameOver)
     for sprite in Game.MasterGame.CharSpriteGroup:
         if (
             sprite.ImageType in AssetLibrary.CustomerOutfits
@@ -62,3 +64,8 @@ def DayNightEvent() -> None:
             is not CustomerDefs.CustomerStates.BeingServed
         ):
             Game.MasterGame.RemoveObjFromSprite(targetSprite=sprite)
+
+
+def GameOver() -> None:
+    Game.MasterGame.Running = False
+    Menus.GameOverMenu()

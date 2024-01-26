@@ -1,8 +1,7 @@
 """Handler for Sprite Movement Tasks"""
-from Definitions import CustomerDefs
+from Definitions import CustomerDefs, AssetLibrary
 from Utilities import Utils as utils
 from Classes import Game
-from Assets import AssetLibrary
 
 # from Handlers import PathfindingHandler as Path
 

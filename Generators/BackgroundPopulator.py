@@ -1,7 +1,6 @@
 import pygame
 from Classes import Game, Sprite
-from Assets import AssetLibrary
-from Definitions import DefinedLocations, LockerRooms
+from Definitions import DefinedLocations, LockerRooms, AssetLibrary
 
 RowCoords = DefinedLocations.SeatingPlan().TableRows
 ColCoords = DefinedLocations.SeatingPlan().TableCols

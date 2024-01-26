@@ -1,6 +1,5 @@
-from Assets import AssetLibrary
 from Classes import Game
-from Definitions import DefinedLocations
+from Definitions import DefinedLocations, AssetLibrary
 from Utilities import Utils
 import random
 

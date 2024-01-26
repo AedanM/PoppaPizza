@@ -17,12 +17,11 @@ def OptionsMenu(surface=Game.MasterGame.Screen) -> None:
         onclose=pygame_menu.events.CLOSE,
     )
     menu.add.toggle_switch(
+        toggleswitch_id="24Toggle",
         title="24 Hour Clock",
-        default=Game.MasterGame.Settings.Clock24,
-        state_values=("Enabled", "Disabled")
-        if Game.MasterGame.Settings.Clock24
-        else ("Disabled", "Enabled"),
-        onchange=Game.MasterGame.Settings.ToggleClock24(),
+        # default_state=Game.MasterGame.Settings.Clock24,
+        state_values=("Enabled", "Disabled"),
+        onchange=lambda x: Game.MasterGame.Settings.SetClock24(value=x),
     )
     menu.add.range_slider(
         title="Speed",
@@ -67,4 +66,19 @@ def ShopMenu(surface=Game.MasterGame.Screen) -> None:
     )
 
     menu.add.button(title="Return", action=pygame_menu.events.CLOSE)
+    menu.mainloop(surface=surface)
+
+
+def GameOverMenu(
+    surface=Game.MasterGame.Screen, reason="\n You ran out of Money"
+) -> None:
+    menu = pygame_menu.Menu(
+        title="Game Over",
+        width=Game.MasterGame.Screen.get_width(),
+        height=Game.MasterGame.Screen.get_height(),
+        onclose=pygame_menu.events.EXIT,
+        theme=pygame_menu.themes.THEME_DARK,
+    )
+    menu.add.label(title=f"Game Over {reason}\n\n", font_size=60, font_shadow=True)
+    menu.add.button(title="Close Game", action=pygame_menu.events.EXIT)
     menu.mainloop(surface=surface)

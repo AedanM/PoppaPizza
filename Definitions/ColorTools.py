@@ -2,6 +2,7 @@
 from dataclasses import dataclass
 import colorsys
 import numpy as np
+from Utilities import Utils
 
 
 @dataclass
@@ -9,6 +10,11 @@ class Color:
     H: int
     S: int
     V: int
+
+    def __init__(self, H,S,V) -> None:
+        self.H = Utils.Bind(val=H, inRange=(0, 255))
+        self.S = Utils.Bind(val=S, inRange=(0, 255))
+        self.V = Utils.Bind(val=V, inRange=(0, 255))
 
     def GetNumPy(self) -> "np.NDArray[np.uint8]":
         return np.array([self.H, self.S, self.V], dtype=np.uint8)
@@ -40,7 +46,9 @@ class Color:
 White = Color(H=0, S=0, V=255)
 Blue = Color(H=128, S=200, V=128)
 Green = Color(H=70, S=200, V=128)
-Grey = Color(H=0, S=0, V=128)
+LimeGreen = Color(H=70, S=200, V=255)
+Red = Color(H=0, S=200, V=255)
+Grey = Color(H=0, S=0, V=200)
 Pink = Color(H=220, S=200, V=128)
 Yellow = Color(H=25, S=200, V=180)
 

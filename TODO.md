@@ -7,7 +7,7 @@
 
 - Walk cycle/logic for chars to waiting area
 - Ambling for workers
-- Queues
+- ~~Queues~~
 - Minigame for job cost or outfit swap
 - glow when selected
 - menus?

@@ -1,8 +1,7 @@
 """Class for Game"""
 import pygame
-from Assets import AssetLibrary
 from Classes import GameClock, Settings, Inventory
-from Definitions import Chances
+from Definitions import Chances, AssetLibrary
 
 std_dimensions = {"Medium": (1200, 800), "Small": (600, 400), "Large": (2400, 1600)}
 
@@ -18,6 +17,7 @@ class Game:
     UserInventory: Inventory.Inventory = None
     ShowScreen: bool = True
     GameClock = GameClock.GameClock(clock=pygame.time.Clock())
+    Running: bool = True
 
     def __init__(self, activateScreen=True, size=std_dimensions["Medium"]) -> None:
         pygame.init()

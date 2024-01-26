@@ -1,5 +1,4 @@
-from Assets import AssetLibrary
-from Definitions import DefinedLocations, ColorTools
+from Definitions import DefinedLocations, ColorTools, AssetLibrary
 
 LockerRooms = {
     AssetLibrary.ImageTypes.CoffeeLogo: DefinedLocations.LocationDefs.YellowLockerRoom,
