@@ -3,10 +3,8 @@ from dataclasses import dataclass
 import names
 import random
 from Classes import Jobs, Sprite, Game
-from Definitions.CustomerStates import CustomerStates
-from Definitions import DefinedLocations
+from Definitions import DefinedLocations, CustomerDefs, AssetLibrary
 import Utilities.Utils as utils
-from Assets import AssetLibrary
 
 IDCOUNT = 1
 
@@ -67,7 +65,7 @@ class Worker(Person):
 class Customer(Person):
     DesiredJob: Jobs.Job = None
     WorkerAssigned: bool = False
-    CurrentState: CustomerStates = CustomerStates.Null
+    CurrentState: CustomerDefs.CustomerStates = CustomerDefs.CustomerStates.Null
 
     @classmethod
     def CreateCustomer(

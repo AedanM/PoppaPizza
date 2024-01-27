@@ -1,6 +1,5 @@
-from Assets import AssetLibrary
 from Classes import Game
-from Definitions.DefinedLocations import LocationDefs, SeatingPlan
+from Definitions import DefinedLocations, AssetLibrary
 from Utilities import Utils
 import random
 
@@ -23,8 +22,8 @@ def IsSeatTaken(seatLocation) -> bool:
 
 def GetRandomSeatPosition() -> tuple | None:
     global RecurDepth
-    yPos = random.choice(SeatingPlan.TableCols)
-    xPos = random.choice(SeatingPlan.TableRows)
+    yPos = random.choice(DefinedLocations.SeatingPlan.TableCols)
+    xPos = random.choice(DefinedLocations.SeatingPlan.TableRows)
     coords = (xPos, yPos)
     if IsSeatTaken(seatLocation=(xPos, yPos)):
         RecurDepth += 1
@@ -42,8 +41,8 @@ class DefinedPaths:
     def KitchenToLockerRoom(sprite, dest) -> list:
         path = [
             sprite.rect.center,
-            LocationDefs.KitchenLocation,
-            (dest[0], LocationDefs.KitchenLocation[1]),
+            DefinedLocations.LocationDefs.KitchenLocation,
+            (dest[0], DefinedLocations.LocationDefs.KitchenLocation[1]),
             dest,
         ]
         return path
@@ -55,7 +54,7 @@ class DefinedPaths:
             path = [
                 (sprite.rect.centerx, randomSeatPosition[1]),
                 (randomSeatPosition[0], randomSeatPosition[1]),
-                randomSeatPosition,
+                (randomSeatPosition[0], randomSeatPosition[1] + 50),
             ]
             return path
 
@@ -63,9 +62,15 @@ class DefinedPaths:
     def KitchenToCustomer(sprite, dest) -> list:
         path = [
             sprite.rect.center,
-            LocationDefs.KitchenLocation,
-            (LocationDefs.KitchenLocation[0] + 100, LocationDefs.KitchenLocation[1]),
-            (dest.rect.center[0] - 100, LocationDefs.KitchenLocation[1]),
+            DefinedLocations.LocationDefs.KitchenLocation,
+            (
+                DefinedLocations.LocationDefs.KitchenLocation[0] + 100,
+                DefinedLocations.LocationDefs.KitchenLocation[1],
+            ),
+            (
+                dest.rect.center[0] - 100,
+                DefinedLocations.LocationDefs.KitchenLocation[1],
+            ),
             dest.rect.center,
         ]
         return path
@@ -74,12 +79,12 @@ class DefinedPaths:
     def BackToKitchen(sprite, activeGame=Game.MasterGame) -> list:
         path = [
             sprite.rect.center,
-            (sprite.rect.center[0], LocationDefs.KitchenLocation[1]),
-            LocationDefs.KitchenLocation,
+            (sprite.rect.center[0], DefinedLocations.LocationDefs.KitchenLocation[1]),
+            DefinedLocations.LocationDefs.KitchenLocation,
             Utils.PositionRandomVariance(
                 position=(
-                    LocationDefs.KitchenLocation[0] - 50,
-                    LocationDefs.KitchenLocation[1],
+                    DefinedLocations.LocationDefs.KitchenLocation[0] - 50,
+                    DefinedLocations.LocationDefs.KitchenLocation[1],
                 ),
                 percentVarianceTuple=(0.05, 0.1),
                 screenSize=activeGame.ScreenSize,
@@ -89,20 +94,23 @@ class DefinedPaths:
 
     @staticmethod
     def CustomerToExit(sprite) -> list:
-        path = [sprite.rect.center, LocationDefs.CustomerExit]
+        path = [sprite.rect.center, DefinedLocations.LocationDefs.CustomerExit]
         return path
 
     @staticmethod
     def TableToExit(sprite) -> list:
         path = [
             sprite.rect.center,
-            (sprite.rect.centerx, sprite.rect.centery - 50),
-            (LocationDefs.CustomerEntrance[0], sprite.rect.centery - 50),
-            LocationDefs.CustomerExit,
+            (sprite.rect.centerx, sprite.rect.centery - 100),
+            (
+                DefinedLocations.LocationDefs.CustomerEntrance[0],
+                sprite.rect.centery - 100,
+            ),
+            DefinedLocations.LocationDefs.CustomerExit,
         ]
         return path
 
     @staticmethod
     def CustomerToEntrance(sprite) -> list:
-        path = [sprite.rect.center, LocationDefs.CustomerEntrance]
+        path = [sprite.rect.center, DefinedLocations.LocationDefs.CustomerEntrance]
         return path

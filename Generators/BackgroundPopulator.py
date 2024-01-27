@@ -1,7 +1,6 @@
 import pygame
 from Classes import Game, Sprite
-from Assets import AssetLibrary
-from Definitions import DefinedLocations, LockerRooms
+from Definitions import DefinedLocations, LockerRooms, AssetLibrary
 
 RowCoords = DefinedLocations.SeatingPlan().TableRows
 ColCoords = DefinedLocations.SeatingPlan().TableCols
@@ -23,7 +22,7 @@ def AddTables(activeGame=Game.MasterGame) -> None:
             maxSize=60,
             offset=(-75, 25),
         )
-        table.Collision = True
+        table.Collision = False
         Game.MasterGame.BackgroundSpriteGroup.add(table)
 
 

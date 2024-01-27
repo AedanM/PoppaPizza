@@ -27,5 +27,8 @@ class Settings:
     def ToggleClock24(self) -> None:
         self.Clock24 = not self.Clock24
 
+    def SetClock24(self, value) -> None:
+        self.Clock24 = bool(value)
+
 
 GameSettings = Settings()

@@ -2,8 +2,21 @@
 import random
 import pygame
 from Classes import Game
-from Definitions import CustomEvents, CustomerStates, DefinedPaths as DL
+from Definitions import CustomerDefs, DefinedPaths, DefinedPaths as DL, ColorTools
 from Handlers import WorkerHandler as WH
+
+
+def SetFirstInLine(target) -> None:
+    if target.MvmHandler.IsFinished(target):
+        target.DataObject.CurrentState = CustomerDefs.CustomerStates.FirstInLine
+
+
+def WalkIn(target):
+    target.MvmHandler.StartNewListedMotion(
+        DefinedPaths.DefinedPaths.CustomerToEntrance(sprite=target)
+    )
+    target.DataObject.CurrentState = CustomerDefs.CustomerStates.WalkingIn
+    target.MvmHandler.OnComplete = lambda: (SetFirstInLine(target=target))
 
 
 # TODO - Fix getting worker who is busy
@@ -33,7 +46,7 @@ def AssignWorker(target, activeGame=Game.MasterGame) -> None:
                 sprite=workerSprite, dest=target
             )
         )
-        target.DataObject.CurrentState = CustomerStates.CustomerStates.Served
+        target.DataObject.CurrentState = CustomerDefs.CustomerStates.Served
         returnHome = lambda: (
             GetUpAndGo(spriteImg=target),
             WH.FinishCustomer(ws=workerSprite, j=target.DataObject.DesiredJob),
@@ -45,13 +58,13 @@ def AssignWorker(target, activeGame=Game.MasterGame) -> None:
 
 
 def SitAtTable(target) -> None:
+    target.DataObject.CurrentState = CustomerDefs.CustomerStates.Seated
     path = DL.DefinedPaths.CustomerToRandomSeat(sprite=target)
     if path is not None:
         target.MvmHandler.StartNewListedMotion(path)
-        target.DataObject.CurrentState = CustomerStates.CustomerStates.Seated
         target.MvmHandler.OnComplete = lambda: BeginWait(target=target)
     else:
-        target.DataObject.CurrentState = CustomerStates.CustomerStates.LeavingAngry
+        target.DataObject.CurrentState = CustomerDefs.CustomerStates.LeavingAngry
         AllTablesBusy(target=target)
 
 
@@ -60,31 +73,31 @@ def AllTablesBusy(target) -> None:
 
 
 def BeginWait(target) -> None:
-    target.DataObject.CurrentState = CustomerStates.CustomerStates.WaitingForService
+    target.DataObject.CurrentState = CustomerDefs.CustomerStates.WaitingForService
     taskComplete = lambda: GetUpAndGo(spriteImg=target)
     target.CreatePersonTimerBar(
         completeTask=taskComplete,
         length=(target.DataObject.DesiredJob.Urgency.value * 30.0),
         assocId=target.DataObject.IdNum,
         startingState=target.DataObject.CurrentState.value,
+        fillColor=ColorTools.Red,
     )
 
 
 def AllWorkersBusy(target) -> None:
     taskComplete = lambda: GetUpAndGo(spriteImg=target)
-    target.DataObject.CurrentState = CustomerStates.CustomerStates.Waiting
+    target.DataObject.CurrentState = CustomerDefs.CustomerStates.Waiting
     target.CreatePersonTimerBar(completeTask=taskComplete, length=10)
 
 
 def GetUpAndGo(spriteImg, activeGame=Game.MasterGame) -> None:
     if (
         not spriteImg.DataObject.WorkerAssigned
-        or spriteImg.DataObject.CurrentState is CustomerStates.CustomerStates.Served
+        or spriteImg.DataObject.CurrentState is CustomerDefs.CustomerStates.Served
     ):
         spriteImg.MvmHandler.StartNewListedMotion(
             DL.DefinedPaths.CustomerToExit(sprite=spriteImg)
-            if spriteImg.DataObject.CurrentState
-            == CustomerStates.CustomerStates.Queuing
+            if spriteImg.DataObject.CurrentState == CustomerDefs.CustomerStates.Queuing
             else DL.DefinedPaths.TableToExit(sprite=spriteImg)
         )
 

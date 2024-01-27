@@ -1,25 +1,18 @@
 """Handler for Sprite Movement Tasks"""
-from enum import Enum
-from Definitions import CustomerStates
-import Utilities.Utils as utils
+from Definitions import CustomerDefs, AssetLibrary
+from Utilities import Utils as utils
 from Classes import Game
 
 # from Handlers import PathfindingHandler as Path
 
 MaxLenMovement = 3
-
-
-class MovementSpeeds(Enum):
-    Slow: int = 1
-    Medium: int = 10
-    Fast: int = 100
-    Instant: int = 1000
+QueueDistance = 75
 
 
 class CharacterMovementHandler:
     OnComplete = None
     Dest: tuple = (0, 0)
-    MaxMovementSpeed: MovementSpeeds = MovementSpeeds.Medium
+    MaxMovementSpeed: CustomerDefs.MovementSpeeds = CustomerDefs.MovementSpeeds.Medium
     MovementTolerance: float = 0.01
     InMotion: bool = False
     DstSet: bool = False
@@ -34,7 +27,9 @@ class CharacterMovementHandler:
     def DestX(self) -> int | float:
         return self.Dest[0]
 
-    def StartNewListedMotion(self, pointList, speed=MovementSpeeds.Medium) -> None:
+    def StartNewListedMotion(
+        self, pointList, speed=CustomerDefs.MovementSpeeds.Medium
+    ) -> None:
         if not self.InMotion:
             self.OnComplete = lambda: None
             self.PointsList = pointList
@@ -44,8 +39,83 @@ class CharacterMovementHandler:
             self.MaxMovementSpeed = speed
             self.StartTime = Game.MasterGame.GameClock.UnixTime
 
-    def NeedsToQueue(self) -> bool:
-        return False
+    def NeedsToQueue(self, movingSprite) -> bool:
+        match movingSprite.DataObject.CurrentState:
+            case CustomerDefs.CustomerStates.Queuing:
+                if self.FirstInLine(movingSprite=movingSprite):
+                    movingSprite.DataObject.CurrentState = (
+                        CustomerDefs.CustomerStates.FirstInLine
+                    )
+                    return False
+                else:
+                    movingSprite.DataObject.CurrentState = (
+                        CustomerDefs.CustomerStates.WalkingIn
+                    )
+                    return self.NeedsToQueue(movingSprite=movingSprite)
+            case CustomerDefs.CustomerStates.WalkingIn:
+                for sprite in Game.MasterGame.CharSpriteGroup:
+                    if (
+                        sprite.ImageType in AssetLibrary.CustomerOutfits
+                        and sprite is not movingSprite
+                        and sprite.DataObject.CurrentState in CustomerDefs.QueueStates
+                    ):
+                        if utils.PositionInTolerance(
+                            pos1=sprite.rect.center,
+                            pos2=movingSprite.rect.center,
+                            tolerance=QueueDistance,
+                        ):
+                            return True
+            case other:
+                return False
+
+    def FirstInLine(self, movingSprite) -> bool:
+        for sprite in Game.MasterGame.CharSpriteGroup:
+            if (
+                sprite is not movingSprite
+                and sprite.rect.centerx == movingSprite.rect.centerx
+                and sprite.rect.centery < movingSprite.rect.centery
+            ):
+                return False
+        return True
+
+    def CalcNewPosition(self, obj) -> None:
+        if self.DstSet and Game.MasterGame.GameClock.Running:
+            if obj.ImageType in AssetLibrary.CustomerOutfits and self.NeedsToQueue(
+                movingSprite=obj
+            ):
+                obj.DataObject.CurrentState = CustomerDefs.CustomerStates.Queuing
+            else:
+                self.MoveChar(obj=obj)
+
+            if self.IsFinished(obj=obj):
+                if self.Dest == self.PointsList[len(self.PointsList) - 1]:
+                    self.FinishMovement()
+                else:
+                    self.CurrentPointIdx += 1
+                    self.Dest = self.PointsList[self.CurrentPointIdx]
+
+    def MoveChar(self, obj) -> None:
+        xDir = utils.Sign(num=self.DestX - obj.rect.centerx)
+        yDir = utils.Sign(num=self.DestY - obj.rect.centery)
+
+        xMotion = utils.Bind(
+            val=abs(self.DestX - obj.rect.centerx),
+            inRange=(
+                1,
+                self.MaxMovementSpeed.value * Game.MasterGame.GameClock.ClockMul,
+            ),
+        )
+
+        yMotion = utils.Bind(
+            val=abs(self.DestY - obj.rect.centery),
+            inRange=(
+                1,
+                self.MaxMovementSpeed.value * Game.MasterGame.GameClock.ClockMul,
+            ),
+        )
+
+        obj.rect.centerx += xMotion * xDir
+        obj.rect.centery += yMotion * yDir
 
     def IsFinished(self, obj) -> bool:
         return utils.InPercentTolerance(
@@ -53,48 +123,6 @@ class CharacterMovementHandler:
         ) and utils.InPercentTolerance(
             num1=obj.rect.centery, num2=self.DestY, tolerance=self.MovementTolerance
         )
-
-    def CalcNewPosition(self, obj) -> None:
-        if self.DstSet and Game.MasterGame.GameClock.Running:
-            # if self.NeedsToQueue():
-            # pass
-            # else:
-            xDir = utils.Sign(num=self.DestX - obj.rect.centerx)
-            yDir = utils.Sign(num=self.DestY - obj.rect.centery)
-            obj.rect.centerx += (
-                utils.Bind(
-                    val=abs(self.DestX - obj.rect.centerx),
-                    inRange=(
-                        1,
-                        self.MaxMovementSpeed.value
-                        * Game.MasterGame.GameClock.ClockMul,
-                    ),
-                )
-                * xDir
-            )
-            obj.rect.centery += (
-                utils.Bind(
-                    val=abs(self.DestY - obj.rect.centery),
-                    inRange=(
-                        1,
-                        self.MaxMovementSpeed.value
-                        * Game.MasterGame.GameClock.ClockMul,
-                    ),
-                )
-                * yDir
-            )
-            if MaxLenMovement < (Game.MasterGame.GameClock.UnixTime - self.StartTime):
-                # obj = Game.MasterGame.MatchIdToPerson(
-                # inputId=1,
-                # )  # self.CorrespondingId)
-                # if obj.CurrentState != CustomerStates.CustomerStates.Queuing:
-                self.FinishMovement()
-            elif self.IsFinished(obj=obj):
-                if self.Dest == self.PointsList[len(self.PointsList) - 1]:
-                    self.FinishMovement()
-                else:
-                    self.CurrentPointIdx += 1
-                    self.Dest = self.PointsList[self.CurrentPointIdx]
 
     def FinishMovement(self) -> None:
         self.DstSet = False

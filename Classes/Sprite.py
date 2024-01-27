@@ -4,18 +4,16 @@ from enum import Enum
 import pygame
 from Classes import GameObject, Game, TimerBar
 from Utilities import Utils as utils
-from Handlers.MovementHandler import CharacterMovementHandler
-from Assets import AssetLibrary
-
-ImageTypes = AssetLibrary.ImageTypes
+from Definitions import ColorTools, AssetLibrary
+from Handlers import MovementHandler
 
 
 class CharImageSprite(GameObject.GameObject):
     # pylint: disable=invalid-name
     CorrespondingID: int = 0
-    ImageType: ImageTypes = ImageTypes.Null
+    ImageType: AssetLibrary.ImageTypes = AssetLibrary.ImageTypes.Null
     rect: pygame.rect.Rect = pygame.rect.Rect(0, 0, 0, 0)
-    MvmHandler: CharacterMovementHandler = None
+    MvmHandler: MovementHandler.CharacterMovementHandler = None
     PersonalTimer: TimerBar.TimerBar = None
 
     def __init__(
@@ -30,7 +28,7 @@ class CharImageSprite(GameObject.GameObject):
         self.rect = self.image.get_rect()
         self.rect.x = position[0]
         self.rect.y = position[1]
-        self.MvmHandler = CharacterMovementHandler()
+        self.MvmHandler = MovementHandler.CharacterMovementHandler()
         self.ImageType = AssetLibrary.PathToTypeDict[path]
         # self.CheckSpawnCollision()
 
@@ -72,7 +70,14 @@ class CharImageSprite(GameObject.GameObject):
         self.Update()
 
     def CreatePersonTimerBar(
-        sprite, completeTask, assocId=0, length=29.0, startingState=0, offset=(0, 0)
+        sprite,
+        completeTask,
+        assocId=0,
+        length=29.0,
+        startingState=0,
+        offset=(0, 0),
+        width=0,
+        fillColor=ColorTools.LimeGreen,
     ) -> None:
         sprite.PersonalTimer = TimerBar.TimerBar(
             duration=length if length != 0 else 29.0,
@@ -83,7 +88,8 @@ class CharImageSprite(GameObject.GameObject):
         sprite.PersonalTimer.StartingState = startingState
         sprite.PersonalTimer.OnComplete = completeTask
         sprite.PersonalTimer.TimerRect.y -= 25
-        sprite.PersonalTimer.MaxWidth = sprite.rect.width
+        sprite.PersonalTimer.SetMaxSize(size=sprite.rect.width if width == 0 else width)
+        sprite.PersonalTimer.FillColor = fillColor
         sprite.PersonalTimer.StartTimer()
 
     def __repr__(self) -> str:
@@ -91,7 +97,7 @@ class CharImageSprite(GameObject.GameObject):
 
 
 class BackgroundElementSprite(GameObject.GameObject):
-    ImageType: ImageTypes = ImageTypes.Null
+    ImageType: AssetLibrary.ImageTypes = AssetLibrary.ImageTypes.Null
 
     # pylint: disable=invalid-name
     def __init__(

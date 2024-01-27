@@ -1,6 +1,4 @@
 """Class for DefinedLocations"""
-import pygame
-from Classes import Game
 
 
 class DefinedLocations:
@@ -45,8 +43,8 @@ LocationDefs = DefinedLocations()
 
 
 class SeatingPlan:
-    TableRows = [350, 500, 650, 800, 950]
-    TableCols = [400, 500, 600, 700]
+    TableRows = [400, 550, 700, 850, 1000]
+    TableCols = [300, 400, 500, 600, 700]
 
 
 """ def DebugLocations(activateGame=Game.MasterGame) -> None:

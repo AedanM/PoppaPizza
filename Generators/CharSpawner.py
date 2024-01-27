@@ -1,9 +1,8 @@
 """Handler for Spawning Elements"""
 import random, numpy
 from Classes import People, Game
-import Definitions.CustomerStates
-from Definitions import DefinedLocations, Prices
-import Definitions.DefinedPaths
+from Definitions import CustomerDefs, DefinedLocations, Prices
+from Handlers import CustomerHandler as CH
 
 # pylint: disable=C0103
 LastSpawnTime = 0
@@ -21,12 +20,7 @@ def CustomerSpawner(force=False) -> None:
         customer, customerSprite = People.Customer.CreateCustomer(
             startLocation=spawnLocation
         )
-        customerSprite.MvmHandler.StartNewListedMotion(
-            Definitions.DefinedPaths.DefinedPaths.CustomerToEntrance(
-                sprite=customerSprite
-            )
-        )
-        customer.CurrentState = Definitions.CustomerStates.CustomerStates.Queuing
+        CH.WalkIn(customerSprite)
         LastSpawnTime = currentTime
 
 
