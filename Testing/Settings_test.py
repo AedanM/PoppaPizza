@@ -1,13 +1,8 @@
-from Classes import Settings, Game
+"""Test Module for Settings"""
+# pylint: disable=invalid-name
+
+from Classes import Game
 
 
 def test_ClockSpeed() -> None:
-    pass
-
-
-"""
-def RunAllSettingsTests() -> bool:
-    Game.MasterGame = Game.Game(activateScreen=False)
-    test_ClockSpeed()
-    return True
-"""
+    assert Game.MasterGame.Settings is not None

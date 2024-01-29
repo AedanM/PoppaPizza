@@ -1,3 +1,6 @@
+"""Test Module for People Class"""
+# pylint: disable=invalid-name
+
 from Classes import People, Game
 from Utilities import Utils
 
@@ -20,7 +23,7 @@ def test_PeopleNames() -> None:
     currentGame = Game.Game(activateScreen=True)
     currentGame.CustomerList = []
     currentGame.WorkerList = []
-    for i in range(10):
+    for _ in range(10):
         worker, workerSprite = People.Worker.CreateWorker(activeGame=currentGame)
         customer, customerSprite = People.Customer.CreateCustomer(
             activeGame=currentGame
@@ -30,5 +33,5 @@ def test_PeopleNames() -> None:
             assert worker.LastName != customer.LastName
         currentGame.RemoveObjFromSprite(targetSprite=workerSprite)
         currentGame.RemoveObjFromSprite(targetSprite=customerSprite)
-    assert currentGame.WorkerList == []
-    assert currentGame.CustomerList == []
+    assert not currentGame.WorkerList
+    assert not currentGame.CustomerList
