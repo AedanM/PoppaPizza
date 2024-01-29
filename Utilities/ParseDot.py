@@ -1,4 +1,4 @@
-"""Get stats from Dot file"""
+"""Remove Confusing Links in DOT FILE"""
 
 docString = []
 with open("packages.dot", "r", encoding="utf8") as fp:
@@ -11,7 +11,6 @@ with open("packages.dot", "r", encoding="utf8") as fp:
                 and "." in imported
                 and "Utils" not in imported
                 and "Game" not in imported
-                and "Asset" not in imported
                 and "Defin" not in imported
                 or ("Main" in importer and "." in imported)
             ):
@@ -22,7 +21,7 @@ with open("packages.dot", "r", encoding="utf8") as fp:
                 docString.append(line)
         else:
             if "rankdir" in line:
-                line.replace("BT", "TB")
+                line = line.replace("rankdir=BT", "rankdir=TB")
             docString.append(line)
 with open("packages.dot", "w", encoding="utf8") as fp:
     fp.writelines(docString)
