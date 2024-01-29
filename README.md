@@ -20,10 +20,10 @@ What if a bunch of restaurants couldn't afford individual working spaces so deci
 
 ## Folder Structure
 
-- [Assets](Assets/AssetDescriptions.md)
-- [Classes](Classes/ClassesDescription.md)
-- [Definitions](Definitions/DefinitionsDescription.md)
-- [Generators](Generators/GeneratorsDescription.md)
-- [Handlers](Handlers/HandlersDescription.md)
-- [Testing](Testing/TestingDescription.md)
-- [Utilities](Utilities/UtilitiesDescription.md)
+- [Assets](Assets/README.md)
+- [Classes](Classes/README.md)
+- [Definitions](Definitions/README.md)
+- [Generators](Generators/README.md)
+- [Handlers](Handlers/README.md)
+- [Testing](Testing/README.md)
+- [Utilities](Utilities/README.md)

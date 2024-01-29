@@ -24,12 +24,12 @@ Each representing one of the 5 themes for the restaurant. Each should have a log
 ### Safari Party
 
 <img src="safari.png" alt="Safari Party Logo" height="200" />
-<img src="workersafari.png" alt="Safari Party Worker" height="200" />
+<img src="workerSafari.png" alt="Safari Party Worker" height="200" />
 
 ### Formal Dining
 
 <img src="suit.png" alt="Formal Dining Logo" height="200" />
-<img src="workersuit.png" alt="Formal Dining Worker" height="200" />
+<img src="workerSuit.png" alt="Formal Dining Worker" height="200" />
 
 ## Background Assets
 
