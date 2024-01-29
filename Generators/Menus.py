@@ -1,9 +1,7 @@
-import pygame
+"""Generator Functions for Menus"""
 import pygame_menu
 from Classes import Game
-from Definitions import Prices
 from Generators import CharSpawner
-from dataclasses import dataclass
 
 
 # TODO - Fix UnPause
@@ -41,12 +39,12 @@ def OptionsMenu(surface=Game.MasterGame.Screen) -> None:
 
 
 def BuyNumWorkers(num) -> None:
-    for i in range(num):
+    for _ in range(num):
         CharSpawner.BuyWorker()
 
 
 def ShopMenu(surface=Game.MasterGame.Screen) -> None:
-    Game.MasterGame.GameClock.SetRunning(not Game.GameClock.Clock.Running)
+    Game.MasterGame.GameClock.SetRunning(not Game.MasterGame.GameClock.Running)
     menu = pygame_menu.Menu(
         title="Settings",
         width=800,
@@ -61,7 +59,7 @@ def ShopMenu(surface=Game.MasterGame.Screen) -> None:
         onchange=Game.MasterGame.Settings.ToggleClock24(),
     )
     menu.add.button(
-        title=f"x1",
+        title="x1",
         action=lambda: (BuyNumWorkers(num=1)),
     )
 

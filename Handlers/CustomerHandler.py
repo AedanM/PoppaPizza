@@ -1,8 +1,7 @@
 """Handler for Customer Tasks"""
 import random
-import pygame
 from Classes import Game
-from Definitions import CustomerDefs, DefinedPaths, DefinedPaths as DL, ColorTools
+from Definitions import CustomerDefs, DefinedPaths as DL, ColorTools
 from Handlers import WorkerHandler as WH
 
 
@@ -11,9 +10,9 @@ def SetFirstInLine(target) -> None:
         target.DataObject.CurrentState = CustomerDefs.CustomerStates.FirstInLine
 
 
-def WalkIn(target):
+def WalkIn(target) -> None:
     target.MvmHandler.StartNewListedMotion(
-        DefinedPaths.DefinedPaths.CustomerToEntrance(sprite=target)
+        DL.DefinedPaths.CustomerToEntrance(sprite=target)
     )
     target.DataObject.CurrentState = CustomerDefs.CustomerStates.WalkingIn
     target.MvmHandler.OnComplete = lambda: (SetFirstInLine(target=target))
@@ -34,7 +33,7 @@ def FindAvailableWorker(activeGame=Game.MasterGame) -> tuple:
 
 
 # TODO - Stop 2 workers on 1 job
-def AssignWorker(target, activeGame=Game.MasterGame) -> None:
+def AssignWorker(target) -> None:
     worker, workerSprite = FindAvailableWorker()
     if worker is None:
         AllWorkersBusy(target=target)
@@ -86,7 +85,7 @@ def BeginWait(target) -> None:
 
 def AllWorkersBusy(target) -> None:
     taskComplete = lambda: GetUpAndGo(spriteImg=target)
-    target.DataObject.CurrentState = CustomerDefs.CustomerStates.Waiting
+    target.DataObject.CurrentState = CustomerDefs.CustomerStates.WaitingForService
     target.CreatePersonTimerBar(completeTask=taskComplete, length=10)
 
 

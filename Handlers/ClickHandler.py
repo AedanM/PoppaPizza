@@ -10,6 +10,7 @@ class ClickState(Enum):
     Neutral, ClickedCustomer, ClickedWorker = range(3)
 
 
+# pylint: disable=invalid-name, global-statement, W0602
 GlobalClickState = ClickState.Neutral
 GlobalTarget = None
 

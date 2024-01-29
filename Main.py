@@ -7,7 +7,7 @@ import os
 # pylint: disable=wrong-import-position
 os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "True"
 import pygame
-from Classes import Game, TimerBar
+from Classes import Game
 from Handlers import EventHandler
 from Definitions import ColorTools
 
@@ -17,7 +17,6 @@ DEBUGFLAG = True
 
 if DEBUGFLAG:
     EventHandler.DebugSetup()
-    TBar = TimerBar.TimerBar(duration=60, position=(500, 500), assocId=0)
 while True:
     if Game.MasterGame.Running:
         EventHandler.MainEventHandler()
@@ -34,7 +33,6 @@ while True:
             backColor=ColorTools.Blue.RGB,
             withMoney=True,
         )
-        TBar.UpdateAndDraw()
         # Update the display
     if Game.MasterGame.ShowScreen:
         pygame.display.update()

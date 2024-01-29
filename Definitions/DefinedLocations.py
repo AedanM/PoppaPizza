@@ -45,15 +45,3 @@ LocationDefs = DefinedLocations()
 class SeatingPlan:
     TableRows = [400, 550, 700, 850, 1000]
     TableCols = [300, 400, 500, 600, 700]
-
-
-""" def DebugLocations(activateGame=Game.MasterGame) -> None:
-    attrs = [x for x in dir(LocationDefs) if "__" not in x]
-    for attr in attrs:
-        pygame.draw.circle(
-            surface=activateGame.Screen,
-            color=(0, 200, 255),
-            center=getattr(LocationDefs, attr),
-            radius=25,
-        )
- """

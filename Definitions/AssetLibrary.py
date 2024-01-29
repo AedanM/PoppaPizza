@@ -1,10 +1,13 @@
+"""Asset loading"""
 from dataclasses import dataclass
 from enum import Enum
+import sys
 
 
 @dataclass
 class ImagePaths:
-    AssetFolder = r"Assets"
+    # pylint: disable=W0212, E1101
+    AssetFolder = r"Assets" if not hasattr(sys, "_MEIPASS") else sys._MEIPASS
     WorkerSuitPath = AssetFolder + r"\workerSuit.png"
     WorkerCoffeePath = AssetFolder + r"\workerCoffee.png"
     WorkerLuauPath = AssetFolder + r"\workerLuau.png"

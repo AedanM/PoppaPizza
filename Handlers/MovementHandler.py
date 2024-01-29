@@ -5,8 +5,8 @@ from Classes import Game
 
 # from Handlers import PathfindingHandler as Path
 
-MaxLenMovement = 3
-QueueDistance = 75
+MAXMOVEMENT = 3
+QUEUEDISTANCE = 75
 
 
 class CharacterMovementHandler:
@@ -18,6 +18,7 @@ class CharacterMovementHandler:
     DstSet: bool = False
     PointsList: list = []
     CurrentPointIdx: int = 0
+    StartTime: float = 0.0
 
     @property
     def DestY(self) -> int | float:
@@ -62,9 +63,10 @@ class CharacterMovementHandler:
                         if utils.PositionInTolerance(
                             pos1=sprite.rect.center,
                             pos2=movingSprite.rect.center,
-                            tolerance=QueueDistance,
+                            tolerance=QUEUEDISTANCE,
                         ):
                             return True
+            # pylint: disable=unused-variable
             case other:
                 return False
 

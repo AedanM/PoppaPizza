@@ -1,3 +1,4 @@
+"""Definitions for LockerRooms"""
 from Definitions import DefinedLocations, ColorTools, AssetLibrary
 
 LockerRooms = {

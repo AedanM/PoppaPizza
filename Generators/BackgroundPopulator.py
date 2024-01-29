@@ -1,4 +1,4 @@
-import pygame
+"""Populate Background with ELements"""
 from Classes import Game, Sprite
 from Definitions import DefinedLocations, LockerRooms, AssetLibrary
 
@@ -6,7 +6,7 @@ RowCoords = DefinedLocations.SeatingPlan().TableRows
 ColCoords = DefinedLocations.SeatingPlan().TableCols
 
 
-def generateTablePlaces() -> list:
+def GenerateTablePlaces() -> list:
     locationArray = []
     for row in RowCoords:
         for col in ColCoords:
@@ -15,7 +15,7 @@ def generateTablePlaces() -> list:
 
 
 def AddTables(activeGame=Game.MasterGame) -> None:
-    for location in generateTablePlaces():
+    for location in GenerateTablePlaces():
         table = Sprite.BackgroundElementSprite(
             position=location,
             path=AssetLibrary.ImagePath.TablePath,
@@ -23,10 +23,10 @@ def AddTables(activeGame=Game.MasterGame) -> None:
             offset=(-75, 25),
         )
         table.Collision = False
-        Game.MasterGame.BackgroundSpriteGroup.add(table)
+        activeGame.BackgroundSpriteGroup.add(table)
 
 
-def AddLogos() -> None:
+def AddLogos(activeGame=Game.MasterGame) -> None:
     for location, imagePath in LockerRooms.LockerRoomPaths.items():
         logo = Sprite.BackgroundElementSprite(
             position=LockerRooms.LockerRooms[location],
@@ -34,18 +34,18 @@ def AddLogos() -> None:
             maxSize=100,
             offset=(-50, -50),
         )
-        Game.MasterGame.ForegroundSpriteGroup.add(logo)
+        activeGame.ForegroundSpriteGroup.add(logo)
 
 
-def AddLockerRooms() -> None:
+def AddLockerRooms(activeGame=Game.MasterGame) -> None:
     for location, color in LockerRooms.LockerRoomColors.items():
         rectObj = Sprite.RectangleObject(
             position=location, color=color, size=[180, 150]
         )
-        Game.MasterGame.ForegroundSpriteGroup.add(rectObj)
+        activeGame.ForegroundSpriteGroup.add(rectObj)
 
 
 def SetupBackground(activeGame=Game.MasterGame) -> None:
-    AddTables()
-    AddLockerRooms()
-    AddLogos()
+    AddTables(activeGame=activeGame)
+    AddLockerRooms(activeGame=activeGame)
+    AddLogos(activeGame=activeGame)

@@ -51,16 +51,16 @@ class TimerBar:
         color1Scale = 1.0 - (self.CompletionPercentage)
         color2Scale = self.CompletionPercentage
         color3 = ColorTools.Color(
-            H=math.floor(color1[0] * color1Scale + color2[0] * color2Scale),
-            S=math.floor(color1[1] * color1Scale + color2[1] * color2Scale),
-            V=math.floor(color1[2] * color1Scale + color2[2] * color2Scale),
+            h=math.floor(color1[0] * color1Scale + color2[0] * color2Scale),
+            s=math.floor(color1[1] * color1Scale + color2[1] * color2Scale),
+            v=math.floor(color1[2] * color1Scale + color2[2] * color2Scale),
         )
-        print(color3.HSV)
         return color3.RGB
 
     def SetMaxSize(self, size) -> None:
         self.MaxWidth = size
         self.MaxTimerRect = pygame.Rect(
+            # pylint: disable=E1136
             self.TimerRect.topleft[0],
             self.TimerRect.topleft[1],
             self.MaxWidth,

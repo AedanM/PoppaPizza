@@ -1,7 +1,8 @@
-"""Handler for Spawning Elements"""
-import random, numpy
+"""Handler for Spawning Chars"""
+import random
+import numpy
 from Classes import People, Game
-from Definitions import CustomerDefs, DefinedLocations, Prices
+from Definitions import DefinedLocations, Prices
 from Handlers import CustomerHandler as CH
 
 # pylint: disable=C0103
@@ -9,7 +10,6 @@ LastSpawnTime = 0
 
 
 def CustomerSpawner(force=False) -> None:
-    # pylint: disable=global-statement
     global LastSpawnTime
     currentTime = Game.MasterGame.GameClock.UnixTime
     chanceOfSpawn = Game.MasterGame.Chances.CustomerSpawn * float(
@@ -17,9 +17,7 @@ def CustomerSpawner(force=False) -> None:
     )
     if random.random() < chanceOfSpawn or force:
         spawnLocation = DefinedLocations.LocationDefs.CustomerSpawn
-        customer, customerSprite = People.Customer.CreateCustomer(
-            startLocation=spawnLocation
-        )
+        _, customerSprite = People.Customer.CreateCustomer(startLocation=spawnLocation)
         CH.WalkIn(customerSprite)
         LastSpawnTime = currentTime
 
