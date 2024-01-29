@@ -19,11 +19,8 @@ class Person:
 
     @classmethod
     def Create(cls):
-        if utils.CheckInternet():
-            fName = names.get_first_name(gender="female")
-            lName = names.get_last_name()
-        else:
-            lName, fName = ("A", "A")
+        fName = names.get_first_name(gender="female")
+        lName = names.get_last_name()
         selfid = cls.GenerateID()
         return cls(FirstName=fName, LastName=lName, IdNum=selfid)
 

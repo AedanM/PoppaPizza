@@ -3,5 +3,8 @@
 		{
 			"path": "."
 		}
-	]
+	],
+	"settings": {
+		"todo-tree.tree.showBadges": true
+	}
 }

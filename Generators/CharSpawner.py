@@ -18,7 +18,7 @@ def CustomerSpawner(force=False) -> None:
     if random.random() < chanceOfSpawn or force:
         spawnLocation = DefinedLocations.LocationDefs.CustomerSpawn
         _, customerSprite = People.Customer.CreateCustomer(startLocation=spawnLocation)
-        CH.WalkIn(customerSprite)
+        CH.WalkIn(target=customerSprite)
         LastSpawnTime = currentTime
 
 
