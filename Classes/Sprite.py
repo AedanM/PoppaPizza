@@ -1,6 +1,4 @@
 """Class for visibile sprites"""
-from dataclasses import dataclass
-from enum import Enum
 import pygame
 from Classes import GameObject, Game, TimerBar
 from Utilities import Utils as utils
@@ -16,15 +14,10 @@ class CharImageSprite(GameObject.GameObject):
     MvmHandler: MovementHandler.CharacterMovementHandler = None
     PersonalTimer: TimerBar.TimerBar = None
 
-    def __init__(
-        self, position, path, objID, activateGame=Game.MasterGame, maxSize=100
-    ) -> None:
+    def __init__(self, position, path, objID, maxSize=100) -> None:
         super().__init__(backgroundFlag=False, moveFlag=True, collisionFlag=True)
-        self.image = pygame.image.load(
-            path
-        )  # Replace with the actual sprite image file
-
-        self.image = pygame.transform.scale_by(surface=self.image, factor=0.08)
+        self.image = pygame.image.load(path)
+        self.image = pygame.transform.scale(surface=self.image, size=(maxSize, maxSize))
         self.rect = self.image.get_rect()
         self.rect.x = position[0]
         self.rect.y = position[1]
@@ -70,7 +63,7 @@ class CharImageSprite(GameObject.GameObject):
         self.Update()
 
     def CreatePersonTimerBar(
-        sprite,
+        self,
         completeTask,
         assocId=0,
         length=29.0,
@@ -79,18 +72,18 @@ class CharImageSprite(GameObject.GameObject):
         width=0,
         fillColor=ColorTools.LimeGreen,
     ) -> None:
-        sprite.PersonalTimer = TimerBar.TimerBar(
+        self.PersonalTimer = TimerBar.TimerBar(
             duration=length if length != 0 else 29.0,
-            position=(sprite.rect.topleft),
+            position=(self.rect.topleft),
             assocId=assocId,
             offset=offset,
         )
-        sprite.PersonalTimer.StartingState = startingState
-        sprite.PersonalTimer.OnComplete = completeTask
-        sprite.PersonalTimer.TimerRect.y -= 25
-        sprite.PersonalTimer.SetMaxSize(size=sprite.rect.width if width == 0 else width)
-        sprite.PersonalTimer.FillColor = fillColor
-        sprite.PersonalTimer.StartTimer()
+        self.PersonalTimer.StartingState = startingState
+        self.PersonalTimer.OnComplete = completeTask
+        self.PersonalTimer.TimerRect.y -= 25
+        self.PersonalTimer.SetMaxSize(size=self.rect.width if width == 0 else width)
+        self.PersonalTimer.FillColor = fillColor
+        self.PersonalTimer.StartTimer()
 
     def __repr__(self) -> str:
         return str(self.CorrespondingID) + " " + str(self.ImageType)
@@ -100,9 +93,7 @@ class BackgroundElementSprite(GameObject.GameObject):
     ImageType: AssetLibrary.ImageTypes = AssetLibrary.ImageTypes.Null
 
     # pylint: disable=invalid-name
-    def __init__(
-        self, position, path, activateGame=Game.MasterGame, maxSize=60, offset=(0, 0)
-    ) -> None:
+    def __init__(self, position, path, maxSize=60, offset=(0, 0)) -> None:
         super().__init__(backgroundFlag=True, moveFlag=False, collisionFlag=False)
         self.image = pygame.image.load(
             path
@@ -124,8 +115,7 @@ class RectangleObject(GameObject.GameObject):
         self,
         position,
         color=(0, 0, 0),
-        size=[100, 100],
-        activateGame=Game.MasterGame,
+        size=(100, 100),
     ) -> None:
         super().__init__(backgroundFlag=True, moveFlag=False, collisionFlag=False)
         self.image = pygame.Surface(size=size)

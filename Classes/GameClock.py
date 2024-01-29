@@ -1,6 +1,7 @@
-import pygame
-from dataclasses import dataclass
+"""Game Clock Logic"""
 import math
+from dataclasses import dataclass
+import pygame
 from Classes import Settings
 from Definitions import CustomEvents
 
@@ -96,7 +97,11 @@ class GameClock:
 
     @property
     def DateTime(self) -> str:
-        return f"{self.CurrMonth.Name} {self.DayOfMonth} {(self.DisplayHour):02d}:{(self.Minute % 60):02d}{Settings.GameSettings.AMPM(self.Hour)}"
+        return (
+            f"{self.CurrMonth.Name} {self.DayOfMonth} "
+            + f"{(self.DisplayHour):02d}:{(self.Minute % 60):02d}"
+            + f"{Settings.GameSettings.AMPM(hour=self.Hour)}"
+        )
 
     @property
     def UnixTime(self) -> int:

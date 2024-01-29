@@ -1,3 +1,4 @@
+"""Customer States and Speeds"""
 from enum import Enum
 
 

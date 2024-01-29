@@ -1,19 +1,24 @@
-import cv2, os, argparse, numpy as np, glob
-from skimage.metrics import structural_similarity
+"""Puts matching images in Folders"""
 from dataclasses import dataclass
+import os
+import argparse
+import glob
+import cv2
+import numpy as np
+from skimage.metrics import structural_similarity
 
 
 @dataclass
 class Image:
-    filePath: str
-    fileName: str
-    cvObj: np.array
-    dstPath: str = ""
-    hasParent: bool = False
-    hasChild: bool = False
+    FilePath: str
+    FileName: str
+    CvObj: np.array
+    DstPath: str = ""
+    HasParent: bool = False
+    HasChild: bool = False
 
     def __repr__(self) -> str:
-        return f"{self.filePath} to {self.dstPath}, Parent Status is {self.isParent}"
+        return f"{self.FilePath} to {self.DstPath}, Parent Status is {self.HasChild}"
 
 
 def GetAllImages(filePath) -> list:
@@ -24,23 +29,23 @@ def GetAllImages(filePath) -> list:
     for image in pathList:
         fullPath = os.path.join(filePath, image)
         outputList.append(
-            Image(filePath=fullPath, fileName=image, cvObj=cv2.imread(fullPath))
+            Image(FilePath=fullPath, FileName=image, CvObj=cv2.imread(fullPath))
         )
     return outputList
 
 
 def AreSimilar(image1, image2, tolerance=0.75) -> bool:
-    first_gray = cv2.cvtColor(image1, cv2.COLOR_BGR2GRAY)
-    second_gray = cv2.cvtColor(image2, cv2.COLOR_BGR2GRAY)
+    firstGray = cv2.cvtColor(image1, cv2.COLOR_BGR2GRAY)
+    secondGray = cv2.cvtColor(image2, cv2.COLOR_BGR2GRAY)
 
-    score = structural_similarity(first_gray, second_gray, full=True)
+    score = structural_similarity(firstGray, secondGray, full=True)
     score = score[0]
     return score > tolerance
 
 
 def MatchImages(fileList) -> list:
-    unMatched = [x for x in fileList if x.hasParent == False]
-    matched = [x for x in fileList if x.hasParent == True]
+    unMatched = [x for x in fileList if x.hasParent is False]
+    matched = [x for x in fileList if x.hasParent is True]
     for image in unMatched:
         foundPartner = False
         for parentImage in matched:
@@ -71,7 +76,7 @@ def MoveImagesToDest(fileList) -> bool:
     print(f"{numMatched}/{len(fileList)} images moved in {foldersCreated} folders")
 
 
-def main(filePath) -> None:
+def Main(filePath) -> None:
     fileList = GetAllImages(filePath=filePath)
     fileList = MatchImages(fileList=fileList)
     MoveImagesToDest(fileList=fileList)
@@ -81,4 +86,4 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(prog="Matching and Grouping Images")
     parser.add_argument("-d", "--directory", default=os.getcwd())
     args = parser.parse_args()
-    main(filePath=args.directory)
+    Main(filePath=args.directory)

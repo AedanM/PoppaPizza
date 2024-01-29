@@ -1,7 +1,7 @@
 """Class for People DataClasses"""
 from dataclasses import dataclass
-import names
 import random
+import names
 from Classes import Jobs, Sprite, Game
 from Definitions import DefinedLocations, CustomerDefs, AssetLibrary
 import Utilities.Utils as utils

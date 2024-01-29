@@ -1,7 +1,6 @@
 digraph "packages" {
-rankdir=BT
+rankdir=TB
 charset="utf-8"
-"Assets.AssetLibrary" [color="black", label=<Assets.AssetLibrary>, shape="box", style="solid"];
 "Classes.Game" [color="black", label=<Classes.Game>, shape="box", style="solid"];
 "Classes.GameClock" [color="black", label=<Classes.GameClock>, shape="box", style="solid"];
 "Classes.GameObject" [color="black", label=<Classes.GameObject>, shape="box", style="solid"];
@@ -11,6 +10,7 @@ charset="utf-8"
 "Classes.Settings" [color="black", label=<Classes.Settings>, shape="box", style="solid"];
 "Classes.Sprite" [color="black", label=<Classes.Sprite>, shape="box", style="solid"];
 "Classes.TimerBar" [color="black", label=<Classes.TimerBar>, shape="box", style="solid"];
+"Definitions.AssetLibrary" [color="black", label=<Definitions.AssetLibrary>, shape="box", style="solid"];
 "Definitions.Chances" [color="black", label=<Definitions.Chances>, shape="box", style="solid"];
 "Definitions.ColorTools" [color="black", label=<Definitions.ColorTools>, shape="box", style="solid"];
 "Definitions.CustomEvents" [color="black", label=<Definitions.CustomEvents>, shape="box", style="solid"];

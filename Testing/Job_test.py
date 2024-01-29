@@ -1,6 +1,8 @@
-from Classes import Jobs, People, Game
+"""Test Module for Job Functions"""
+# pylint: disable=invalid-name
 
-"""
-def RunAllJobTests() -> bool:
-    return True
-"""
+from Classes import Jobs
+
+
+def test_Job() -> None:
+    assert Jobs.Job.SpawnJob() is not None

@@ -30,7 +30,7 @@ class Game:
             self.StartScreen(size=size)
 
     def StartScreen(self, size) -> None:
-        if type(size) == std_dimensions:
+        if isinstance(size, str):
             width, height = std_dimensions[size]
         else:
             width, height = size
@@ -42,9 +42,9 @@ class Game:
     def DrawScreenClock(
         self, locationTopLeft, foreColor, backColor, withMoney=False
     ) -> None:
-        MoneyText = f" ${self.UserInventory.Money:0.2f}" if withMoney else ""
+        moneyText = f" ${self.UserInventory.Money:0.2f}" if withMoney else ""
         text = self.Font.render(
-            str(self.GameClock.DateTime + MoneyText), True, foreColor, backColor
+            str(self.GameClock.DateTime + moneyText), True, foreColor, backColor
         )
         textrect = text.get_rect()
         textrect.x = locationTopLeft[0]
@@ -57,9 +57,9 @@ class Game:
 
     def RemoveObjFromSprite(self, targetSprite) -> None:
         responseDict = self.MatchIdToPerson(inputId=targetSprite.CorrespondingID)
-        if "customer" in responseDict.keys():
+        if "customer" in responseDict:
             self.CustomerList.remove(responseDict["customer"])
-        elif "worker" in responseDict.keys():
+        elif "worker" in responseDict:
             self.WorkerList.remove(responseDict["worker"])
         targetSprite.kill()
 

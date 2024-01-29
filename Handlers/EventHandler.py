@@ -1,5 +1,6 @@
-import pygame
+"""Handlers for all events"""
 import sys
+import pygame
 from Classes import Game
 from Definitions import CustomEvents, CustomerDefs, Prices, AssetLibrary
 from Handlers import ClickHandler

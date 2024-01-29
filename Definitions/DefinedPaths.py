@@ -1,9 +1,11 @@
+"""Defined Motion Paths"""
+import random
 from Classes import Game
 from Definitions import DefinedLocations, AssetLibrary
 from Utilities import Utils
-import random
 
-RecurDepth = 0
+
+RECURDEPTH = 0
 
 
 def IsSeatTaken(seatLocation) -> bool:
@@ -21,18 +23,19 @@ def IsSeatTaken(seatLocation) -> bool:
 
 
 def GetRandomSeatPosition() -> tuple | None:
-    global RecurDepth
+    # pylint: disable=global-statement
+    global RECURDEPTH
     yPos = random.choice(DefinedLocations.SeatingPlan.TableCols)
     xPos = random.choice(DefinedLocations.SeatingPlan.TableRows)
     coords = (xPos, yPos)
     if IsSeatTaken(seatLocation=(xPos, yPos)):
-        RecurDepth += 1
-        if RecurDepth < 10:
+        RECURDEPTH += 1
+        if RECURDEPTH < 10:
             coords = GetRandomSeatPosition()
         else:
             return None
     else:
-        RecurDepth = 0
+        RECURDEPTH = 0
     return coords
 
 

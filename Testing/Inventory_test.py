@@ -1,3 +1,6 @@
+"""Test Module for Inventory Functions"""
+# pylint: disable=invalid-name
+
 from Classes import Inventory
 from Definitions import Prices
 
@@ -19,11 +22,3 @@ def test_Rent() -> None:
     i.GetPaid(amount=2000.00)
     i.PayRent()
     assert i.Money == 7000 - Prices.CurrentRent
-
-
-"""
-def RunAllInventoryTests() -> bool:
-    test_GetPaid()
-    test_Rent()
-    return True
-"""

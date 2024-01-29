@@ -1,8 +1,9 @@
+"""Base Test Class for testing Modules"""
 from dataclasses import dataclass
 from typing import Any
 
 
 @dataclass
 class TestClass:
-    result: Any
-    paramList: list
+    Result: Any
+    ParamList: list

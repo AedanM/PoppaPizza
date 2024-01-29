@@ -1,3 +1,4 @@
+"""Settings Object"""
 from Utilities import Utils
 
 
