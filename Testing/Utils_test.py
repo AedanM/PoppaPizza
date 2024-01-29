@@ -17,7 +17,7 @@ def test_checkDecimalPercent() -> None:
         TC.TestClass(ParamList=[(-0.2, 400)], Result=(-0.2, 400)),
     ]
     for test in testObjects:
-        testVal = Utils.checkDecimalPercent(val=test.ParamList[0])
+        testVal = Utils.CheckDecimalPercent(val=test.ParamList[0])
         try:
             assert testVal == test.Result
         except AssertionError:

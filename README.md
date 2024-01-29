@@ -18,7 +18,7 @@ What if a bunch of restaurants couldn't afford individual working spaces so deci
 
 ## [To Do List](TODO.md)
 
-## Folder Structure
+## Folder Descriptions
 
 - [Assets](Assets/README.md)
 - [Classes](Classes/README.md)
