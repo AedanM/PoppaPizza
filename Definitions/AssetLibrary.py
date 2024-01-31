@@ -1,7 +1,7 @@
 """Asset loading"""
+import sys
 from dataclasses import dataclass
 from enum import Enum
-import sys
 
 
 @dataclass
@@ -22,6 +22,7 @@ class ImagePaths:
     LuauPath = AssetFolder + r"\luau.png"
     SuitPath = AssetFolder + r"\suit.png"
     SafariPath = AssetFolder + r"\safari.png"
+    LockedLockerRoomPath = AssetFolder + r"\LockedLockerRoom.png"
 
 
 class ImageTypes(Enum):
@@ -39,9 +40,11 @@ class ImageTypes(Enum):
         LuauLogo,
         SuitLogo,
         SafariLogo,
-    ) = range(13)
+        LockedLockerRoomLogo,
+    ) = range(14)
 
 
+CustomerOutfits = [ImageTypes.Customer]
 WorkerOutfits = [
     ImageTypes.WorkerSuit,
     ImageTypes.WorkerCowboy,
@@ -49,19 +52,24 @@ WorkerOutfits = [
     ImageTypes.WorkerSafari,
     ImageTypes.WorkerCoffee,
 ]
-CustomerOutfits = [ImageTypes.Customer]
+
+LockerRoomPaths = {
+    ImageTypes.CoffeeLogo: ImagePaths.CoffeePath,
+    ImageTypes.CowboyLogo: ImagePaths.CowboyPath,
+    ImageTypes.LuauLogo: ImagePaths.LuauPath,
+    ImageTypes.SuitLogo: ImagePaths.SuitPath,
+    ImageTypes.SafariLogo: ImagePaths.SafariPath,
+}
+
 People = WorkerOutfits + CustomerOutfits
 
 ImagePath = ImagePaths()
-WorkerOutfitPaths = [
-    ImagePath.WorkerCoffeePath,
-    ImagePath.WorkerCowboyPath,
-    ImagePath.WorkerLuauPath,
-    ImagePath.WorkerSafariPath,
-    ImagePath.WorkerSuitPath,
-]
 
 PathToTypeDict = {
+    ImagePath.WorkerCoffeePath: ImageTypes.WorkerCoffee,
+    ImagePath.WorkerCowboyPath: ImageTypes.WorkerCowboy,
+    ImagePath.WorkerLuauPath: ImageTypes.WorkerLuau,
+    ImagePath.WorkerSafariPath: ImageTypes.WorkerSafari,
     ImagePath.WorkerSuitPath: ImageTypes.WorkerSuit,
     ImagePath.CustomerPath: ImageTypes.Customer,
     ImagePath.TablePath: ImageTypes.Table,
@@ -70,4 +78,5 @@ PathToTypeDict = {
     ImagePath.LuauPath: ImageTypes.LuauLogo,
     ImagePath.SuitPath: ImageTypes.SuitLogo,
     ImagePath.SafariPath: ImageTypes.SafariLogo,
+    ImagePath.LockedLockerRoomPath: ImageTypes.LockedLockerRoomLogo,
 }

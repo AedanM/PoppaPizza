@@ -1,6 +1,6 @@
 """Populate Background with ELements"""
 from Classes import Game, Sprite
-from Definitions import DefinedLocations, LockerRooms, AssetLibrary
+from Definitions import AssetLibrary, ColorTools, DefinedLocations, LockerRooms
 
 RowCoords = DefinedLocations.SeatingPlan().TableRows
 ColCoords = DefinedLocations.SeatingPlan().TableCols
@@ -26,26 +26,34 @@ def AddTables(activeGame=Game.MasterGame) -> None:
         activeGame.BackgroundSpriteGroup.add(table)
 
 
-def AddLogos(activeGame=Game.MasterGame) -> None:
-    for location, imagePath in LockerRooms.LockerRoomPaths.items():
-        logo = Sprite.BackgroundElementSprite(
-            position=LockerRooms.LockerRooms[location],
-            path=imagePath,
-            maxSize=100,
-            offset=(-50, -50),
-        )
-        activeGame.ForegroundSpriteGroup.add(logo)
-
-
 def AddLockerRooms(activeGame=Game.MasterGame) -> None:
-    for location, color in LockerRooms.LockerRoomColors.items():
-        rectObj = Sprite.RectangleObject(
-            position=location, color=color, size=[180, 150]
+    for lockerRoom in LockerRooms.LockerRooms:
+        if lockerRoom.Unlocked:
+            color = lockerRoom.Color
+            path = lockerRoom.Path
+            maxSize = 100
+            offset = (-50, -50)
+        else:
+            path = AssetLibrary.ImagePaths.LockedLockerRoomPath
+            color = ColorTools.Grey
+            maxSize = 180
+            offset = (-90, -50)
+
+        logo = Sprite.BackgroundElementSprite(
+            position=lockerRoom.Location,
+            path=path,
+            maxSize=maxSize,
+            offset=offset,
         )
+
+        rectObj = Sprite.RectangleObject(
+            position=lockerRoom.Location, color=color, size=[180, 150]
+        )
+
         activeGame.ForegroundSpriteGroup.add(rectObj)
+        activeGame.ForegroundSpriteGroup.add(logo)
 
 
 def SetupBackground(activeGame=Game.MasterGame) -> None:
     AddTables(activeGame=activeGame)
     AddLockerRooms(activeGame=activeGame)
-    AddLogos(activeGame=activeGame)

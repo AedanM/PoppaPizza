@@ -3,7 +3,7 @@ import math
 import random
 
 
-def InRandomVarianpypyce(num, percentVariance) -> float:
+def InRandomVariance(num, percentVariance) -> float:
     percentVariance = CheckDecimalPercent(percentVariance)
     varyAmount = random.randint(a=-100, b=100) * percentVariance * 0.01 * num
     return num + varyAmount

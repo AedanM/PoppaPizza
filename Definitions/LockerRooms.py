@@ -1,35 +1,69 @@
 """Definitions for LockerRooms"""
-from Definitions import DefinedLocations, ColorTools, AssetLibrary
+from dataclasses import dataclass
 
-LockerRooms = {
-    AssetLibrary.ImageTypes.CoffeeLogo: DefinedLocations.LocationDefs.YellowLockerRoom,
-    AssetLibrary.ImageTypes.CowboyLogo: DefinedLocations.LocationDefs.BlueLockerRoom,
-    AssetLibrary.ImageTypes.LuauLogo: DefinedLocations.LocationDefs.PinkLockerRoom,
-    AssetLibrary.ImageTypes.SuitLogo: DefinedLocations.LocationDefs.GreyLockerRoom,
-    AssetLibrary.ImageTypes.SafariLogo: DefinedLocations.LocationDefs.GreenLockerRoom,
-}
+from Definitions import AssetLibrary, ColorTools, DefinedLocations
 
 
-LockerRoomPaths = {
-    AssetLibrary.ImageTypes.CoffeeLogo: AssetLibrary.ImagePaths.CoffeePath,
-    AssetLibrary.ImageTypes.CowboyLogo: AssetLibrary.ImagePaths.CowboyPath,
-    AssetLibrary.ImageTypes.LuauLogo: AssetLibrary.ImagePaths.LuauPath,
-    AssetLibrary.ImageTypes.SuitLogo: AssetLibrary.ImagePaths.SuitPath,
-    AssetLibrary.ImageTypes.SafariLogo: AssetLibrary.ImagePaths.SafariPath,
-}
+@dataclass
+class LockerRoom:
+    Name: str
+    Logo: AssetLibrary.ImageTypes
+    Location: tuple
+    WorkerOutfits: list
+    CustomerOutfits: list
+    Color: ColorTools.Color
+    Unlocked: bool = False
 
-LockerRoomColors = {
-    DefinedLocations.LocationDefs.YellowLockerRoom: ColorTools.Yellow,
-    DefinedLocations.LocationDefs.BlueLockerRoom: ColorTools.Blue,
-    DefinedLocations.LocationDefs.GreenLockerRoom: ColorTools.Green,
-    DefinedLocations.LocationDefs.PinkLockerRoom: ColorTools.Pink,
-    DefinedLocations.LocationDefs.GreyLockerRoom: ColorTools.Grey,
-}
+    @property
+    def WorkerImageTypes(self) -> AssetLibrary.ImageTypes:
+        return [AssetLibrary.PathToTypeDict[x] for x in self.WorkerOutfits]
 
-LockerRoomOutfits = {
-    DefinedLocations.LocationDefs.YellowLockerRoom: AssetLibrary.ImagePath.WorkerCoffeePath,
-    DefinedLocations.LocationDefs.BlueLockerRoom: AssetLibrary.ImagePath.WorkerCowboyPath,
-    DefinedLocations.LocationDefs.GreenLockerRoom: AssetLibrary.ImagePath.WorkerSafariPath,
-    DefinedLocations.LocationDefs.PinkLockerRoom: AssetLibrary.ImagePath.WorkerLuauPath,
-    DefinedLocations.LocationDefs.GreyLockerRoom: AssetLibrary.ImagePath.WorkerSuitPath,
-}
+    @property
+    def Path(self) -> AssetLibrary.ImagePaths:
+        return AssetLibrary.LockerRoomPaths[self.Logo]
+
+
+LockerRooms = [
+    LockerRoom(
+        Name="Formal Dining",
+        Logo=AssetLibrary.ImageTypes.SuitLogo,
+        Location=DefinedLocations.LocationDefs.LockerRoom1,
+        WorkerOutfits=[AssetLibrary.ImagePaths.WorkerSuitPath],
+        CustomerOutfits=[],
+        Color=ColorTools.Blue,
+        Unlocked=True,
+    ),
+    LockerRoom(
+        Name="Coffee Shop",
+        Logo=AssetLibrary.ImageTypes.CoffeeLogo,
+        Location=DefinedLocations.LocationDefs.LockerRoom2,
+        WorkerOutfits=[AssetLibrary.ImagePaths.WorkerCoffeePath],
+        CustomerOutfits=[],
+        Color=ColorTools.Yellow,
+    ),
+    LockerRoom(
+        Name="Cowboy Saloon",
+        Logo=AssetLibrary.ImageTypes.CowboyLogo,
+        Location=DefinedLocations.LocationDefs.LockerRoom3,
+        WorkerOutfits=[AssetLibrary.ImagePaths.WorkerCowboyPath],
+        CustomerOutfits=[],
+        Color=ColorTools.Brown,
+        Unlocked=True,
+    ),
+    LockerRoom(
+        Name="Sundown Luau",
+        Logo=AssetLibrary.ImageTypes.LuauLogo,
+        Location=DefinedLocations.LocationDefs.LockerRoom4,
+        WorkerOutfits=[AssetLibrary.ImagePaths.WorkerLuauPath],
+        CustomerOutfits=[],
+        Color=ColorTools.Pink,
+    ),
+    LockerRoom(
+        Name="Safari Party",
+        Logo=AssetLibrary.ImageTypes.SafariLogo,
+        Location=DefinedLocations.LocationDefs.LockerRoom5,
+        WorkerOutfits=[AssetLibrary.ImagePaths.WorkerSafariPath],
+        CustomerOutfits=[],
+        Color=ColorTools.Green,
+    ),
+]

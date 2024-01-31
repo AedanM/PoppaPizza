@@ -1,5 +1,6 @@
 """Inventory Object"""
 from dataclasses import dataclass
+
 from Definitions import Prices
 
 

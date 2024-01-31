@@ -1,4 +1,4 @@
-"""Main Body of Test"""
+"""Main Body of Game"""
 
 import os
 

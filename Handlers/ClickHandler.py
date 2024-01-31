@@ -1,9 +1,11 @@
 """Handler for User Clicks"""
 from enum import Enum
-from Utilities import Utils
+
 from Classes import Game
-from Handlers import CustomerHandler as CH, WorkerHandler as WH
-from Definitions import CustomerDefs, LockerRooms, AssetLibrary
+from Definitions import AssetLibrary, CustomerDefs, LockerRooms
+from Handlers import CustomerHandler as CH
+from Handlers import WorkerHandler as WH
+from Utilities import Utils
 
 
 class ClickState(Enum):
@@ -18,9 +20,15 @@ GlobalTarget = None
 def MouseHandler(event) -> None:
     global GlobalClickState, GlobalTarget
     if GlobalClickState is ClickState.ClickedWorker:
-        for location in LockerRooms.LockerRooms.values():
-            if Utils.PositionInTolerance(pos1=event.pos, pos2=location, tolerance=75):
-                WH.GetChanged(ws=GlobalTarget, dest=location)
+        for lockerRoom in LockerRooms.LockerRooms:
+            if (
+                Utils.PositionInTolerance(
+                    pos1=event.pos, pos2=lockerRoom.Location, tolerance=75
+                )
+                and lockerRoom.Unlocked
+                and GlobalTarget.ImageType not in lockerRoom.WorkerImageTypes
+            ):
+                WH.GetChanged(ws=GlobalTarget, lockerRoom=lockerRoom)
         GlobalClickState = ClickState.Neutral
     elif GlobalClickState is ClickState.Neutral:
         for sprite in Game.MasterGame.CharSpriteGroup:

@@ -1,9 +1,10 @@
 """Class for visibile sprites"""
 import pygame
-from Classes import GameObject, Game, TimerBar
-from Utilities import Utils as utils
-from Definitions import ColorTools, AssetLibrary
+
+from Classes import Game, GameObject, TimerBar
+from Definitions import AssetLibrary, ColorTools
 from Handlers import MovementHandler
+from Utilities import Utils as utils
 
 
 class CharImageSprite(GameObject.GameObject):
@@ -55,6 +56,7 @@ class CharImageSprite(GameObject.GameObject):
         newImage = pygame.transform.scale(newImage, dim)
         newImageRect = self.rect
         self.image = newImage
+        self.ImageType = AssetLibrary.PathToTypeDict[newOutfitPath]
 
     def UpdateSprite(self) -> None:
         if self.PersonalTimer is not None:
