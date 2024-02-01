@@ -9,7 +9,7 @@ from Utilities import Utils
 
 
 class ClickState(Enum):
-    Neutral, ClickedCustomer, ClickedWorker = range(3)
+    Neutral, ClickedWorker = range(2)
 
 
 # pylint: disable=invalid-name, global-statement, W0602
@@ -17,13 +17,13 @@ GlobalClickState = ClickState.Neutral
 GlobalTarget = None
 
 
-def MouseHandler(event) -> None:
+def MouseHandler(mousePos) -> None:
     global GlobalClickState, GlobalTarget
     if GlobalClickState is ClickState.ClickedWorker:
         for lockerRoom in LockerRooms.LockerRooms:
             if (
                 Utils.PositionInTolerance(
-                    pos1=event.pos, pos2=lockerRoom.Location, tolerance=75
+                    pos1=mousePos, pos2=lockerRoom.Location, tolerance=75
                 )
                 and lockerRoom.Unlocked
                 and GlobalTarget.ImageType not in lockerRoom.WorkerImageTypes
@@ -32,11 +32,11 @@ def MouseHandler(event) -> None:
         GlobalClickState = ClickState.Neutral
     elif GlobalClickState is ClickState.Neutral:
         for button in Game.MasterGame.ButtonList:
-            if button.rect.collidepoint(event.pos[0], event.pos[1]):
+            if button.rect.collidepoint(mousePos[0], mousePos[1]):
                 LockerRooms.UnlockLockerRoom(button.position)
                 return
         for sprite in Game.MasterGame.CharSpriteGroup:
-            if sprite.rect.collidepoint(event.pos[0], event.pos[1]):
+            if sprite.rect.collidepoint(mousePos[0], mousePos[1]):
                 if sprite.ImageType in AssetLibrary.CustomerOutfits:
                     CustomerClickRoutine(target=sprite)
                 elif sprite.ImageType in AssetLibrary.WorkerOutfits:

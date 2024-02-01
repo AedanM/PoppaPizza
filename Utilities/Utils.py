@@ -57,7 +57,7 @@ def ProRateValue(value, inRange, outRange) -> int | float | None:
     return (
         float(value) * (outRange[1] - outRange[0]) / (inRange[1] - inRange[0])
         if (inRange[1] - inRange[0]) != 0 and (outRange[1] - outRange[0]) != 0
-        else None
+        else "Error"
     )
 
 

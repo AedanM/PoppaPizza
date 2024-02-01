@@ -24,7 +24,7 @@ def GetChanged(ws, lockerRoom) -> None:
     ws.MvmHandler.OnComplete = lambda: (
         ws.ChangeOutfit(newOutfit),
         ws.CreatePersonTimerBar(
-            completeTask=lambda: ReturnToKitchen(ws), offset=(-30, 150), width=150
+            completeTask=lambda: ReturnToKitchen(ws=ws), offset=(-30, 150), width=150
         ),
     )
 

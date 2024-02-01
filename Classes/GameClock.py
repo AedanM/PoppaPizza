@@ -45,7 +45,7 @@ class GameClock:
         self.LastTime = pygame.time.get_ticks()
         self.Running = True
 
-    def SetRunning(self, state):
+    def SetRunning(self, state) -> None:
         if state != self.Running:
             self.Running = state
             self.LastTime = pygame.time.get_ticks()

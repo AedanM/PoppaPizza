@@ -14,32 +14,36 @@ def MainEventHandler(activeGame=Game.MasterGame) -> None:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-        if event.type == pygame.USEREVENT and event == CustomEvents.UpdateBackground:
-            BackgroundPopulator.SetupBackground()
-        if event.type == pygame.USEREVENT and event == CustomEvents.NightCycle:
-            DayNightEvent()
-        if event.type == pygame.USEREVENT and event == CustomEvents.GameOver:
-            GameOver()
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-            ClickHandler.MouseHandler(event=event)
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_t:
-            activeGame.Settings.ChangeClockMul(value=-1)
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_y:
-            activeGame.Settings.ChangeClockMul(value=1)
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_w:
-            CharSpawner.BuyWorker()
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_c:
-            CharSpawner.CustomerSpawner(force=True)
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_2:
-            activeGame.Settings.ToggleClock24()
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_p:
-            activeGame.GameClock.SetRunning(not activeGame.GameClock.Running)
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_d:
-            activeGame.ShowScreen = not activeGame.MasterGame.ShowScreen
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-            Menus.OptionsMenu()
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_s:
-            Menus.ShopMenu()
+        if event.type == pygame.USEREVENT:
+            match (event):
+                case CustomEvents.UpdateBackground:
+                    BackgroundPopulator.SetupBackground()
+                case CustomEvents.NightCycle:
+                    DayNightEvent()
+                case CustomEvents.GameOver:
+                    GameOver()
+        elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            ClickHandler.MouseHandler(mousePos=event.pos)
+        elif event.type == pygame.KEYDOWN:
+            match (event.key):
+                case pygame.K_t:
+                    activeGame.Settings.ChangeClockMul(value=-1)
+                case pygame.K_y:
+                    activeGame.Settings.ChangeClockMul(value=1)
+                case pygame.K_w:
+                    CharSpawner.BuyWorker()
+                case pygame.K_c:
+                    CharSpawner.CustomerSpawner(force=True)
+                case pygame.K_2:
+                    activeGame.Settings.ToggleClock24()
+                case pygame.K_p:
+                    activeGame.GameClock.SetRunning(not activeGame.GameClock.Running)
+                case pygame.K_d:
+                    activeGame.ShowScreen = not activeGame.MasterGame.ShowScreen
+                case pygame.K_ESCAPE:
+                    Menus.OptionsMenu()
+                case pygame.K_s:
+                    Menus.ShopMenu()
 
 
 def DebugSetup() -> None:

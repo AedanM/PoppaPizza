@@ -1,11 +1,8 @@
 """Handler for Sprite Movement Tasks"""
-from Definitions import CustomerDefs, AssetLibrary
-from Utilities import Utils as utils
 from Classes import Game
+from Definitions import AssetLibrary, CustomerDefs
+from Utilities import Utils as utils
 
-# from Handlers import PathfindingHandler as Path
-
-MAXMOVEMENT = 3
 QUEUEDISTANCE = 75
 
 

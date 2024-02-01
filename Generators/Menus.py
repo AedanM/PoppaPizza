@@ -1,18 +1,31 @@
 """Generator Functions for Menus"""
 import pygame_menu
+
 from Classes import Game
 from Generators import CharSpawner
 
 
-# TODO - Fix UnPause
+def OpenMenu() -> None:
+    Game.MasterGame.GameClock.SetRunning(state=False)
+
+
+def CloseMenu() -> None:
+    Game.MasterGame.GameClock.SetRunning(state=True)
+
+
+def BuyNumWorkers(num) -> None:
+    for _ in range(num):
+        CharSpawner.BuyWorker()
+
+
 def OptionsMenu(surface=Game.MasterGame.Screen) -> None:
-    Game.MasterGame.GameClock.SetRunning(not Game.MasterGame.GameClock.Running)
+    OpenMenu()
     menu = pygame_menu.Menu(
         title="Settings",
         width=400,
         height=300,
         theme=pygame_menu.themes.THEME_BLUE,
-        onclose=pygame_menu.events.CLOSE,
+        onclose=CloseMenu,
     )
     menu.add.toggle_switch(
         toggleswitch_id="24Toggle",
@@ -38,38 +51,33 @@ def OptionsMenu(surface=Game.MasterGame.Screen) -> None:
     menu.mainloop(surface=surface, wait_for_event=True)
 
 
-def BuyNumWorkers(num) -> None:
-    for _ in range(num):
-        CharSpawner.BuyWorker()
-
-
 def ShopMenu(surface=Game.MasterGame.Screen) -> None:
-    Game.MasterGame.GameClock.SetRunning(not Game.MasterGame.GameClock.Running)
+    OpenMenu()
     menu = pygame_menu.Menu(
-        title="Settings",
+        title="Shop",
         width=800,
         height=600,
-        onclose=pygame_menu.events.CLOSE,
+        theme=pygame_menu.themes.THEME_BLUE,
+        onclose=CloseMenu,
     )
     menu.add.range_slider(
         title="Daily Advertising Spend",
         default=0.0,
         range_values=(0, 500.0),
         increment=1.0,
-        onchange=Game.MasterGame.Settings.ToggleClock24(),
     )
     menu.add.button(
         title="x1",
         action=lambda: (BuyNumWorkers(num=1)),
     )
-
     menu.add.button(title="Return", action=pygame_menu.events.CLOSE)
-    menu.mainloop(surface=surface)
+    menu.mainloop(surface=surface, wait_for_event=True)
 
 
 def GameOverMenu(
     surface=Game.MasterGame.Screen, reason="\n You ran out of Money"
 ) -> None:
+    OpenMenu()
     menu = pygame_menu.Menu(
         title="Game Over",
         width=Game.MasterGame.Screen.get_width(),
