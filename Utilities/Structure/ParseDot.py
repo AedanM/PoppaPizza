@@ -25,3 +25,19 @@ with open("packages.dot", "r", encoding="utf8") as fp:
             docString.append(line)
 with open("packages.dot", "w", encoding="utf8") as fp:
     fp.writelines(docString)
+
+
+docString = []
+with open("classes.dot", "r", encoding="utf8") as fp:
+    for line in fp:
+        if "->" in line:
+            importer = line.split(" ")[0].replace('"', "")
+            imported = line.split(" ")[2].replace('"', "")
+            if "State" not in line and "Type" not in line:
+                docString.append(line)
+        else:
+            if "rankdir" in line:
+                line = line.replace("rankdir=BT", "rankdir=TB")
+            docString.append(line)
+with open("classes.dot", "w", encoding="utf8") as fp:
+    fp.writelines(docString)
