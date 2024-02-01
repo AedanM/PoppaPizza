@@ -26,6 +26,22 @@ def AddTables(activeGame=Game.MasterGame) -> None:
         activeGame.BackgroundSpriteGroup.add(table)
 
 
+def AddButton(
+    location, text, color, backColor, onClick, activeGame=Game.MasterGame
+) -> None:
+    buttonObj = Sprite.ButtonObject(
+        position=location,
+        color=color,
+        backColor=backColor,
+        text=text,
+        size=[125, 50],
+        onClick=onClick,
+    )
+    activeGame.ForegroundSpriteGroup.add(buttonObj)
+    if not [x for x in activeGame.ButtonList if x.position == location]:
+        activeGame.ButtonList.append(buttonObj)
+
+
 def AddLockerRooms(activeGame=Game.MasterGame) -> None:
     for lockerRoom in LockerRooms.LockerRooms:
         if lockerRoom.Unlocked:
@@ -52,8 +68,22 @@ def AddLockerRooms(activeGame=Game.MasterGame) -> None:
 
         activeGame.ForegroundSpriteGroup.add(rectObj)
         activeGame.ForegroundSpriteGroup.add(logo)
+        if not lockerRoom.Unlocked:
+            AddButton(
+                location=lockerRoom.Location,
+                text="Buy Me",
+                backColor=ColorTools.CautionTapeYellow,
+                color=ColorTools.Black,
+                onClick=lambda: print("Bought"),
+            )
 
 
 def SetupBackground(activeGame=Game.MasterGame) -> None:
     AddTables(activeGame=activeGame)
     AddLockerRooms(activeGame=activeGame)
+    for button in activeGame.ButtonList:
+        matchingLockerRoom = [
+            x for x in LockerRooms.LockerRooms if x.Location == button.position
+        ][0]
+        if matchingLockerRoom.Unlocked:
+            activeGame.ButtonList.remove(button)

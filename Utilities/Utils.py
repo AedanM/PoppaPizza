@@ -79,5 +79,12 @@ def PositionInTolerance(pos1, pos2, tolerance) -> bool:
     )
 
 
+# TODO - Add Test
+def OffsetTuple(inputTuple, offset) -> tuple:
+    element1 = inputTuple[0] + offset[0]
+    element2 = inputTuple[1] + offset[1]
+    return (element1, element2)
+
+
 def Sign(num: int | float) -> int:
     return int(num / abs(num)) if num != 0 else 0

@@ -1,10 +1,12 @@
 """Handlers for all events"""
 import sys
+
 import pygame
+
 from Classes import Game
-from Definitions import CustomEvents, CustomerDefs, Prices, AssetLibrary
+from Definitions import AssetLibrary, CustomerDefs, CustomEvents, Prices
+from Generators import BackgroundPopulator, CharSpawner, Menus
 from Handlers import ClickHandler
-from Generators import CharSpawner, BackgroundPopulator, Menus
 
 
 def MainEventHandler(activeGame=Game.MasterGame) -> None:
@@ -12,6 +14,8 @@ def MainEventHandler(activeGame=Game.MasterGame) -> None:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+        if event.type == pygame.USEREVENT and event == CustomEvents.UpdateBackground:
+            BackgroundPopulator.SetupBackground()
         if event.type == pygame.USEREVENT and event == CustomEvents.NightCycle:
             DayNightEvent()
         if event.type == pygame.USEREVENT and event == CustomEvents.GameOver:
@@ -41,8 +45,6 @@ def MainEventHandler(activeGame=Game.MasterGame) -> None:
 def DebugSetup() -> None:
     CharSpawner.BuyWorker(free=True)
     CharSpawner.BuyWorker(free=True)
-
-    BackgroundPopulator.SetupBackground()
 
 
 def RandomSpawnHandler() -> None:

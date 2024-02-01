@@ -124,3 +124,37 @@ class RectangleObject(GameObject.GameObject):
         self.image.fill(color.RGB)
         self.rect = self.image.get_rect()
         self.rect.center = position
+
+
+class ButtonObject(GameObject.GameObject):
+    # pylint: disable=invalid-name
+    OnClick = None
+
+    def __init__(
+        self,
+        position,
+        text="Blank",
+        color=ColorTools.White,
+        backColor=ColorTools.Black,
+        size=(100, 100),
+        onClick=None,
+    ) -> None:
+        super().__init__(backgroundFlag=True, moveFlag=False, collisionFlag=False)
+        self.image = pygame.Surface(size=size)
+        self.image.fill(backColor.RGB)
+        self.image.set_alpha(240)
+        self.text = text
+        self.position = position
+        self.OnClick = onClick
+        self.Color = color
+        buttonRect = pygame.Rect(0, 0, size[0], size[1])
+        pygame.draw.rect(
+            surface=self.image,
+            color=color.RGB,
+            rect=buttonRect,
+            width=5,
+            border_radius=10,
+        )
+
+        self.rect = self.image.get_rect()
+        self.rect.center = position

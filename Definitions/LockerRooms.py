@@ -1,7 +1,9 @@
 """Definitions for LockerRooms"""
 from dataclasses import dataclass
 
-from Definitions import AssetLibrary, ColorTools, DefinedLocations
+import pygame
+
+from Definitions import AssetLibrary, ColorTools, CustomEvents, DefinedLocations
 
 
 @dataclass
@@ -13,6 +15,7 @@ class LockerRoom:
     CustomerOutfits: list
     Color: ColorTools.Color
     Unlocked: bool = False
+    Price: float = 1000.0
 
     @property
     def WorkerImageTypes(self) -> AssetLibrary.ImageTypes:
@@ -42,21 +45,20 @@ LockerRooms = [
         Color=ColorTools.Yellow,
     ),
     LockerRoom(
-        Name="Cowboy Saloon",
-        Logo=AssetLibrary.ImageTypes.CowboyLogo,
-        Location=DefinedLocations.LocationDefs.LockerRoom3,
-        WorkerOutfits=[AssetLibrary.ImagePaths.WorkerCowboyPath],
-        CustomerOutfits=[],
-        Color=ColorTools.Brown,
-        Unlocked=True,
-    ),
-    LockerRoom(
         Name="Sundown Luau",
         Logo=AssetLibrary.ImageTypes.LuauLogo,
-        Location=DefinedLocations.LocationDefs.LockerRoom4,
+        Location=DefinedLocations.LocationDefs.LockerRoom3,
         WorkerOutfits=[AssetLibrary.ImagePaths.WorkerLuauPath],
         CustomerOutfits=[],
         Color=ColorTools.Pink,
+    ),
+    LockerRoom(
+        Name="Cowboy Saloon",
+        Logo=AssetLibrary.ImageTypes.CowboyLogo,
+        Location=DefinedLocations.LocationDefs.LockerRoom4,
+        WorkerOutfits=[AssetLibrary.ImagePaths.WorkerCowboyPath],
+        CustomerOutfits=[],
+        Color=ColorTools.Brown,
     ),
     LockerRoom(
         Name="Safari Party",
@@ -67,3 +69,9 @@ LockerRooms = [
         Color=ColorTools.Green,
     ),
 ]
+
+
+def UnlockLockerRoom(position) -> None:
+    lockerRoom = [x for x in LockerRooms if position == x.Location]
+    lockerRoom[0].Unlocked = True
+    pygame.event.post(CustomEvents.UpdateBackground)

@@ -63,7 +63,7 @@ class GameClock:
                 self.DayChange()
             if self.Day >= self.CurrMonth.Days:
                 self.MonthChange()
-            self.PygameClock.tick(60)
+            self.PygameClock.tick(120)
 
     def DayChange(self) -> None:
         self.Day += 1

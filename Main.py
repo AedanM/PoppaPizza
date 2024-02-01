@@ -8,12 +8,13 @@ os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "True"
 import pygame
 
 from Classes import Game
-from Definitions import ColorTools
+from Definitions import CustomEvents
 from Handlers import EventHandler
 
 
 def Main() -> None:
     Game.MasterGame = Game.Game()
+    pygame.event.post(CustomEvents.UpdateBackground)
     # Enables a series of functions to run automatically
     debugFlag = True
 
@@ -24,17 +25,10 @@ def Main() -> None:
             EventHandler.MainEventHandler()
 
             Game.MasterGame.DrawBackground()
-
             Game.MasterGame.UpdateSprites()
             # DefinedLocations.DebugLocations()
             EventHandler.RandomSpawnHandler()
-
-            Game.MasterGame.DrawScreenClock(
-                locationTopLeft=(0, 0),
-                foreColor=ColorTools.White.RGB,
-                backColor=ColorTools.Blue.RGB,
-                withMoney=True,
-            )
+            Game.MasterGame.WriteText()
             # Update the display
         if Game.MasterGame.ShowScreen:
             pygame.display.update()

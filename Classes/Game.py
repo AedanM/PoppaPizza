@@ -1,7 +1,8 @@
 """Class for Game"""
 import pygame
-from Classes import GameClock, Settings, Inventory
-from Definitions import Chances, AssetLibrary
+
+from Classes import GameClock, Inventory, Settings, Writing
+from Definitions import AssetLibrary, Chances
 
 std_dimensions = {"Medium": (1200, 800), "Small": (600, 400), "Large": (2400, 1600)}
 
@@ -14,6 +15,7 @@ class Game:
     WorkerList: list = []
     CustomerList: list = []
     JobList: list = []
+    ButtonList: list = []
     UserInventory: Inventory.Inventory = None
     ShowScreen: bool = True
     GameClock = GameClock.GameClock(clock=pygame.time.Clock())
@@ -39,17 +41,9 @@ class Game:
 
         self.Font = pygame.font.Font(None, 36)
 
-    def DrawScreenClock(
-        self, locationTopLeft, foreColor, backColor, withMoney=False
-    ) -> None:
-        moneyText = f" ${self.UserInventory.Money:0.2f}" if withMoney else ""
-        text = self.Font.render(
-            str(self.GameClock.DateTime + moneyText), True, foreColor, backColor
-        )
-        textrect = text.get_rect()
-        textrect.x = locationTopLeft[0]
-        textrect.y = locationTopLeft[1]
-        self.Screen.blit(source=text, dest=textrect)
+    def WriteText(self) -> None:
+        Writing.WriteButtonLabel(activeGame=self)
+        Writing.WriteDateLabel(activeGame=self)
 
     def DrawBackground(self) -> None:
         bg = pygame.image.load(AssetLibrary.ImagePath.BackgroundPath)

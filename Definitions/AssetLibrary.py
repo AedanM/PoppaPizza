@@ -23,6 +23,7 @@ class ImagePaths:
     SuitPath = AssetFolder + r"\suit.png"
     SafariPath = AssetFolder + r"\safari.png"
     LockedLockerRoomPath = AssetFolder + r"\LockedLockerRoom.png"
+    ButtonPath = AssetFolder + r"\button.png"
 
 
 class ImageTypes(Enum):
@@ -41,7 +42,8 @@ class ImageTypes(Enum):
         SuitLogo,
         SafariLogo,
         LockedLockerRoomLogo,
-    ) = range(14)
+        Button,
+    ) = range(15)
 
 
 CustomerOutfits = [ImageTypes.Customer]
@@ -79,4 +81,5 @@ PathToTypeDict = {
     ImagePath.SuitPath: ImageTypes.SuitLogo,
     ImagePath.SafariPath: ImageTypes.SafariLogo,
     ImagePath.LockedLockerRoomPath: ImageTypes.LockedLockerRoomLogo,
+    ImagePath.ButtonPath: ImageTypes.Button,
 }

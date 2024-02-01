@@ -31,6 +31,10 @@ def MouseHandler(event) -> None:
                 WH.GetChanged(ws=GlobalTarget, lockerRoom=lockerRoom)
         GlobalClickState = ClickState.Neutral
     elif GlobalClickState is ClickState.Neutral:
+        for button in Game.MasterGame.ButtonList:
+            if button.rect.collidepoint(event.pos[0], event.pos[1]):
+                LockerRooms.UnlockLockerRoom(button.position)
+                return
         for sprite in Game.MasterGame.CharSpriteGroup:
             if sprite.rect.collidepoint(event.pos[0], event.pos[1]):
                 if sprite.ImageType in AssetLibrary.CustomerOutfits:
