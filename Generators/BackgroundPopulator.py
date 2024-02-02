@@ -1,8 +1,7 @@
 """Populate Background with ELements"""
 
-from Classes import Game, Sprite
-from Classes.Matching import RemoveButtonFromLocation
-from Definitions import AssetLibrary, ColorTools, DefinedLocations, LockerRooms
+from Classes import Game, Matching, Sprite
+from Definitions import AssetLibrary, ColorTools, DefinedLocations, Restaurants
 
 RowCoords = DefinedLocations.SeatingPlan().TableRows
 ColCoords = DefinedLocations.SeatingPlan().TableCols
@@ -17,7 +16,6 @@ def GenerateTablePlaces() -> list:
 
 
 def AddTables(activeGame=Game.MasterGame) -> None:
-
     for location in GenerateTablePlaces():
         table = Sprite.BackgroundElementSprite(
             position=location,
@@ -47,15 +45,18 @@ def AddButton(
 
 
 def AddLockerRooms(activeGame=Game.MasterGame) -> None:
-    for lockerRoom in LockerRooms.LockerRooms:
-        RemoveButtonFromLocation(activeGame=activeGame, location=lockerRoom.Location)
+    for restaurant in Restaurants.RestaurantList:
+        lockerRoom = restaurant.LockerRoom
+        Matching.RemoveButtonFromLocation(
+            activeGame=activeGame, location=lockerRoom.Location
+        )
         if lockerRoom.Unlocked:
             color = lockerRoom.Color
-            path = lockerRoom.Path
+            path = restaurant.LogoPath
             maxSize = 100
             offset = (-50, -50)
         else:
-            path = AssetLibrary.ImagePaths.LockedLockerRoomPath
+            path = AssetLibrary.ImagePath.LockedLockerRoomPath
             color = ColorTools.Grey
             maxSize = 180
             offset = (-90, -50)
@@ -83,13 +84,19 @@ def AddLockerRooms(activeGame=Game.MasterGame) -> None:
             )
 
 
+def UnlockLockerRooms(activeGame) -> None:
+    for button in activeGame.ButtonList:
+        matchingRestaurant = [
+            x
+            for x in Restaurants.RestaurantList
+            if x.LockerRoom.Location == button.position
+        ][0]
+        if matchingRestaurant.LockerRoom.Unlocked:
+            activeGame.ButtonList.remove(button)
+
+
 def SetupBackground(activeGame=Game.MasterGame) -> None:
     activeGame.BackgroundSpriteGroup.empty()
     AddTables(activeGame=activeGame)
     AddLockerRooms(activeGame=activeGame)
-    for button in activeGame.ButtonList:
-        matchingLockerRoom = [
-            x for x in LockerRooms.LockerRooms if x.Location == button.position
-        ][0]
-        if matchingLockerRoom.Unlocked:
-            activeGame.ButtonList.remove(button)
+    UnlockLockerRooms(activeGame=activeGame)

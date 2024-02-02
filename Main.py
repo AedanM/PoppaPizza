@@ -1,7 +1,6 @@
 """Main Body of Game"""
 
 import os
-import time
 
 # *OS Call used to prevent a time printout from Pygame on first import
 # pylint: disable=wrong-import-position

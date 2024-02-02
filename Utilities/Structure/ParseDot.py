@@ -10,14 +10,18 @@ with open("packages.dot", "r", encoding="utf8") as fp:
                 "." in importer
                 and "." in imported
                 and "Utils" not in imported
-                and "Game" not in imported
+                and ("Game" not in imported or "Object" in imported)
                 and "Defin" not in imported
                 or ("Main" in importer and "." in imported)
             ):
                 docString.append(line)
         elif "[" in line:
             importer = line.split(" ")[0].replace('"', "")
-            if "." in importer or "Main" in importer:
+            if (
+                ("." in importer or "Main" in importer)
+                and "Defin" not in importer
+                and "Util" not in importer
+            ):
                 docString.append(line)
         else:
             if "rankdir" in line:

@@ -1,5 +1,7 @@
 """Matching Functions for Person Objects"""
 
+from Definitions import Restaurants
+
 
 def MatchIdToPerson(activeGame, inputId, targetOutput="all") -> dict:
     output = {}
@@ -32,3 +34,11 @@ def RemoveButtonFromLocation(activeGame, location) -> None:
     corrButton = [x for x in activeGame.ButtonList if x.position == location]
     for button in corrButton:
         activeGame.ButtonList.remove(button)
+
+
+def CostumeMatch(workerSprite, customerSprite) -> bool:
+    if workerSprite is not None:
+        desiredRest = Restaurants.FindRestaurant(imageType=customerSprite.ImageType)
+        return workerSprite.ImageType in desiredRest.WorkerImageTypes
+
+    return False

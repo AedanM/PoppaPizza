@@ -20,6 +20,8 @@ pyreverse --source-roots ..\..\PoppaPizza ..\..\PoppaPizza
 move packages.dot ..\..\PoppaPizza\Utilities\Structure
 move classes.dot ..\..\PoppaPizza\Utilities\Structure
 cd .\Structure
+dot -Tpng packages.dot -o busyPackages.png -y
+dot -Tpng classes.dot -o busyClasses.png -y
 python ParseDot.py
 dot -Tpng packages.dot -o packages.png -y
 dot -Tpng classes.dot -o classes.png -x -y

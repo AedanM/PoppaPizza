@@ -3,7 +3,7 @@
 from enum import Enum
 
 from Classes import Game
-from Definitions import AssetLibrary, CustomerDefs, LockerRooms
+from Definitions import AssetLibrary, CustomerDefs, Restaurants
 from Handlers import CustomerHandler as CH
 from Handlers import WorkerHandler as WH
 from Utilities import Utils
@@ -21,20 +21,21 @@ GlobalTarget = None
 def MouseHandler(mousePos) -> None:
     global GlobalClickState, GlobalTarget
     if GlobalClickState is ClickState.ClickedWorker:
-        for lockerRoom in LockerRooms.LockerRooms:
+        for restaurant in Restaurants.RestaurantList:
+            lockerRoom = restaurant.LockerRoom
             if (
                 Utils.PositionInTolerance(
                     pos1=mousePos, pos2=lockerRoom.Location, tolerance=75
                 )
                 and lockerRoom.Unlocked
-                and GlobalTarget.ImageType not in lockerRoom.WorkerImageTypes
+                and GlobalTarget.ImageType not in restaurant.WorkerImageTypes
             ):
-                WH.GetChanged(ws=GlobalTarget, lockerRoom=lockerRoom)
+                WH.GetChanged(ws=GlobalTarget, restaurant=restaurant)
         GlobalClickState = ClickState.Neutral
     elif GlobalClickState is ClickState.Neutral:
         for button in Game.MasterGame.ButtonList:
             if button.rect.collidepoint(mousePos[0], mousePos[1]):
-                price = LockerRooms.UnlockLockerRoom(
+                price = Restaurants.UnlockLockerRoom(
                     currentCash=Game.MasterGame.UserInventory.Money,
                     position=button.position,
                 )
