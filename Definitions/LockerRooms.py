@@ -1,4 +1,5 @@
 """Definitions for LockerRooms"""
+
 from dataclasses import dataclass
 
 import pygame
@@ -15,7 +16,7 @@ class LockerRoom:
     CustomerOutfits: list
     Color: ColorTools.Color
     Unlocked: bool = False
-    Price: float = 1000.0
+    Price: float = 10000.0
 
     @property
     def WorkerImageTypes(self) -> AssetLibrary.ImageTypes:
@@ -35,6 +36,7 @@ LockerRooms = [
         CustomerOutfits=[],
         Color=ColorTools.Blue,
         Unlocked=True,
+        Price=0,
     ),
     LockerRoom(
         Name="Coffee Shop",
@@ -43,6 +45,7 @@ LockerRooms = [
         WorkerOutfits=[AssetLibrary.ImagePaths.WorkerCoffeePath],
         CustomerOutfits=[],
         Color=ColorTools.Yellow,
+        Price=2500,
     ),
     LockerRoom(
         Name="Sundown Luau",
@@ -51,6 +54,7 @@ LockerRooms = [
         WorkerOutfits=[AssetLibrary.ImagePaths.WorkerLuauPath],
         CustomerOutfits=[],
         Color=ColorTools.Pink,
+        Price=5000,
     ),
     LockerRoom(
         Name="Cowboy Saloon",
@@ -59,6 +63,7 @@ LockerRooms = [
         WorkerOutfits=[AssetLibrary.ImagePaths.WorkerCowboyPath],
         CustomerOutfits=[],
         Color=ColorTools.Brown,
+        Price=7500,
     ),
     LockerRoom(
         Name="Safari Party",
@@ -67,11 +72,15 @@ LockerRooms = [
         WorkerOutfits=[AssetLibrary.ImagePaths.WorkerSafariPath],
         CustomerOutfits=[],
         Color=ColorTools.Green,
+        Price=10000,
     ),
 ]
 
 
-def UnlockLockerRoom(position) -> None:
+def UnlockLockerRoom(currentCash, position) -> float:
     lockerRoom = [x for x in LockerRooms if position == x.Location]
-    lockerRoom[0].Unlocked = True
-    pygame.event.post(CustomEvents.UpdateBackground)
+    if currentCash > lockerRoom[0].Price:
+        lockerRoom[0].Unlocked = True
+        pygame.event.post(CustomEvents.UpdateBackground)
+        return lockerRoom[0].Price
+    return 0

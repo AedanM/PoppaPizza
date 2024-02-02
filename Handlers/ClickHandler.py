@@ -1,4 +1,5 @@
 """Handler for User Clicks"""
+
 from enum import Enum
 
 from Classes import Game
@@ -33,7 +34,11 @@ def MouseHandler(mousePos) -> None:
     elif GlobalClickState is ClickState.Neutral:
         for button in Game.MasterGame.ButtonList:
             if button.rect.collidepoint(mousePos[0], mousePos[1]):
-                LockerRooms.UnlockLockerRoom(button.position)
+                price = LockerRooms.UnlockLockerRoom(
+                    currentCash=Game.MasterGame.UserInventory.Money,
+                    position=button.position,
+                )
+                Game.MasterGame.UserInventory.PayMoney(amount=price)
                 return
         for sprite in Game.MasterGame.CharSpriteGroup:
             if sprite.rect.collidepoint(mousePos[0], mousePos[1]):

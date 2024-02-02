@@ -1,5 +1,7 @@
 """Populate Background with ELements"""
+
 from Classes import Game, Sprite
+from Classes.Matching import RemoveButtonFromLocation
 from Definitions import AssetLibrary, ColorTools, DefinedLocations, LockerRooms
 
 RowCoords = DefinedLocations.SeatingPlan().TableRows
@@ -15,6 +17,7 @@ def GenerateTablePlaces() -> list:
 
 
 def AddTables(activeGame=Game.MasterGame) -> None:
+
     for location in GenerateTablePlaces():
         table = Sprite.BackgroundElementSprite(
             position=location,
@@ -27,7 +30,7 @@ def AddTables(activeGame=Game.MasterGame) -> None:
 
 
 def AddButton(
-    location, text, color, backColor, onClick, activeGame=Game.MasterGame
+    location, text, color, backColor, enabled, activeGame=Game.MasterGame
 ) -> None:
     buttonObj = Sprite.ButtonObject(
         position=location,
@@ -35,8 +38,9 @@ def AddButton(
         backColor=backColor,
         text=text,
         size=[125, 50],
-        onClick=onClick,
+        enabled=enabled,
     )
+
     activeGame.ForegroundSpriteGroup.add(buttonObj)
     if not [x for x in activeGame.ButtonList if x.position == location]:
         activeGame.ButtonList.append(buttonObj)
@@ -44,6 +48,7 @@ def AddButton(
 
 def AddLockerRooms(activeGame=Game.MasterGame) -> None:
     for lockerRoom in LockerRooms.LockerRooms:
+        RemoveButtonFromLocation(activeGame=activeGame, location=lockerRoom.Location)
         if lockerRoom.Unlocked:
             color = lockerRoom.Color
             path = lockerRoom.Path
@@ -74,11 +79,12 @@ def AddLockerRooms(activeGame=Game.MasterGame) -> None:
                 text="Buy Me",
                 backColor=ColorTools.CautionTapeYellow,
                 color=ColorTools.Black,
-                onClick=lambda: print("Bought"),
+                enabled=lockerRoom.Price < activeGame.UserInventory.Money,
             )
 
 
 def SetupBackground(activeGame=Game.MasterGame) -> None:
+    activeGame.BackgroundSpriteGroup.empty()
     AddTables(activeGame=activeGame)
     AddLockerRooms(activeGame=activeGame)
     for button in activeGame.ButtonList:

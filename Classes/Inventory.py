@@ -1,7 +1,10 @@
 """Inventory Object"""
+
 from dataclasses import dataclass
 
-from Definitions import Prices
+import pygame
+
+from Definitions import CustomEvents
 
 
 @dataclass
@@ -11,6 +14,10 @@ class Inventory:
 
     def GetPaid(self, amount) -> None:
         self.Money += amount
+        pygame.event.post(CustomEvents.UpdateBackground)
 
-    def PayRent(self, amount=Prices.CurrentRent) -> None:
+    def PayMoney(self, amount) -> None:
         self.Money -= amount
+        pygame.event.post(CustomEvents.UpdateBackground)
+        if self.Money < 0:
+            pygame.event.post(CustomEvents.GameOver)

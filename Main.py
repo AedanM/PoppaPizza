@@ -1,6 +1,7 @@
 """Main Body of Game"""
 
 import os
+import time
 
 # *OS Call used to prevent a time printout from Pygame on first import
 # pylint: disable=wrong-import-position
@@ -28,7 +29,7 @@ def Main() -> None:
             Game.MasterGame.UpdateSprites()
             # DefinedLocations.DebugLocations()
             EventHandler.RandomSpawnHandler()
-            Game.MasterGame.WriteText()
+            Game.MasterGame.WriteAllText()
             # Update the display
         if Game.MasterGame.ShowScreen:
             pygame.display.update()

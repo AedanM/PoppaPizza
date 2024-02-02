@@ -1,9 +1,10 @@
 """Handlers for all events"""
+
 import sys
 
 import pygame
 
-from Classes import Game
+from Classes import Game, Matching
 from Definitions import AssetLibrary, CustomerDefs, CustomEvents, Prices
 from Generators import BackgroundPopulator, CharSpawner, Menus
 from Handlers import ClickHandler
@@ -17,7 +18,7 @@ def MainEventHandler(activeGame=Game.MasterGame) -> None:
         if event.type == pygame.USEREVENT:
             match (event):
                 case CustomEvents.UpdateBackground:
-                    BackgroundPopulator.SetupBackground()
+                    BackgroundPopulator.SetupBackground(Game.MasterGame)
                 case CustomEvents.NightCycle:
                     DayNightEvent()
                 case CustomEvents.GameOver:
@@ -26,6 +27,8 @@ def MainEventHandler(activeGame=Game.MasterGame) -> None:
             ClickHandler.MouseHandler(mousePos=event.pos)
         elif event.type == pygame.KEYDOWN:
             match (event.key):
+                case pygame.K_m:
+                    Game.MasterGame.UserInventory.GetPaid(amount=1000.0)
                 case pygame.K_t:
                     activeGame.Settings.ChangeClockMul(value=-1)
                 case pygame.K_y:
@@ -61,16 +64,16 @@ def DayNightEvent() -> None:
     for worker in Game.MasterGame.WorkerList:
         workerPay += worker.BasePay * Prices.DefaultPrices.Salary
     rent = Prices.CurrentRent
-    Game.MasterGame.UserInventory.Money -= workerPay + rent
-    if Game.MasterGame.UserInventory.Money < 0:
-        pygame.event.post(CustomEvents.GameOver)
+    Game.MasterGame.UserInventory.PayMoney(amount=workerPay + rent)
     for sprite in Game.MasterGame.CharSpriteGroup:
         if (
             sprite.ImageType in AssetLibrary.CustomerOutfits
             and sprite.DataObject.CurrentState
             is not CustomerDefs.CustomerStates.BeingServed
         ):
-            Game.MasterGame.RemoveObjFromSprite(targetSprite=sprite)
+            Matching.RemoveObjFromSprite(
+                activeGame=Game.MasterGame, targetSprite=sprite
+            )
 
 
 def GameOver() -> None:

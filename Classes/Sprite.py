@@ -1,7 +1,8 @@
 """Class for visibile sprites"""
+
 import pygame
 
-from Classes import Game, GameObject, TimerBar
+from Classes import Game, GameObject, Matching, TimerBar
 from Definitions import AssetLibrary, ColorTools
 from Handlers import MovementHandler
 from Utilities import Utils as utils
@@ -30,7 +31,9 @@ class CharImageSprite(GameObject.GameObject):
 
     @property
     def DataObject(self):
-        objDict = Game.MasterGame.MatchIdToPerson(inputId=self.CorrespondingID)
+        objDict = Matching.MatchIdToPerson(
+            activeGame=Game.MasterGame, inputId=self.CorrespondingID
+        )
         objDict.pop("sprite")
         obj = list(objDict.values())[0]
         return obj
@@ -137,15 +140,14 @@ class ButtonObject(GameObject.GameObject):
         color=ColorTools.White,
         backColor=ColorTools.Black,
         size=(100, 100),
-        onClick=None,
+        enabled=True,
     ) -> None:
         super().__init__(backgroundFlag=True, moveFlag=False, collisionFlag=False)
         self.image = pygame.Surface(size=size)
-        self.image.fill(backColor.RGB)
-        self.image.set_alpha(240)
+        self.image.fill(backColor.RGB if enabled else ColorTools.Grey.RGB)
+        self.image.set_alpha(240 if enabled else 128)
         self.text = text
         self.position = position
-        self.OnClick = onClick
         self.Color = color
         buttonRect = pygame.Rect(0, 0, size[0], size[1])
         pygame.draw.rect(

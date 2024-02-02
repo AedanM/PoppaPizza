@@ -1,4 +1,5 @@
 """Functions for Text Generation"""
+
 from Definitions import ColorTools
 from Utilities import Utils
 

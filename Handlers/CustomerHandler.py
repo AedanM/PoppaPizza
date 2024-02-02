@@ -1,7 +1,11 @@
 """Handler for Customer Tasks"""
+
 import random
+
+import Classes.Matching
 from Classes import Game
-from Definitions import CustomerDefs, DefinedPaths as DL, ColorTools
+from Definitions import ColorTools, CustomerDefs
+from Definitions import DefinedPaths as DL
 from Handlers import WorkerHandler as WH
 
 
@@ -25,8 +29,8 @@ def FindAvailableWorker(activeGame=Game.MasterGame) -> tuple:
         worker, workerSprite = None, None
     else:
         worker = random.choice(availWorkers)
-        workerSprite = activeGame.MatchIdToPerson(
-            inputId=worker.IdNum, targetOutput="sprite"
+        workerSprite = Classes.Matching.MatchIdToPerson(
+            activeGame=activeGame, inputId=worker.IdNum, targetOutput="sprite"
         )
 
     return worker, workerSprite
@@ -100,6 +104,6 @@ def GetUpAndGo(spriteImg, activeGame=Game.MasterGame) -> None:
             else DL.DefinedPaths.TableToExit(sprite=spriteImg)
         )
 
-        spriteImg.MvmHandler.OnComplete = lambda: activeGame.RemoveObjFromSprite(
-            targetSprite=spriteImg
+        spriteImg.MvmHandler.OnComplete = lambda: Classes.Matching.RemoveObjFromSprite(
+            activeGame=activeGame, targetSprite=spriteImg
         )

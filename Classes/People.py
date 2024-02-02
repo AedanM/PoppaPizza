@@ -1,4 +1,5 @@
 """Class for People DataClasses"""
+
 import random
 from dataclasses import dataclass
 
