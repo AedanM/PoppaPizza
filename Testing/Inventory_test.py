@@ -1,7 +1,8 @@
 """Test Module for Inventory Functions"""
+
 # pylint: disable=invalid-name
 
-from Classes import Inventory
+from Classes import Game, Inventory
 from Definitions import Prices
 
 
@@ -18,7 +19,8 @@ def test_GetPaid() -> None:
 
 
 def test_Rent() -> None:
-    i = Inventory.Inventory(Money=5000)
+    currentGame = Game.MasterGame
+    i = currentGame.UserInventory
     i.GetPaid(amount=2000.00)
-    i.PayRent()
-    assert i.Money == 7000 - Prices.CurrentRent
+    i.PayMoney(amount=Prices.CurrentRent)
+    assert i.Money == 4000 - Prices.CurrentRent
