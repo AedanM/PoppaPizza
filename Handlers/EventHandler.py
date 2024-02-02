@@ -41,8 +41,6 @@ def MainEventHandler(activeGame=Game.MasterGame) -> None:
                     activeGame.Settings.ToggleClock24()
                 case pygame.K_p:
                     activeGame.GameClock.SetRunning(not activeGame.GameClock.Running)
-                case pygame.K_d:
-                    activeGame.ShowScreen = not activeGame.MasterGame.ShowScreen
                 case pygame.K_ESCAPE:
                     Menus.OptionsMenu()
                 case pygame.K_s:
