@@ -3,7 +3,7 @@ import math
 import random
 
 
-def InRandomVarianpypyce(num, percentVariance) -> float:
+def InRandomVariance(num, percentVariance) -> float:
     percentVariance = CheckDecimalPercent(percentVariance)
     varyAmount = random.randint(a=-100, b=100) * percentVariance * 0.01 * num
     return num + varyAmount
@@ -57,7 +57,7 @@ def ProRateValue(value, inRange, outRange) -> int | float | None:
     return (
         float(value) * (outRange[1] - outRange[0]) / (inRange[1] - inRange[0])
         if (inRange[1] - inRange[0]) != 0 and (outRange[1] - outRange[0]) != 0
-        else None
+        else "Error"
     )
 
 
@@ -77,6 +77,13 @@ def PositionInTolerance(pos1, pos2, tolerance) -> bool:
     return InTolerance(num1=pos1[1], num2=pos2[1], tolerance=tolerance) and InTolerance(
         num1=pos1[0], num2=pos2[0], tolerance=tolerance
     )
+
+
+# TODO - Add Test
+def OffsetTuple(inputTuple, offset) -> tuple:
+    element1 = inputTuple[0] + offset[0]
+    element2 = inputTuple[1] + offset[1]
+    return (element1, element2)
 
 
 def Sign(num: int | float) -> int:

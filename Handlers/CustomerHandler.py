@@ -1,7 +1,10 @@
 """Handler for Customer Tasks"""
+
 import random
-from Classes import Game
-from Definitions import CustomerDefs, DefinedPaths as DL, ColorTools
+
+from Classes import Game, Matching
+from Definitions import ColorTools, CustomerDefs
+from Definitions import DefinedPaths as DL
 from Handlers import WorkerHandler as WH
 
 
@@ -18,26 +21,25 @@ def WalkIn(target) -> None:
     target.MvmHandler.OnComplete = lambda: (SetFirstInLine(target=target))
 
 
-# TODO - Fix getting worker who is busy
-def FindAvailableWorker(activeGame=Game.MasterGame) -> tuple:
+def FindAvailableWorker(customerSprite, activeGame=Game.MasterGame) -> tuple:
     availWorkers = [x for x in activeGame.WorkerList if x.IsAssigned is False]
-    if len(availWorkers) < 1:
-        worker, workerSprite = None, None
-    else:
-        worker = random.choice(availWorkers)
-        workerSprite = activeGame.MatchIdToPerson(
-            inputId=worker.IdNum, targetOutput="sprite"
+    random.shuffle(availWorkers)
+    for worker in availWorkers:
+        workerSprite = Matching.MatchIdToPerson(
+            activeGame=activeGame, inputId=worker.IdNum, targetOutput="sprite"
         )
+        if Matching.CostumeMatch(
+            workerSprite=workerSprite, customerSprite=customerSprite
+        ):
+            return worker, workerSprite
 
-    return worker, workerSprite
+    return None, None
 
 
 # TODO - Stop 2 workers on 1 job
 def AssignWorker(target) -> None:
-    worker, workerSprite = FindAvailableWorker()
-    if worker is None:
-        AllWorkersBusy(target=target)
-    else:
+    worker, workerSprite = FindAvailableWorker(customerSprite=target)
+    if worker is not None:
         target.DataObject.WorkerAssigned = True
         target.DataObject.DesiredJob.Assign(worker)
         workerSprite.MvmHandler.StartNewListedMotion(
@@ -64,11 +66,7 @@ def SitAtTable(target) -> None:
         target.MvmHandler.OnComplete = lambda: BeginWait(target=target)
     else:
         target.DataObject.CurrentState = CustomerDefs.CustomerStates.LeavingAngry
-        AllTablesBusy(target=target)
-
-
-def AllTablesBusy(target) -> None:
-    GetUpAndGo(spriteImg=target)
+        GetUpAndGo(target)
 
 
 def BeginWait(target) -> None:
@@ -100,6 +98,6 @@ def GetUpAndGo(spriteImg, activeGame=Game.MasterGame) -> None:
             else DL.DefinedPaths.TableToExit(sprite=spriteImg)
         )
 
-        spriteImg.MvmHandler.OnComplete = lambda: activeGame.RemoveObjFromSprite(
-            targetSprite=spriteImg
+        spriteImg.MvmHandler.OnComplete = lambda: Matching.RemoveObjFromSprite(
+            activeGame=activeGame, targetSprite=spriteImg
         )

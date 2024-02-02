@@ -1,10 +1,13 @@
 """Class for People DataClasses"""
-from dataclasses import dataclass
+
 import random
+from dataclasses import dataclass
+
 import names
-from Classes import Jobs, Sprite, Game
-from Definitions import DefinedLocations, CustomerDefs, AssetLibrary
+
 import Utilities.Utils as utils
+from Classes import Game, Jobs, Sprite
+from Definitions import AssetLibrary, CustomerDefs, DefinedLocations
 
 IDCOUNT = 1
 
@@ -41,7 +44,7 @@ class Worker(Person):
         cls,
         startLocation=DefinedLocations.LocationDefs.KitchenLocation,
         activeGame=Game.MasterGame,
-    ) -> "Worker":
+    ) -> tuple:
         worker = cls.Create()
         workerSprite = Sprite.CharImageSprite(
             position=utils.PositionRandomVariance(
@@ -69,7 +72,7 @@ class Customer(Person):
         cls,
         startLocation=DefinedLocations.LocationDefs.CustomerEntrance,
         activeGame=Game.MasterGame,
-    ) -> "Customer":
+    ) -> tuple:
         cust = cls.Create()
         activeGame.JobList.append(Jobs.Job.SpawnJob())
         activeGame.JobList[-1].Assign(cust)

@@ -1,6 +1,10 @@
 """Handler for Worker Tasks"""
+
+import random
+
 from Classes import Game
-from Definitions import DefinedPaths as DL, LockerRooms
+from Definitions import AssetLibrary
+from Definitions import DefinedPaths as DL
 
 
 def ServeCustomer() -> None:
@@ -14,15 +18,17 @@ def FinishCustomer(ws, j) -> None:
     Game.MasterGame.UserInventory.GetPaid(amount=j.Price)
 
 
-def GetChanged(ws, dest) -> None:
+def GetChanged(ws, restaurant) -> None:
     ws.MvmHandler.StartNewListedMotion(
-        DL.DefinedPaths.KitchenToLockerRoom(sprite=ws, dest=dest)
+        DL.DefinedPaths.KitchenToLockerRoom(
+            sprite=ws, dest=restaurant.LockerRoom.Location
+        )
     )
-    newOutfit = LockerRooms.LockerRoomOutfits[dest]
+    newOutfit = AssetLibrary.PathLookup(random.choice(restaurant.WorkerImageTypes))
     ws.MvmHandler.OnComplete = lambda: (
         ws.ChangeOutfit(newOutfit),
         ws.CreatePersonTimerBar(
-            completeTask=lambda: ReturnToKitchen(ws), offset=(-30, 150), width=150
+            completeTask=lambda: ReturnToKitchen(ws=ws), offset=(-30, 150), width=150
         ),
     )
 

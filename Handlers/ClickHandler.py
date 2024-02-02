@@ -1,13 +1,16 @@
 """Handler for User Clicks"""
+
 from enum import Enum
-from Utilities import Utils
+
 from Classes import Game
-from Handlers import CustomerHandler as CH, WorkerHandler as WH
-from Definitions import CustomerDefs, LockerRooms, AssetLibrary
+from Definitions import AssetLibrary, CustomerDefs, Restaurants
+from Handlers import CustomerHandler as CH
+from Handlers import WorkerHandler as WH
+from Utilities import Utils
 
 
 class ClickState(Enum):
-    Neutral, ClickedCustomer, ClickedWorker = range(3)
+    Neutral, ClickedWorker = range(2)
 
 
 # pylint: disable=invalid-name, global-statement, W0602
@@ -15,16 +18,31 @@ GlobalClickState = ClickState.Neutral
 GlobalTarget = None
 
 
-def MouseHandler(event) -> None:
+def MouseHandler(mousePos) -> None:
     global GlobalClickState, GlobalTarget
     if GlobalClickState is ClickState.ClickedWorker:
-        for location in LockerRooms.LockerRooms.values():
-            if Utils.PositionInTolerance(pos1=event.pos, pos2=location, tolerance=75):
-                WH.GetChanged(ws=GlobalTarget, dest=location)
+        for restaurant in Restaurants.RestaurantList:
+            lockerRoom = restaurant.LockerRoom
+            if (
+                Utils.PositionInTolerance(
+                    pos1=mousePos, pos2=lockerRoom.Location, tolerance=75
+                )
+                and lockerRoom.Unlocked
+                and GlobalTarget.ImageType not in restaurant.WorkerImageTypes
+            ):
+                WH.GetChanged(ws=GlobalTarget, restaurant=restaurant)
         GlobalClickState = ClickState.Neutral
     elif GlobalClickState is ClickState.Neutral:
+        for button in Game.MasterGame.ButtonList:
+            if button.rect.collidepoint(mousePos[0], mousePos[1]):
+                price = Restaurants.UnlockLockerRoom(
+                    currentCash=Game.MasterGame.UserInventory.Money,
+                    position=button.position,
+                )
+                Game.MasterGame.UserInventory.PayMoney(amount=price)
+                return
         for sprite in Game.MasterGame.CharSpriteGroup:
-            if sprite.rect.collidepoint(event.pos[0], event.pos[1]):
+            if sprite.rect.collidepoint(mousePos[0], mousePos[1]):
                 if sprite.ImageType in AssetLibrary.CustomerOutfits:
                     CustomerClickRoutine(target=sprite)
                 elif sprite.ImageType in AssetLibrary.WorkerOutfits:

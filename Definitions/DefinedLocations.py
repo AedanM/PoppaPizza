@@ -3,23 +3,23 @@
 
 class DefinedLocations:
     @property
-    def YellowLockerRoom(self) -> tuple:
+    def LockerRoom1(self) -> tuple:
         return (350, 65)
 
     @property
-    def GreenLockerRoom(self) -> tuple:
+    def LockerRoom2(self) -> tuple:
         return (530, 65)
 
     @property
-    def BlueLockerRoom(self) -> tuple:
+    def LockerRoom3(self) -> tuple:
         return (710, 65)
 
     @property
-    def PinkLockerRoom(self) -> tuple:
+    def LockerRoom4(self) -> tuple:
         return (890, 65)
 
     @property
-    def GreyLockerRoom(self) -> tuple:
+    def LockerRoom5(self) -> tuple:
         return (1070, 65)
 
     @property

@@ -1,7 +1,8 @@
 """Class for jobs"""
+
+import random
 from dataclasses import dataclass
 from enum import Enum
-import random
 
 JOBIDCOUNT = 1
 
@@ -31,7 +32,7 @@ class Job:
         JOBIDCOUNT += 1
         urgency = random.choice(list(UrgencyRatings)[1:])
         jobtype = random.choice(list(JobTypes)[1:])
-        length = random.randint(2, 10)
+        length = random.randint(5, 100)
         price = (
             1
             * (random.randint(10, 50) + length)

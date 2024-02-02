@@ -1,10 +1,13 @@
 """Handlers for all events"""
+
 import sys
+
 import pygame
-from Classes import Game
-from Definitions import CustomEvents, CustomerDefs, Prices, AssetLibrary
+
+from Classes import Game, Matching
+from Definitions import AssetLibrary, CustomerDefs, CustomEvents, Prices
+from Generators import BackgroundPopulator, CharSpawner, Menus
 from Handlers import ClickHandler
-from Generators import CharSpawner, BackgroundPopulator, Menus
 
 
 def MainEventHandler(activeGame=Game.MasterGame) -> None:
@@ -12,37 +15,41 @@ def MainEventHandler(activeGame=Game.MasterGame) -> None:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-        if event.type == pygame.USEREVENT and event == CustomEvents.NightCycle:
-            DayNightEvent()
-        if event.type == pygame.USEREVENT and event == CustomEvents.GameOver:
-            GameOver()
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-            ClickHandler.MouseHandler(event=event)
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_t:
-            activeGame.Settings.ChangeClockMul(value=-1)
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_y:
-            activeGame.Settings.ChangeClockMul(value=1)
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_w:
-            CharSpawner.BuyWorker()
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_c:
-            CharSpawner.CustomerSpawner(force=True)
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_2:
-            activeGame.Settings.ToggleClock24()
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_p:
-            activeGame.GameClock.SetRunning(not activeGame.GameClock.Running)
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_d:
-            activeGame.ShowScreen = not activeGame.MasterGame.ShowScreen
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-            Menus.OptionsMenu()
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_s:
-            Menus.ShopMenu()
+        if event.type == pygame.USEREVENT:
+            match (event):
+                case CustomEvents.UpdateBackground:
+                    BackgroundPopulator.SetupBackground(Game.MasterGame)
+                case CustomEvents.NightCycle:
+                    DayNightEvent()
+                case CustomEvents.GameOver:
+                    GameOver()
+        elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            ClickHandler.MouseHandler(mousePos=event.pos)
+        elif event.type == pygame.KEYDOWN:
+            match (event.key):
+                case pygame.K_m:
+                    Game.MasterGame.UserInventory.GetPaid(amount=1000.0)
+                case pygame.K_t:
+                    activeGame.Settings.ChangeClockMul(value=-1)
+                case pygame.K_y:
+                    activeGame.Settings.ChangeClockMul(value=1)
+                case pygame.K_w:
+                    CharSpawner.BuyWorker()
+                case pygame.K_c:
+                    CharSpawner.CustomerSpawner(force=True)
+                case pygame.K_2:
+                    activeGame.Settings.ToggleClock24()
+                case pygame.K_p:
+                    activeGame.GameClock.SetRunning(not activeGame.GameClock.Running)
+                case pygame.K_ESCAPE:
+                    Menus.OptionsMenu()
+                case pygame.K_s:
+                    Menus.ShopMenu()
 
 
 def DebugSetup() -> None:
     CharSpawner.BuyWorker(free=True)
     CharSpawner.BuyWorker(free=True)
-
-    BackgroundPopulator.SetupBackground()
 
 
 def RandomSpawnHandler() -> None:
@@ -55,16 +62,16 @@ def DayNightEvent() -> None:
     for worker in Game.MasterGame.WorkerList:
         workerPay += worker.BasePay * Prices.DefaultPrices.Salary
     rent = Prices.CurrentRent
-    Game.MasterGame.UserInventory.Money -= workerPay + rent
-    if Game.MasterGame.UserInventory.Money < 0:
-        pygame.event.post(CustomEvents.GameOver)
+    Game.MasterGame.UserInventory.PayMoney(amount=workerPay + rent)
     for sprite in Game.MasterGame.CharSpriteGroup:
         if (
             sprite.ImageType in AssetLibrary.CustomerOutfits
             and sprite.DataObject.CurrentState
             is not CustomerDefs.CustomerStates.BeingServed
         ):
-            Game.MasterGame.RemoveObjFromSprite(targetSprite=sprite)
+            Matching.RemoveObjFromSprite(
+                activeGame=Game.MasterGame, targetSprite=sprite
+            )
 
 
 def GameOver() -> None:

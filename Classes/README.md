@@ -35,3 +35,7 @@ Objects for display on screen
 ## Timer Bar
 
 Object for dynamically sized and colored timer bars
+
+## Writing
+
+Creates all Textboxes

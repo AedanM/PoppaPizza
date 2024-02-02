@@ -1,6 +1,7 @@
 """Test Module for Game Functions"""
+
 # pylint: disable=invalid-name
-from Classes import Game, People
+from Classes import Game, Matching, People
 
 
 def test_ScreenSize() -> None:
@@ -19,14 +20,22 @@ def test_Matching() -> None:
         assert {
             "worker": worker,
             "sprite": workerSprite,
-        } == currentGame.MatchIdToPerson(inputId=workerSprite.CorrespondingID)
-        assert worker == currentGame.MatchIdToPerson(
-            inputId=workerSprite.CorrespondingID, targetOutput="worker"
+        } == Matching.MatchIdToPerson(
+            activeGame=currentGame, inputId=workerSprite.CorrespondingID
+        )
+        assert worker == Matching.MatchIdToPerson(
+            activeGame=currentGame,
+            inputId=workerSprite.CorrespondingID,
+            targetOutput="worker",
         )
         assert {
             "customer": customer,
             "sprite": customerSprite,
-        } == currentGame.MatchIdToPerson(inputId=customerSprite.CorrespondingID)
-        assert customer == currentGame.MatchIdToPerson(
-            inputId=customerSprite.CorrespondingID, targetOutput="customer"
+        } == Matching.MatchIdToPerson(
+            activeGame=currentGame, inputId=customerSprite.CorrespondingID
+        )
+        assert customer == Matching.MatchIdToPerson(
+            activeGame=currentGame,
+            inputId=customerSprite.CorrespondingID,
+            targetOutput="customer",
         )

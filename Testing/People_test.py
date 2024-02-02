@@ -1,8 +1,8 @@
 """Test Module for People Class"""
+
 # pylint: disable=invalid-name
 
-from Classes import People, Game
-from Utilities import Utils
+from Classes import Game, Matching, People
 
 
 def test_PeopleIdTest() -> None:
@@ -28,10 +28,11 @@ def test_PeopleNames() -> None:
         customer, customerSprite = People.Customer.CreateCustomer(
             activeGame=currentGame
         )
-        if Utils.CheckInternet():
-            assert worker.FirstName != customer.FirstName
-            assert worker.LastName != customer.LastName
-        currentGame.RemoveObjFromSprite(targetSprite=workerSprite)
-        currentGame.RemoveObjFromSprite(targetSprite=customerSprite)
+        assert worker.FirstName != customer.FirstName
+        assert worker.LastName != customer.LastName
+        Matching.RemoveObjFromSprite(activeGame=currentGame, targetSprite=workerSprite)
+        Matching.RemoveObjFromSprite(
+            activeGame=currentGame, targetSprite=customerSprite
+        )
     assert not currentGame.WorkerList
     assert not currentGame.CustomerList

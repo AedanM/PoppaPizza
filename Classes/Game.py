@@ -1,7 +1,9 @@
 """Class for Game"""
+
 import pygame
-from Classes import GameClock, Settings, Inventory
-from Definitions import Chances, AssetLibrary
+
+from Classes import GameClock, Inventory, Settings, Writing
+from Definitions import AssetLibrary, Chances
 
 std_dimensions = {"Medium": (1200, 800), "Small": (600, 400), "Large": (2400, 1600)}
 
@@ -14,6 +16,7 @@ class Game:
     WorkerList: list = []
     CustomerList: list = []
     JobList: list = []
+    ButtonList: list = []
     UserInventory: Inventory.Inventory = None
     ShowScreen: bool = True
     GameClock = GameClock.GameClock(clock=pygame.time.Clock())
@@ -39,29 +42,13 @@ class Game:
 
         self.Font = pygame.font.Font(None, 36)
 
-    def DrawScreenClock(
-        self, locationTopLeft, foreColor, backColor, withMoney=False
-    ) -> None:
-        moneyText = f" ${self.UserInventory.Money:0.2f}" if withMoney else ""
-        text = self.Font.render(
-            str(self.GameClock.DateTime + moneyText), True, foreColor, backColor
-        )
-        textrect = text.get_rect()
-        textrect.x = locationTopLeft[0]
-        textrect.y = locationTopLeft[1]
-        self.Screen.blit(source=text, dest=textrect)
+    def WriteAllText(self) -> None:
+        Writing.WriteButtonLabel(activeGame=self)
+        Writing.WriteDateLabel(activeGame=self)
 
     def DrawBackground(self) -> None:
         bg = pygame.image.load(AssetLibrary.ImagePath.BackgroundPath)
         self.Screen.blit(source=bg, dest=(0, 0))
-
-    def RemoveObjFromSprite(self, targetSprite) -> None:
-        responseDict = self.MatchIdToPerson(inputId=targetSprite.CorrespondingID)
-        if "customer" in responseDict:
-            self.CustomerList.remove(responseDict["customer"])
-        elif "worker" in responseDict:
-            self.WorkerList.remove(responseDict["worker"])
-        targetSprite.kill()
 
     def UpdateSprites(self) -> None:
         for group in self.SpriteGroups:
@@ -73,21 +60,6 @@ class Game:
     @property
     def ScreenSize(self) -> tuple[int, int]:
         return (self.Screen.get_width(), self.Screen.get_height())
-
-    def MatchIdToPerson(self, inputId, targetOutput="all") -> dict:
-        output = {}
-        if inputId != 0:
-            for sprite in self.CharSpriteGroup:
-                if sprite.CorrespondingID == inputId:
-                    output["sprite"] = sprite
-            for worker in self.WorkerList:
-                if worker.IdNum == inputId:
-                    output["worker"] = worker
-            for customer in self.CustomerList:
-                if customer.IdNum == inputId:
-                    output["customer"] = customer
-            return output if targetOutput == "all" else output[targetOutput]
-        return None
 
 
 MasterGame = Game()

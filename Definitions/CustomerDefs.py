@@ -1,4 +1,5 @@
 """Customer States and Speeds"""
+
 from enum import Enum
 
 
@@ -10,6 +11,7 @@ class CustomerStates(Enum):
         Queuing,
         Seated,
         WaitingForService,
+        WaitingForSeating,
         BeingServed,
         Served,
         LeavingAngry,

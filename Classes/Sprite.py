@@ -1,9 +1,11 @@
 """Class for visibile sprites"""
+
 import pygame
-from Classes import GameObject, Game, TimerBar
-from Utilities import Utils as utils
-from Definitions import ColorTools, AssetLibrary
+
+from Classes import Game, GameObject, Matching, TimerBar
+from Definitions import AssetLibrary, ColorTools
 from Handlers import MovementHandler
+from Utilities import Utils as utils
 
 
 class CharImageSprite(GameObject.GameObject):
@@ -29,7 +31,9 @@ class CharImageSprite(GameObject.GameObject):
 
     @property
     def DataObject(self):
-        objDict = Game.MasterGame.MatchIdToPerson(inputId=self.CorrespondingID)
+        objDict = Matching.MatchIdToPerson(
+            activeGame=Game.MasterGame, inputId=self.CorrespondingID
+        )
         objDict.pop("sprite")
         obj = list(objDict.values())[0]
         return obj
@@ -55,6 +59,7 @@ class CharImageSprite(GameObject.GameObject):
         newImage = pygame.transform.scale(newImage, dim)
         newImageRect = self.rect
         self.image = newImage
+        self.ImageType = AssetLibrary.PathToTypeDict[newOutfitPath]
 
     def UpdateSprite(self) -> None:
         if self.PersonalTimer is not None:
@@ -120,5 +125,38 @@ class RectangleObject(GameObject.GameObject):
         super().__init__(backgroundFlag=True, moveFlag=False, collisionFlag=False)
         self.image = pygame.Surface(size=size)
         self.image.fill(color.RGB)
+        self.rect = self.image.get_rect()
+        self.rect.center = position
+
+
+class ButtonObject(GameObject.GameObject):
+    # pylint: disable=invalid-name
+    OnClick = None
+
+    def __init__(
+        self,
+        position,
+        text="Blank",
+        color=ColorTools.White,
+        backColor=ColorTools.Black,
+        size=(100, 100),
+        enabled=True,
+    ) -> None:
+        super().__init__(backgroundFlag=True, moveFlag=False, collisionFlag=False)
+        self.image = pygame.Surface(size=size)
+        self.image.fill(backColor.RGB if enabled else ColorTools.Grey.RGB)
+        self.image.set_alpha(240 if enabled else 128)
+        self.text = text
+        self.position = position
+        self.Color = color
+        buttonRect = pygame.Rect(0, 0, size[0], size[1])
+        pygame.draw.rect(
+            surface=self.image,
+            color=color.RGB,
+            rect=buttonRect,
+            width=5,
+            border_radius=10,
+        )
+
         self.rect = self.image.get_rect()
         self.rect.center = position

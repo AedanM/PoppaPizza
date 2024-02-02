@@ -1,7 +1,9 @@
 """Class for Timer Bars"""
 import math
+
 import pygame
-from Classes import Game
+
+from Classes import Game, Matching
 from Definitions import ColorTools
 
 
@@ -91,7 +93,9 @@ class TimerBar:
     def UpdateAndDraw(self, activeGame=Game.MasterGame) -> None:
         if self.Running:
             self.AgeTimer()
-            customerObj = activeGame.MatchIdToPerson(self.AssocId, "customer")
+            customerObj = Matching.MatchIdToPerson(
+                activeGame=activeGame, inputId=self.AssocId, targetOutput="customer"
+            )
             if (
                 self.StartingState != 0
                 and self.AssocId != 0

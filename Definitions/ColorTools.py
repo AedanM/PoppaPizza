@@ -1,7 +1,9 @@
 """Class for Altering Colors"""
-from dataclasses import dataclass
 import colorsys
+from dataclasses import dataclass
+
 import numpy as np
+
 from Utilities import Utils
 
 
@@ -44,10 +46,13 @@ class Color:
 
 
 White = Color(h=0, s=0, v=255)
-Blue = Color(h=128, s=200, v=128)
+Blue = Color(h=150, s=200, v=128)
 Green = Color(h=70, s=200, v=128)
 LimeGreen = Color(h=70, s=200, v=255)
 Red = Color(h=0, s=200, v=255)
 Grey = Color(h=0, s=0, v=200)
 Pink = Color(h=220, s=200, v=128)
 Yellow = Color(h=25, s=200, v=180)
+CautionTapeYellow = Color(h=37, s=255, v=255)
+Brown = Color(h=29, s=230, v=100)
+Black = Color(h=0, s=0, v=0)
