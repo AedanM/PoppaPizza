@@ -2,10 +2,11 @@
 
 # pylint: disable=invalid-name
 from Classes import Game, Matching, People
+import Definitions.DefinedLocations
 
 
 def test_ScreenSize() -> None:
-    for _, size in Game.std_dimensions.items():
+    for _, size in Definitions.DefinedLocations.StandardDimensions.items():
         currentGame = Game.Game(activateScreen=True, size=size)
         assert currentGame.ScreenSize == size
 

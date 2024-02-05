@@ -1,42 +1,62 @@
 """Class for DefinedLocations"""
 
+from Utilities import Utils
+
+StandardDimensions = {"Medium": (1200, 800), "Small": (600, 400), "Large": (2400, 1600)}
+
 
 class DefinedLocations:
+    ScreenSize = StandardDimensions["Medium"]
+
     @property
     def LockerRoom1(self) -> tuple:
-        return (350, 65)
+        location = (350, 65)
+        return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
     def LockerRoom2(self) -> tuple:
-        return (530, 65)
+        location = (530, 65)
+        return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
     def LockerRoom3(self) -> tuple:
-        return (710, 65)
+        location = (710, 65)
+        return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
     def LockerRoom4(self) -> tuple:
-        return (890, 65)
+        location = (890, 65)
+        return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
     def LockerRoom5(self) -> tuple:
-        return (1070, 65)
+        location = (1070, 65)
+        return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
     def KitchenLocation(self) -> tuple:
-        return (200, 225)
+        location = (220, 225)
+        return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
     def CustomerExit(self) -> tuple:
-        return (1200, 1000)
+        location = (1200, 1000)
+        return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
     def CustomerEntrance(self) -> tuple:
-        return (1150, 325)
+        location = (1150, 325)
+        return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
     def CustomerSpawn(self) -> tuple:
-        return (1150, 1000)
+        location = (1150, 1000)
+        return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
+
+    @property
+    def WorkerSpawn(self) -> tuple:
+        location = (100, 225)
+        return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
 
 LocationDefs = DefinedLocations()

@@ -31,9 +31,9 @@ class Restaurant:
 RestaurantList = [
     Restaurant(
         Name="Formal Dining",
-        CustomerImageTypes=[AssetLibrary.ImageTypes.Customer],
+        CustomerImageTypes=[AssetLibrary.ImageTypes.CustomerSuit],
         WorkerImageTypes=[AssetLibrary.ImageTypes.WorkerSuit],
-        Logo=AssetLibrary.ImageTypes.SuitLogo,
+        Logo=AssetLibrary.ImageTypes.LogoSuit,
         LockerRoom=LockerRoom(
             Location=DefinedLocations.LocationDefs.LockerRoom1,
             Color=ColorTools.Blue,
@@ -43,9 +43,9 @@ RestaurantList = [
     ),
     Restaurant(
         Name="Coffee Shop",
-        CustomerImageTypes=[],
+        CustomerImageTypes=[AssetLibrary.ImageTypes.CustomerCoffee],
         WorkerImageTypes=[AssetLibrary.ImageTypes.WorkerCoffee],
-        Logo=AssetLibrary.ImageTypes.CoffeeLogo,
+        Logo=AssetLibrary.ImageTypes.LogoCoffee,
         LockerRoom=LockerRoom(
             Location=DefinedLocations.LocationDefs.LockerRoom2,
             Color=ColorTools.Yellow,
@@ -54,9 +54,9 @@ RestaurantList = [
     ),
     Restaurant(
         Name="Sundown Luau",
-        CustomerImageTypes=[],
+        CustomerImageTypes=[AssetLibrary.ImageTypes.CustomerLuau],
         WorkerImageTypes=[AssetLibrary.ImageTypes.WorkerLuau],
-        Logo=AssetLibrary.ImageTypes.LuauLogo,
+        Logo=AssetLibrary.ImageTypes.LogoLuau,
         LockerRoom=LockerRoom(
             Location=DefinedLocations.LocationDefs.LockerRoom3,
             Color=ColorTools.Pink,
@@ -65,9 +65,9 @@ RestaurantList = [
     ),
     Restaurant(
         Name="Cowboy Saloon",
-        CustomerImageTypes=[],
+        CustomerImageTypes=[AssetLibrary.ImageTypes.CustomerCowboy],
         WorkerImageTypes=[AssetLibrary.ImageTypes.WorkerCowboy],
-        Logo=AssetLibrary.ImageTypes.CowboyLogo,
+        Logo=AssetLibrary.ImageTypes.LogoCowboy,
         LockerRoom=LockerRoom(
             Location=DefinedLocations.LocationDefs.LockerRoom4,
             Color=ColorTools.Brown,
@@ -76,9 +76,9 @@ RestaurantList = [
     ),
     Restaurant(
         Name="Safari Party",
-        CustomerImageTypes=[],
+        CustomerImageTypes=[AssetLibrary.ImageTypes.CustomerSafari],
         WorkerImageTypes=[AssetLibrary.ImageTypes.WorkerSafari],
-        Logo=AssetLibrary.ImageTypes.SafariLogo,
+        Logo=AssetLibrary.ImageTypes.LogoSafari,
         LockerRoom=LockerRoom(
             Location=DefinedLocations.LocationDefs.LockerRoom5,
             Color=ColorTools.Green,

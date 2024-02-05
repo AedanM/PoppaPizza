@@ -1,9 +1,11 @@
 """Handler for Spawning Chars"""
+
 import random
-import numpy
-from Classes import People, Game
-from Definitions import DefinedLocations, Prices
-from Handlers import CustomerHandler as CH
+
+from Classes import Game, People
+from Definitions import AssetLibrary, DefinedLocations, Prices
+from Handlers import CustomerHandler
+from Utilities import Utils
 
 # pylint: disable=C0103
 LastSpawnTime = 0
@@ -17,15 +19,21 @@ def CustomerSpawner(force=False) -> None:
     )
     if random.random() < chanceOfSpawn or force:
         spawnLocation = DefinedLocations.LocationDefs.CustomerSpawn
-        _, customerSprite = People.Customer.CreateCustomer(startLocation=spawnLocation)
-        CH.WalkIn(target=customerSprite)
+        customerType = random.choice(AssetLibrary.CustomerOutfits)
+        _, customerSprite = People.Customer.CreateCustomer(
+            startLocation=spawnLocation, imageType=customerType
+        )
+        CustomerHandler.WalkIn(target=customerSprite)
         LastSpawnTime = currentTime
+        Game.MasterGame.UserInventory.Statistics.CustomersEntered += 1
 
 
 def BuyWorker(free=False) -> None:
     if Game.MasterGame.UserInventory.Money > Prices.CurrentWorkerPrice:
-        spawnLocation = numpy.subtract(
-            DefinedLocations.LocationDefs.KitchenLocation, (250, -50)
+        spawnLocation = Utils.PositionRandomVariance(
+            position=DefinedLocations.LocationDefs.WorkerSpawn,
+            percentVarianceTuple=(0.05, 0.6),
+            screenSize=DefinedLocations.LocationDefs.ScreenSize,
         )
         People.Worker.CreateWorker(startLocation=spawnLocation)
         if not free:

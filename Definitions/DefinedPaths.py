@@ -1,16 +1,17 @@
 """Defined Motion Paths"""
-import random
-from Classes import Game
-from Definitions import DefinedLocations, AssetLibrary
-from Utilities import Utils
 
+import random
+
+from Classes import Game
+from Definitions import AssetLibrary, DefinedLocations
+from Utilities import Utils
 
 RECURDEPTH = 0
 
 
 def IsSeatTaken(seatLocation) -> bool:
     for sprite in Game.MasterGame.CharSpriteGroup:
-        if sprite.ImageType == AssetLibrary.ImageTypes.Customer:
+        if sprite.ImageType in AssetLibrary.CustomerOutfits:
             xCheck = Utils.InTolerance(
                 num1=sprite.rect.centerx, num2=seatLocation[0], tolerance=15
             )

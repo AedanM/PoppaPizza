@@ -2,6 +2,7 @@
 
 from Classes import Game, Matching, Sprite
 from Definitions import AssetLibrary, ColorTools, DefinedLocations, Restaurants
+from Utilities import Utils
 
 RowCoords = DefinedLocations.SeatingPlan().TableRows
 ColCoords = DefinedLocations.SeatingPlan().TableCols
@@ -54,12 +55,16 @@ def AddLockerRooms(activeGame=Game.MasterGame) -> None:
             color = lockerRoom.Color
             path = restaurant.LogoPath
             maxSize = 100
-            offset = (-50, -50)
+            offset = Utils.ScaleToSize(
+                value=(-50, -50), newSize=DefinedLocations.LocationDefs.ScreenSize
+            )
         else:
-            path = AssetLibrary.ImagePath.LockedLockerRoomPath
+            path = AssetLibrary.ImagePath.LogoLockedPath
             color = ColorTools.Grey
             maxSize = 180
-            offset = (-90, -50)
+            offset = Utils.ScaleToSize(
+                value=(-90, -50), newSize=DefinedLocations.LocationDefs.ScreenSize
+            )
 
         logo = Sprite.BackgroundElementSprite(
             position=lockerRoom.Location,

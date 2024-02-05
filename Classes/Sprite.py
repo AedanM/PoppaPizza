@@ -3,7 +3,7 @@
 import pygame
 
 from Classes import Game, GameObject, Matching, TimerBar
-from Definitions import AssetLibrary, ColorTools
+from Definitions import AssetLibrary, ColorTools, DefinedLocations
 from Handlers import MovementHandler
 from Utilities import Utils as utils
 
@@ -16,7 +16,15 @@ class CharImageSprite(GameObject.GameObject):
     MvmHandler: MovementHandler.CharacterMovementHandler = None
     PersonalTimer: TimerBar.TimerBar = None
 
-    def __init__(self, position, path, objID, maxSize=100) -> None:
+    def __init__(
+        self,
+        position,
+        path,
+        objID,
+        maxSize=utils.ScaleToSize(
+            value=100, newSize=DefinedLocations.LocationDefs.ScreenSize
+        ),
+    ) -> None:
         super().__init__(backgroundFlag=False, moveFlag=True, collisionFlag=True)
         self.image = pygame.image.load(path)
         self.image = pygame.transform.scale(surface=self.image, size=(maxSize, maxSize))

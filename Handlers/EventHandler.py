@@ -1,13 +1,14 @@
 """Handlers for all events"""
 
+import copy
 import sys
 
 import pygame
 
-from Classes import Game, Matching
+from Classes import Game, Matching, Stats
 from Definitions import AssetLibrary, CustomerDefs, CustomEvents, Prices
 from Generators import BackgroundPopulator, CharSpawner, Menus
-from Handlers import ClickHandler
+from Handlers import ClickHandler, WorkerHandler
 
 
 def MainEventHandler(activeGame=Game.MasterGame) -> None:
@@ -57,7 +58,6 @@ def RandomSpawnHandler() -> None:
 
 
 def DayNightEvent() -> None:
-    print("DAY CHANGE EVENT HERE")
     workerPay = 0.0
     for worker in Game.MasterGame.WorkerList:
         workerPay += worker.BasePay * Prices.DefaultPrices.Salary
@@ -72,6 +72,13 @@ def DayNightEvent() -> None:
             Matching.RemoveObjFromSprite(
                 activeGame=Game.MasterGame, targetSprite=sprite
             )
+        elif sprite.ImageType in AssetLibrary.WorkerOutfits:
+            WorkerHandler.DailyReset(sprite=sprite)
+    if CustomEvents.GameOver not in pygame.event.get():
+        Menus.DayTransistion()
+    else:
+        GameOver()
+    Stats.PrevDay = copy.deepcopy(Game.MasterGame.UserInventory.Statistics)
 
 
 def GameOver() -> None:
