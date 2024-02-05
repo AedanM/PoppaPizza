@@ -16,10 +16,12 @@ class Settings:
         return 13 if not self.Clock24 else 25
 
     def ChangeClockMul(self, value) -> None:
-        self.ClockPow = Utils.Bind(self.ClockPow + value, inRange=self.ClockPowRange)
+        self.ClockPow = Utils.Bind(
+            val=self.ClockPow + value, inRange=self.ClockPowRange
+        )
 
     def SetClockMul(self, value) -> None:
-        self.ClockPow = Utils.Bind(value, inRange=self.ClockPowRange)
+        self.ClockPow = Utils.Bind(val=value, inRange=self.ClockPowRange)
 
     def AMPM(self, hour) -> str:
         tag = " AM" if hour < 12 else " PM"

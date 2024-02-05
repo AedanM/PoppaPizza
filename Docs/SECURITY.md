@@ -8,7 +8,6 @@ None as there are no current releases
 | ------- | ------------------ |
 | All   | :x: |
 
-
 ## Reporting a Vulnerability
 
 Please don't there's just too many rn

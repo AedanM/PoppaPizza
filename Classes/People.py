@@ -72,6 +72,7 @@ class Customer(Person):
         cls,
         startLocation=DefinedLocations.LocationDefs.CustomerEntrance,
         activeGame=Game.MasterGame,
+        imageType=AssetLibrary.ImageTypes.Customer,
     ) -> tuple:
         cust = cls.Create()
         activeGame.JobList.append(Jobs.Job.SpawnJob())
@@ -82,7 +83,7 @@ class Customer(Person):
                 percentVarianceTuple=(0.0005, 0.1),
                 screenSize=activeGame.ScreenSize,
             ),
-            path=AssetLibrary.ImagePath.CustomerPath,
+            path=AssetLibrary.PathLookup(imageType),
             objID=cust.IdNum,
         )
         activeGame.CharSpriteGroup.add(customerSprite)

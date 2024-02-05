@@ -1,6 +1,9 @@
 """Utilites"""
+
 import math
 import random
+
+from Definitions.DefinedLocations import StandardDimensions
 
 
 def InRandomVariance(num, percentVariance) -> float:
@@ -88,3 +91,16 @@ def OffsetTuple(inputTuple, offset) -> tuple:
 
 def Sign(num: int | float) -> int:
     return int(num / abs(num)) if num != 0 else 0
+
+
+# TODO - Actually Implement
+def ScaleToSize(
+    value,
+    newSize,
+    origSize=StandardDimensions["Medium"],
+) -> tuple:
+    scaleX = newSize[0] / origSize[0]
+    scaleY = newSize[1] / origSize[1]
+    if isinstance(value, tuple):
+        return (value[0] * scaleX, value[1] * scaleY)
+    return value * scaleX

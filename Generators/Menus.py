@@ -1,4 +1,5 @@
 """Generator Functions for Menus"""
+
 import pygame_menu
 
 from Classes import Game
@@ -18,6 +19,30 @@ def BuyNumWorkers(num) -> None:
         CharSpawner.BuyWorker()
 
 
+def DayTransistion(activeGame=Game.MasterGame) -> None:
+    OpenMenu()
+    menu = pygame_menu.Menu(
+        title="End of Day",
+        width=800,
+        height=600,
+        theme=pygame_menu.themes.THEME_GREEN,
+        onclose=CloseMenu,
+    )
+    menu.add.label(title=f"Day {Game.MasterGame.GameClock.Day}", label_id="Title")
+    menu.get_widget(widget_id="Title").scale(width=2, height=2, smooth=True)
+    menu.add.label(
+        title=f"Customers Served: {Game.MasterGame.UserInventory.Statistics.GetServedCustomers()} / {Game.MasterGame.UserInventory.Statistics.GetTotalCustomers()}"
+    )
+    menu.add.label(
+        title=f"Money Earned: {Game.MasterGame.UserInventory.Statistics.GetEarnings():.2f}"
+    )
+    menu.add.label(
+        title=f"Money Spent: {Game.MasterGame.UserInventory.Statistics.GetSpend():.2f}"
+    )
+    menu.add.button(title="Continue to Next Day", action=pygame_menu.events.CLOSE)
+    menu.mainloop(surface=activeGame.Screen, wait_for_event=True)
+
+
 def OptionsMenu(surface=Game.MasterGame.Screen) -> None:
     OpenMenu()
     menu = pygame_menu.Menu(
@@ -30,8 +55,9 @@ def OptionsMenu(surface=Game.MasterGame.Screen) -> None:
     menu.add.toggle_switch(
         toggleswitch_id="24Toggle",
         title="24 Hour Clock",
-        # default_state=Game.MasterGame.Settings.Clock24,
-        state_values=("Enabled", "Disabled"),
+        default=Game.MasterGame.Settings.Clock24,
+        state_text=("Off", "On"),
+        state_values=(False, True),
         onchange=lambda x: Game.MasterGame.Settings.SetClock24(value=x),
     )
     menu.add.range_slider(

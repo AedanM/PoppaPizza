@@ -16,6 +16,7 @@ def FinishCustomer(ws, j) -> None:
     ws.DataObject.CurrentJobId = 0
     ws.MvmHandler.StartNewListedMotion(DL.DefinedPaths.BackToKitchen(sprite=ws))
     Game.MasterGame.UserInventory.GetPaid(amount=j.Price)
+    Game.MasterGame.UserInventory.Statistics.CustomersServed += 1
 
 
 def GetChanged(ws, restaurant) -> None:

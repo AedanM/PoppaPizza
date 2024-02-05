@@ -1,5 +1,6 @@
 @ECHO OFF
 cd ..
+del __init__.py
 pyinstaller ^
 --onefile ^
 --noconsole ^
@@ -11,5 +12,6 @@ pyinstaller ^
 --add-data Assets:. ^
 Main.py
 
-
+type nul > __init__.py
 .\dist\Main.exe
+

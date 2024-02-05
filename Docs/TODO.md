@@ -5,7 +5,7 @@
 
 ## TODO List
 
-- Walk cycle/logic for chars to waiting area
+- ~~Walk cycle/logic for chars to waiting area~~
 - Ambling for workers
 - ~~Queues~~
 - Minigame for job cost or outfit swap
@@ -23,9 +23,8 @@
 - ~~Assigning Jobs~~
 - Implement C# from home
 - Loans
-- Endgame
+- ~~Endgame~~
 - Ads + Customer Spawn
 - Table Purchase?
 - Night cycle
-- Menu
 - Build to EXE

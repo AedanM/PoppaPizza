@@ -1,10 +1,11 @@
 """Handlers for all events"""
 
+import copy
 import sys
 
 import pygame
 
-from Classes import Game, Matching
+from Classes import Game, Matching, Stats
 from Definitions import AssetLibrary, CustomerDefs, CustomEvents, Prices
 from Generators import BackgroundPopulator, CharSpawner, Menus
 from Handlers import ClickHandler
@@ -72,6 +73,8 @@ def DayNightEvent() -> None:
             Matching.RemoveObjFromSprite(
                 activeGame=Game.MasterGame, targetSprite=sprite
             )
+    Menus.DayTransistion()
+    Stats.PrevDay = copy.deepcopy(Game.MasterGame.UserInventory.Statistics)
 
 
 def GameOver() -> None:

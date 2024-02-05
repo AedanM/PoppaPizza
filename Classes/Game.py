@@ -3,9 +3,7 @@
 import pygame
 
 from Classes import GameClock, Inventory, Settings, Writing
-from Definitions import AssetLibrary, Chances
-
-std_dimensions = {"Medium": (1200, 800), "Small": (600, 400), "Large": (2400, 1600)}
+from Definitions import AssetLibrary, Chances, DefinedLocations
 
 
 class Game:
@@ -22,7 +20,9 @@ class Game:
     GameClock = GameClock.GameClock(clock=pygame.time.Clock())
     Running: bool = True
 
-    def __init__(self, activateScreen=True, size=std_dimensions["Medium"]) -> None:
+    def __init__(
+        self, activateScreen=True, size=DefinedLocations.LocationDefs.ScreenSize
+    ) -> None:
         pygame.init()
         self.Settings = Settings.GameSettings
         self.Chances = Chances.LuckChances()
@@ -34,9 +34,13 @@ class Game:
 
     def StartScreen(self, size) -> None:
         if isinstance(size, str):
-            width, height = std_dimensions[size]
+            DefinedLocations.LocationDefs.ScreenSize = (
+                DefinedLocations.StandardDimensions[size]
+            )
+            width, height = DefinedLocations.LocationDefs.ScreenSize
         else:
             width, height = size
+            DefinedLocations.LocationDefs.ScreenSize = (width, height)
         self.Screen = pygame.display.set_mode(size=(width, height))
         pygame.display.set_caption(title="Poppa Pizza Clone")
 
