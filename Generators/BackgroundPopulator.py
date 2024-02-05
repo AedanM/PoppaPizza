@@ -4,14 +4,11 @@ from Classes import Game, Matching, Sprite
 from Definitions import AssetLibrary, ColorTools, DefinedLocations, Restaurants
 from Utilities import Utils
 
-RowCoords = DefinedLocations.SeatingPlan().TableRows
-ColCoords = DefinedLocations.SeatingPlan().TableCols
-
 
 def GenerateTablePlaces() -> list:
     locationArray = []
-    for row in RowCoords:
-        for col in ColCoords:
+    for row in DefinedLocations.SeatingPlan.TableRows():
+        for col in DefinedLocations.SeatingPlan.TableCols():
             locationArray.append(tuple((row, col)))
     return locationArray
 

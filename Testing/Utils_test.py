@@ -1,8 +1,9 @@
 """Test Module for Utils"""
+
 # pylint: disable=invalid-name
 
-from Utilities import Utils
 from Testing import TestClass as TC
+from Utilities import Utils
 
 
 def test_checkDecimalPercent() -> None:
@@ -182,6 +183,27 @@ def test_Sign() -> None:
         try:
             testVal = Utils.Sign(
                 num=test.ParamList[0],
+            )
+            assert testVal == test.Result
+        except AssertionError:
+            print(test, testVal)
+            assert False
+
+
+def test_ResizeMaxLength() -> None:
+    testObjs = [
+        TC.TestClass(Result=(50, 50), ParamList=[(100, 100), 50]),
+        TC.TestClass(Result=(50, 33), ParamList=[(150, 100), 50]),
+        TC.TestClass(Result=(33, 50), ParamList=[(100, 150), 50]),
+        TC.TestClass(Result=(25, 50), ParamList=[(200, 400), 50]),
+        TC.TestClass(Result=(50, 50), ParamList=[(10, 10), 50]),
+        TC.TestClass(Result=(50, 25), ParamList=[(20, 10), 50]),
+        TC.TestClass(Result=(25, 50), ParamList=[(10, 20), 50]),
+    ]
+    for test in testObjs:
+        try:
+            testVal = Utils.ResizeMaxLength(
+                dim=test.ParamList[0], maxSide=test.ParamList[1]
             )
             assert testVal == test.Result
         except AssertionError:

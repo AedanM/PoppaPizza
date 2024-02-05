@@ -39,6 +39,9 @@ def DayTransistion(activeGame=Game.MasterGame) -> None:
     menu.add.label(
         title=f"Money Spent: {Game.MasterGame.UserInventory.Statistics.GetSpend():.2f}"
     )
+    menu.add.label(
+        title=f"Profit: {Game.MasterGame.UserInventory.Statistics.GetProfit():.2f}"
+    )
     menu.add.button(title="Continue to Next Day", action=pygame_menu.events.CLOSE)
     menu.mainloop(surface=activeGame.Screen, wait_for_event=True)
 

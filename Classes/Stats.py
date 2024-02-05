@@ -29,6 +29,9 @@ class GameStats:
     def GetSpend(self) -> float:
         return min(self.MoneySpent - PrevDay.MoneySpent, 0.0)
 
+    def GetProfit(self) -> float:
+        return self.GetEarnings() - abs(self.GetSpend())
+
     def GetServedCustomers(self) -> float:
         return self.CustomersServed - PrevDay.CustomersServed
 

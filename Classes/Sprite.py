@@ -27,7 +27,14 @@ class CharImageSprite(GameObject.GameObject):
     ) -> None:
         super().__init__(backgroundFlag=False, moveFlag=True, collisionFlag=True)
         self.image = pygame.image.load(path)
-        self.image = pygame.transform.scale(surface=self.image, size=(maxSize, maxSize))
+        self.rect = self.image.get_rect()
+        newSize = utils.ResizeMaxLength(
+            dim=(self.rect.width, self.rect.height), maxSide=maxSize
+        )
+        self.image = pygame.transform.scale(
+            surface=self.image,
+            size=newSize,
+        )
         self.rect = self.image.get_rect()
         self.rect.x = position[0]
         self.rect.y = position[1]

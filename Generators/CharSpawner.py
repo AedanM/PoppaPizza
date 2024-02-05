@@ -32,7 +32,7 @@ def BuyWorker(free=False) -> None:
     if Game.MasterGame.UserInventory.Money > Prices.CurrentWorkerPrice:
         spawnLocation = Utils.PositionRandomVariance(
             position=DefinedLocations.LocationDefs.WorkerSpawn,
-            percentVarianceTuple=(0.05, 0.6),
+            percentVarianceTuple=(0.05, 0.15),
             screenSize=DefinedLocations.LocationDefs.ScreenSize,
         )
         People.Worker.CreateWorker(startLocation=spawnLocation)

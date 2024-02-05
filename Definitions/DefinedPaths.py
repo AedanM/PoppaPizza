@@ -26,8 +26,9 @@ def IsSeatTaken(seatLocation) -> bool:
 def GetRandomSeatPosition() -> tuple | None:
     # pylint: disable=global-statement
     global RECURDEPTH
-    yPos = random.choice(DefinedLocations.SeatingPlan.TableCols)
-    xPos = random.choice(DefinedLocations.SeatingPlan.TableRows)
+    seatingPlan = DefinedLocations.SeatingPlan
+    yPos = random.choice(seatingPlan.TableCols())
+    xPos = random.choice(seatingPlan.TableRows())
     coords = (xPos, yPos)
     if IsSeatTaken(seatLocation=(xPos, yPos)):
         RECURDEPTH += 1

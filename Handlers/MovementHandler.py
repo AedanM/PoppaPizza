@@ -2,9 +2,8 @@
 
 from Classes import Game
 from Definitions import AssetLibrary, CustomerDefs
+from Handlers import QueueHandler
 from Utilities import Utils as utils
-
-QUEUEDISTANCE = 75
 
 
 class CharacterMovementHandler:
@@ -42,50 +41,11 @@ class CharacterMovementHandler:
             self.MaxMovementSpeed = speed
             self.StartTime = Game.MasterGame.GameClock.UnixTime
 
-    def NeedsToQueue(self, movingSprite) -> bool:
-        match movingSprite.DataObject.CurrentState:
-            case CustomerDefs.CustomerStates.Queuing:
-                if self.FirstInLine(movingSprite=movingSprite):
-                    movingSprite.DataObject.CurrentState = (
-                        CustomerDefs.CustomerStates.FirstInLine
-                    )
-                    return False
-                else:
-                    movingSprite.DataObject.CurrentState = (
-                        CustomerDefs.CustomerStates.WalkingIn
-                    )
-                    return self.NeedsToQueue(movingSprite=movingSprite)
-            case CustomerDefs.CustomerStates.WalkingIn:
-                for sprite in Game.MasterGame.CharSpriteGroup:
-                    if (
-                        sprite.ImageType in AssetLibrary.CustomerOutfits
-                        and sprite is not movingSprite
-                        and sprite.DataObject.CurrentState in CustomerDefs.QueueStates
-                    ):
-                        if utils.PositionInTolerance(
-                            pos1=sprite.rect.center,
-                            pos2=movingSprite.rect.center,
-                            tolerance=QUEUEDISTANCE,
-                        ):
-                            return True
-            # pylint: disable=unused-variable
-            case other:
-                return False
-
-    def FirstInLine(self, movingSprite) -> bool:
-        for sprite in Game.MasterGame.CharSpriteGroup:
-            if (
-                sprite is not movingSprite
-                and sprite.rect.centerx == movingSprite.rect.centerx
-                and sprite.rect.centery < movingSprite.rect.centery
-            ):
-                return False
-        return True
-
     def CalcNewPosition(self, obj) -> None:
         if self.DstSet and Game.MasterGame.GameClock.Running:
-            if obj.ImageType in AssetLibrary.CustomerOutfits and self.NeedsToQueue(
-                movingSprite=obj
+            if (
+                obj.ImageType in AssetLibrary.CustomerOutfits
+                and QueueHandler.NeedsToQueue(movingSprite=obj)
             ):
                 obj.DataObject.CurrentState = CustomerDefs.CustomerStates.Queuing
             else:

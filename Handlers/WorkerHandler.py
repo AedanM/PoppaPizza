@@ -11,7 +11,7 @@ def DailyReset(sprite) -> None:
     sprite.MvmHandler.Reset()
     spawnLocation = Utils.PositionRandomVariance(
         position=DefinedLocations.LocationDefs.WorkerSpawn,
-        percentVarianceTuple=(0.05, 0.25),
+        percentVarianceTuple=(0.05, 0.15),
         screenSize=DefinedLocations.LocationDefs.ScreenSize,
     )
     sprite.rect.center = spawnLocation

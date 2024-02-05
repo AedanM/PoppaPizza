@@ -4,8 +4,7 @@ from enum import Enum
 
 from Classes import Game
 from Definitions import AssetLibrary, CustomerDefs, Restaurants
-from Handlers import CustomerHandler as CH
-from Handlers import WorkerHandler as WH
+from Handlers import CustomerHandler, ShopHandler, WorkerHandler
 from Utilities import Utils
 
 
@@ -18,7 +17,7 @@ GlobalClickState = ClickState.Neutral
 GlobalTarget = None
 
 
-def MouseHandler(mousePos) -> None:
+def MouseHandler(mousePos, lClick) -> None:
     global GlobalClickState, GlobalTarget
     if GlobalClickState is ClickState.ClickedWorker:
         for restaurant in Restaurants.RestaurantList:
@@ -30,36 +29,35 @@ def MouseHandler(mousePos) -> None:
                 and lockerRoom.Unlocked
                 and GlobalTarget.ImageType not in restaurant.WorkerImageTypes
             ):
-                WH.GetChanged(ws=GlobalTarget, restaurant=restaurant)
+                WorkerHandler.GetChanged(ws=GlobalTarget, restaurant=restaurant)
         GlobalClickState = ClickState.Neutral
     elif GlobalClickState is ClickState.Neutral:
         for button in Game.MasterGame.ButtonList:
             if button.rect.collidepoint(mousePos[0], mousePos[1]):
-                price = Restaurants.UnlockLockerRoom(
-                    currentCash=Game.MasterGame.UserInventory.Money,
-                    position=button.position,
-                )
-                Game.MasterGame.UserInventory.PayMoney(amount=price)
+                ShopHandler.BuyLockerRoom(position=button.position)
                 return
         for sprite in Game.MasterGame.CharSpriteGroup:
             if sprite.rect.collidepoint(mousePos[0], mousePos[1]):
                 if sprite.ImageType in AssetLibrary.CustomerOutfits:
-                    CustomerClickRoutine(target=sprite)
+                    CustomerClickRoutine(target=sprite, leftClick=lClick)
                 elif sprite.ImageType in AssetLibrary.WorkerOutfits:
                     WorkerClickRoutine(target=sprite)
     else:
         GlobalClickState = ClickState.Neutral
 
 
-def CustomerClickRoutine(target) -> None:
+def CustomerClickRoutine(target, leftClick) -> None:
     global GlobalClickState
 
     if GlobalClickState is ClickState.Neutral:
         match target.DataObject.CurrentState:
             case CustomerDefs.CustomerStates.FirstInLine:
-                CH.SitAtTable(target=target)
+                if leftClick:
+                    CustomerHandler.SitAtTable(target=target)
+                else:
+                    CustomerHandler.GetUpAndGo(spriteImg=target)
             case CustomerDefs.CustomerStates.WaitingForService:
-                CH.AssignWorker(target=target)
+                CustomerHandler.AssignWorker(target=target)
             case CustomerDefs.CustomerStates.Queuing:
                 pass
 

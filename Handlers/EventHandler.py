@@ -8,7 +8,7 @@ import pygame
 from Classes import Game, Matching, Stats
 from Definitions import AssetLibrary, CustomerDefs, CustomEvents, Prices
 from Generators import BackgroundPopulator, CharSpawner, Menus
-from Handlers import ClickHandler, WorkerHandler
+from Handlers import ClickHandler, ShopHandler, WorkerHandler
 
 
 def MainEventHandler(activeGame=Game.MasterGame) -> None:
@@ -24,8 +24,8 @@ def MainEventHandler(activeGame=Game.MasterGame) -> None:
                     DayNightEvent()
                 case CustomEvents.GameOver:
                     GameOver()
-        elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-            ClickHandler.MouseHandler(mousePos=event.pos)
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            ClickHandler.MouseHandler(mousePos=event.pos, lClick=(event.button == 1))
         elif event.type == pygame.KEYDOWN:
             match (event.key):
                 case pygame.K_m:
@@ -46,6 +46,10 @@ def MainEventHandler(activeGame=Game.MasterGame) -> None:
                     Menus.OptionsMenu()
                 case pygame.K_s:
                     Menus.ShopMenu()
+                case pygame.K_b:
+                    ShopHandler.BuyTables(selectedRow=True)
+                case pygame.K_v:
+                    ShopHandler.BuyTables(selectedRow=False)
 
 
 def DebugSetup() -> None:
