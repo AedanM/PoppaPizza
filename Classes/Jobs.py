@@ -33,12 +33,7 @@ class Job:
         urgency = random.choice(list(UrgencyRatings)[1:])
         jobtype = random.choice(list(JobTypes)[1:])
         length = random.randint(5, 100)
-        price = (
-            1
-            * (random.randint(10, 50) + length)
-            * (jobtype.value + 1)
-            * (urgency.value + 1)
-        )
+        price = 1 * (random.randint(10, 25)) * (jobtype.value + 1) * (urgency.value + 1)
         assignedWorker = 0
         customer = 0
         job = Job(

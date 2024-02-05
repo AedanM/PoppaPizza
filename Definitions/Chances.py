@@ -5,4 +5,5 @@ from dataclasses import dataclass
 
 @dataclass
 class LuckChances:
-    CustomerSpawn: float = 0.005
+    CustomerSpawn: float = 0.05
+    ActiveRestLuck: int = 2

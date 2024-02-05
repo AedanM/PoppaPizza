@@ -3,12 +3,19 @@
 import random
 
 from Classes import Game, People
-from Definitions import AssetLibrary, DefinedLocations, Prices
+from Definitions import DefinedLocations, Prices, Restaurants
 from Handlers import CustomerHandler
 from Utilities import Utils
 
 # pylint: disable=C0103
 LastSpawnTime = 0
+
+
+def SpawnLocationFree(spawnPoint=DefinedLocations.LocationDefs.EndOfLine) -> bool:
+    for sprite in Game.MasterGame.CharSpriteGroup:
+        if sprite.rect.collidepoint(spawnPoint[0], spawnPoint[1]):
+            return False
+    return True
 
 
 def CustomerSpawner(force=False) -> None:
@@ -17,9 +24,26 @@ def CustomerSpawner(force=False) -> None:
     chanceOfSpawn = Game.MasterGame.Chances.CustomerSpawn * float(
         currentTime - LastSpawnTime
     )
-    if random.random() < chanceOfSpawn or force:
+    if (random.random() < chanceOfSpawn or force) and SpawnLocationFree():
         spawnLocation = DefinedLocations.LocationDefs.CustomerSpawn
-        customerType = random.choice(AssetLibrary.CustomerOutfits)
+        activeClientTypes = [
+            x.CustomerImageTypes
+            for x in Restaurants.RestaurantList
+            if x.LockerRoom.Unlocked
+        ]
+        inactiveClientTypes = [
+            x.CustomerImageTypes
+            for x in Restaurants.RestaurantList
+            if not x.LockerRoom.Unlocked
+        ]
+        customerType = random.choice(
+            random.choice(
+                random.choice(
+                    [activeClientTypes] * Game.MasterGame.Chances.ActiveRestLuck
+                    + [inactiveClientTypes]
+                )
+            )
+        )
         _, customerSprite = People.Customer.CreateCustomer(
             startLocation=spawnLocation, imageType=customerType
         )

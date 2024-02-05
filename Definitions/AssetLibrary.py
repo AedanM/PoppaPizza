@@ -59,7 +59,7 @@ LogoPaths = {
 
 def PathLookup(imageType) -> str | None:
     for key, value in PathToTypeDict.items():
-        if value is imageType:
+        if value == imageType:
             return key
     return ImagePath.NonePath
 

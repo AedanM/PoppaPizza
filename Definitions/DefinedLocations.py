@@ -51,6 +51,11 @@ class DefinedLocations:
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
+    def EndOfLine(self) -> tuple:
+        location = (1050, 700)
+        return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
+
+    @property
     def CustomerSpawn(self) -> tuple:
         location = (1150, 1000)
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)

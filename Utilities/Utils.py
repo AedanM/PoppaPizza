@@ -99,6 +99,7 @@ def ScaleToSize(
     newSize,
     origSize=StandardDimensions["Medium"],
 ) -> tuple:
+    return value
     scaleX = newSize[0] / origSize[0]
     scaleY = newSize[1] / origSize[1]
     if isinstance(value, tuple):
