@@ -1,4 +1,5 @@
 """Handler for Sprite Movement Tasks"""
+
 from Classes import Game
 from Definitions import AssetLibrary, CustomerDefs
 from Utilities import Utils as utils
@@ -16,6 +17,10 @@ class CharacterMovementHandler:
     PointsList: list = []
     CurrentPointIdx: int = 0
     StartTime: float = 0.0
+
+    def Reset(self) -> None:
+        self.OnComplete = None
+        self.FinishMovement()
 
     @property
     def DestY(self) -> int | float:

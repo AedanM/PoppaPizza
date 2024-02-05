@@ -59,7 +59,7 @@ def AddLockerRooms(activeGame=Game.MasterGame) -> None:
                 value=(-50, -50), newSize=DefinedLocations.LocationDefs.ScreenSize
             )
         else:
-            path = AssetLibrary.ImagePath.LockedLockerRoomPath
+            path = AssetLibrary.ImagePath.LogoLockedPath
             color = ColorTools.Grey
             maxSize = 180
             offset = Utils.ScaleToSize(

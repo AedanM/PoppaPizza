@@ -2,8 +2,6 @@
 
 import random
 
-import numpy
-
 from Classes import Game, People
 from Definitions import AssetLibrary, DefinedLocations, Prices
 from Handlers import CustomerHandler
@@ -32,11 +30,10 @@ def CustomerSpawner(force=False) -> None:
 
 def BuyWorker(free=False) -> None:
     if Game.MasterGame.UserInventory.Money > Prices.CurrentWorkerPrice:
-        spawnLocation = numpy.subtract(
-            DefinedLocations.LocationDefs.KitchenLocation,
-            Utils.ScaleToSize(
-                value=(250, -50), newSize=DefinedLocations.LocationDefs.ScreenSize
-            ),
+        spawnLocation = Utils.PositionRandomVariance(
+            position=DefinedLocations.LocationDefs.WorkerSpawn,
+            percentVarianceTuple=(0.05, 0.6),
+            screenSize=DefinedLocations.LocationDefs.ScreenSize,
         )
         People.Worker.CreateWorker(startLocation=spawnLocation)
         if not free:

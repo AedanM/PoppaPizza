@@ -72,7 +72,7 @@ class Customer(Person):
         cls,
         startLocation=DefinedLocations.LocationDefs.CustomerEntrance,
         activeGame=Game.MasterGame,
-        imageType=AssetLibrary.ImageTypes.Customer,
+        imageType=AssetLibrary.ImageTypes.CustomerSuit,
     ) -> tuple:
         cust = cls.Create()
         activeGame.JobList.append(Jobs.Job.SpawnJob())

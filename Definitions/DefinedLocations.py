@@ -53,6 +53,11 @@ class DefinedLocations:
         location = (1150, 1000)
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
+    @property
+    def WorkerSpawn(self) -> tuple:
+        location = (100, 225)
+        return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
+
 
 LocationDefs = DefinedLocations()
 
