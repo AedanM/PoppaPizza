@@ -48,7 +48,7 @@ def MouseHandler(mousePos, lClick) -> None:
 
 def CustomerClickRoutine(target, leftClick) -> None:
     global GlobalClickState
-
+    # TODO - Stop customers being served in queue
     if GlobalClickState is ClickState.Neutral:
         match target.DataObject.CurrentState:
             case CustomerDefs.CustomerStates.FirstInLine:

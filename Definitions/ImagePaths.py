@@ -17,7 +17,6 @@ class ImagePaths:
     CustomerSafariPath = AssetFolder + r"\customerSafari.png"
     CustomerSuitPath = AssetFolder + r"\customerSuit.png"
 
-    GameOverPath = AssetFolder + r"\gameOver.png"
     LogoLockedPath = AssetFolder + r"\LockedLockerRoom.png"
 
     LogoCoffeePath = AssetFolder + r"\coffee.png"

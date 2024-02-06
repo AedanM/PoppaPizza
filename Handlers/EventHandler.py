@@ -66,23 +66,21 @@ def DayNightEvent() -> None:
     for worker in Game.MasterGame.WorkerList:
         workerPay += worker.BasePay * Prices.DefaultPrices.Salary
     rent = Prices.CurrentRent
-    Game.MasterGame.UserInventory.PayMoney(amount=workerPay + rent)
+    Game.MasterGame.UserInventory.PayMoney(amount=workerPay + rent, update=False)
+    if Game.MasterGame.UserInventory.Money > 0:
+        Menus.DayTransistion()
+    else:
+        GameOver()
     for sprite in Game.MasterGame.CharSpriteGroup:
-        if (
-            sprite.ImageType in AssetLibrary.CustomerOutfits
-            and sprite.DataObject.CurrentState
-            is not CustomerDefs.CustomerStates.BeingServed
-        ):
+        if sprite.ImageType in AssetLibrary.CustomerOutfits:
             Matching.RemoveObjFromSprite(
                 activeGame=Game.MasterGame, targetSprite=sprite
             )
         elif sprite.ImageType in AssetLibrary.WorkerOutfits:
             WorkerHandler.DailyReset(sprite=sprite)
-    if CustomEvents.GameOver not in pygame.event.get():
-        Menus.DayTransistion()
-    else:
-        GameOver()
+
     Stats.PrevDay = copy.deepcopy(Game.MasterGame.UserInventory.Statistics)
+    BackgroundPopulator.SetupBackground()
 
 
 def GameOver() -> None:

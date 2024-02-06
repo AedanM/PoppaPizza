@@ -31,7 +31,14 @@ def DayTransistion(activeGame=Game.MasterGame) -> None:
     menu.add.label(title=f"Day {Game.MasterGame.GameClock.Day}", label_id="Title")
     menu.get_widget(widget_id="Title").scale(width=2, height=2, smooth=True)
     menu.add.label(
-        title=f"Customers Served: {Game.MasterGame.UserInventory.Statistics.GetServedCustomers()} / {Game.MasterGame.UserInventory.Statistics.GetTotalCustomers()}"
+        title=(
+            f"Customers Served: {Game.MasterGame.UserInventory.Statistics.GetServedCustomers()}"
+            + " / "
+            + f"{Game.MasterGame.UserInventory.Statistics.GetTotalCustomers()}"
+        )
+    )
+    menu.add.label(
+        title=f"Costume Changes: {Game.MasterGame.UserInventory.Statistics.GetCostumeChanges()}"
     )
     menu.add.label(
         title=f"Money Earned: {Game.MasterGame.UserInventory.Statistics.GetEarnings():.2f}"

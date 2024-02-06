@@ -17,10 +17,10 @@ class Inventory:
         self.Statistics.UpdateMoney(amount=amount)
         pygame.event.post(CustomEvents.UpdateBackground)
 
-    def PayMoney(self, amount) -> None:
+    def PayMoney(self, amount, update=True) -> None:
         amount = min(-(abs(amount)), 0)
         self.Money += amount
         self.Statistics.UpdateMoney(amount=amount)
         pygame.event.post(CustomEvents.UpdateBackground)
-        if self.Money < 0:
+        if self.Money < 0 and update:
             pygame.event.post(CustomEvents.GameOver)

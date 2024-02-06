@@ -36,10 +36,11 @@ def FindAvailableWorker(customerSprite, activeGame=Game.MasterGame) -> tuple:
     return None, None
 
 
+# TODO - Stop the workers going on strike
 # TODO - Stop 2 workers on 1 job
 def AssignWorker(target) -> None:
     worker, workerSprite = FindAvailableWorker(customerSprite=target)
-    if worker is not None:
+    if worker is not None and target.MvmHandler.InMotion is False:
         target.DataObject.WorkerAssigned = True
         target.DataObject.DesiredJob.Assign(worker)
         workerSprite.MvmHandler.StartNewListedMotion(
@@ -66,7 +67,7 @@ def SitAtTable(target) -> None:
         target.MvmHandler.OnComplete = lambda: BeginWait(target=target)
     else:
         target.DataObject.CurrentState = CustomerDefs.CustomerStates.LeavingAngry
-        GetUpAndGo(target)
+        GetUpAndGo(spriteImg=target)
 
 
 def BeginWait(target) -> None:

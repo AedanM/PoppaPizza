@@ -23,6 +23,9 @@ class GameStats:
         else:
             self.MoneySpent += amount
 
+    def GetCostumeChanges(self) -> int:
+        return self.WorkerChanges - PrevDay.WorkerChanges
+
     def GetEarnings(self) -> float:
         return max(self.MoneyEarned + PrevDay.MoneyEarned, 0.0)
 

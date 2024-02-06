@@ -1,8 +1,10 @@
 """Puts matching images in Folders"""
-from dataclasses import dataclass
-import os
+
 import argparse
 import glob
+import os
+from dataclasses import dataclass
+
 import cv2
 import numpy as np
 from skimage.metrics import structural_similarity

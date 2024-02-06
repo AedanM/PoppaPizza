@@ -146,8 +146,6 @@ class RectangleObject(GameObject.GameObject):
 
 class ButtonObject(GameObject.GameObject):
     # pylint: disable=invalid-name
-    OnClick = None
-
     def __init__(
         self,
         position,
