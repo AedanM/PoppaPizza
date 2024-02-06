@@ -1,4 +1,4 @@
-"""Populate Background with ELements"""
+"""Populate Background with Elements"""
 
 from Classes import Game, Matching, Sprite
 from Definitions import AssetLibrary, ColorTools, DefinedLocations, Restaurants
@@ -6,14 +6,26 @@ from Utilities import Utils
 
 
 def GenerateTablePlaces() -> list:
+    """Generates list of table position tuples
+
+    Returns:
+        list: Array of Tuple Positions
+    """
     locationArray = []
     for row in DefinedLocations.SeatingPlan.TableRows():
         for col in DefinedLocations.SeatingPlan.TableCols():
             locationArray.append(tuple((row, col)))
     return locationArray
 
-
+# TODO - Stop Recalcing Tables
 def AddTables(activeGame=Game.MasterGame) -> None:
+    """Places tables as they are unlocked
+
+    Args:
+        activeGame (Game, optional): Current Game being used. Defaults to Game.MasterGame.
+    """
+    if DefinedLocations.TablePlaces is []:
+        DefinedLocations.TablePlaces = GenerateTablePlaces()
     for location in GenerateTablePlaces():
         table = Sprite.BackgroundElementSprite(
             position=location,
@@ -28,6 +40,16 @@ def AddTables(activeGame=Game.MasterGame) -> None:
 def AddButton(
     location, text, color, backColor, enabled, activeGame=Game.MasterGame
 ) -> None:
+    """Generates a Button on a specified location
+
+    Args:
+        location (tuple): tuple position of button center
+        text (str): Button Label
+        color (Color): Main Color
+        backColor (Color): Background Color of Button
+        enabled (bool): Button Enable
+        activeGame (Game, optional): Current Game being used. Defaults to Game.MasterGame.
+    """
     buttonObj = Sprite.ButtonObject(
         position=location,
         color=color,
@@ -43,6 +65,11 @@ def AddButton(
 
 
 def AddLockerRooms(activeGame=Game.MasterGame) -> None:
+    """Generate and Add Locker Rooms based on locked status
+
+    Args:
+        activeGame (Game, optional): Current Game Class being used. Defaults to Game.MasterGame.
+    """
     for restaurant in Restaurants.RestaurantList:
         lockerRoom = restaurant.LockerRoom
         Matching.RemoveButtonFromLocation(
@@ -87,6 +114,11 @@ def AddLockerRooms(activeGame=Game.MasterGame) -> None:
 
 
 def UnlockLockerRooms(activeGame) -> None:
+    """Updates the locker rooms to unlock the purchased rooms
+
+    Args:
+        activeGame (Game): Current Game Class being used
+    """
     for button in activeGame.ButtonList:
         matchingRestaurant = [
             x
@@ -98,6 +130,11 @@ def UnlockLockerRooms(activeGame) -> None:
 
 
 def SetupBackground(activeGame=Game.MasterGame) -> None:
+    """Regenerates the Background Elements
+
+    Args:
+        activeGame (Game, optional): Current Game Class being used. Defaults to Game.MasterGame.
+    """
     activeGame.BackgroundSpriteGroup.empty()
     AddTables(activeGame=activeGame)
     AddLockerRooms(activeGame=activeGame)

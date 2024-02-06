@@ -1,4 +1,5 @@
 """Class for Altering Colors"""
+
 import colorsys
 from dataclasses import dataclass
 
@@ -9,24 +10,30 @@ from Utilities import Utils
 
 @dataclass
 class Color:
+    """Class for Defined Colors"""
+
     H: int
     S: int
     V: int
 
     def __init__(self, h, s, v) -> None:
+        """Creates a color from HSV input"""
         self.H = Utils.Bind(val=h, inRange=(0, 255))
         self.S = Utils.Bind(val=s, inRange=(0, 255))
         self.V = Utils.Bind(val=v, inRange=(0, 255))
 
     def GetNumPy(self) -> "np.NDArray[np.uint8]":
+        """Numpy Representation"""
         return np.array([self.H, self.S, self.V], dtype=np.uint8)
 
     @property
     def HSV(self) -> tuple[int, int, int]:
+        """HSV Representation"""
         return (self.H, self.S, self.V)
 
     @property
     def RGB(self) -> tuple[int, ...]:
+        """RGB Representation"""
         return tuple(
             round(i * 255)
             for i in colorsys.hsv_to_rgb(
@@ -41,6 +48,7 @@ class Color:
 
     @property
     def BGR(self) -> tuple[int, int, int]:
+        """BGR Representation"""
         rgb = self.RGB
         return (rgb[2], rgb[1], rgb[0])
 

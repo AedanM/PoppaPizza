@@ -6,12 +6,17 @@ import sys
 import pygame
 
 from Classes import Game, Matching, Stats
-from Definitions import AssetLibrary, CustomerDefs, CustomEvents, Prices
+from Definitions import AssetLibrary, CustomEvents
 from Generators import BackgroundPopulator, CharSpawner, Menus
 from Handlers import ClickHandler, ShopHandler, WorkerHandler
 
 
 def MainEventHandler(activeGame=Game.MasterGame) -> None:
+    """Giant Case Handler for Events
+
+    Args:
+        activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
+    """
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -53,36 +58,54 @@ def MainEventHandler(activeGame=Game.MasterGame) -> None:
 
 
 def DebugSetup() -> None:
+    """Sets up game in Debug Mode"""
     CharSpawner.BuyWorker(free=True)
     CharSpawner.BuyWorker(free=True)
 
 
 def RandomSpawnHandler() -> None:
+    """Handles Randomly Spawning Elements"""
     CharSpawner.CustomerSpawner()
 
 
 def DayNightEvent() -> None:
-    workerPay = 0.0
-    for worker in Game.MasterGame.WorkerList:
-        workerPay += worker.BasePay * Prices.DefaultPrices.Salary
-    rent = Prices.CurrentRent
-    Game.MasterGame.UserInventory.PayMoney(amount=workerPay + rent, update=False)
+    """Logic behind a day transition
+
+    Pays Rent
+    Loads DayTransition Menu
+    Resets Sprites
+    Updates Stats
+    Resets Background
+
+    """
+    ShopHandler.PayUpkeep()
     if Game.MasterGame.UserInventory.Money > 0:
         Menus.DayTransistion()
     else:
         GameOver()
-    for sprite in Game.MasterGame.CharSpriteGroup:
-        if sprite.ImageType in AssetLibrary.CustomerOutfits:
-            Matching.RemoveObjFromSprite(
-                activeGame=Game.MasterGame, targetSprite=sprite
-            )
-        elif sprite.ImageType in AssetLibrary.WorkerOutfits:
-            WorkerHandler.DailyReset(sprite=sprite)
+    Game.MasterGame.ResetSprites()
 
     Stats.PrevDay = copy.deepcopy(Game.MasterGame.UserInventory.Statistics)
     BackgroundPopulator.SetupBackground()
 
 
+def ResetSprites(activeGame=Game.MasterGame) -> None:
+    """Reset all Sprites
+
+        Kill Customer Sprites
+        Reset Workers to Kitchen
+
+    Args:
+        activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
+    """
+    for sprite in activeGame.CharSpriteGroup:
+        if sprite.ImageType in AssetLibrary.CustomerOutfits:
+            Matching.RemoveObjFromSprite(activeGame=activeGame, targetSprite=sprite)
+        elif sprite.ImageType in AssetLibrary.WorkerOutfits:
+            WorkerHandler.DailyReset(sprite=sprite)
+
+
 def GameOver() -> None:
+    """Logic for End of Game"""
     Game.MasterGame.Running = False
     Menus.GameOverMenu()

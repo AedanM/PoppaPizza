@@ -2,7 +2,7 @@
 
 import pygame
 
-from Classes import GameClock, Inventory, Settings, Writing
+from Classes import Game, GameClock, Inventory, Settings, Writing
 from Definitions import AssetLibrary, Chances, DefinedLocations
 
 

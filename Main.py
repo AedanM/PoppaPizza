@@ -13,6 +13,7 @@ from Handlers import EventHandler
 
 
 def Main() -> None:
+    """Main Loop of Game"""
     Game.MasterGame = Game.Game()
     pygame.event.post(CustomEvents.UpdateBackground)
     # Enables a series of functions to run automatically

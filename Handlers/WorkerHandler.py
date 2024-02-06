@@ -8,6 +8,11 @@ from Utilities import Utils
 
 
 def DailyReset(sprite) -> None:
+    """Reset worker to Kitchen
+
+    Args:
+        sprite (Sprite): Worker Sprite
+    """
     sprite.MvmHandler.Reset()
     spawnLocation = Utils.PositionRandomVariance(
         position=DefinedLocations.LocationDefs.WorkerSpawn,
@@ -18,36 +23,56 @@ def DailyReset(sprite) -> None:
 
 
 def ServeCustomer() -> None:
+    """Logic for serving Customer"""
     pass
 
 
-def FinishCustomer(ws, j) -> None:
-    ws.DataObject.IsAssigned = False
-    ws.DataObject.CurrentJobId = 0
-    ws.MvmHandler.StartNewListedMotion(
-        DefinedPaths.DefinedPaths.BackToKitchen(sprite=ws)
+def FinishCustomer(workerSprite, job) -> None:
+    """Finish a customer and get paid
+
+    Args:
+        workerSprite (Sprite): Active Worker
+        job (Job): Active Job
+    """
+    workerSprite.DataObject.IsAssigned = False
+    workerSprite.DataObject.CurrentJobId = 0
+    workerSprite.MvmHandler.StartNewListedMotion(
+        DefinedPaths.DefinedPaths.BackToKitchen(sprite=workerSprite)
     )
-    Game.MasterGame.UserInventory.GetPaid(amount=j.Price)
+    Game.MasterGame.UserInventory.GetPaid(amount=job.Price)
     Game.MasterGame.UserInventory.Statistics.ServeCustomer()
 
 
-def GetChanged(ws, restaurant) -> None:
-    ws.MvmHandler.StartNewListedMotion(
+def GetChanged(workerSprite, restaurant) -> None:
+    """Change the outfit of a worker
+
+    Args:
+        workerSprite (Sprite): Active Worker
+        restaurant (Restaurant): Restaurant whos apparel to change into
+    """
+    workerSprite.MvmHandler.StartNewListedMotion(
         DefinedPaths.DefinedPaths.KitchenToLockerRoom(
-            sprite=ws, dest=restaurant.LockerRoom.Location
+            sprite=workerSprite, dest=restaurant.LockerRoom.Location
         )
     )
     newOutfit = AssetLibrary.PathLookup(random.choice(restaurant.WorkerImageTypes))
-    ws.MvmHandler.OnComplete = lambda: (
-        ws.ChangeOutfit(newOutfit),
+    workerSprite.MvmHandler.OnComplete = lambda: (
+        workerSprite.ChangeOutfit(newOutfit),
         Game.MasterGame.UserInventory.Statistics.WorkerChanged(),
-        ws.CreatePersonTimerBar(
-            completeTask=lambda: ReturnToKitchen(ws=ws), offset=(-30, 150), width=150
+        workerSprite.CreatePersonTimerBar(
+            completeTask=lambda: ReturnToKitchen(workerSprite=workerSprite),
+            offset=(-30, 150),
+            width=150,
         ),
     )
 
 
-def ReturnToKitchen(ws) -> None:
-    ws.MvmHandler.StartNewListedMotion(
-        DefinedPaths.DefinedPaths.BackToKitchen(sprite=ws)
+def ReturnToKitchen(workerSprite) -> None:
+    """Go back to Kitchen
+
+    Args:
+        workerSprite (Sprite): Active Worker
+    """
+    workerSprite.MvmHandler.StartNewListedMotion(
+        DefinedPaths.DefinedPaths.BackToKitchen(sprite=workerSprite)
     )

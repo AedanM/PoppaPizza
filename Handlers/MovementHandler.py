@@ -7,6 +7,14 @@ from Utilities import Utils as utils
 
 
 class CharacterMovementHandler:
+    """Character Movement Handler
+
+        Handles all Motion Features for a Sprite
+
+    Returns:
+        CharacterMovementHandler:
+    """
+
     OnComplete = None
     Dest: tuple = (0, 0)
     MaxMovementSpeed: CustomerDefs.MovementSpeeds = CustomerDefs.MovementSpeeds.Medium
@@ -18,20 +26,31 @@ class CharacterMovementHandler:
     StartTime: float = 0.0
 
     def Reset(self) -> None:
+        """Reset OnComplete function and Finish any active movements"""
         self.OnComplete = None
         self.FinishMovement()
 
     @property
     def DestY(self) -> int | float:
+        """Y Coord of Destination"""
         return self.Dest[1]
 
     @property
     def DestX(self) -> int | float:
+        """X Coord of Destination"""
         return self.Dest[0]
 
     def StartNewListedMotion(
         self, pointList, speed=CustomerDefs.MovementSpeeds.Medium
     ) -> None:
+        """Start point for Motion
+
+            Takes a list of positions and begins the animation of a sprite between them
+
+        Args:
+            pointList (list[tuple]): List of Tuple Positions
+            speed (CustomerDefs.MovementSpeeds, optional): Speed of Motion. Defaults to CustomerDefs.MovementSpeeds.Medium.
+        """
         if not self.InMotion:
             self.OnComplete = lambda: None
             self.PointsList = pointList
@@ -42,6 +61,11 @@ class CharacterMovementHandler:
             self.StartTime = Game.MasterGame.GameClock.UnixTime
 
     def CalcNewPosition(self, obj) -> None:
+        """Logic for Moving Characters and Queuing
+
+        Args:
+            obj (Sprite): Moving Sprite
+        """
         if self.DstSet and Game.MasterGame.GameClock.Running:
             if (
                 obj.ImageType in AssetLibrary.CustomerOutfits
@@ -59,6 +83,11 @@ class CharacterMovementHandler:
                     self.Dest = self.PointsList[self.CurrentPointIdx]
 
     def MoveChar(self, obj) -> None:
+        """Update Location of Character
+
+        Args:
+            obj (Sprite): Moving Sprite
+        """
         xDir = utils.Sign(num=self.DestX - obj.rect.centerx)
         yDir = utils.Sign(num=self.DestY - obj.rect.centery)
 
@@ -66,7 +95,7 @@ class CharacterMovementHandler:
             val=abs(self.DestX - obj.rect.centerx),
             inRange=(
                 1,
-                self.MaxMovementSpeed.value * Game.MasterGame.GameClock.ClockMul,
+                self.MaxMovementSpeed * Game.MasterGame.GameClock.ClockMul,
             ),
         )
 
@@ -74,7 +103,7 @@ class CharacterMovementHandler:
             val=abs(self.DestY - obj.rect.centery),
             inRange=(
                 1,
-                self.MaxMovementSpeed.value * Game.MasterGame.GameClock.ClockMul,
+                self.MaxMovementSpeed * Game.MasterGame.GameClock.ClockMul,
             ),
         )
 
@@ -82,6 +111,14 @@ class CharacterMovementHandler:
         obj.rect.centery += yMotion * yDir
 
     def IsFinished(self, obj) -> bool:
+        """Checks if final destination reached within a tolerance
+
+        Args:
+            obj (Sprite): Moving Sprite
+
+        Returns:
+            bool: Is Motion Finished
+        """
         return utils.InPercentTolerance(
             num1=obj.rect.centerx, num2=self.DestX, tolerance=self.MovementTolerance
         ) and utils.InPercentTolerance(
@@ -89,6 +126,7 @@ class CharacterMovementHandler:
         )
 
     def FinishMovement(self) -> None:
+        """Wraps up motion and activates on complete function if exists"""
         self.DstSet = False
         self.InMotion = False
         self.PointsList = []

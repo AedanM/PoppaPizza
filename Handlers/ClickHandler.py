@@ -9,6 +9,8 @@ from Utilities import Utils
 
 
 class ClickState(Enum):
+    """Enumeration for Click States"""
+
     Neutral, ClickedWorker = range(2)
 
 
@@ -18,6 +20,12 @@ GlobalTarget = None
 
 
 def MouseHandler(mousePos, lClick) -> None:
+    """Handler for mouse clicks
+
+    Args:
+        mousePos (tuple): Position of Mouse Click
+        lClick (bool): Left or Right Mouse Button, True is Left
+    """
     global GlobalClickState, GlobalTarget
     if GlobalClickState is ClickState.ClickedWorker:
         for restaurant in Restaurants.RestaurantList:
@@ -29,7 +37,9 @@ def MouseHandler(mousePos, lClick) -> None:
                 and lockerRoom.Unlocked
                 and GlobalTarget.ImageType not in restaurant.WorkerImageTypes
             ):
-                WorkerHandler.GetChanged(ws=GlobalTarget, restaurant=restaurant)
+                WorkerHandler.GetChanged(
+                    workerSprite=GlobalTarget, restaurant=restaurant
+                )
         GlobalClickState = ClickState.Neutral
     elif GlobalClickState is ClickState.Neutral:
         for button in Game.MasterGame.ButtonList:
@@ -47,6 +57,12 @@ def MouseHandler(mousePos, lClick) -> None:
 
 
 def CustomerClickRoutine(target, leftClick) -> None:
+    """Handler for Customer Clicks
+
+    Args:
+        target (CharImageSprite): Clicked Sprite
+        leftClick (bool): Left or Right Mouse Button, True is Left
+    """
     global GlobalClickState
     # TODO - Stop customers being served in queue
     if GlobalClickState is ClickState.Neutral:
@@ -63,6 +79,11 @@ def CustomerClickRoutine(target, leftClick) -> None:
 
 
 def WorkerClickRoutine(target) -> None:
+    """Handler for Worker Clicks
+
+    Args:
+        target (CharImageSprite): Sprite Clicked
+    """
     global GlobalClickState, GlobalTarget
 
     if GlobalClickState is ClickState.Neutral and not target.DataObject.IsAssigned:

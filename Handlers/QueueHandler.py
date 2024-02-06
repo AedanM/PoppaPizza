@@ -8,6 +8,14 @@ QUEUEDISTANCE = 75
 
 
 def NeedsToQueue(movingSprite) -> bool:
+    """Checks if the Customer needs to Queue
+
+    Args:
+        movingSprite (Sprite): Customer
+
+    Returns:
+        bool: Does the customer have to queue
+    """
     dataObject = movingSprite.DataObject
     match dataObject.CurrentState:
         case CustomerDefs.CustomerStates.Queuing:
@@ -37,6 +45,14 @@ def NeedsToQueue(movingSprite) -> bool:
 
 
 def FirstInLine(movingSprite) -> bool:
+    """Checks if the customer is first in Queue
+
+    Args:
+        movingSprite (Sprite): Customer Sprite
+
+    Returns:
+        bool: Is the Customer the first in the line
+    """
     for sprite in Game.MasterGame.CharSpriteGroup:
         if (
             sprite is not movingSprite

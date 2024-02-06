@@ -9,6 +9,8 @@ from Definitions import AssetLibrary, ColorTools, CustomEvents, DefinedLocations
 
 @dataclass
 class LockerRoom:
+    """Locker Room Parameters"""
+
     Location: tuple
     Color: ColorTools.Color
     Unlocked: bool = False
@@ -17,6 +19,8 @@ class LockerRoom:
 
 @dataclass()
 class Restaurant:
+    """Restaurant Class"""
+
     Name: str
     Logo: AssetLibrary.ImageTypes
     CustomerImageTypes: list[AssetLibrary.ImageTypes]
@@ -88,16 +92,16 @@ RestaurantList = [
 ]
 
 
-def FindRestaurant(imageType) -> Restaurant | None:
-    potentialList = [None]
-    if imageType in AssetLibrary.WorkerOutfits:
-        potentialList = [x for x in RestaurantList if imageType in x.WorkerImageTypes]
-    elif imageType in AssetLibrary.CustomerOutfits:
-        potentialList = [x for x in RestaurantList if imageType in x.CustomerImageTypes]
-    return potentialList[0]
-
-
 def UnlockLockerRoom(currentCash, position) -> float:
+    """Unlocks a locker room from position
+        Returns 0 if too expensive
+    Args:
+        currentCash (float): Current Money Reserves
+        position (int): Locker Room Position
+
+    Returns:
+        float: Price Paid for Locker Room
+    """
     restaurant = [x for x in RestaurantList if position == x.LockerRoom.Location]
     lockerRoom = restaurant[0].LockerRoom
     if currentCash > lockerRoom.Price:

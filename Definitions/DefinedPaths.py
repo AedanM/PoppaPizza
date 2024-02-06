@@ -10,6 +10,14 @@ RECURDEPTH = 0
 
 
 def IsSeatTaken(seatLocation) -> bool:
+    """Checks if Customer Sat in Seat
+
+    Args:
+        seatLocation (tuple): Location of Seat
+
+    Returns:
+        bool: Is Seat Free
+    """
     for sprite in Game.MasterGame.CharSpriteGroup:
         if sprite.ImageType in AssetLibrary.CustomerOutfits:
             xCheck = Utils.InTolerance(
@@ -24,6 +32,11 @@ def IsSeatTaken(seatLocation) -> bool:
 
 
 def GetRandomSeatPosition() -> tuple | None:
+    """Picks a random seat position or returns None if None free
+
+    Returns:
+        tuple | None: Seat position
+    """
     # pylint: disable=global-statement
     global RECURDEPTH
     seatingPlan = DefinedLocations.SeatingPlan
@@ -42,8 +55,19 @@ def GetRandomSeatPosition() -> tuple | None:
 
 
 class DefinedPaths:
+    """Lists of Defined Locations to Generate Motion Paths"""
+
     @staticmethod
     def KitchenToLockerRoom(sprite, dest) -> list:
+        """Kitchen to a desired changing room
+
+        Args:
+            sprite (Sprite): Worker To Change
+            dest (tuple): Destination Position
+
+        Returns:
+            list: List of Points for Path
+        """
         path = [
             sprite.rect.center,
             DefinedLocations.LocationDefs.KitchenLocation,
@@ -54,6 +78,13 @@ class DefinedPaths:
 
     @staticmethod
     def CustomerToRandomSeat(sprite) -> list:
+        """Picks a random seat and generates a path to it
+
+        sprite (Sprite): Active Customer
+
+        Returns:
+            list: List of Points for Path
+        """
         randomSeatPosition = GetRandomSeatPosition()
         if randomSeatPosition is not None:
             path = [
@@ -65,6 +96,15 @@ class DefinedPaths:
 
     @staticmethod
     def KitchenToCustomer(sprite, dest) -> list:
+        """Path for kitchen to customer's seat
+
+        Args:
+            sprite (Sprite): Active Worker
+            dest (tuple): Customer's Seat
+
+        Returns:
+            list: List of Points for Path
+        """
         path = [
             sprite.rect.center,
             DefinedLocations.LocationDefs.KitchenLocation,
@@ -82,6 +122,15 @@ class DefinedPaths:
 
     @staticmethod
     def BackToKitchen(sprite, activeGame=Game.MasterGame) -> list:
+        """From Current Location to Kitchen
+
+        Args:
+            sprite (Sprite): Active Worker
+            activeGame (Game, optional): Current Game. Defaults to Game.MasterGame
+
+        Returns:
+            list: List of Points for Path
+        """
         path = [
             sprite.rect.center,
             (sprite.rect.center[0], DefinedLocations.LocationDefs.KitchenLocation[1]),
@@ -99,11 +148,27 @@ class DefinedPaths:
 
     @staticmethod
     def CustomerToExit(sprite) -> list:
+        """Queued Customer to Leave the Restaurant
+
+        Args:
+            sprite (Sprite): Active Customer
+
+        Returns:
+            list: List of Points for Path
+        """
         path = [sprite.rect.center, DefinedLocations.LocationDefs.CustomerExit]
         return path
 
     @staticmethod
     def TableToExit(sprite) -> list:
+        """Seated Customer to Exit
+
+        Args:
+            sprite (Sprite): Active Customer
+
+        Returns:
+            list: List of Points for Path
+        """
         path = [
             sprite.rect.center,
             (sprite.rect.centerx, sprite.rect.centery - 100),
@@ -117,5 +182,13 @@ class DefinedPaths:
 
     @staticmethod
     def CustomerToEntrance(sprite) -> list:
+        """Walk In Logic Path
+
+        Args:
+            sprite (Sprite): Active Customer
+
+        Returns:
+            list: List of Points for Path
+        """
         path = [sprite.rect.center, DefinedLocations.LocationDefs.CustomerEntrance]
         return path

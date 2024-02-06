@@ -1,6 +1,7 @@
 """Matching Functions for Person Objects"""
 
-from Definitions import Restaurants
+from Definitions import AssetLibrary
+from Definitions.Restaurants import Restaurant, RestaurantList
 
 
 def MatchIdToPerson(activeGame, inputId, targetOutput="all") -> dict:
@@ -36,9 +37,26 @@ def RemoveButtonFromLocation(activeGame, location) -> None:
         activeGame.ButtonList.remove(button)
 
 
+def FindRestaurant(imageType) -> Restaurant | None:
+    """Matches image type to Restaurant
+
+    Args:
+        imageType (Image Type): Input Type
+
+    Returns:
+        Restaurant | None: Matched Restaurant Object
+    """
+    potentialList = [None]
+    if imageType in AssetLibrary.WorkerOutfits:
+        potentialList = [x for x in RestaurantList if imageType in x.WorkerImageTypes]
+    elif imageType in AssetLibrary.CustomerOutfits:
+        potentialList = [x for x in RestaurantList if imageType in x.CustomerImageTypes]
+    return potentialList[0]
+
+
 def CostumeMatch(workerSprite, customerSprite) -> bool:
     if workerSprite is not None:
-        desiredRest = Restaurants.FindRestaurant(imageType=customerSprite.ImageType)
+        desiredRest = FindRestaurant(imageType=customerSprite.ImageType)
         return workerSprite.ImageType in desiredRest.WorkerImageTypes
 
     return False

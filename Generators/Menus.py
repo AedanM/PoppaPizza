@@ -3,23 +3,25 @@
 import pygame_menu
 
 from Classes import Game
-from Generators import CharSpawner
+from Handlers import ShopHandler
 
 
 def OpenMenu() -> None:
+    """Default Entry Point for Menus"""
     Game.MasterGame.GameClock.SetRunning(state=False)
 
 
 def CloseMenu() -> None:
+    """Default Exit Point for Menus"""
     Game.MasterGame.GameClock.SetRunning(state=True)
 
 
-def BuyNumWorkers(num) -> None:
-    for _ in range(num):
-        CharSpawner.BuyWorker()
-
-
 def DayTransistion(activeGame=Game.MasterGame) -> None:
+    """Splash screen between days
+
+    Args:
+        surface (pygame.Surface, optional): Screen to render menu on. Defaults to Game.MasterGame.Screen.
+    """
     OpenMenu()
     menu = pygame_menu.Menu(
         title="End of Day",
@@ -54,6 +56,11 @@ def DayTransistion(activeGame=Game.MasterGame) -> None:
 
 
 def OptionsMenu(surface=Game.MasterGame.Screen) -> None:
+    """Menu for Game Configuration
+
+    Args:
+        surface (pygame.Surface, optional): Screen to render menu on. Defaults to Game.MasterGame.Screen.
+    """
     OpenMenu()
     menu = pygame_menu.Menu(
         title="Settings",
@@ -88,6 +95,11 @@ def OptionsMenu(surface=Game.MasterGame.Screen) -> None:
 
 
 def ShopMenu(surface=Game.MasterGame.Screen) -> None:
+    """Menu for shop screen
+
+    Args:
+        surface (pygame.Surface, optional): Screen to generate Menu on. Defaults to Game.MasterGame.Screen.
+    """
     OpenMenu()
     menu = pygame_menu.Menu(
         title="Shop",
@@ -104,15 +116,20 @@ def ShopMenu(surface=Game.MasterGame.Screen) -> None:
     )
     menu.add.button(
         title="x1",
-        action=lambda: (BuyNumWorkers(num=1)),
+        action=lambda: (ShopHandler.BuyNumWorkers(num=1)),
     )
     menu.add.button(title="Return", action=pygame_menu.events.CLOSE)
     menu.mainloop(surface=surface, wait_for_event=True)
 
 
-def GameOverMenu(
-    surface=Game.MasterGame.Screen, reason="\n You ran out of Money"
-) -> None:
+# TODO- Move Reason to Enum
+def GameOverMenu(surface=Game.MasterGame.Screen, reason="You ran out of Money") -> None:
+    """Displayed Screen when Game Ends
+
+    Args:
+        surface (pygame.Screen, optional): Screen which the menu is rendered on. Defaults to Game.MasterGame.Screen.
+        reason (str, optional): Reason for Game Over as a Str. Defaults to "You ran out of Money".
+    """
     OpenMenu()
     menu = pygame_menu.Menu(
         title="Game Over",
@@ -121,6 +138,6 @@ def GameOverMenu(
         onclose=pygame_menu.events.EXIT,
         theme=pygame_menu.themes.THEME_DARK,
     )
-    menu.add.label(title=f"Game Over {reason}\n\n", font_size=60, font_shadow=True)
+    menu.add.label(title=f"Game Over \n{reason}\n\n", font_size=60, font_shadow=True)
     menu.add.button(title="Close Game", action=pygame_menu.events.EXIT)
     menu.mainloop(surface=surface)
