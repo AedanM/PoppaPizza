@@ -9,6 +9,8 @@ from Utilities import Utils as utils
 
 
 class CharImageSprite(GameObject.GameObject):
+    """Class for Sprites of Characters"""
+
     # pylint: disable=invalid-name
     CorrespondingID: int = 0
     ImageType: AssetLibrary.ImageTypes = AssetLibrary.ImageTypes.Null
@@ -46,6 +48,11 @@ class CharImageSprite(GameObject.GameObject):
 
     @property
     def DataObject(self):
+        """Numerical Data Object Associated with Image
+
+        Returns:
+            Customer | Worker: Data Object Assoc with Sprite
+        """
         objDict = Matching.MatchIdToPerson(
             activeGame=Game.MasterGame, inputId=self.CorrespondingID
         )
@@ -54,6 +61,11 @@ class CharImageSprite(GameObject.GameObject):
         return obj
 
     def CheckSpawnCollision(self, activeGame=Game.MasterGame) -> None:
+        """Changes spawn location until new sprite is not colliding
+
+        Args:
+            activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
+        """
         currentCenter = self.rect.center
         for group in activeGame.SpriteGroups:
             for sprite in group:
@@ -65,6 +77,11 @@ class CharImageSprite(GameObject.GameObject):
                     )
 
     def ChangeOutfit(self, newOutfitPath) -> None:
+        """Update Sprite Image and resize to fit
+
+        Args:
+            newOutfitPath (str): Path to New Outfit
+        """
         newImage = pygame.image.load(newOutfitPath)
         newImageRect = newImage.get_rect()
         dim = utils.ResizeMaxLength(
@@ -77,6 +94,7 @@ class CharImageSprite(GameObject.GameObject):
         self.ImageType = AssetLibrary.PathToTypeDict[newOutfitPath]
 
     def UpdateSprite(self) -> None:
+        """Update sprite for each frame"""
         if self.PersonalTimer is not None:
             self.PersonalTimer.UpdateAndDraw()
             self.PersonalTimer.Rect = self.rect.topleft
@@ -92,6 +110,17 @@ class CharImageSprite(GameObject.GameObject):
         width=0,
         fillColor=ColorTools.LimeGreen,
     ) -> None:
+        """Create a timer bar bound to this objcet
+
+        Args:
+            completeTask (Task): Function to exec on completion of timer
+            assocId (int, optional): Id of Associated Job. Defaults to 0.
+            length (float, optional): Length of Timer in game minutes. Defaults to 29.0.
+            startingState (int, optional): Starting State of Customer, if Object is one. Defaults to 0.
+            offset (tuple, optional): Offset of timer bar from sprite. Defaults to (0, 0).
+            width (int, optional): Max width of timer bar. Defaults to 0.
+            fillColor (ColorTools.Color, optional): Color of Timer bar. Defaults to ColorTools.LimeGreen.
+        """
         self.PersonalTimer = TimerBar.TimerBar(
             duration=length if length != 0 else 29.0,
             position=(self.rect.topleft),
@@ -106,14 +135,25 @@ class CharImageSprite(GameObject.GameObject):
         self.PersonalTimer.StartTimer()
 
     def __repr__(self) -> str:
+        """String Rep of Object"""
         return str(self.CorrespondingID) + " " + str(self.ImageType)
 
 
 class BackgroundElementSprite(GameObject.GameObject):
+    """Class for background sprites"""
+
     ImageType: AssetLibrary.ImageTypes = AssetLibrary.ImageTypes.Null
 
     # pylint: disable=invalid-name
     def __init__(self, position, path, maxSize=60, offset=(0, 0)) -> None:
+        """Init for background elements
+
+        Args:
+            position (tuple): Top left corner of sprite
+            path (str): Path to image
+            maxSize (int, optional): Max size of element. Defaults to 60.
+            offset (tuple, optional): Offset from position. Defaults to (0, 0).
+        """
         super().__init__(backgroundFlag=True, moveFlag=False, collisionFlag=False)
         self.image = pygame.image.load(
             path
@@ -130,6 +170,8 @@ class BackgroundElementSprite(GameObject.GameObject):
 
 
 class RectangleObject(GameObject.GameObject):
+    """Base Rectange Object Class"""
+
     # pylint: disable=invalid-name
     def __init__(
         self,
@@ -137,6 +179,13 @@ class RectangleObject(GameObject.GameObject):
         color=(0, 0, 0),
         size=(100, 100),
     ) -> None:
+        """Init for rectange objects
+
+        Args:
+            position (tuple): Center position
+            color (tuple, optional): Color of Rectange. Defaults to (0, 0, 0).
+            size (tuple, optional): Dimensions of Rectangle. Defaults to (100, 100).
+        """
         super().__init__(backgroundFlag=True, moveFlag=False, collisionFlag=False)
         self.image = pygame.Surface(size=size)
         self.image.fill(color.RGB)
@@ -145,6 +194,8 @@ class RectangleObject(GameObject.GameObject):
 
 
 class ButtonObject(GameObject.GameObject):
+    """Defined Button Shape"""
+
     # pylint: disable=invalid-name
     def __init__(
         self,
@@ -155,6 +206,16 @@ class ButtonObject(GameObject.GameObject):
         size=(100, 100),
         enabled=True,
     ) -> None:
+        """Init for Button
+
+        Args:
+            position (tuple): Center of button
+            text (str, optional): String for Button to Show. Defaults to "Blank".
+            color (Color, optional): Base Color. Defaults to ColorTools.White.
+            backColor (Color, optional): Background Color. Defaults to ColorTools.Black.
+            size (tuple, optional): Dimensions of Shape. Defaults to (100, 100).
+            enabled (bool, optional): Is the button able to be clicked. Defaults to True.
+        """
         super().__init__(backgroundFlag=True, moveFlag=False, collisionFlag=False)
         self.image = pygame.Surface(size=size)
         self.image.fill(backColor.RGB if enabled else ColorTools.Grey.RGB)

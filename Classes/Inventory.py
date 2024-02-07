@@ -7,18 +7,31 @@ from Definitions import CustomEvents
 
 
 class Inventory:
+    """Holding Class for all User assets"""
+
     Money: float = 2000.0
     AdvertisingBonus: float = 0.0
     Statistics: Stats.GameStats = Stats.GameStats()
 
     def GetPaid(self, amount) -> None:
-        amount = max(amount, 0)
+        """Get paid an amount of cash
+
+        Args:
+            amount (int | float): Amount Paid
+        """
+        amount = round(max(amount, 0), 2)
         self.Money += amount
         self.Statistics.UpdateMoney(amount=amount)
         pygame.event.post(CustomEvents.UpdateBackground)
 
     def PayMoney(self, amount, update=True) -> None:
-        amount = min(-(abs(amount)), 0)
+        """Pay an Amount of Money and Update the Stats
+
+        Args:
+            amount (int | float): Amount spent
+            update (bool, optional): To Update the Game Over ticker or not. Defaults to True.
+        """
+        amount = round(min(-(abs(amount)), 0), 2)
         self.Money += amount
         self.Statistics.UpdateMoney(amount=amount)
         pygame.event.post(CustomEvents.UpdateBackground)

@@ -17,7 +17,10 @@ def GenerateTablePlaces() -> list:
             locationArray.append(tuple((row, col)))
     return locationArray
 
+
 # TODO - Stop Recalcing Tables
+
+
 def AddTables(activeGame=Game.MasterGame) -> None:
     """Places tables as they are unlocked
 

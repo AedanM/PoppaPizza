@@ -7,6 +7,16 @@ from Utilities import Utils
 def CreateTextBox(
     locationTopLeft, text, foreColor, font, screen, backColor=None
 ) -> None:
+    """Write a text box to the screen
+
+    Args:
+        locationTopLeft (tuple): Top left position of bounding box
+        text (str): Text to Write
+        foreColor (ColorTools.Color): Text Color
+        font (ColorTools.Color): Font Object
+        screen (pygame.Surface): Screen to write onto
+        backColor (ColorTools.Color, optional): Background of text box, None is transparency. Defaults to None.
+    """
     text = (
         font.render(text, False, foreColor.RGB)
         if not backColor
@@ -19,6 +29,11 @@ def CreateTextBox(
 
 
 def WriteDateLabel(activeGame) -> None:
+    """Write Date and $ into top left bar
+
+    Args:
+        activeGame (Game): Current Game
+    """
     clockText = (
         f"{activeGame.GameClock.DateTime} ${activeGame.UserInventory.Money:0.2f}"
     )
@@ -34,6 +49,11 @@ def WriteDateLabel(activeGame) -> None:
 
 
 def WriteButtonLabel(activeGame) -> None:
+    """Adds a text box label to all active buttons
+
+    Args:
+        activeGame (Game): Current Game
+    """
     for button in activeGame.ButtonList:
         CreateTextBox(
             locationTopLeft=Utils.OffsetTuple(

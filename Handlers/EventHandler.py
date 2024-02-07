@@ -83,8 +83,10 @@ def DayNightEvent() -> None:
         Menus.DayTransistion()
     else:
         GameOver()
-    Game.MasterGame.ResetSprites()
-
+    ResetSprites()
+    Stats.AllStats[f"Day {Game.MasterGame.GameClock.Day}"] = copy.deepcopy(
+        Game.MasterGame.UserInventory.Statistics
+    )
     Stats.PrevDay = copy.deepcopy(Game.MasterGame.UserInventory.Statistics)
     BackgroundPopulator.SetupBackground()
 

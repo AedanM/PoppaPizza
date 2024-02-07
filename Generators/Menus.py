@@ -34,22 +34,22 @@ def DayTransistion(activeGame=Game.MasterGame) -> None:
     menu.get_widget(widget_id="Title").scale(width=2, height=2, smooth=True)
     menu.add.label(
         title=(
-            f"Customers Served: {Game.MasterGame.UserInventory.Statistics.GetServedCustomers()}"
+            f"Customers Served: {Game.MasterGame.UserInventory.Statistics.GetDailyServedCustomers()}"
             + " / "
-            + f"{Game.MasterGame.UserInventory.Statistics.GetTotalCustomers()}"
+            + f"{Game.MasterGame.UserInventory.Statistics.GetDailyTotalCustomers()}"
         )
     )
     menu.add.label(
-        title=f"Costume Changes: {Game.MasterGame.UserInventory.Statistics.GetCostumeChanges()}"
+        title=f"Costume Changes: {Game.MasterGame.UserInventory.Statistics.GetDailyCostumeChanges()}"
     )
     menu.add.label(
-        title=f"Money Earned: {Game.MasterGame.UserInventory.Statistics.GetEarnings():.2f}"
+        title=f"Money Earned: {Game.MasterGame.UserInventory.Statistics.GetDailyEarnings():.2f}"
     )
     menu.add.label(
-        title=f"Money Spent: {Game.MasterGame.UserInventory.Statistics.GetSpend():.2f}"
+        title=f"Money Spent: {Game.MasterGame.UserInventory.Statistics.GetDailySpend():.2f}"
     )
     menu.add.label(
-        title=f"Profit: {Game.MasterGame.UserInventory.Statistics.GetProfit():.2f}"
+        title=f"Profit: {Game.MasterGame.UserInventory.Statistics.GetDailyProfit():.2f}"
     )
     menu.add.button(title="Continue to Next Day", action=pygame_menu.events.CLOSE)
     menu.mainloop(surface=activeGame.Screen, wait_for_event=True)
