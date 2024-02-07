@@ -1,0 +1,901 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>Classes.Sprite API documentation</title>
+<meta name="description" content="Class for visibile sprites" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>Classes.Sprite</code></h1>
+</header>
+<section id="section-intro">
+<p>Class for visibile sprites</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;Class for visibile sprites&#34;&#34;&#34;
+
+import pygame
+
+from Classes import Game, GameObject, Matching, TimerBar
+from Definitions import AssetLibrary, ColorTools, DefinedLocations
+from Handlers import MovementHandler
+from Utilities import Utils as utils
+
+
+class CharImageSprite(GameObject.GameObject):
+    &#34;&#34;&#34;Class for Sprites of Characters&#34;&#34;&#34;
+
+    # pylint: disable=invalid-name
+    CorrespondingID: int = 0
+    ImageType: AssetLibrary.ImageTypes = AssetLibrary.ImageTypes.Null
+    rect: pygame.rect.Rect = pygame.rect.Rect(0, 0, 0, 0)
+    MvmHandler: MovementHandler.CharacterMovementHandler = None
+    PersonalTimer: TimerBar.TimerBar = None
+
+    def __init__(
+        self,
+        position,
+        path,
+        objID,
+        maxSize=utils.ScaleToSize(
+            value=100, newSize=DefinedLocations.LocationDefs.ScreenSize
+        ),
+    ) -&gt; None:
+        super().__init__(backgroundFlag=False, moveFlag=True, collisionFlag=True)
+        self.image = pygame.image.load(path)
+        self.rect = self.image.get_rect()
+        newSize = utils.ResizeMaxLength(
+            dim=(self.rect.width, self.rect.height), maxSide=maxSize
+        )
+        self.image = pygame.transform.scale(
+            surface=self.image,
+            size=newSize,
+        )
+        self.rect = self.image.get_rect()
+        self.rect.x = position[0]
+        self.rect.y = position[1]
+        self.MvmHandler = MovementHandler.CharacterMovementHandler()
+        self.ImageType = AssetLibrary.PathToTypeDict[path]
+        # self.CheckSpawnCollision()
+
+        self.CorrespondingID = objID
+
+    @property
+    def DataObject(self):
+        &#34;&#34;&#34;Numerical Data Object Associated with Image
+
+        Returns:
+            Customer | Worker: Data Object Assoc with Sprite
+        &#34;&#34;&#34;
+        objDict = Matching.MatchIdToPerson(
+            activeGame=Game.MasterGame, inputId=self.CorrespondingID
+        )
+        objDict.pop(&#34;sprite&#34;)
+        obj = list(objDict.values())[0]
+        return obj
+
+    def CheckSpawnCollision(self, activeGame=Game.MasterGame) -&gt; None:
+        &#34;&#34;&#34;Changes spawn location until new sprite is not colliding
+
+        Args:
+            activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
+        &#34;&#34;&#34;
+        currentCenter = self.rect.center
+        for group in activeGame.SpriteGroups:
+            for sprite in group:
+                while sprite.rect.colliderect(self.rect) and sprite is not self:
+                    self.rect.center = utils.PositionRandomVariance(
+                        position=currentCenter,
+                        percentVarianceTuple=(0.1, 1),
+                        screenSize=activeGame.ScreenSize,
+                    )
+
+    def ChangeOutfit(self, newOutfitPath) -&gt; None:
+        &#34;&#34;&#34;Update Sprite Image and resize to fit
+
+        Args:
+            newOutfitPath (str): Path to New Outfit
+        &#34;&#34;&#34;
+        newImage = pygame.image.load(newOutfitPath)
+        newImageRect = newImage.get_rect()
+        dim = utils.ResizeMaxLength(
+            dim=(newImageRect.width, newImageRect.height),
+            maxSide=max(self.rect.width, self.rect.height),
+        )
+        newImage = pygame.transform.scale(newImage, dim)
+        newImageRect = self.rect
+        self.image = newImage
+        self.ImageType = AssetLibrary.PathToTypeDict[newOutfitPath]
+
+    def UpdateSprite(self) -&gt; None:
+        &#34;&#34;&#34;Update sprite for each frame&#34;&#34;&#34;
+        if self.PersonalTimer is not None:
+            self.PersonalTimer.UpdateAndDraw()
+            self.PersonalTimer.Rect = self.rect.topleft
+        self.Update()
+
+    def CreatePersonTimerBar(
+        self,
+        completeTask,
+        assocId=0,
+        length=29.0,
+        startingState=0,
+        offset=(0, 0),
+        width=0,
+        fillColor=ColorTools.LimeGreen,
+    ) -&gt; None:
+        &#34;&#34;&#34;Create a timer bar bound to this objcet
+
+        Args:
+            completeTask (Task): Function to exec on completion of timer
+            assocId (int, optional): Id of Associated Job. Defaults to 0.
+            length (float, optional): Length of Timer in game minutes. Defaults to 29.0.
+            startingState (int, optional): Starting State of Customer, if Object is one. Defaults to 0.
+            offset (tuple, optional): Offset of timer bar from sprite. Defaults to (0, 0).
+            width (int, optional): Max width of timer bar. Defaults to 0.
+            fillColor (ColorTools.Color, optional): Color of Timer bar. Defaults to ColorTools.LimeGreen.
+        &#34;&#34;&#34;
+        self.PersonalTimer = TimerBar.TimerBar(
+            duration=length if length != 0 else 29.0,
+            position=(self.rect.topleft),
+            assocId=assocId,
+            offset=offset,
+        )
+        self.PersonalTimer.StartingState = startingState
+        self.PersonalTimer.OnComplete = completeTask
+        self.PersonalTimer.TimerRect.y -= 25
+        self.PersonalTimer.SetMaxSize(size=self.rect.width if width == 0 else width)
+        self.PersonalTimer.FillColor = fillColor
+        self.PersonalTimer.StartTimer()
+
+    def __repr__(self) -&gt; str:
+        &#34;&#34;&#34;String Rep of Object&#34;&#34;&#34;
+        return str(self.CorrespondingID) + &#34; &#34; + str(self.ImageType)
+
+
+class BackgroundElementSprite(GameObject.GameObject):
+    &#34;&#34;&#34;Class for background sprites&#34;&#34;&#34;
+
+    ImageType: AssetLibrary.ImageTypes = AssetLibrary.ImageTypes.Null
+
+    # pylint: disable=invalid-name
+    def __init__(self, position, path, maxSize=60, offset=(0, 0)) -&gt; None:
+        &#34;&#34;&#34;Init for background elements
+
+        Args:
+            position (tuple): Top left corner of sprite
+            path (str): Path to image
+            maxSize (int, optional): Max size of element. Defaults to 60.
+            offset (tuple, optional): Offset from position. Defaults to (0, 0).
+        &#34;&#34;&#34;
+        super().__init__(backgroundFlag=True, moveFlag=False, collisionFlag=False)
+        self.image = pygame.image.load(
+            path
+        )  # Replace with the actual sprite image file
+        self.rect = self.image.get_rect()
+        dim = utils.ResizeMaxLength(
+            dim=(self.rect.width, self.rect.height), maxSide=maxSize
+        )
+        self.image = pygame.transform.scale(self.image, dim)
+        self.rect.x = position[0] + offset[0]
+
+        self.rect.y = position[1] + offset[1]
+        self.ImageType = AssetLibrary.PathToTypeDict[path]
+
+
+class RectangleObject(GameObject.GameObject):
+    &#34;&#34;&#34;Base Rectange Object Class&#34;&#34;&#34;
+
+    # pylint: disable=invalid-name
+    def __init__(
+        self,
+        position,
+        color=(0, 0, 0),
+        size=(100, 100),
+    ) -&gt; None:
+        &#34;&#34;&#34;Init for rectange objects
+
+        Args:
+            position (tuple): Center position
+            color (tuple, optional): Color of Rectange. Defaults to (0, 0, 0).
+            size (tuple, optional): Dimensions of Rectangle. Defaults to (100, 100).
+        &#34;&#34;&#34;
+        super().__init__(backgroundFlag=True, moveFlag=False, collisionFlag=False)
+        self.image = pygame.Surface(size=size)
+        self.image.fill(color.RGB)
+        self.rect = self.image.get_rect()
+        self.rect.center = position
+
+
+class ButtonObject(GameObject.GameObject):
+    &#34;&#34;&#34;Defined Button Shape&#34;&#34;&#34;
+
+    # pylint: disable=invalid-name
+    def __init__(
+        self,
+        position,
+        text=&#34;Blank&#34;,
+        color=ColorTools.White,
+        backColor=ColorTools.Black,
+        size=(100, 100),
+        enabled=True,
+    ) -&gt; None:
+        &#34;&#34;&#34;Init for Button
+
+        Args:
+            position (tuple): Center of button
+            text (str, optional): String for Button to Show. Defaults to &#34;Blank&#34;.
+            color (Color, optional): Base Color. Defaults to ColorTools.White.
+            backColor (Color, optional): Background Color. Defaults to ColorTools.Black.
+            size (tuple, optional): Dimensions of Shape. Defaults to (100, 100).
+            enabled (bool, optional): Is the button able to be clicked. Defaults to True.
+        &#34;&#34;&#34;
+        super().__init__(backgroundFlag=True, moveFlag=False, collisionFlag=False)
+        self.image = pygame.Surface(size=size)
+        self.image.fill(backColor.RGB if enabled else ColorTools.Grey.RGB)
+        self.image.set_alpha(240 if enabled else 128)
+        self.text = text
+        self.position = position
+        self.Color = color
+        buttonRect = pygame.Rect(0, 0, size[0], size[1])
+        pygame.draw.rect(
+            surface=self.image,
+            color=color.RGB,
+            rect=buttonRect,
+            width=5,
+            border_radius=10,
+        )
+
+        self.rect = self.image.get_rect()
+        self.rect.center = position</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="Classes.Sprite.BackgroundElementSprite"><code class="flex name class">
+<span>class <span class="ident">BackgroundElementSprite</span></span>
+<span>(</span><span>position, path, maxSize=60, offset=(0, 0))</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Class for background sprites</p>
+<p>Init for background elements</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>position</code></strong> :&ensp;<code>tuple</code></dt>
+<dd>Top left corner of sprite</dd>
+<dt><strong><code>path</code></strong> :&ensp;<code>str</code></dt>
+<dd>Path to image</dd>
+<dt><strong><code>maxSize</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Max size of element. Defaults to 60.</dd>
+<dt><strong><code>offset</code></strong> :&ensp;<code>tuple</code>, optional</dt>
+<dd>Offset from position. Defaults to (0, 0).</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class BackgroundElementSprite(GameObject.GameObject):
+    &#34;&#34;&#34;Class for background sprites&#34;&#34;&#34;
+
+    ImageType: AssetLibrary.ImageTypes = AssetLibrary.ImageTypes.Null
+
+    # pylint: disable=invalid-name
+    def __init__(self, position, path, maxSize=60, offset=(0, 0)) -&gt; None:
+        &#34;&#34;&#34;Init for background elements
+
+        Args:
+            position (tuple): Top left corner of sprite
+            path (str): Path to image
+            maxSize (int, optional): Max size of element. Defaults to 60.
+            offset (tuple, optional): Offset from position. Defaults to (0, 0).
+        &#34;&#34;&#34;
+        super().__init__(backgroundFlag=True, moveFlag=False, collisionFlag=False)
+        self.image = pygame.image.load(
+            path
+        )  # Replace with the actual sprite image file
+        self.rect = self.image.get_rect()
+        dim = utils.ResizeMaxLength(
+            dim=(self.rect.width, self.rect.height), maxSide=maxSize
+        )
+        self.image = pygame.transform.scale(self.image, dim)
+        self.rect.x = position[0] + offset[0]
+
+        self.rect.y = position[1] + offset[1]
+        self.ImageType = AssetLibrary.PathToTypeDict[path]</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="Classes.GameObject.GameObject" href="GameObject.html#Classes.GameObject.GameObject">GameObject</a></li>
+<li>pygame.sprite.Sprite</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="Classes.Sprite.BackgroundElementSprite.ImageType"><code class="name">var <span class="ident">ImageType</span> : Definitions.AssetLibrary.ImageTypes</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="Classes.GameObject.GameObject" href="GameObject.html#Classes.GameObject.GameObject">GameObject</a></b></code>:
+<ul class="hlist">
+<li><code><a title="Classes.GameObject.GameObject.Update" href="GameObject.html#Classes.GameObject.GameObject.Update">Update</a></code></li>
+<li><code><a title="Classes.GameObject.GameObject.UpdateSprite" href="GameObject.html#Classes.GameObject.GameObject.UpdateSprite">UpdateSprite</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="Classes.Sprite.ButtonObject"><code class="flex name class">
+<span>class <span class="ident">ButtonObject</span></span>
+<span>(</span><span>position, text='Blank', color=Color(H=0, S=0, V=255), backColor=Color(H=0, S=0, V=0), size=(100, 100), enabled=True)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Defined Button Shape</p>
+<p>Init for Button</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>position</code></strong> :&ensp;<code>tuple</code></dt>
+<dd>Center of button</dd>
+<dt><strong><code>text</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>String for Button to Show. Defaults to "Blank".</dd>
+<dt><strong><code>color</code></strong> :&ensp;<code>Color</code>, optional</dt>
+<dd>Base Color. Defaults to ColorTools.White.</dd>
+<dt><strong><code>backColor</code></strong> :&ensp;<code>Color</code>, optional</dt>
+<dd>Background Color. Defaults to ColorTools.Black.</dd>
+<dt><strong><code>size</code></strong> :&ensp;<code>tuple</code>, optional</dt>
+<dd>Dimensions of Shape. Defaults to (100, 100).</dd>
+<dt><strong><code>enabled</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Is the button able to be clicked. Defaults to True.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ButtonObject(GameObject.GameObject):
+    &#34;&#34;&#34;Defined Button Shape&#34;&#34;&#34;
+
+    # pylint: disable=invalid-name
+    def __init__(
+        self,
+        position,
+        text=&#34;Blank&#34;,
+        color=ColorTools.White,
+        backColor=ColorTools.Black,
+        size=(100, 100),
+        enabled=True,
+    ) -&gt; None:
+        &#34;&#34;&#34;Init for Button
+
+        Args:
+            position (tuple): Center of button
+            text (str, optional): String for Button to Show. Defaults to &#34;Blank&#34;.
+            color (Color, optional): Base Color. Defaults to ColorTools.White.
+            backColor (Color, optional): Background Color. Defaults to ColorTools.Black.
+            size (tuple, optional): Dimensions of Shape. Defaults to (100, 100).
+            enabled (bool, optional): Is the button able to be clicked. Defaults to True.
+        &#34;&#34;&#34;
+        super().__init__(backgroundFlag=True, moveFlag=False, collisionFlag=False)
+        self.image = pygame.Surface(size=size)
+        self.image.fill(backColor.RGB if enabled else ColorTools.Grey.RGB)
+        self.image.set_alpha(240 if enabled else 128)
+        self.text = text
+        self.position = position
+        self.Color = color
+        buttonRect = pygame.Rect(0, 0, size[0], size[1])
+        pygame.draw.rect(
+            surface=self.image,
+            color=color.RGB,
+            rect=buttonRect,
+            width=5,
+            border_radius=10,
+        )
+
+        self.rect = self.image.get_rect()
+        self.rect.center = position</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="Classes.GameObject.GameObject" href="GameObject.html#Classes.GameObject.GameObject">GameObject</a></li>
+<li>pygame.sprite.Sprite</li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="Classes.GameObject.GameObject" href="GameObject.html#Classes.GameObject.GameObject">GameObject</a></b></code>:
+<ul class="hlist">
+<li><code><a title="Classes.GameObject.GameObject.Update" href="GameObject.html#Classes.GameObject.GameObject.Update">Update</a></code></li>
+<li><code><a title="Classes.GameObject.GameObject.UpdateSprite" href="GameObject.html#Classes.GameObject.GameObject.UpdateSprite">UpdateSprite</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="Classes.Sprite.CharImageSprite"><code class="flex name class">
+<span>class <span class="ident">CharImageSprite</span></span>
+<span>(</span><span>position, path, objID, maxSize=100)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Class for Sprites of Characters</p>
+<p>Init for Game Object</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>backgroundFlag</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Is the object in the background</dd>
+<dt><strong><code>moveFlag</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Can the object move</dd>
+<dt><strong><code>collisionFlag</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Can the object collide</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CharImageSprite(GameObject.GameObject):
+    &#34;&#34;&#34;Class for Sprites of Characters&#34;&#34;&#34;
+
+    # pylint: disable=invalid-name
+    CorrespondingID: int = 0
+    ImageType: AssetLibrary.ImageTypes = AssetLibrary.ImageTypes.Null
+    rect: pygame.rect.Rect = pygame.rect.Rect(0, 0, 0, 0)
+    MvmHandler: MovementHandler.CharacterMovementHandler = None
+    PersonalTimer: TimerBar.TimerBar = None
+
+    def __init__(
+        self,
+        position,
+        path,
+        objID,
+        maxSize=utils.ScaleToSize(
+            value=100, newSize=DefinedLocations.LocationDefs.ScreenSize
+        ),
+    ) -&gt; None:
+        super().__init__(backgroundFlag=False, moveFlag=True, collisionFlag=True)
+        self.image = pygame.image.load(path)
+        self.rect = self.image.get_rect()
+        newSize = utils.ResizeMaxLength(
+            dim=(self.rect.width, self.rect.height), maxSide=maxSize
+        )
+        self.image = pygame.transform.scale(
+            surface=self.image,
+            size=newSize,
+        )
+        self.rect = self.image.get_rect()
+        self.rect.x = position[0]
+        self.rect.y = position[1]
+        self.MvmHandler = MovementHandler.CharacterMovementHandler()
+        self.ImageType = AssetLibrary.PathToTypeDict[path]
+        # self.CheckSpawnCollision()
+
+        self.CorrespondingID = objID
+
+    @property
+    def DataObject(self):
+        &#34;&#34;&#34;Numerical Data Object Associated with Image
+
+        Returns:
+            Customer | Worker: Data Object Assoc with Sprite
+        &#34;&#34;&#34;
+        objDict = Matching.MatchIdToPerson(
+            activeGame=Game.MasterGame, inputId=self.CorrespondingID
+        )
+        objDict.pop(&#34;sprite&#34;)
+        obj = list(objDict.values())[0]
+        return obj
+
+    def CheckSpawnCollision(self, activeGame=Game.MasterGame) -&gt; None:
+        &#34;&#34;&#34;Changes spawn location until new sprite is not colliding
+
+        Args:
+            activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
+        &#34;&#34;&#34;
+        currentCenter = self.rect.center
+        for group in activeGame.SpriteGroups:
+            for sprite in group:
+                while sprite.rect.colliderect(self.rect) and sprite is not self:
+                    self.rect.center = utils.PositionRandomVariance(
+                        position=currentCenter,
+                        percentVarianceTuple=(0.1, 1),
+                        screenSize=activeGame.ScreenSize,
+                    )
+
+    def ChangeOutfit(self, newOutfitPath) -&gt; None:
+        &#34;&#34;&#34;Update Sprite Image and resize to fit
+
+        Args:
+            newOutfitPath (str): Path to New Outfit
+        &#34;&#34;&#34;
+        newImage = pygame.image.load(newOutfitPath)
+        newImageRect = newImage.get_rect()
+        dim = utils.ResizeMaxLength(
+            dim=(newImageRect.width, newImageRect.height),
+            maxSide=max(self.rect.width, self.rect.height),
+        )
+        newImage = pygame.transform.scale(newImage, dim)
+        newImageRect = self.rect
+        self.image = newImage
+        self.ImageType = AssetLibrary.PathToTypeDict[newOutfitPath]
+
+    def UpdateSprite(self) -&gt; None:
+        &#34;&#34;&#34;Update sprite for each frame&#34;&#34;&#34;
+        if self.PersonalTimer is not None:
+            self.PersonalTimer.UpdateAndDraw()
+            self.PersonalTimer.Rect = self.rect.topleft
+        self.Update()
+
+    def CreatePersonTimerBar(
+        self,
+        completeTask,
+        assocId=0,
+        length=29.0,
+        startingState=0,
+        offset=(0, 0),
+        width=0,
+        fillColor=ColorTools.LimeGreen,
+    ) -&gt; None:
+        &#34;&#34;&#34;Create a timer bar bound to this objcet
+
+        Args:
+            completeTask (Task): Function to exec on completion of timer
+            assocId (int, optional): Id of Associated Job. Defaults to 0.
+            length (float, optional): Length of Timer in game minutes. Defaults to 29.0.
+            startingState (int, optional): Starting State of Customer, if Object is one. Defaults to 0.
+            offset (tuple, optional): Offset of timer bar from sprite. Defaults to (0, 0).
+            width (int, optional): Max width of timer bar. Defaults to 0.
+            fillColor (ColorTools.Color, optional): Color of Timer bar. Defaults to ColorTools.LimeGreen.
+        &#34;&#34;&#34;
+        self.PersonalTimer = TimerBar.TimerBar(
+            duration=length if length != 0 else 29.0,
+            position=(self.rect.topleft),
+            assocId=assocId,
+            offset=offset,
+        )
+        self.PersonalTimer.StartingState = startingState
+        self.PersonalTimer.OnComplete = completeTask
+        self.PersonalTimer.TimerRect.y -= 25
+        self.PersonalTimer.SetMaxSize(size=self.rect.width if width == 0 else width)
+        self.PersonalTimer.FillColor = fillColor
+        self.PersonalTimer.StartTimer()
+
+    def __repr__(self) -&gt; str:
+        &#34;&#34;&#34;String Rep of Object&#34;&#34;&#34;
+        return str(self.CorrespondingID) + &#34; &#34; + str(self.ImageType)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="Classes.GameObject.GameObject" href="GameObject.html#Classes.GameObject.GameObject">GameObject</a></li>
+<li>pygame.sprite.Sprite</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="Classes.Sprite.CharImageSprite.CorrespondingID"><code class="name">var <span class="ident">CorrespondingID</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="Classes.Sprite.CharImageSprite.ImageType"><code class="name">var <span class="ident">ImageType</span> : Definitions.AssetLibrary.ImageTypes</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="Classes.Sprite.CharImageSprite.MvmHandler"><code class="name">var <span class="ident">MvmHandler</span> : Handlers.MovementHandler.CharacterMovementHandler</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="Classes.Sprite.CharImageSprite.PersonalTimer"><code class="name">var <span class="ident">PersonalTimer</span> : <a title="Classes.TimerBar.TimerBar" href="TimerBar.html#Classes.TimerBar.TimerBar">TimerBar</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="Classes.Sprite.CharImageSprite.rect"><code class="name">var <span class="ident">rect</span> : pygame.rect.Rect</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="Classes.Sprite.CharImageSprite.DataObject"><code class="name">var <span class="ident">DataObject</span></code></dt>
+<dd>
+<div class="desc"><p>Numerical Data Object Associated with Image</p>
+<h2 id="returns">Returns</h2>
+<p>Customer | Worker: Data Object Assoc with Sprite</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def DataObject(self):
+    &#34;&#34;&#34;Numerical Data Object Associated with Image
+
+    Returns:
+        Customer | Worker: Data Object Assoc with Sprite
+    &#34;&#34;&#34;
+    objDict = Matching.MatchIdToPerson(
+        activeGame=Game.MasterGame, inputId=self.CorrespondingID
+    )
+    objDict.pop(&#34;sprite&#34;)
+    obj = list(objDict.values())[0]
+    return obj</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="Classes.Sprite.CharImageSprite.ChangeOutfit"><code class="name flex">
+<span>def <span class="ident">ChangeOutfit</span></span>(<span>self, newOutfitPath) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Update Sprite Image and resize to fit</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>newOutfitPath</code></strong> :&ensp;<code>str</code></dt>
+<dd>Path to New Outfit</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def ChangeOutfit(self, newOutfitPath) -&gt; None:
+    &#34;&#34;&#34;Update Sprite Image and resize to fit
+
+    Args:
+        newOutfitPath (str): Path to New Outfit
+    &#34;&#34;&#34;
+    newImage = pygame.image.load(newOutfitPath)
+    newImageRect = newImage.get_rect()
+    dim = utils.ResizeMaxLength(
+        dim=(newImageRect.width, newImageRect.height),
+        maxSide=max(self.rect.width, self.rect.height),
+    )
+    newImage = pygame.transform.scale(newImage, dim)
+    newImageRect = self.rect
+    self.image = newImage
+    self.ImageType = AssetLibrary.PathToTypeDict[newOutfitPath]</code></pre>
+</details>
+</dd>
+<dt id="Classes.Sprite.CharImageSprite.CheckSpawnCollision"><code class="name flex">
+<span>def <span class="ident">CheckSpawnCollision</span></span>(<span>self, activeGame=&lt;Classes.Game.Game object&gt;) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Changes spawn location until new sprite is not colliding</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>activeGame</code></strong> :&ensp;<code>Game</code>, optional</dt>
+<dd>Current Game. Defaults to Game.MasterGame.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def CheckSpawnCollision(self, activeGame=Game.MasterGame) -&gt; None:
+    &#34;&#34;&#34;Changes spawn location until new sprite is not colliding
+
+    Args:
+        activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
+    &#34;&#34;&#34;
+    currentCenter = self.rect.center
+    for group in activeGame.SpriteGroups:
+        for sprite in group:
+            while sprite.rect.colliderect(self.rect) and sprite is not self:
+                self.rect.center = utils.PositionRandomVariance(
+                    position=currentCenter,
+                    percentVarianceTuple=(0.1, 1),
+                    screenSize=activeGame.ScreenSize,
+                )</code></pre>
+</details>
+</dd>
+<dt id="Classes.Sprite.CharImageSprite.CreatePersonTimerBar"><code class="name flex">
+<span>def <span class="ident">CreatePersonTimerBar</span></span>(<span>self, completeTask, assocId=0, length=29.0, startingState=0, offset=(0, 0), width=0, fillColor=Color(H=70, S=200, V=255)) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create a timer bar bound to this objcet</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>completeTask</code></strong> :&ensp;<code>Task</code></dt>
+<dd>Function to exec on completion of timer</dd>
+<dt><strong><code>assocId</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Id of Associated Job. Defaults to 0.</dd>
+<dt><strong><code>length</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Length of Timer in game minutes. Defaults to 29.0.</dd>
+<dt><strong><code>startingState</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Starting State of Customer, if Object is one. Defaults to 0.</dd>
+<dt><strong><code>offset</code></strong> :&ensp;<code>tuple</code>, optional</dt>
+<dd>Offset of timer bar from sprite. Defaults to (0, 0).</dd>
+<dt><strong><code>width</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Max width of timer bar. Defaults to 0.</dd>
+<dt><strong><code>fillColor</code></strong> :&ensp;<code>ColorTools.Color</code>, optional</dt>
+<dd>Color of Timer bar. Defaults to ColorTools.LimeGreen.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def CreatePersonTimerBar(
+    self,
+    completeTask,
+    assocId=0,
+    length=29.0,
+    startingState=0,
+    offset=(0, 0),
+    width=0,
+    fillColor=ColorTools.LimeGreen,
+) -&gt; None:
+    &#34;&#34;&#34;Create a timer bar bound to this objcet
+
+    Args:
+        completeTask (Task): Function to exec on completion of timer
+        assocId (int, optional): Id of Associated Job. Defaults to 0.
+        length (float, optional): Length of Timer in game minutes. Defaults to 29.0.
+        startingState (int, optional): Starting State of Customer, if Object is one. Defaults to 0.
+        offset (tuple, optional): Offset of timer bar from sprite. Defaults to (0, 0).
+        width (int, optional): Max width of timer bar. Defaults to 0.
+        fillColor (ColorTools.Color, optional): Color of Timer bar. Defaults to ColorTools.LimeGreen.
+    &#34;&#34;&#34;
+    self.PersonalTimer = TimerBar.TimerBar(
+        duration=length if length != 0 else 29.0,
+        position=(self.rect.topleft),
+        assocId=assocId,
+        offset=offset,
+    )
+    self.PersonalTimer.StartingState = startingState
+    self.PersonalTimer.OnComplete = completeTask
+    self.PersonalTimer.TimerRect.y -= 25
+    self.PersonalTimer.SetMaxSize(size=self.rect.width if width == 0 else width)
+    self.PersonalTimer.FillColor = fillColor
+    self.PersonalTimer.StartTimer()</code></pre>
+</details>
+</dd>
+<dt id="Classes.Sprite.CharImageSprite.UpdateSprite"><code class="name flex">
+<span>def <span class="ident">UpdateSprite</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Update sprite for each frame</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def UpdateSprite(self) -&gt; None:
+    &#34;&#34;&#34;Update sprite for each frame&#34;&#34;&#34;
+    if self.PersonalTimer is not None:
+        self.PersonalTimer.UpdateAndDraw()
+        self.PersonalTimer.Rect = self.rect.topleft
+    self.Update()</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="Classes.GameObject.GameObject" href="GameObject.html#Classes.GameObject.GameObject">GameObject</a></b></code>:
+<ul class="hlist">
+<li><code><a title="Classes.GameObject.GameObject.Update" href="GameObject.html#Classes.GameObject.GameObject.Update">Update</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="Classes.Sprite.RectangleObject"><code class="flex name class">
+<span>class <span class="ident">RectangleObject</span></span>
+<span>(</span><span>position, color=(0, 0, 0), size=(100, 100))</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Base Rectange Object Class</p>
+<p>Init for rectange objects</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>position</code></strong> :&ensp;<code>tuple</code></dt>
+<dd>Center position</dd>
+<dt><strong><code>color</code></strong> :&ensp;<code>tuple</code>, optional</dt>
+<dd>Color of Rectange. Defaults to (0, 0, 0).</dd>
+<dt><strong><code>size</code></strong> :&ensp;<code>tuple</code>, optional</dt>
+<dd>Dimensions of Rectangle. Defaults to (100, 100).</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RectangleObject(GameObject.GameObject):
+    &#34;&#34;&#34;Base Rectange Object Class&#34;&#34;&#34;
+
+    # pylint: disable=invalid-name
+    def __init__(
+        self,
+        position,
+        color=(0, 0, 0),
+        size=(100, 100),
+    ) -&gt; None:
+        &#34;&#34;&#34;Init for rectange objects
+
+        Args:
+            position (tuple): Center position
+            color (tuple, optional): Color of Rectange. Defaults to (0, 0, 0).
+            size (tuple, optional): Dimensions of Rectangle. Defaults to (100, 100).
+        &#34;&#34;&#34;
+        super().__init__(backgroundFlag=True, moveFlag=False, collisionFlag=False)
+        self.image = pygame.Surface(size=size)
+        self.image.fill(color.RGB)
+        self.rect = self.image.get_rect()
+        self.rect.center = position</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="Classes.GameObject.GameObject" href="GameObject.html#Classes.GameObject.GameObject">GameObject</a></li>
+<li>pygame.sprite.Sprite</li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="Classes.GameObject.GameObject" href="GameObject.html#Classes.GameObject.GameObject">GameObject</a></b></code>:
+<ul class="hlist">
+<li><code><a title="Classes.GameObject.GameObject.Update" href="GameObject.html#Classes.GameObject.GameObject.Update">Update</a></code></li>
+<li><code><a title="Classes.GameObject.GameObject.UpdateSprite" href="GameObject.html#Classes.GameObject.GameObject.UpdateSprite">UpdateSprite</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="Classes" href="index.html">Classes</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="Classes.Sprite.BackgroundElementSprite" href="#Classes.Sprite.BackgroundElementSprite">BackgroundElementSprite</a></code></h4>
+<ul class="">
+<li><code><a title="Classes.Sprite.BackgroundElementSprite.ImageType" href="#Classes.Sprite.BackgroundElementSprite.ImageType">ImageType</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="Classes.Sprite.ButtonObject" href="#Classes.Sprite.ButtonObject">ButtonObject</a></code></h4>
+</li>
+<li>
+<h4><code><a title="Classes.Sprite.CharImageSprite" href="#Classes.Sprite.CharImageSprite">CharImageSprite</a></code></h4>
+<ul class="">
+<li><code><a title="Classes.Sprite.CharImageSprite.ChangeOutfit" href="#Classes.Sprite.CharImageSprite.ChangeOutfit">ChangeOutfit</a></code></li>
+<li><code><a title="Classes.Sprite.CharImageSprite.CheckSpawnCollision" href="#Classes.Sprite.CharImageSprite.CheckSpawnCollision">CheckSpawnCollision</a></code></li>
+<li><code><a title="Classes.Sprite.CharImageSprite.CorrespondingID" href="#Classes.Sprite.CharImageSprite.CorrespondingID">CorrespondingID</a></code></li>
+<li><code><a title="Classes.Sprite.CharImageSprite.CreatePersonTimerBar" href="#Classes.Sprite.CharImageSprite.CreatePersonTimerBar">CreatePersonTimerBar</a></code></li>
+<li><code><a title="Classes.Sprite.CharImageSprite.DataObject" href="#Classes.Sprite.CharImageSprite.DataObject">DataObject</a></code></li>
+<li><code><a title="Classes.Sprite.CharImageSprite.ImageType" href="#Classes.Sprite.CharImageSprite.ImageType">ImageType</a></code></li>
+<li><code><a title="Classes.Sprite.CharImageSprite.MvmHandler" href="#Classes.Sprite.CharImageSprite.MvmHandler">MvmHandler</a></code></li>
+<li><code><a title="Classes.Sprite.CharImageSprite.PersonalTimer" href="#Classes.Sprite.CharImageSprite.PersonalTimer">PersonalTimer</a></code></li>
+<li><code><a title="Classes.Sprite.CharImageSprite.UpdateSprite" href="#Classes.Sprite.CharImageSprite.UpdateSprite">UpdateSprite</a></code></li>
+<li><code><a title="Classes.Sprite.CharImageSprite.rect" href="#Classes.Sprite.CharImageSprite.rect">rect</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="Classes.Sprite.RectangleObject" href="#Classes.Sprite.RectangleObject">RectangleObject</a></code></h4>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>

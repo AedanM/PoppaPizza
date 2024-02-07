@@ -1,0 +1,733 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>Utils API documentation</title>
+<meta name="description" content="Utilites" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>Utils</code></h1>
+</header>
+<section id="section-intro">
+<p>Utilites</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;Utilites&#34;&#34;&#34;
+
+import math
+import random
+
+
+def InRandomVariance(num, percentVariance) -&gt; float:
+    &#34;&#34;&#34;Returns random num in % variance
+
+    Args:
+        num (int | float): Base Number
+        percentVariance (float): Percentage to vary by
+
+    Returns:
+        float: New Varied Number
+    &#34;&#34;&#34;
+    percentVariance = CheckDecimalPercent(percentVariance)
+    varyAmount = random.randint(a=-100, b=100) * percentVariance * 0.01 * num
+    return num + varyAmount
+
+
+def CheckDecimalPercent(val) -&gt; float | tuple:
+    &#34;&#34;&#34;Normalizes Percentages from 0-100 to 0-1
+
+    Args:
+        val (tuple | int | float): input value
+
+    Returns:
+        float | tuple: Normalized Output
+    &#34;&#34;&#34;
+    returnVal = None
+    if isinstance(val, tuple):
+        holdList = []
+        percentMod = True if (abs(val[0]) &lt; 1) else False
+        for i in val:
+            holdList.append(float(i) if percentMod else float(i) / 100)
+        returnVal = tuple(holdList)
+    else:
+        returnVal = float(val) if abs(val) &lt;= 1 else float(val) / 100
+    return returnVal
+
+
+def PositionRandomVariance(
+    position, percentVarianceTuple, screenSize
+) -&gt; tuple[int, int]:
+    &#34;&#34;&#34;Generates a position in random variance of input
+
+    Args:
+        position (tuple): Basse Location
+        percentVarianceTuple (tuple): Variance in X and Y direction as a % of screen
+        screenSize (tuple): Size of Screen as tuple(width, height)
+
+    Returns:
+        tuple[int, int]: Random Position
+    &#34;&#34;&#34;
+    percentVarianceTuple = CheckDecimalPercent(val=percentVarianceTuple)
+    varyAmountX = math.ceil(
+        (random.randint(-100, 100) * 0.01 * percentVarianceTuple[0] * screenSize[0])
+        + position[0]
+    )
+    varyAmountY = math.ceil(
+        (random.randint(-100, 100) * 0.01 * percentVarianceTuple[1] * screenSize[1])
+        + position[1]
+    )
+    out = (
+        Bind(val=varyAmountX, inRange=(0, screenSize[0])),
+        Bind(val=varyAmountY, inRange=(0, screenSize[1])),
+    )
+    return out
+
+
+def InTolerance(num1, num2, tolerance) -&gt; bool:
+    &#34;&#34;&#34;Returns if numbers are wthin a numeric tolerance
+
+    Args:
+        num1 (int | float): 1st number
+        num2 (int | float): 2nd number
+        tolerance (int | float): Range of Acceptance
+
+    Returns:
+        bool: Status of Tolerance
+    &#34;&#34;&#34;
+    return abs(num1 - num2) &lt;= abs(tolerance)
+
+
+def InPercentTolerance(num1, num2, tolerance) -&gt; bool:
+    &#34;&#34;&#34;Returns if numbers are wthin a percentage tolerance
+
+    Args:
+        num1 (int | float): 1st number
+        num2 (int | float): 2nd number
+        tolerance (float): Tolerance %
+
+    Returns:
+        bool: Status of Tolerance
+    &#34;&#34;&#34;
+    tolerance = CheckDecimalPercent(val=tolerance)
+    if num1 == 0:
+        return False
+    seperation = abs((num1 - num2) / num1)
+    return seperation &lt;= abs(tolerance)
+
+
+def ProRateValue(value, inRange, outRange) -&gt; int | float | None:
+    &#34;&#34;&#34;Changes the range of a value
+
+    Args:
+        value (int | float): _description_
+        inRange (tuple): Original Range
+        outRange (tuple): New Range
+
+    Returns:
+        int | float | None: _description_
+    &#34;&#34;&#34;
+    return (
+        float(value) * (outRange[1] - outRange[0]) / (inRange[1] - inRange[0])
+        if (inRange[1] - inRange[0]) != 0 and (outRange[1] - outRange[0]) != 0
+        else &#34;Error&#34;
+    )
+
+
+def Bind(val, inRange) -&gt; int | float:
+    &#34;&#34;&#34;Binds a value into a range
+
+    Args:
+        val (int | float): Input value
+        inRange (tuple): Range to bind to
+
+    Returns:
+        int | float: Bound Value
+    &#34;&#34;&#34;
+    return min(inRange[1], max(inRange[0], val))
+
+
+# TODO - Add Test
+def ResizeMaxLength(dim, maxSide) -&gt; tuple:
+    &#34;&#34;&#34;Resize a set of dimensions to a maximum
+
+    Args:
+        dim (tuple): Dimensions
+        maxSide (int): Max side length
+
+    Returns:
+        tuple: New Dimensions
+    &#34;&#34;&#34;
+    val = (math.floor(dim[0] / dim[1] * maxSide), maxSide)
+    val2 = (maxSide, math.floor(dim[1] / dim[0] * maxSide))
+    return val if dim[1] &gt; dim[0] else val2
+
+
+# TODO - Add Test
+def PositionInTolerance(pos1, pos2, tolerance) -&gt; bool:
+    &#34;&#34;&#34;Checks if 2 positions are within a numeric tolerance
+
+    Args:
+        pos1 (tuple): Position 1
+        pos2 (tuple): Position 2
+        tolerance (int | float): Numerical Tolerance
+
+    Returns:
+        bool: X in Tolerance and Y in Tolerance
+    &#34;&#34;&#34;
+    return InTolerance(num1=pos1[1], num2=pos2[1], tolerance=tolerance) and InTolerance(
+        num1=pos1[0], num2=pos2[0], tolerance=tolerance
+    )
+
+
+# TODO - Add Test
+def OffsetTuple(inputTuple, offset) -&gt; tuple:
+    &#34;&#34;&#34;Tuple Addition Funciton
+
+    Args:
+        inputTuple (tuple): Input
+        offset (tuple| int | float):  Amount to offset by
+
+    Returns:
+        tuple: Offset Tuple
+    &#34;&#34;&#34;
+    element1 = inputTuple[0] + (offset[0] if isinstance(offset, tuple) else offset)
+    element2 = inputTuple[1] + (offset[1] if isinstance(offset, tuple) else offset)
+    return (element1, element2)
+
+
+def Sign(num: int | float) -&gt; int:
+    &#34;&#34;&#34;Return Sign from Value
+
+    Args:
+        num (int | float): Input
+
+    Returns:
+        int: Sign of Number
+    &#34;&#34;&#34;
+    return int(num / abs(num)) if num != 0 else 0
+
+
+# TODO - Actually Implement
+def ScaleToSize(
+    value,
+    newSize,
+    origSize=(1200, 800),
+) -&gt; tuple:
+    &#34;&#34;&#34;Scale a set of dimensions to a new screen size
+
+    Args:
+        value (tuple): Dimensions
+        newSize (tuple): New Screen Size
+        origSize (tuple, optional): Old Screen Size. Defaults to StandardDimensions[&#34;Medium&#34;].
+
+    Returns:
+        tuple: New Dimensions
+    &#34;&#34;&#34;
+    return value
+    scaleX = newSize[0] / origSize[0]
+    scaleY = newSize[1] / origSize[1]
+    if isinstance(value, tuple):
+        return (value[0] * scaleX, value[1] * scaleY)
+    return value * scaleX</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="Utils.Bind"><code class="name flex">
+<span>def <span class="ident">Bind</span></span>(<span>val, inRange) ‑> int | float</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Binds a value into a range</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt>val (int | float): Input value</dt>
+<dt><strong><code>inRange</code></strong> :&ensp;<code>tuple</code></dt>
+<dd>Range to bind to</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>int | float: Bound Value</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def Bind(val, inRange) -&gt; int | float:
+    &#34;&#34;&#34;Binds a value into a range
+
+    Args:
+        val (int | float): Input value
+        inRange (tuple): Range to bind to
+
+    Returns:
+        int | float: Bound Value
+    &#34;&#34;&#34;
+    return min(inRange[1], max(inRange[0], val))</code></pre>
+</details>
+</dd>
+<dt id="Utils.CheckDecimalPercent"><code class="name flex">
+<span>def <span class="ident">CheckDecimalPercent</span></span>(<span>val) ‑> float | tuple</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Normalizes Percentages from 0-100 to 0-1</p>
+<h2 id="args">Args</h2>
+<p>val (tuple | int | float): input value</p>
+<h2 id="returns">Returns</h2>
+<p>float | tuple: Normalized Output</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def CheckDecimalPercent(val) -&gt; float | tuple:
+    &#34;&#34;&#34;Normalizes Percentages from 0-100 to 0-1
+
+    Args:
+        val (tuple | int | float): input value
+
+    Returns:
+        float | tuple: Normalized Output
+    &#34;&#34;&#34;
+    returnVal = None
+    if isinstance(val, tuple):
+        holdList = []
+        percentMod = True if (abs(val[0]) &lt; 1) else False
+        for i in val:
+            holdList.append(float(i) if percentMod else float(i) / 100)
+        returnVal = tuple(holdList)
+    else:
+        returnVal = float(val) if abs(val) &lt;= 1 else float(val) / 100
+    return returnVal</code></pre>
+</details>
+</dd>
+<dt id="Utils.InPercentTolerance"><code class="name flex">
+<span>def <span class="ident">InPercentTolerance</span></span>(<span>num1, num2, tolerance) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns if numbers are wthin a percentage tolerance</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt>num1 (int | float): 1st number</dt>
+<dt>num2 (int | float): 2nd number</dt>
+<dt><strong><code>tolerance</code></strong> :&ensp;<code>float</code></dt>
+<dd>Tolerance %</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>Status of Tolerance</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def InPercentTolerance(num1, num2, tolerance) -&gt; bool:
+    &#34;&#34;&#34;Returns if numbers are wthin a percentage tolerance
+
+    Args:
+        num1 (int | float): 1st number
+        num2 (int | float): 2nd number
+        tolerance (float): Tolerance %
+
+    Returns:
+        bool: Status of Tolerance
+    &#34;&#34;&#34;
+    tolerance = CheckDecimalPercent(val=tolerance)
+    if num1 == 0:
+        return False
+    seperation = abs((num1 - num2) / num1)
+    return seperation &lt;= abs(tolerance)</code></pre>
+</details>
+</dd>
+<dt id="Utils.InRandomVariance"><code class="name flex">
+<span>def <span class="ident">InRandomVariance</span></span>(<span>num, percentVariance) ‑> float</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns random num in % variance</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt>num (int | float): Base Number</dt>
+<dt><strong><code>percentVariance</code></strong> :&ensp;<code>float</code></dt>
+<dd>Percentage to vary by</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>float</code></dt>
+<dd>New Varied Number</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def InRandomVariance(num, percentVariance) -&gt; float:
+    &#34;&#34;&#34;Returns random num in % variance
+
+    Args:
+        num (int | float): Base Number
+        percentVariance (float): Percentage to vary by
+
+    Returns:
+        float: New Varied Number
+    &#34;&#34;&#34;
+    percentVariance = CheckDecimalPercent(percentVariance)
+    varyAmount = random.randint(a=-100, b=100) * percentVariance * 0.01 * num
+    return num + varyAmount</code></pre>
+</details>
+</dd>
+<dt id="Utils.InTolerance"><code class="name flex">
+<span>def <span class="ident">InTolerance</span></span>(<span>num1, num2, tolerance) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns if numbers are wthin a numeric tolerance</p>
+<h2 id="args">Args</h2>
+<p>num1 (int | float): 1st number
+num2 (int | float): 2nd number
+tolerance (int | float): Range of Acceptance</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>Status of Tolerance</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def InTolerance(num1, num2, tolerance) -&gt; bool:
+    &#34;&#34;&#34;Returns if numbers are wthin a numeric tolerance
+
+    Args:
+        num1 (int | float): 1st number
+        num2 (int | float): 2nd number
+        tolerance (int | float): Range of Acceptance
+
+    Returns:
+        bool: Status of Tolerance
+    &#34;&#34;&#34;
+    return abs(num1 - num2) &lt;= abs(tolerance)</code></pre>
+</details>
+</dd>
+<dt id="Utils.OffsetTuple"><code class="name flex">
+<span>def <span class="ident">OffsetTuple</span></span>(<span>inputTuple, offset) ‑> tuple</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Tuple Addition Funciton</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>inputTuple</code></strong> :&ensp;<code>tuple</code></dt>
+<dd>Input</dd>
+</dl>
+<p>offset (tuple| int | float):
+Amount to offset by</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tuple</code></dt>
+<dd>Offset Tuple</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def OffsetTuple(inputTuple, offset) -&gt; tuple:
+    &#34;&#34;&#34;Tuple Addition Funciton
+
+    Args:
+        inputTuple (tuple): Input
+        offset (tuple| int | float):  Amount to offset by
+
+    Returns:
+        tuple: Offset Tuple
+    &#34;&#34;&#34;
+    element1 = inputTuple[0] + (offset[0] if isinstance(offset, tuple) else offset)
+    element2 = inputTuple[1] + (offset[1] if isinstance(offset, tuple) else offset)
+    return (element1, element2)</code></pre>
+</details>
+</dd>
+<dt id="Utils.PositionInTolerance"><code class="name flex">
+<span>def <span class="ident">PositionInTolerance</span></span>(<span>pos1, pos2, tolerance) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Checks if 2 positions are within a numeric tolerance</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>pos1</code></strong> :&ensp;<code>tuple</code></dt>
+<dd>Position 1</dd>
+<dt><strong><code>pos2</code></strong> :&ensp;<code>tuple</code></dt>
+<dd>Position 2</dd>
+</dl>
+<p>tolerance (int | float): Numerical Tolerance</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>X in Tolerance and Y in Tolerance</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def PositionInTolerance(pos1, pos2, tolerance) -&gt; bool:
+    &#34;&#34;&#34;Checks if 2 positions are within a numeric tolerance
+
+    Args:
+        pos1 (tuple): Position 1
+        pos2 (tuple): Position 2
+        tolerance (int | float): Numerical Tolerance
+
+    Returns:
+        bool: X in Tolerance and Y in Tolerance
+    &#34;&#34;&#34;
+    return InTolerance(num1=pos1[1], num2=pos2[1], tolerance=tolerance) and InTolerance(
+        num1=pos1[0], num2=pos2[0], tolerance=tolerance
+    )</code></pre>
+</details>
+</dd>
+<dt id="Utils.PositionRandomVariance"><code class="name flex">
+<span>def <span class="ident">PositionRandomVariance</span></span>(<span>position, percentVarianceTuple, screenSize) ‑> tuple[int, int]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Generates a position in random variance of input</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>position</code></strong> :&ensp;<code>tuple</code></dt>
+<dd>Basse Location</dd>
+<dt><strong><code>percentVarianceTuple</code></strong> :&ensp;<code>tuple</code></dt>
+<dd>Variance in X and Y direction as a % of screen</dd>
+<dt><strong><code>screenSize</code></strong> :&ensp;<code>tuple</code></dt>
+<dd>Size of Screen as tuple(width, height)</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tuple[int, int]</code></dt>
+<dd>Random Position</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def PositionRandomVariance(
+    position, percentVarianceTuple, screenSize
+) -&gt; tuple[int, int]:
+    &#34;&#34;&#34;Generates a position in random variance of input
+
+    Args:
+        position (tuple): Basse Location
+        percentVarianceTuple (tuple): Variance in X and Y direction as a % of screen
+        screenSize (tuple): Size of Screen as tuple(width, height)
+
+    Returns:
+        tuple[int, int]: Random Position
+    &#34;&#34;&#34;
+    percentVarianceTuple = CheckDecimalPercent(val=percentVarianceTuple)
+    varyAmountX = math.ceil(
+        (random.randint(-100, 100) * 0.01 * percentVarianceTuple[0] * screenSize[0])
+        + position[0]
+    )
+    varyAmountY = math.ceil(
+        (random.randint(-100, 100) * 0.01 * percentVarianceTuple[1] * screenSize[1])
+        + position[1]
+    )
+    out = (
+        Bind(val=varyAmountX, inRange=(0, screenSize[0])),
+        Bind(val=varyAmountY, inRange=(0, screenSize[1])),
+    )
+    return out</code></pre>
+</details>
+</dd>
+<dt id="Utils.ProRateValue"><code class="name flex">
+<span>def <span class="ident">ProRateValue</span></span>(<span>value, inRange, outRange) ‑> int | float | None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Changes the range of a value</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt>value (int | float): <em>description</em></dt>
+<dt><strong><code>inRange</code></strong> :&ensp;<code>tuple</code></dt>
+<dd>Original Range</dd>
+<dt><strong><code>outRange</code></strong> :&ensp;<code>tuple</code></dt>
+<dd>New Range</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>int | float | None: <em>description</em></p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def ProRateValue(value, inRange, outRange) -&gt; int | float | None:
+    &#34;&#34;&#34;Changes the range of a value
+
+    Args:
+        value (int | float): _description_
+        inRange (tuple): Original Range
+        outRange (tuple): New Range
+
+    Returns:
+        int | float | None: _description_
+    &#34;&#34;&#34;
+    return (
+        float(value) * (outRange[1] - outRange[0]) / (inRange[1] - inRange[0])
+        if (inRange[1] - inRange[0]) != 0 and (outRange[1] - outRange[0]) != 0
+        else &#34;Error&#34;
+    )</code></pre>
+</details>
+</dd>
+<dt id="Utils.ResizeMaxLength"><code class="name flex">
+<span>def <span class="ident">ResizeMaxLength</span></span>(<span>dim, maxSide) ‑> tuple</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Resize a set of dimensions to a maximum</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>dim</code></strong> :&ensp;<code>tuple</code></dt>
+<dd>Dimensions</dd>
+<dt><strong><code>maxSide</code></strong> :&ensp;<code>int</code></dt>
+<dd>Max side length</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tuple</code></dt>
+<dd>New Dimensions</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def ResizeMaxLength(dim, maxSide) -&gt; tuple:
+    &#34;&#34;&#34;Resize a set of dimensions to a maximum
+
+    Args:
+        dim (tuple): Dimensions
+        maxSide (int): Max side length
+
+    Returns:
+        tuple: New Dimensions
+    &#34;&#34;&#34;
+    val = (math.floor(dim[0] / dim[1] * maxSide), maxSide)
+    val2 = (maxSide, math.floor(dim[1] / dim[0] * maxSide))
+    return val if dim[1] &gt; dim[0] else val2</code></pre>
+</details>
+</dd>
+<dt id="Utils.ScaleToSize"><code class="name flex">
+<span>def <span class="ident">ScaleToSize</span></span>(<span>value, newSize, origSize=(1200, 800)) ‑> tuple</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Scale a set of dimensions to a new screen size</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>value</code></strong> :&ensp;<code>tuple</code></dt>
+<dd>Dimensions</dd>
+<dt><strong><code>newSize</code></strong> :&ensp;<code>tuple</code></dt>
+<dd>New Screen Size</dd>
+<dt><strong><code>origSize</code></strong> :&ensp;<code>tuple</code>, optional</dt>
+<dd>Old Screen Size. Defaults to StandardDimensions["Medium"].</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tuple</code></dt>
+<dd>New Dimensions</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def ScaleToSize(
+    value,
+    newSize,
+    origSize=(1200, 800),
+) -&gt; tuple:
+    &#34;&#34;&#34;Scale a set of dimensions to a new screen size
+
+    Args:
+        value (tuple): Dimensions
+        newSize (tuple): New Screen Size
+        origSize (tuple, optional): Old Screen Size. Defaults to StandardDimensions[&#34;Medium&#34;].
+
+    Returns:
+        tuple: New Dimensions
+    &#34;&#34;&#34;
+    return value
+    scaleX = newSize[0] / origSize[0]
+    scaleY = newSize[1] / origSize[1]
+    if isinstance(value, tuple):
+        return (value[0] * scaleX, value[1] * scaleY)
+    return value * scaleX</code></pre>
+</details>
+</dd>
+<dt id="Utils.Sign"><code class="name flex">
+<span>def <span class="ident">Sign</span></span>(<span>num: int | float) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return Sign from Value</p>
+<h2 id="args">Args</h2>
+<p>num (int | float): Input</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>int</code></dt>
+<dd>Sign of Number</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def Sign(num: int | float) -&gt; int:
+    &#34;&#34;&#34;Return Sign from Value
+
+    Args:
+        num (int | float): Input
+
+    Returns:
+        int: Sign of Number
+    &#34;&#34;&#34;
+    return int(num / abs(num)) if num != 0 else 0</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Home</h3><ul><li><code><a title="Home" href="..\index.html">Index</a></code></li> </ul><li><h3>Base Call</h3><ul><li><code><a title="Main" href="..\Main.html">Main</a></code></li> </ul><li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="Utils.Bind" href="#Utils.Bind">Bind</a></code></li>
+<li><code><a title="Utils.CheckDecimalPercent" href="#Utils.CheckDecimalPercent">CheckDecimalPercent</a></code></li>
+<li><code><a title="Utils.InPercentTolerance" href="#Utils.InPercentTolerance">InPercentTolerance</a></code></li>
+<li><code><a title="Utils.InRandomVariance" href="#Utils.InRandomVariance">InRandomVariance</a></code></li>
+<li><code><a title="Utils.InTolerance" href="#Utils.InTolerance">InTolerance</a></code></li>
+<li><code><a title="Utils.OffsetTuple" href="#Utils.OffsetTuple">OffsetTuple</a></code></li>
+<li><code><a title="Utils.PositionInTolerance" href="#Utils.PositionInTolerance">PositionInTolerance</a></code></li>
+<li><code><a title="Utils.PositionRandomVariance" href="#Utils.PositionRandomVariance">PositionRandomVariance</a></code></li>
+<li><code><a title="Utils.ProRateValue" href="#Utils.ProRateValue">ProRateValue</a></code></li>
+<li><code><a title="Utils.ResizeMaxLength" href="#Utils.ResizeMaxLength">ResizeMaxLength</a></code></li>
+<li><code><a title="Utils.ScaleToSize" href="#Utils.ScaleToSize">ScaleToSize</a></code></li>
+<li><code><a title="Utils.Sign" href="#Utils.Sign">Sign</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>

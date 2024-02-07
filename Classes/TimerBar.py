@@ -1,4 +1,5 @@
 """Class for Timer Bars"""
+
 import math
 
 import pygame
@@ -8,6 +9,8 @@ from Definitions import ColorTools
 
 
 class TimerBar:
+    """Class for Progress Bars with a Running Timer"""
+
     Width: int = 0
     MaxWidth: int = 50
     Height: int = 25
@@ -28,6 +31,15 @@ class TimerBar:
         activeGame=Game.MasterGame,
         offset=(0, 0),
     ) -> None:
+        """Init for Timer Bar
+
+        Args:
+            duration (float): Length of timer in game minutes
+            position (tuple): Poisiton of top left of timer bar
+            assocId (int, optional): Character to Bind the Timer to. Defaults to 0, meaning no character.
+            activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
+            offset (tuple, optional): Offset for the timer bar from position. Defaults to (0, 0).
+        """
         self.AssocId = assocId
         self.OnComplete = lambda: None
         self.TimerRect = pygame.Rect(
@@ -47,7 +59,12 @@ class TimerBar:
     @property
     def DynamicColor(
         self,
-    ) -> tuple:
+    ) -> Color.RGB:
+        """Generates the gradient transistion between start and end colors
+
+        Returns:
+            Color.RGB: RGB representation of color
+        """
         color1 = self.Color.HSV
         color2 = self.FillColor.HSV
         color1Scale = 1.0 - (self.CompletionPercentage)
@@ -60,6 +77,11 @@ class TimerBar:
         return color3.RGB
 
     def SetMaxSize(self, size) -> None:
+        """Update the maximum size of the timer bar
+
+        Args:
+            size (int | float): Max Width of Timer Bar
+        """
         self.MaxWidth = size
         self.MaxTimerRect = pygame.Rect(
             # pylint: disable=E1136
@@ -70,10 +92,20 @@ class TimerBar:
         )
 
     def StartTimer(self, activeGame=Game.MasterGame) -> None:
+        """Begins the timer and sets the reference start time
+
+        Args:
+            activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
+        """
         self.StartTime = activeGame.GameClock.Minute
         self.Running = True
 
     def AgeTimer(self, activeGame=Game.MasterGame) -> None:
+        """Increments timer based on the game clock
+
+        Args:
+            activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
+        """
         if self.Running:
             self.CompletionPercentage = (
                 (activeGame.GameClock.Minute - self.StartTime)
@@ -91,6 +123,11 @@ class TimerBar:
                 self.AssocId = 0
 
     def UpdateAndDraw(self, activeGame=Game.MasterGame) -> None:
+        """Update Timer Dimensions and Redraw if active
+
+        Args:
+            activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
+        """
         if self.Running:
             self.AgeTimer()
             customerObj = Matching.MatchIdToPerson(

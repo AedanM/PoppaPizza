@@ -4,6 +4,8 @@ from enum import Enum
 
 
 class CustomerStates(Enum):
+    """Enum of Customer States"""
+
     (
         Null,
         WalkingIn,
@@ -26,7 +28,9 @@ QueueStates = [
 ]
 
 
-class MovementSpeeds(Enum):
+class MovementSpeeds:
+    """Defined Speeds for Motion"""
+
     Slow: int = 1
     Medium: int = 10
     Fast: int = 100

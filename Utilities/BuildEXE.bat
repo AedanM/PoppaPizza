@@ -12,6 +12,7 @@ pyinstaller ^
 --add-data Assets:. ^
 Main.py
 
+del Main.spec
 type nul > __init__.py
 .\dist\Main.exe
 

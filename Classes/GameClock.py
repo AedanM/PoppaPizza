@@ -1,13 +1,18 @@
 """Game Clock Logic"""
+
 import math
 from dataclasses import dataclass
+
 import pygame
+
 from Classes import Settings
 from Definitions import CustomEvents
 
 
 @dataclass
 class Month:
+    """Class to define a Month"""
+
     Days: int = 31
     Name: str = ""
     MonthOrder: int = 0
@@ -32,6 +37,8 @@ Months = [
 
 # TODO- Weird Flickering between 1:00 and 8:00 in 24hr clock
 class GameClock:
+    """Class for a clock with custom speeds"""
+
     Day: int = 1
     CurrMonth: Month = Months[0]
     Second: int = 1
@@ -46,11 +53,17 @@ class GameClock:
         self.Running = True
 
     def SetRunning(self, state) -> None:
+        """Set the clock to running or not
+
+        Args:
+            state (bool): Running or Not
+        """
         if state != self.Running:
             self.Running = state
             self.LastTime = pygame.time.get_ticks()
 
     def UpdateClock(self) -> None:
+        """Update the clock and wait for next frame"""
         if self.Running:
             self.Second += math.floor(
                 (pygame.time.get_ticks() - self.LastTime)
@@ -66,30 +79,53 @@ class GameClock:
             self.PygameClock.tick(120)
 
     def DayChange(self) -> None:
+        """Update the day as the previous ends"""
         self.Day += 1
         self.Second = 0
 
         self.LastTime = pygame.time.get_ticks()
 
     def MonthChange(self) -> None:
+        """Update the month as the previous month"""
+
         self.CurrMonth = [
             x for x in Months if x.MonthOrder == ((self.CurrMonth.MonthOrder + 1) % 12)
         ][0]
 
     @property
     def DayOfMonth(self) -> int:
+        """Number Day in Month
+
+        Returns:
+            int: Current Day in the Month
+        """
         return self.Day - self.CurrMonth.PreceedingDays
 
     @property
     def Minute(self) -> int:
+        """Current Minute in Day
+
+        Returns:
+            int: Minute since midnight
+        """
         return math.floor(self.Second / 60)
 
     @property
     def Hour(self) -> int:
+        """Current hour in Day
+
+        Returns:
+            int: Hour since midnight
+        """
         return math.floor(self.Minute / 60)
 
     @property
     def DisplayHour(self) -> int:
+        """Formats the hour based on game config
+
+        Returns:
+            int: Hour to display in Clock
+        """
         returnVal = self.Hour % Settings.GameSettings.ClockDivisor
         if (not Settings.GameSettings.Clock24) and (self.Hour > 12 and returnVal < 12):
             returnVal += 1
@@ -97,6 +133,11 @@ class GameClock:
 
     @property
     def DateTime(self) -> str:
+        """String of Current time and date
+
+        Returns:
+            str: Formatted String
+        """
         return (
             f"{self.CurrMonth.Name} {self.DayOfMonth} "
             + f"{(self.DisplayHour):02d}:{(self.Minute % 60):02d}"
@@ -105,16 +146,18 @@ class GameClock:
 
     @property
     def UnixTime(self) -> int:
+        """Hours since start of game
+
+        Returns:
+            int: Hours since start of game
+        """
         return self.Hour + ((self.Day - 1) * 24)
 
     def CheckWorkingDay(self) -> None:
+        """Checks if working day is over and runs the night cycle event if so"""
         if self.Hour < self.WorkingDayStart:
             self.Second = (self.WorkingDayStart - self.Hour) * 60 * 60
         elif self.Hour >= self.WorkingDayEnd:
-            self.NightCycle()
-            self.Day += 1  #
-
+            pygame.event.post(CustomEvents.NightCycle)
+            self.Day += 1
             self.Second = self.WorkingDayStart * 60 * 60
-
-    def NightCycle(self) -> None:
-        pygame.event.post(CustomEvents.NightCycle)

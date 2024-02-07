@@ -6,12 +6,17 @@ import sys
 import pygame
 
 from Classes import Game, Matching, Stats
-from Definitions import AssetLibrary, CustomerDefs, CustomEvents, Prices
+from Definitions import AssetLibrary, CustomEvents
 from Generators import BackgroundPopulator, CharSpawner, Menus
-from Handlers import ClickHandler, WorkerHandler
+from Handlers import ClickHandler, ShopHandler, WorkerHandler
 
 
 def MainEventHandler(activeGame=Game.MasterGame) -> None:
+    """Giant Case Handler for Events
+
+    Args:
+        activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
+    """
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -24,8 +29,8 @@ def MainEventHandler(activeGame=Game.MasterGame) -> None:
                     DayNightEvent()
                 case CustomEvents.GameOver:
                     GameOver()
-        elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-            ClickHandler.MouseHandler(mousePos=event.pos)
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            ClickHandler.MouseHandler(mousePos=event.pos, lClick=(event.button == 1))
         elif event.type == pygame.KEYDOWN:
             match (event.key):
                 case pygame.K_m:
@@ -46,41 +51,63 @@ def MainEventHandler(activeGame=Game.MasterGame) -> None:
                     Menus.OptionsMenu()
                 case pygame.K_s:
                     Menus.ShopMenu()
+                case pygame.K_b:
+                    ShopHandler.BuyTables(selectedRow=True)
+                case pygame.K_v:
+                    ShopHandler.BuyTables(selectedRow=False)
 
 
 def DebugSetup() -> None:
+    """Sets up game in Debug Mode"""
     CharSpawner.BuyWorker(free=True)
     CharSpawner.BuyWorker(free=True)
 
 
 def RandomSpawnHandler() -> None:
+    """Handles Randomly Spawning Elements"""
     CharSpawner.CustomerSpawner()
 
 
 def DayNightEvent() -> None:
-    workerPay = 0.0
-    for worker in Game.MasterGame.WorkerList:
-        workerPay += worker.BasePay * Prices.DefaultPrices.Salary
-    rent = Prices.CurrentRent
-    Game.MasterGame.UserInventory.PayMoney(amount=workerPay + rent)
-    for sprite in Game.MasterGame.CharSpriteGroup:
-        if (
-            sprite.ImageType in AssetLibrary.CustomerOutfits
-            and sprite.DataObject.CurrentState
-            is not CustomerDefs.CustomerStates.BeingServed
-        ):
-            Matching.RemoveObjFromSprite(
-                activeGame=Game.MasterGame, targetSprite=sprite
-            )
-        elif sprite.ImageType in AssetLibrary.WorkerOutfits:
-            WorkerHandler.DailyReset(sprite=sprite)
-    if CustomEvents.GameOver not in pygame.event.get():
+    """Logic behind a day transition
+
+    Pays Rent
+    Loads DayTransition Menu
+    Resets Sprites
+    Updates Stats
+    Resets Background
+
+    """
+    ShopHandler.PayUpkeep()
+    if Game.MasterGame.UserInventory.Money > 0:
         Menus.DayTransistion()
     else:
         GameOver()
+    ResetSprites()
+    Stats.AllStats[f"Day {Game.MasterGame.GameClock.Day}"] = copy.deepcopy(
+        Game.MasterGame.UserInventory.Statistics
+    )
     Stats.PrevDay = copy.deepcopy(Game.MasterGame.UserInventory.Statistics)
+    BackgroundPopulator.SetupBackground()
+
+
+def ResetSprites(activeGame=Game.MasterGame) -> None:
+    """Reset all Sprites
+
+        Kill Customer Sprites
+        Reset Workers to Kitchen
+
+    Args:
+        activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
+    """
+    for sprite in activeGame.CharSpriteGroup:
+        if sprite.ImageType in AssetLibrary.CustomerOutfits:
+            Matching.RemoveObjFromSprite(activeGame=activeGame, targetSprite=sprite)
+        elif sprite.ImageType in AssetLibrary.WorkerOutfits:
+            WorkerHandler.DailyReset(sprite=sprite)
 
 
 def GameOver() -> None:
+    """Logic for End of Game"""
     Game.MasterGame.Running = False
     Menus.GameOverMenu()

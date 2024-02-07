@@ -18,7 +18,9 @@ What if a bunch of restaurants couldn't afford individual working spaces so deci
 
 ## Releases
 
-Latest version in an EXE can be found in the [Releases](Releases) folder
+Latest version in an EXE can be found in the Releases folder
+
+## [Code Documentation](https://htmlpreview.github.io?Docs/Documentation/index.html)
 
 ## [Controls](Docs/Controls.md)
 

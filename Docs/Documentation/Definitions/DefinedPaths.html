@@ -1,0 +1,786 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>Definitions.DefinedPaths API documentation</title>
+<meta name="description" content="Defined Motion Paths" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>Definitions.DefinedPaths</code></h1>
+</header>
+<section id="section-intro">
+<p>Defined Motion Paths</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;Defined Motion Paths&#34;&#34;&#34;
+
+import random
+
+from Classes import Game
+from Definitions import AssetLibrary, DefinedLocations
+from Utilities import Utils
+
+RECURDEPTH = 0
+
+
+def IsSeatTaken(seatLocation) -&gt; bool:
+    &#34;&#34;&#34;Checks if Customer Sat in Seat
+
+    Args:
+        seatLocation (tuple): Location of Seat
+
+    Returns:
+        bool: Is Seat Free
+    &#34;&#34;&#34;
+    for sprite in Game.MasterGame.CharSpriteGroup:
+        if sprite.ImageType in AssetLibrary.CustomerOutfits:
+            xCheck = Utils.InTolerance(
+                num1=sprite.rect.centerx, num2=seatLocation[0], tolerance=15
+            )
+            yCheck = Utils.InTolerance(
+                num1=sprite.rect.centery, num2=seatLocation[1], tolerance=15
+            )
+            if xCheck or yCheck:
+                return True
+    return False
+
+
+def GetRandomSeatPosition() -&gt; tuple | None:
+    &#34;&#34;&#34;Picks a random seat position or returns None if None free
+
+    Returns:
+        tuple | None: Seat position
+    &#34;&#34;&#34;
+    # pylint: disable=global-statement
+    global RECURDEPTH
+    seatingPlan = DefinedLocations.SeatingPlan
+    yPos = random.choice(seatingPlan.TableCols())
+    xPos = random.choice(seatingPlan.TableRows())
+    coords = (xPos, yPos)
+    if IsSeatTaken(seatLocation=(xPos, yPos)):
+        RECURDEPTH += 1
+        if RECURDEPTH &lt; 10:
+            coords = GetRandomSeatPosition()
+        else:
+            return None
+    else:
+        RECURDEPTH = 0
+    return coords
+
+
+class DefinedPaths:
+    &#34;&#34;&#34;Lists of Defined Locations to Generate Motion Paths&#34;&#34;&#34;
+
+    @staticmethod
+    def KitchenToLockerRoom(sprite, dest) -&gt; list:
+        &#34;&#34;&#34;Kitchen to a desired changing room
+
+        Args:
+            sprite (Sprite): Worker To Change
+            dest (tuple): Destination Position
+
+        Returns:
+            list: List of Points for Path
+        &#34;&#34;&#34;
+        path = [
+            sprite.rect.center,
+            DefinedLocations.LocationDefs.KitchenLocation,
+            (dest[0], DefinedLocations.LocationDefs.KitchenLocation[1]),
+            dest,
+        ]
+        return path
+
+    @staticmethod
+    def CustomerToRandomSeat(sprite) -&gt; list:
+        &#34;&#34;&#34;Picks a random seat and generates a path to it
+
+        sprite (Sprite): Active Customer
+
+        Returns:
+            list: List of Points for Path
+        &#34;&#34;&#34;
+        randomSeatPosition = GetRandomSeatPosition()
+        if randomSeatPosition is not None:
+            path = [
+                (sprite.rect.centerx, randomSeatPosition[1]),
+                (randomSeatPosition[0], randomSeatPosition[1]),
+                (randomSeatPosition[0], randomSeatPosition[1] + 50),
+            ]
+            return path
+
+    @staticmethod
+    def KitchenToCustomer(sprite, dest) -&gt; list:
+        &#34;&#34;&#34;Path for kitchen to customer&#39;s seat
+
+        Args:
+            sprite (Sprite): Active Worker
+            dest (tuple): Customer&#39;s Seat
+
+        Returns:
+            list: List of Points for Path
+        &#34;&#34;&#34;
+        path = [
+            sprite.rect.center,
+            DefinedLocations.LocationDefs.KitchenLocation,
+            (
+                DefinedLocations.LocationDefs.KitchenLocation[0] + 100,
+                DefinedLocations.LocationDefs.KitchenLocation[1],
+            ),
+            (
+                dest.rect.center[0] - 100,
+                DefinedLocations.LocationDefs.KitchenLocation[1],
+            ),
+            dest.rect.center,
+        ]
+        return path
+
+    @staticmethod
+    def BackToKitchen(sprite, activeGame=Game.MasterGame) -&gt; list:
+        &#34;&#34;&#34;From Current Location to Kitchen
+
+        Args:
+            sprite (Sprite): Active Worker
+            activeGame (Game, optional): Current Game. Defaults to Game.MasterGame
+
+        Returns:
+            list: List of Points for Path
+        &#34;&#34;&#34;
+        path = [
+            sprite.rect.center,
+            (sprite.rect.center[0], DefinedLocations.LocationDefs.KitchenLocation[1]),
+            DefinedLocations.LocationDefs.KitchenLocation,
+            Utils.PositionRandomVariance(
+                position=(
+                    DefinedLocations.LocationDefs.KitchenLocation[0] - 50,
+                    DefinedLocations.LocationDefs.KitchenLocation[1],
+                ),
+                percentVarianceTuple=(0.05, 0.1),
+                screenSize=activeGame.ScreenSize,
+            ),
+        ]
+        return path
+
+    @staticmethod
+    def CustomerToExit(sprite) -&gt; list:
+        &#34;&#34;&#34;Queued Customer to Leave the Restaurant
+
+        Args:
+            sprite (Sprite): Active Customer
+
+        Returns:
+            list: List of Points for Path
+        &#34;&#34;&#34;
+        path = [sprite.rect.center, DefinedLocations.LocationDefs.CustomerExit]
+        return path
+
+    @staticmethod
+    def TableToExit(sprite) -&gt; list:
+        &#34;&#34;&#34;Seated Customer to Exit
+
+        Args:
+            sprite (Sprite): Active Customer
+
+        Returns:
+            list: List of Points for Path
+        &#34;&#34;&#34;
+        path = [
+            sprite.rect.center,
+            (sprite.rect.centerx, sprite.rect.centery - 100),
+            (
+                DefinedLocations.LocationDefs.CustomerEntrance[0],
+                sprite.rect.centery - 100,
+            ),
+            DefinedLocations.LocationDefs.CustomerExit,
+        ]
+        return path
+
+    @staticmethod
+    def CustomerToEntrance(sprite) -&gt; list:
+        &#34;&#34;&#34;Walk In Logic Path
+
+        Args:
+            sprite (Sprite): Active Customer
+
+        Returns:
+            list: List of Points for Path
+        &#34;&#34;&#34;
+        path = [sprite.rect.center, DefinedLocations.LocationDefs.CustomerEntrance]
+        return path</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="Definitions.DefinedPaths.GetRandomSeatPosition"><code class="name flex">
+<span>def <span class="ident">GetRandomSeatPosition</span></span>(<span>) ‑> tuple | None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Picks a random seat position or returns None if None free</p>
+<h2 id="returns">Returns</h2>
+<p>tuple | None: Seat position</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def GetRandomSeatPosition() -&gt; tuple | None:
+    &#34;&#34;&#34;Picks a random seat position or returns None if None free
+
+    Returns:
+        tuple | None: Seat position
+    &#34;&#34;&#34;
+    # pylint: disable=global-statement
+    global RECURDEPTH
+    seatingPlan = DefinedLocations.SeatingPlan
+    yPos = random.choice(seatingPlan.TableCols())
+    xPos = random.choice(seatingPlan.TableRows())
+    coords = (xPos, yPos)
+    if IsSeatTaken(seatLocation=(xPos, yPos)):
+        RECURDEPTH += 1
+        if RECURDEPTH &lt; 10:
+            coords = GetRandomSeatPosition()
+        else:
+            return None
+    else:
+        RECURDEPTH = 0
+    return coords</code></pre>
+</details>
+</dd>
+<dt id="Definitions.DefinedPaths.IsSeatTaken"><code class="name flex">
+<span>def <span class="ident">IsSeatTaken</span></span>(<span>seatLocation) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Checks if Customer Sat in Seat</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>seatLocation</code></strong> :&ensp;<code>tuple</code></dt>
+<dd>Location of Seat</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>Is Seat Free</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def IsSeatTaken(seatLocation) -&gt; bool:
+    &#34;&#34;&#34;Checks if Customer Sat in Seat
+
+    Args:
+        seatLocation (tuple): Location of Seat
+
+    Returns:
+        bool: Is Seat Free
+    &#34;&#34;&#34;
+    for sprite in Game.MasterGame.CharSpriteGroup:
+        if sprite.ImageType in AssetLibrary.CustomerOutfits:
+            xCheck = Utils.InTolerance(
+                num1=sprite.rect.centerx, num2=seatLocation[0], tolerance=15
+            )
+            yCheck = Utils.InTolerance(
+                num1=sprite.rect.centery, num2=seatLocation[1], tolerance=15
+            )
+            if xCheck or yCheck:
+                return True
+    return False</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="Definitions.DefinedPaths.DefinedPaths"><code class="flex name class">
+<span>class <span class="ident">DefinedPaths</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Lists of Defined Locations to Generate Motion Paths</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class DefinedPaths:
+    &#34;&#34;&#34;Lists of Defined Locations to Generate Motion Paths&#34;&#34;&#34;
+
+    @staticmethod
+    def KitchenToLockerRoom(sprite, dest) -&gt; list:
+        &#34;&#34;&#34;Kitchen to a desired changing room
+
+        Args:
+            sprite (Sprite): Worker To Change
+            dest (tuple): Destination Position
+
+        Returns:
+            list: List of Points for Path
+        &#34;&#34;&#34;
+        path = [
+            sprite.rect.center,
+            DefinedLocations.LocationDefs.KitchenLocation,
+            (dest[0], DefinedLocations.LocationDefs.KitchenLocation[1]),
+            dest,
+        ]
+        return path
+
+    @staticmethod
+    def CustomerToRandomSeat(sprite) -&gt; list:
+        &#34;&#34;&#34;Picks a random seat and generates a path to it
+
+        sprite (Sprite): Active Customer
+
+        Returns:
+            list: List of Points for Path
+        &#34;&#34;&#34;
+        randomSeatPosition = GetRandomSeatPosition()
+        if randomSeatPosition is not None:
+            path = [
+                (sprite.rect.centerx, randomSeatPosition[1]),
+                (randomSeatPosition[0], randomSeatPosition[1]),
+                (randomSeatPosition[0], randomSeatPosition[1] + 50),
+            ]
+            return path
+
+    @staticmethod
+    def KitchenToCustomer(sprite, dest) -&gt; list:
+        &#34;&#34;&#34;Path for kitchen to customer&#39;s seat
+
+        Args:
+            sprite (Sprite): Active Worker
+            dest (tuple): Customer&#39;s Seat
+
+        Returns:
+            list: List of Points for Path
+        &#34;&#34;&#34;
+        path = [
+            sprite.rect.center,
+            DefinedLocations.LocationDefs.KitchenLocation,
+            (
+                DefinedLocations.LocationDefs.KitchenLocation[0] + 100,
+                DefinedLocations.LocationDefs.KitchenLocation[1],
+            ),
+            (
+                dest.rect.center[0] - 100,
+                DefinedLocations.LocationDefs.KitchenLocation[1],
+            ),
+            dest.rect.center,
+        ]
+        return path
+
+    @staticmethod
+    def BackToKitchen(sprite, activeGame=Game.MasterGame) -&gt; list:
+        &#34;&#34;&#34;From Current Location to Kitchen
+
+        Args:
+            sprite (Sprite): Active Worker
+            activeGame (Game, optional): Current Game. Defaults to Game.MasterGame
+
+        Returns:
+            list: List of Points for Path
+        &#34;&#34;&#34;
+        path = [
+            sprite.rect.center,
+            (sprite.rect.center[0], DefinedLocations.LocationDefs.KitchenLocation[1]),
+            DefinedLocations.LocationDefs.KitchenLocation,
+            Utils.PositionRandomVariance(
+                position=(
+                    DefinedLocations.LocationDefs.KitchenLocation[0] - 50,
+                    DefinedLocations.LocationDefs.KitchenLocation[1],
+                ),
+                percentVarianceTuple=(0.05, 0.1),
+                screenSize=activeGame.ScreenSize,
+            ),
+        ]
+        return path
+
+    @staticmethod
+    def CustomerToExit(sprite) -&gt; list:
+        &#34;&#34;&#34;Queued Customer to Leave the Restaurant
+
+        Args:
+            sprite (Sprite): Active Customer
+
+        Returns:
+            list: List of Points for Path
+        &#34;&#34;&#34;
+        path = [sprite.rect.center, DefinedLocations.LocationDefs.CustomerExit]
+        return path
+
+    @staticmethod
+    def TableToExit(sprite) -&gt; list:
+        &#34;&#34;&#34;Seated Customer to Exit
+
+        Args:
+            sprite (Sprite): Active Customer
+
+        Returns:
+            list: List of Points for Path
+        &#34;&#34;&#34;
+        path = [
+            sprite.rect.center,
+            (sprite.rect.centerx, sprite.rect.centery - 100),
+            (
+                DefinedLocations.LocationDefs.CustomerEntrance[0],
+                sprite.rect.centery - 100,
+            ),
+            DefinedLocations.LocationDefs.CustomerExit,
+        ]
+        return path
+
+    @staticmethod
+    def CustomerToEntrance(sprite) -&gt; list:
+        &#34;&#34;&#34;Walk In Logic Path
+
+        Args:
+            sprite (Sprite): Active Customer
+
+        Returns:
+            list: List of Points for Path
+        &#34;&#34;&#34;
+        path = [sprite.rect.center, DefinedLocations.LocationDefs.CustomerEntrance]
+        return path</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="Definitions.DefinedPaths.DefinedPaths.BackToKitchen"><code class="name flex">
+<span>def <span class="ident">BackToKitchen</span></span>(<span>sprite, activeGame=&lt;Classes.Game.Game object&gt;) ‑> list</span>
+</code></dt>
+<dd>
+<div class="desc"><p>From Current Location to Kitchen</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>sprite</code></strong> :&ensp;<code>Sprite</code></dt>
+<dd>Active Worker</dd>
+<dt><strong><code>activeGame</code></strong> :&ensp;<code>Game</code>, optional</dt>
+<dd>Current Game. Defaults to Game.MasterGame</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>list</code></dt>
+<dd>List of Points for Path</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def BackToKitchen(sprite, activeGame=Game.MasterGame) -&gt; list:
+    &#34;&#34;&#34;From Current Location to Kitchen
+
+    Args:
+        sprite (Sprite): Active Worker
+        activeGame (Game, optional): Current Game. Defaults to Game.MasterGame
+
+    Returns:
+        list: List of Points for Path
+    &#34;&#34;&#34;
+    path = [
+        sprite.rect.center,
+        (sprite.rect.center[0], DefinedLocations.LocationDefs.KitchenLocation[1]),
+        DefinedLocations.LocationDefs.KitchenLocation,
+        Utils.PositionRandomVariance(
+            position=(
+                DefinedLocations.LocationDefs.KitchenLocation[0] - 50,
+                DefinedLocations.LocationDefs.KitchenLocation[1],
+            ),
+            percentVarianceTuple=(0.05, 0.1),
+            screenSize=activeGame.ScreenSize,
+        ),
+    ]
+    return path</code></pre>
+</details>
+</dd>
+<dt id="Definitions.DefinedPaths.DefinedPaths.CustomerToEntrance"><code class="name flex">
+<span>def <span class="ident">CustomerToEntrance</span></span>(<span>sprite) ‑> list</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Walk In Logic Path</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>sprite</code></strong> :&ensp;<code>Sprite</code></dt>
+<dd>Active Customer</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>list</code></dt>
+<dd>List of Points for Path</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def CustomerToEntrance(sprite) -&gt; list:
+    &#34;&#34;&#34;Walk In Logic Path
+
+    Args:
+        sprite (Sprite): Active Customer
+
+    Returns:
+        list: List of Points for Path
+    &#34;&#34;&#34;
+    path = [sprite.rect.center, DefinedLocations.LocationDefs.CustomerEntrance]
+    return path</code></pre>
+</details>
+</dd>
+<dt id="Definitions.DefinedPaths.DefinedPaths.CustomerToExit"><code class="name flex">
+<span>def <span class="ident">CustomerToExit</span></span>(<span>sprite) ‑> list</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Queued Customer to Leave the Restaurant</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>sprite</code></strong> :&ensp;<code>Sprite</code></dt>
+<dd>Active Customer</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>list</code></dt>
+<dd>List of Points for Path</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def CustomerToExit(sprite) -&gt; list:
+    &#34;&#34;&#34;Queued Customer to Leave the Restaurant
+
+    Args:
+        sprite (Sprite): Active Customer
+
+    Returns:
+        list: List of Points for Path
+    &#34;&#34;&#34;
+    path = [sprite.rect.center, DefinedLocations.LocationDefs.CustomerExit]
+    return path</code></pre>
+</details>
+</dd>
+<dt id="Definitions.DefinedPaths.DefinedPaths.CustomerToRandomSeat"><code class="name flex">
+<span>def <span class="ident">CustomerToRandomSeat</span></span>(<span>sprite) ‑> list</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Picks a random seat and generates a path to it</p>
+<p>sprite (Sprite): Active Customer</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>list</code></dt>
+<dd>List of Points for Path</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def CustomerToRandomSeat(sprite) -&gt; list:
+    &#34;&#34;&#34;Picks a random seat and generates a path to it
+
+    sprite (Sprite): Active Customer
+
+    Returns:
+        list: List of Points for Path
+    &#34;&#34;&#34;
+    randomSeatPosition = GetRandomSeatPosition()
+    if randomSeatPosition is not None:
+        path = [
+            (sprite.rect.centerx, randomSeatPosition[1]),
+            (randomSeatPosition[0], randomSeatPosition[1]),
+            (randomSeatPosition[0], randomSeatPosition[1] + 50),
+        ]
+        return path</code></pre>
+</details>
+</dd>
+<dt id="Definitions.DefinedPaths.DefinedPaths.KitchenToCustomer"><code class="name flex">
+<span>def <span class="ident">KitchenToCustomer</span></span>(<span>sprite, dest) ‑> list</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Path for kitchen to customer's seat</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>sprite</code></strong> :&ensp;<code>Sprite</code></dt>
+<dd>Active Worker</dd>
+<dt><strong><code>dest</code></strong> :&ensp;<code>tuple</code></dt>
+<dd>Customer's Seat</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>list</code></dt>
+<dd>List of Points for Path</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def KitchenToCustomer(sprite, dest) -&gt; list:
+    &#34;&#34;&#34;Path for kitchen to customer&#39;s seat
+
+    Args:
+        sprite (Sprite): Active Worker
+        dest (tuple): Customer&#39;s Seat
+
+    Returns:
+        list: List of Points for Path
+    &#34;&#34;&#34;
+    path = [
+        sprite.rect.center,
+        DefinedLocations.LocationDefs.KitchenLocation,
+        (
+            DefinedLocations.LocationDefs.KitchenLocation[0] + 100,
+            DefinedLocations.LocationDefs.KitchenLocation[1],
+        ),
+        (
+            dest.rect.center[0] - 100,
+            DefinedLocations.LocationDefs.KitchenLocation[1],
+        ),
+        dest.rect.center,
+    ]
+    return path</code></pre>
+</details>
+</dd>
+<dt id="Definitions.DefinedPaths.DefinedPaths.KitchenToLockerRoom"><code class="name flex">
+<span>def <span class="ident">KitchenToLockerRoom</span></span>(<span>sprite, dest) ‑> list</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Kitchen to a desired changing room</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>sprite</code></strong> :&ensp;<code>Sprite</code></dt>
+<dd>Worker To Change</dd>
+<dt><strong><code>dest</code></strong> :&ensp;<code>tuple</code></dt>
+<dd>Destination Position</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>list</code></dt>
+<dd>List of Points for Path</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def KitchenToLockerRoom(sprite, dest) -&gt; list:
+    &#34;&#34;&#34;Kitchen to a desired changing room
+
+    Args:
+        sprite (Sprite): Worker To Change
+        dest (tuple): Destination Position
+
+    Returns:
+        list: List of Points for Path
+    &#34;&#34;&#34;
+    path = [
+        sprite.rect.center,
+        DefinedLocations.LocationDefs.KitchenLocation,
+        (dest[0], DefinedLocations.LocationDefs.KitchenLocation[1]),
+        dest,
+    ]
+    return path</code></pre>
+</details>
+</dd>
+<dt id="Definitions.DefinedPaths.DefinedPaths.TableToExit"><code class="name flex">
+<span>def <span class="ident">TableToExit</span></span>(<span>sprite) ‑> list</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Seated Customer to Exit</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>sprite</code></strong> :&ensp;<code>Sprite</code></dt>
+<dd>Active Customer</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>list</code></dt>
+<dd>List of Points for Path</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def TableToExit(sprite) -&gt; list:
+    &#34;&#34;&#34;Seated Customer to Exit
+
+    Args:
+        sprite (Sprite): Active Customer
+
+    Returns:
+        list: List of Points for Path
+    &#34;&#34;&#34;
+    path = [
+        sprite.rect.center,
+        (sprite.rect.centerx, sprite.rect.centery - 100),
+        (
+            DefinedLocations.LocationDefs.CustomerEntrance[0],
+            sprite.rect.centery - 100,
+        ),
+        DefinedLocations.LocationDefs.CustomerExit,
+    ]
+    return path</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="Definitions" href="index.html">Definitions</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="Definitions.DefinedPaths.GetRandomSeatPosition" href="#Definitions.DefinedPaths.GetRandomSeatPosition">GetRandomSeatPosition</a></code></li>
+<li><code><a title="Definitions.DefinedPaths.IsSeatTaken" href="#Definitions.DefinedPaths.IsSeatTaken">IsSeatTaken</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="Definitions.DefinedPaths.DefinedPaths" href="#Definitions.DefinedPaths.DefinedPaths">DefinedPaths</a></code></h4>
+<ul class="">
+<li><code><a title="Definitions.DefinedPaths.DefinedPaths.BackToKitchen" href="#Definitions.DefinedPaths.DefinedPaths.BackToKitchen">BackToKitchen</a></code></li>
+<li><code><a title="Definitions.DefinedPaths.DefinedPaths.CustomerToEntrance" href="#Definitions.DefinedPaths.DefinedPaths.CustomerToEntrance">CustomerToEntrance</a></code></li>
+<li><code><a title="Definitions.DefinedPaths.DefinedPaths.CustomerToExit" href="#Definitions.DefinedPaths.DefinedPaths.CustomerToExit">CustomerToExit</a></code></li>
+<li><code><a title="Definitions.DefinedPaths.DefinedPaths.CustomerToRandomSeat" href="#Definitions.DefinedPaths.DefinedPaths.CustomerToRandomSeat">CustomerToRandomSeat</a></code></li>
+<li><code><a title="Definitions.DefinedPaths.DefinedPaths.KitchenToCustomer" href="#Definitions.DefinedPaths.DefinedPaths.KitchenToCustomer">KitchenToCustomer</a></code></li>
+<li><code><a title="Definitions.DefinedPaths.DefinedPaths.KitchenToLockerRoom" href="#Definitions.DefinedPaths.DefinedPaths.KitchenToLockerRoom">KitchenToLockerRoom</a></code></li>
+<li><code><a title="Definitions.DefinedPaths.DefinedPaths.TableToExit" href="#Definitions.DefinedPaths.DefinedPaths.TableToExit">TableToExit</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>

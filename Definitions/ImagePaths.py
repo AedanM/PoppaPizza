@@ -6,6 +6,8 @@ from dataclasses import dataclass
 
 @dataclass
 class ImagePaths:
+    """Object to hold all image paths and handle packaging"""
+
     # pylint: disable=W0212, E1101
     AssetFolder = r"Assets" if not hasattr(sys, "_MEIPASS") else sys._MEIPASS
     BackgroundPath = AssetFolder + r"\background.png"
@@ -17,7 +19,6 @@ class ImagePaths:
     CustomerSafariPath = AssetFolder + r"\customerSafari.png"
     CustomerSuitPath = AssetFolder + r"\customerSuit.png"
 
-    GameOverPath = AssetFolder + r"\gameOver.png"
     LogoLockedPath = AssetFolder + r"\LockedLockerRoom.png"
 
     LogoCoffeePath = AssetFolder + r"\coffee.png"

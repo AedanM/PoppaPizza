@@ -8,6 +8,8 @@ ImagePath = ImagePaths.ImagePaths()
 
 
 class ImageTypes(Enum):
+    """Types of Images"""
+
     (
         Null,
         Button,
@@ -58,8 +60,16 @@ LogoPaths = {
 
 
 def PathLookup(imageType) -> str | None:
+    """Looks up path for image type
+
+    Args:
+        imageType (ImageType): Image Type to Find Path for
+
+    Returns:
+        str: Image Path
+    """
     for key, value in PathToTypeDict.items():
-        if value is imageType:
+        if value == imageType:
             return key
     return ImagePath.NonePath
 

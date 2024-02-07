@@ -1,8 +1,10 @@
 """Puts matching images in Folders"""
-from dataclasses import dataclass
-import os
+
 import argparse
 import glob
+import os
+from dataclasses import dataclass
+
 import cv2
 import numpy as np
 from skimage.metrics import structural_similarity
@@ -10,6 +12,8 @@ from skimage.metrics import structural_similarity
 
 @dataclass
 class Image:
+    """Image Object"""
+
     FilePath: str
     FileName: str
     CvObj: np.array
@@ -22,6 +26,14 @@ class Image:
 
 
 def GetAllImages(filePath) -> list:
+    """Collects all images in folders into list of Image objects
+
+    Args:
+        filePath (str): Path to parent folder
+
+    Returns:
+        list: List of Image Objects
+    """
     pathList = glob.glob(root_dir=filePath, pathname="*.jpg")
     pathList.extend(glob.glob(root_dir=filePath, pathname="*.png"))
     pathList.extend(glob.glob(root_dir=filePath, pathname="*.jpeg"))
@@ -35,8 +47,18 @@ def GetAllImages(filePath) -> list:
 
 
 def AreSimilar(image1, image2, tolerance=0.75) -> bool:
-    firstGray = cv2.cvtColor(image1, cv2.COLOR_BGR2GRAY)
-    secondGray = cv2.cvtColor(image2, cv2.COLOR_BGR2GRAY)
+    """Determines if 2 images are similar
+
+    Args:
+        image1 (Image): 1st Image
+        image2 (Image): 2nd Image
+        tolerance (float, optional): Closeness required for match. Defaults to 0.75.
+
+    Returns:
+        bool: Are They Similar?
+    """
+    firstGray = cv2.cvtColor(image1.CvObj, cv2.COLOR_BGR2GRAY)
+    secondGray = cv2.cvtColor(image2.CvObj, cv2.COLOR_BGR2GRAY)
 
     score = structural_similarity(firstGray, secondGray, full=True)
     score = score[0]
@@ -44,13 +66,21 @@ def AreSimilar(image1, image2, tolerance=0.75) -> bool:
 
 
 def MatchImages(fileList) -> list:
+    """Creates Parent and Child Relationship for Images
+
+    Args:
+        fileList (list[Image]): List of Images
+
+    Returns:
+        list: list of Images with Relationships applied
+    """
     unMatched = [x for x in fileList if x.hasParent is False]
     matched = [x for x in fileList if x.hasParent is True]
     for image in unMatched:
         foundPartner = False
         for parentImage in matched:
             if image.cvObj.shape == parentImage.cvObj.shape:
-                if AreSimilar(image1=image.cvObj, image2=parentImage.cvObj):
+                if AreSimilar(image1=image, image2=parentImage):
                     foundPartner = True
                     image.dstPath = parentImage.dstPath
                     parentImage.hasChild = True
@@ -62,7 +92,12 @@ def MatchImages(fileList) -> list:
     return fileList
 
 
-def MoveImagesToDest(fileList) -> bool:
+def MoveImagesToDest(fileList) -> None:
+    """Moves Images to directory of parent image
+
+    Args:
+        fileList (list[Image]): List of Images
+    """
     numMatched = 0
     foldersCreated = 0
     for image in fileList:
@@ -77,6 +112,11 @@ def MoveImagesToDest(fileList) -> bool:
 
 
 def Main(filePath) -> None:
+    """Find all images which are similar and place them in a folder togethers
+
+    Args:
+        filePath (str): Path to parent dir
+    """
     fileList = GetAllImages(filePath=filePath)
     fileList = MatchImages(fileList=fileList)
     MoveImagesToDest(fileList=fileList)

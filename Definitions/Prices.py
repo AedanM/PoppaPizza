@@ -2,9 +2,11 @@
 
 
 class DefaultPrices:
+    """Default Prices for things in Shop"""
+
     Rent: int = 100.00
     NewWorker: float = 500.00
-    Salary: float = 80.00
+    Salary: float = 8.00
     Table: float = 250.00
 
 
