@@ -40,6 +40,7 @@ Months = [
 class GameClock:
     """Class for a clock with custom speeds"""
 
+    # TODO - Make a lighting effects class
     LightColor: ColorTools.Color = ColorTools.BurntOrange
     LightOpacity: int = 0
     MaxNightLight: float = 200
