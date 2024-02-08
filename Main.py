@@ -23,14 +23,17 @@ def Main() -> None:
         EventHandler.DebugSetup()
     while True:
         if Game.MasterGame.Running:
-            EventHandler.MainEventHandler()
+            try:
+                EventHandler.MainEventHandler()
 
-            Game.MasterGame.DrawBackground()
-            Game.MasterGame.UpdateSprites()
-            # DefinedLocations.DebugLocations()
-            EventHandler.RandomSpawnHandler()
-            Game.MasterGame.WriteAllText()
-            # Update the display
+                Game.MasterGame.DrawBackground()
+                Game.MasterGame.LightingEngine()
+                Game.MasterGame.UpdateSprites()
+                EventHandler.RandomSpawnHandler()
+
+                Game.MasterGame.WriteAllText()
+            except Exception as e:
+                print(f"{e} Occured")
         if Game.MasterGame.ShowScreen:
             pygame.display.update()
         # Control the frame rate

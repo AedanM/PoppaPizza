@@ -53,4 +53,4 @@ def PayUpkeep() -> None:
     for worker in Game.MasterGame.WorkerList:
         workerPay += worker.BasePay * Prices.DefaultPrices.Salary
     rent = Prices.CurrentRent
-    Game.MasterGame.UserInventory.PayMoney(amount=workerPay + rent, update=False)
+    Game.MasterGame.UserInventory.PayMoney(amount=workerPay + rent, update=True)

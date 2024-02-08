@@ -9,11 +9,12 @@ from Utilities import Utils
 
 def DailyReset(sprite) -> None:
     """Reset worker to Kitchen
-
+        Unassigns the worker from any task as well
     Args:
         sprite (Sprite): Worker Sprite
     """
     sprite.MvmHandler.Reset()
+    sprite.DataObject.IsAssigned = False
     spawnLocation = Utils.PositionRandomVariance(
         position=DefinedLocations.LocationDefs.WorkerSpawn,
         percentVarianceTuple=(0.05, 0.15),

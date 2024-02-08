@@ -4,20 +4,6 @@ from Classes import Game, Matching, Sprite
 from Definitions import AssetLibrary, ColorTools, DefinedLocations, Restaurants
 from Utilities import Utils
 
-
-def GenerateTablePlaces() -> list:
-    """Generates list of table position tuples
-
-    Returns:
-        list: Array of Tuple Positions
-    """
-    locationArray = []
-    for row in DefinedLocations.SeatingPlan.TableRows():
-        for col in DefinedLocations.SeatingPlan.TableCols():
-            locationArray.append(tuple((row, col)))
-    return locationArray
-
-
 # TODO - Stop Recalcing Tables
 
 
@@ -27,9 +13,7 @@ def AddTables(activeGame=Game.MasterGame) -> None:
     Args:
         activeGame (Game, optional): Current Game being used. Defaults to Game.MasterGame.
     """
-    if DefinedLocations.TablePlaces is []:
-        DefinedLocations.TablePlaces = GenerateTablePlaces()
-    for location in GenerateTablePlaces():
+    for location in DefinedLocations.SeatingPlan.GenerateTablePlaces():
         table = Sprite.BackgroundElementSprite(
             position=location,
             path=AssetLibrary.ImagePath.TablePath,

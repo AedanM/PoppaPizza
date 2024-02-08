@@ -99,7 +99,7 @@ class DefinedLocations:
         Returns:
             tuple: Scaled Location
         """
-        location = (1050, 700)
+        location = (1100, 700)
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
@@ -204,6 +204,18 @@ class SeatingPlanClass:
         """
         lastTableCol = (self.NumCols * self.TableYSpacing) + self.TableYStart
         return list(range(self.TableYStart, lastTableCol, self.TableYSpacing))
+
+    def GenerateTablePlaces(self) -> list:
+        """Generates list of table position tuples
+
+        Returns:
+            list: Array of Tuple Positions
+        """
+        locationArray = []
+        for row in self.TableRows():
+            for col in self.TableCols():
+                locationArray.append(tuple((row, col)))
+        return locationArray
 
 
 SeatingPlan = SeatingPlanClass()

@@ -4,6 +4,7 @@ import pygame
 
 from Classes import Game, GameClock, Inventory, Settings, Writing
 from Definitions import AssetLibrary, Chances, DefinedLocations
+from Utilities import Utils
 
 
 class Game:
@@ -55,7 +56,7 @@ class Game:
             width, height = size
             DefinedLocations.LocationDefs.ScreenSize = (width, height)
         self.Screen = pygame.display.set_mode(size=(width, height))
-        pygame.display.set_caption(title="Poppa Pizza Clone")
+        pygame.display.set_caption("Poppa Pizza Clone")
 
         self.Font = pygame.font.Font(None, 36)
 
@@ -76,6 +77,27 @@ class Game:
             for sprite in group:
                 sprite.UpdateSprite()
             group.draw(self.Screen)
+
+    def LightingEngine(self) -> None:
+        nightLightScreen = pygame.Surface(self.ScreenSize)
+        nightLightScreen.fill(self.GameClock.LightColor.RGB)
+        nightLightScreen.set_alpha(self.GameClock.LightOpacity)
+        mask = pygame.Surface(
+            Utils.ScaleTuple(
+                tupleArg=self.ScreenSize, scale=(1 - self.GameClock.LightScreenCover)
+            )
+        )
+        nightLightScreen.blit(
+            mask,
+            Utils.ScaleTuple(
+                tupleArg=self.ScreenSize,
+                scale=(
+                    self.GameClock.LightScreenCover * self.GameClock.LightScreenCover
+                ),
+            ),
+        )
+        nightLightScreen = pygame.transform.box_blur(nightLightScreen, 200)
+        self.Screen.blit(nightLightScreen, (0, 0))
 
     @property
     def ScreenSize(self) -> tuple[int, int]:

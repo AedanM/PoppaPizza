@@ -20,7 +20,7 @@ What if a bunch of restaurants couldn't afford individual working spaces so deci
 
 Latest version in an EXE can be found in the Releases folder
 
-## [Code Documentation](Docs/Documentation/index.html)
+## [Code Documentation](https://aedanm.github.io/PoppaPizza/Docs/Documentation/index.html)
 
 ## [Controls](Docs/Controls.md)
 
