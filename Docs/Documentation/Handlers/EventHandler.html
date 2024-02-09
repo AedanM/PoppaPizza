@@ -46,6 +46,7 @@ def MainEventHandler(activeGame=Game.MasterGame) -&gt; None:
     Args:
         activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
     &#34;&#34;&#34;
+    RandomSpawnHandler()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -236,6 +237,7 @@ Resets Background</p></div>
     Args:
         activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
     &#34;&#34;&#34;
+    RandomSpawnHandler()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()

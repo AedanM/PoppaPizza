@@ -31,6 +31,8 @@
 
 from enum import Enum
 
+import pygame
+
 from Definitions import ImagePaths
 
 ImagePath = ImagePaths.ImagePaths()
@@ -123,7 +125,8 @@ PathToTypeDict = {
     ImagePath.WorkerLuauPath: ImageTypes.WorkerLuau,
     ImagePath.WorkerSafariPath: ImageTypes.WorkerSafari,
     ImagePath.WorkerSuitPath: ImageTypes.WorkerSuit,
-}</code></pre>
+}
+Background = pygame.image.load(ImagePath.BackgroundPath)</code></pre>
 </details>
 </section>
 <section>

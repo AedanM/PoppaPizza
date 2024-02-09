@@ -33,20 +33,6 @@ from Classes import Game, Matching, Sprite
 from Definitions import AssetLibrary, ColorTools, DefinedLocations, Restaurants
 from Utilities import Utils
 
-
-def GenerateTablePlaces() -&gt; list:
-    &#34;&#34;&#34;Generates list of table position tuples
-
-    Returns:
-        list: Array of Tuple Positions
-    &#34;&#34;&#34;
-    locationArray = []
-    for row in DefinedLocations.SeatingPlan.TableRows():
-        for col in DefinedLocations.SeatingPlan.TableCols():
-            locationArray.append(tuple((row, col)))
-    return locationArray
-
-
 # TODO - Stop Recalcing Tables
 
 
@@ -56,9 +42,7 @@ def AddTables(activeGame=Game.MasterGame) -&gt; None:
     Args:
         activeGame (Game, optional): Current Game being used. Defaults to Game.MasterGame.
     &#34;&#34;&#34;
-    if DefinedLocations.TablePlaces is []:
-        DefinedLocations.TablePlaces = GenerateTablePlaces()
-    for location in GenerateTablePlaces():
+    for location in DefinedLocations.SeatingPlan.GenerateTablePlaces():
         table = Sprite.BackgroundElementSprite(
             position=location,
             path=AssetLibrary.ImagePath.TablePath,
@@ -314,9 +298,7 @@ def SetupBackground(activeGame=Game.MasterGame) -&gt; None:
     Args:
         activeGame (Game, optional): Current Game being used. Defaults to Game.MasterGame.
     &#34;&#34;&#34;
-    if DefinedLocations.TablePlaces is []:
-        DefinedLocations.TablePlaces = GenerateTablePlaces()
-    for location in GenerateTablePlaces():
+    for location in DefinedLocations.SeatingPlan.GenerateTablePlaces():
         table = Sprite.BackgroundElementSprite(
             position=location,
             path=AssetLibrary.ImagePath.TablePath,
@@ -325,33 +307,6 @@ def SetupBackground(activeGame=Game.MasterGame) -&gt; None:
         )
         table.Collision = False
         activeGame.BackgroundSpriteGroup.add(table)</code></pre>
-</details>
-</dd>
-<dt id="Generators.BackgroundPopulator.GenerateTablePlaces"><code class="name flex">
-<span>def <span class="ident">GenerateTablePlaces</span></span>(<span>) ‑> list</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Generates list of table position tuples</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>list</code></dt>
-<dd>Array of Tuple Positions</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def GenerateTablePlaces() -&gt; list:
-    &#34;&#34;&#34;Generates list of table position tuples
-
-    Returns:
-        list: Array of Tuple Positions
-    &#34;&#34;&#34;
-    locationArray = []
-    for row in DefinedLocations.SeatingPlan.TableRows():
-        for col in DefinedLocations.SeatingPlan.TableCols():
-            locationArray.append(tuple((row, col)))
-    return locationArray</code></pre>
 </details>
 </dd>
 <dt id="Generators.BackgroundPopulator.SetupBackground"><code class="name flex">
@@ -427,11 +382,10 @@ def SetupBackground(activeGame=Game.MasterGame) -&gt; None:
 </ul>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
-<ul class="two-column">
+<ul class="">
 <li><code><a title="Generators.BackgroundPopulator.AddButton" href="#Generators.BackgroundPopulator.AddButton">AddButton</a></code></li>
 <li><code><a title="Generators.BackgroundPopulator.AddLockerRooms" href="#Generators.BackgroundPopulator.AddLockerRooms">AddLockerRooms</a></code></li>
 <li><code><a title="Generators.BackgroundPopulator.AddTables" href="#Generators.BackgroundPopulator.AddTables">AddTables</a></code></li>
-<li><code><a title="Generators.BackgroundPopulator.GenerateTablePlaces" href="#Generators.BackgroundPopulator.GenerateTablePlaces">GenerateTablePlaces</a></code></li>
 <li><code><a title="Generators.BackgroundPopulator.SetupBackground" href="#Generators.BackgroundPopulator.SetupBackground">SetupBackground</a></code></li>
 <li><code><a title="Generators.BackgroundPopulator.UnlockLockerRooms" href="#Generators.BackgroundPopulator.UnlockLockerRooms">UnlockLockerRooms</a></code></li>
 </ul>

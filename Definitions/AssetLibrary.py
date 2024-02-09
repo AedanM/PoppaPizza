@@ -97,4 +97,4 @@ PathToTypeDict = {
     ImagePath.WorkerSafariPath: ImageTypes.WorkerSafari,
     ImagePath.WorkerSuitPath: ImageTypes.WorkerSuit,
 }
-Background = (pygame.image.load(ImagePath.BackgroundPath))
+Background = pygame.image.load(ImagePath.BackgroundPath)

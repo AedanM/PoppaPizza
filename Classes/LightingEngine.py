@@ -7,7 +7,6 @@ from Utilities import Utils
 
 
 class LightingEffects:
-
     CurrentNightTransitionAlpha: int = 0
     MaxNightLightAlpha: float = 200
     MaxTransitionCover: float = 0.15

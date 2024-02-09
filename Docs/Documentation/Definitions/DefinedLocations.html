@@ -128,7 +128,7 @@ class DefinedLocations:
         Returns:
             tuple: Scaled Location
         &#34;&#34;&#34;
-        location = (1050, 700)
+        location = (1100, 700)
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
@@ -233,6 +233,18 @@ class SeatingPlanClass:
         &#34;&#34;&#34;
         lastTableCol = (self.NumCols * self.TableYSpacing) + self.TableYStart
         return list(range(self.TableYStart, lastTableCol, self.TableYSpacing))
+
+    def GenerateTablePlaces(self) -&gt; list:
+        &#34;&#34;&#34;Generates list of table position tuples
+
+        Returns:
+            list: Array of Tuple Positions
+        &#34;&#34;&#34;
+        locationArray = []
+        for row in self.TableRows():
+            for col in self.TableCols():
+                locationArray.append(tuple((row, col)))
+        return locationArray
 
 
 SeatingPlan = SeatingPlanClass()</code></pre>
@@ -348,7 +360,7 @@ SeatingPlan = SeatingPlanClass()</code></pre>
         Returns:
             tuple: Scaled Location
         &#34;&#34;&#34;
-        location = (1050, 700)
+        location = (1100, 700)
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
@@ -468,7 +480,7 @@ def EndOfLine(self) -&gt; tuple:
     Returns:
         tuple: Scaled Location
     &#34;&#34;&#34;
-    location = (1050, 700)
+    location = (1100, 700)
     return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)</code></pre>
 </details>
 </dd>
@@ -720,7 +732,19 @@ def WorkerSpawn(self) -&gt; tuple:
             list[int]: List of Column Locations
         &#34;&#34;&#34;
         lastTableCol = (self.NumCols * self.TableYSpacing) + self.TableYStart
-        return list(range(self.TableYStart, lastTableCol, self.TableYSpacing))</code></pre>
+        return list(range(self.TableYStart, lastTableCol, self.TableYSpacing))
+
+    def GenerateTablePlaces(self) -&gt; list:
+        &#34;&#34;&#34;Generates list of table position tuples
+
+        Returns:
+            list: Array of Tuple Positions
+        &#34;&#34;&#34;
+        locationArray = []
+        for row in self.TableRows():
+            for col in self.TableCols():
+                locationArray.append(tuple((row, col)))
+        return locationArray</code></pre>
 </details>
 <h3>Class variables</h3>
 <dl>
@@ -868,6 +892,33 @@ def TableYStart(self) -&gt; int:
 </dl>
 <h3>Methods</h3>
 <dl>
+<dt id="Definitions.DefinedLocations.SeatingPlanClass.GenerateTablePlaces"><code class="name flex">
+<span>def <span class="ident">GenerateTablePlaces</span></span>(<span>self) ‑> list</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Generates list of table position tuples</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>list</code></dt>
+<dd>Array of Tuple Positions</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def GenerateTablePlaces(self) -&gt; list:
+    &#34;&#34;&#34;Generates list of table position tuples
+
+    Returns:
+        list: Array of Tuple Positions
+    &#34;&#34;&#34;
+    locationArray = []
+    for row in self.TableRows():
+        for col in self.TableCols():
+            locationArray.append(tuple((row, col)))
+    return locationArray</code></pre>
+</details>
+</dd>
 <dt id="Definitions.DefinedLocations.SeatingPlanClass.TableCols"><code class="name flex">
 <span>def <span class="ident">TableCols</span></span>(<span>self) ‑> list[int]</span>
 </code></dt>
@@ -954,6 +1005,7 @@ def TableYStart(self) -&gt; int:
 <li>
 <h4><code><a title="Definitions.DefinedLocations.SeatingPlanClass" href="#Definitions.DefinedLocations.SeatingPlanClass">SeatingPlanClass</a></code></h4>
 <ul class="two-column">
+<li><code><a title="Definitions.DefinedLocations.SeatingPlanClass.GenerateTablePlaces" href="#Definitions.DefinedLocations.SeatingPlanClass.GenerateTablePlaces">GenerateTablePlaces</a></code></li>
 <li><code><a title="Definitions.DefinedLocations.SeatingPlanClass.MaxCols" href="#Definitions.DefinedLocations.SeatingPlanClass.MaxCols">MaxCols</a></code></li>
 <li><code><a title="Definitions.DefinedLocations.SeatingPlanClass.MaxRows" href="#Definitions.DefinedLocations.SeatingPlanClass.MaxRows">MaxRows</a></code></li>
 <li><code><a title="Definitions.DefinedLocations.SeatingPlanClass.MaxX" href="#Definitions.DefinedLocations.SeatingPlanClass.MaxX">MaxX</a></code></li>

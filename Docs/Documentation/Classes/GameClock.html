@@ -35,7 +35,8 @@ from dataclasses import dataclass
 import pygame
 
 from Classes import Settings
-from Definitions import CustomEvents
+from Definitions import ColorTools, CustomEvents
+from Utilities import Utils
 
 
 @dataclass
@@ -105,7 +106,13 @@ class GameClock:
                 self.DayChange()
             if self.Day &gt;= self.CurrMonth.Days:
                 self.MonthChange()
-            self.PygameClock.tick(120)
+            self.PygameClock.tick(60)
+
+    @property
+    def DayPercentage(self) -&gt; float:
+        return (self.Minute - (self.WorkingDayStart * 60)) / float(
+            (self.WorkingDayEnd - self.WorkingDayStart) * 60
+        )
 
     def DayChange(self) -&gt; None:
         &#34;&#34;&#34;Update the day as the previous ends&#34;&#34;&#34;
@@ -251,7 +258,13 @@ class GameClock:
                 self.DayChange()
             if self.Day &gt;= self.CurrMonth.Days:
                 self.MonthChange()
-            self.PygameClock.tick(120)
+            self.PygameClock.tick(60)
+
+    @property
+    def DayPercentage(self) -&gt; float:
+        return (self.Minute - (self.WorkingDayStart * 60)) / float(
+            (self.WorkingDayEnd - self.WorkingDayStart) * 60
+        )
 
     def DayChange(self) -&gt; None:
         &#34;&#34;&#34;Update the day as the previous ends&#34;&#34;&#34;
@@ -416,6 +429,20 @@ def DayOfMonth(self) -&gt; int:
         int: Current Day in the Month
     &#34;&#34;&#34;
     return self.Day - self.CurrMonth.PreceedingDays</code></pre>
+</details>
+</dd>
+<dt id="Classes.GameClock.GameClock.DayPercentage"><code class="name">var <span class="ident">DayPercentage</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def DayPercentage(self) -&gt; float:
+    return (self.Minute - (self.WorkingDayStart * 60)) / float(
+        (self.WorkingDayEnd - self.WorkingDayStart) * 60
+    )</code></pre>
 </details>
 </dd>
 <dt id="Classes.GameClock.GameClock.DisplayHour"><code class="name">var <span class="ident">DisplayHour</span> : int</code></dt>
@@ -613,7 +640,7 @@ def UnixTime(self) -&gt; int:
             self.DayChange()
         if self.Day &gt;= self.CurrMonth.Days:
             self.MonthChange()
-        self.PygameClock.tick(120)</code></pre>
+        self.PygameClock.tick(60)</code></pre>
 </details>
 </dd>
 </dl>
@@ -683,6 +710,7 @@ class Month:
 <li><code><a title="Classes.GameClock.GameClock.Day" href="#Classes.GameClock.GameClock.Day">Day</a></code></li>
 <li><code><a title="Classes.GameClock.GameClock.DayChange" href="#Classes.GameClock.GameClock.DayChange">DayChange</a></code></li>
 <li><code><a title="Classes.GameClock.GameClock.DayOfMonth" href="#Classes.GameClock.GameClock.DayOfMonth">DayOfMonth</a></code></li>
+<li><code><a title="Classes.GameClock.GameClock.DayPercentage" href="#Classes.GameClock.GameClock.DayPercentage">DayPercentage</a></code></li>
 <li><code><a title="Classes.GameClock.GameClock.DisplayHour" href="#Classes.GameClock.GameClock.DisplayHour">DisplayHour</a></code></li>
 <li><code><a title="Classes.GameClock.GameClock.Hour" href="#Classes.GameClock.GameClock.Hour">Hour</a></code></li>
 <li><code><a title="Classes.GameClock.GameClock.Minute" href="#Classes.GameClock.GameClock.Minute">Minute</a></code></li>

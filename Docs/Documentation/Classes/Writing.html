@@ -63,9 +63,7 @@ def WriteDateLabel(activeGame) -&gt; None:
     Args:
         activeGame (Game): Current Game
     &#34;&#34;&#34;
-    clockText = (
-        f&#34;{activeGame.GameClock.DateTime} ${activeGame.UserInventory.Money:0.2f}&#34;
-    )
+    clockText = f&#34;{activeGame.GameClock.DateTime} ${activeGame.UserInventory.Money:0.2f} FPS:{round(activeGame.GameClock.PygameClock.get_fps(),2)}&#34;
 
     CreateTextBox(
         locationTopLeft=(0, 0),
@@ -202,9 +200,7 @@ def WriteButtonLabel(activeGame) -&gt; None:
     Args:
         activeGame (Game): Current Game
     &#34;&#34;&#34;
-    clockText = (
-        f&#34;{activeGame.GameClock.DateTime} ${activeGame.UserInventory.Money:0.2f}&#34;
-    )
+    clockText = f&#34;{activeGame.GameClock.DateTime} ${activeGame.UserInventory.Money:0.2f} FPS:{round(activeGame.GameClock.PygameClock.get_fps(),2)}&#34;
 
     CreateTextBox(
         locationTopLeft=(0, 0),

@@ -38,11 +38,12 @@ from Utilities import Utils
 
 def DailyReset(sprite) -&gt; None:
     &#34;&#34;&#34;Reset worker to Kitchen
-
+        Unassigns the worker from any task as well
     Args:
         sprite (Sprite): Worker Sprite
     &#34;&#34;&#34;
     sprite.MvmHandler.Reset()
+    sprite.DataObject.IsAssigned = False
     spawnLocation = Utils.PositionRandomVariance(
         position=DefinedLocations.LocationDefs.WorkerSpawn,
         percentVarianceTuple=(0.05, 0.15),
@@ -118,7 +119,8 @@ def ReturnToKitchen(workerSprite) -&gt; None:
 <span>def <span class="ident">DailyReset</span></span>(<span>sprite) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Reset worker to Kitchen</p>
+<div class="desc"><p>Reset worker to Kitchen
+Unassigns the worker from any task as well</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>sprite</code></strong> :&ensp;<code>Sprite</code></dt>
@@ -130,11 +132,12 @@ def ReturnToKitchen(workerSprite) -&gt; None:
 </summary>
 <pre><code class="python">def DailyReset(sprite) -&gt; None:
     &#34;&#34;&#34;Reset worker to Kitchen
-
+        Unassigns the worker from any task as well
     Args:
         sprite (Sprite): Worker Sprite
     &#34;&#34;&#34;
     sprite.MvmHandler.Reset()
+    sprite.DataObject.IsAssigned = False
     spawnLocation = Utils.PositionRandomVariance(
         position=DefinedLocations.LocationDefs.WorkerSpawn,
         percentVarianceTuple=(0.05, 0.15),
