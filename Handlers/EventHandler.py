@@ -17,6 +17,7 @@ def MainEventHandler(activeGame=Game.MasterGame) -> None:
     Args:
         activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
     """
+    RandomSpawnHandler()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()

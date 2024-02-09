@@ -40,12 +40,6 @@ Months = [
 class GameClock:
     """Class for a clock with custom speeds"""
 
-    # TODO - Make a lighting effects class
-    LightColor: ColorTools.Color = ColorTools.BurntOrange
-    LightOpacity: int = 0
-    MaxNightLight: float = 200
-    LightScreenCover: float = 0.05
-    NightTransitionStart: int = 12 * 60
     Day: int = 1
     CurrMonth: Month = Months[0]
     Second: int = 1
@@ -83,8 +77,13 @@ class GameClock:
                 self.DayChange()
             if self.Day >= self.CurrMonth.Days:
                 self.MonthChange()
-            self.UpdateLightColor()
-            self.PygameClock.tick()
+            self.PygameClock.tick(45)
+
+    @property
+    def DayPercentage(self) -> float:
+        return (self.Minute - (self.WorkingDayStart * 60)) / float(
+            (self.WorkingDayEnd - self.WorkingDayStart) * 60
+        )
 
     def DayChange(self) -> None:
         """Update the day as the previous ends"""
@@ -169,20 +168,3 @@ class GameClock:
             pygame.event.post(CustomEvents.NightCycle)
             self.Day += 1
             self.Second = self.WorkingDayStart * 60 * 60
-
-    def UpdateLightColor(self) -> None:
-        if self.Minute > self.NightTransitionStart:
-            nightLight = self.MaxNightLight * (
-                (self.Minute - self.NightTransitionStart)
-                / (((self.WorkingDayEnd * 60) - self.NightTransitionStart))
-            )
-        else:
-            nightLight = 0
-
-        self.LightOpacity = Utils.Bind(
-            val=nightLight,
-            inRange=(
-                0,
-                self.MaxNightLight,
-            ),
-        )

@@ -34,7 +34,7 @@ def WriteDateLabel(activeGame) -> None:
     Args:
         activeGame (Game): Current Game
     """
-    clockText = f"{activeGame.GameClock.DateTime} ${activeGame.UserInventory.Money:0.2f} FPS:{activeGame.GameClock.PygameClock.get_fps()}"
+    clockText = f"{activeGame.GameClock.DateTime} ${activeGame.UserInventory.Money:0.2f} FPS:{round(activeGame.GameClock.PygameClock.get_fps(),2)}"
 
     CreateTextBox(
         locationTopLeft=(0, 0),

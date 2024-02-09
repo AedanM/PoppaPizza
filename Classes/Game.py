@@ -2,7 +2,7 @@
 
 import pygame
 
-from Classes import Game, GameClock, Inventory, Settings, Writing
+from Classes import Game, GameClock, Inventory, LightingEngine, Settings, Writing
 from Definitions import AssetLibrary, Chances, DefinedLocations
 from Utilities import Utils
 
@@ -19,9 +19,10 @@ class Game:
     JobList: list = []
     ButtonList: list = []
     UserInventory: Inventory.Inventory = None
-    ShowScreen: bool = True
     GameClock = GameClock.GameClock(clock=pygame.time.Clock())
+    Lighting: LightingEngine.LightingEffects = LightingEngine.LightingEffects()
     Running: bool = True
+    ShowScreen: bool = True
 
     def __init__(
         self, activateScreen=True, size=DefinedLocations.LocationDefs.ScreenSize
@@ -55,7 +56,10 @@ class Game:
         else:
             width, height = size
             DefinedLocations.LocationDefs.ScreenSize = (width, height)
-        self.Screen = pygame.display.set_mode(size=(width, height))
+        self.Screen = pygame.display.set_mode(
+            size=(width, height), flags=pygame.DOUBLEBUF
+        )
+        self.Screen.set_alpha(None)
         pygame.display.set_caption("Poppa Pizza Clone")
 
         self.Font = pygame.font.Font(None, 36)
@@ -67,8 +71,7 @@ class Game:
 
     def DrawBackground(self) -> None:
         """Wiping screen with background image"""
-        bg = pygame.image.load(AssetLibrary.ImagePath.BackgroundPath)
-        self.Screen.blit(source=bg, dest=(0, 0))
+        self.Screen.blit(source=AssetLibrary.Background, dest=(0, 0))
 
     def UpdateSprites(self) -> None:
         """Update each sprite each frame"""
@@ -78,26 +81,8 @@ class Game:
                 sprite.UpdateSprite()
             group.draw(self.Screen)
 
-    def LightingEngine(self) -> None:
-        nightLightScreen = pygame.Surface(self.ScreenSize)
-        nightLightScreen.fill(self.GameClock.LightColor.RGB)
-        nightLightScreen.set_alpha(self.GameClock.LightOpacity)
-        mask = pygame.Surface(
-            Utils.ScaleTuple(
-                tupleArg=self.ScreenSize, scale=(1 - self.GameClock.LightScreenCover)
-            )
-        )
-        nightLightScreen.blit(
-            mask,
-            Utils.ScaleTuple(
-                tupleArg=self.ScreenSize,
-                scale=(
-                    self.GameClock.LightScreenCover * self.GameClock.LightScreenCover
-                ),
-            ),
-        )
-        nightLightScreen = pygame.transform.box_blur(nightLightScreen, 200)
-        self.Screen.blit(nightLightScreen, (0, 0))
+    def UpdateLightingEngine(self) -> None:
+        self.Lighting.LightingEngine(activeGame=self)
 
     @property
     def ScreenSize(self) -> tuple[int, int]:
