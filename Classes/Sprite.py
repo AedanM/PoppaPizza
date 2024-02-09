@@ -28,7 +28,7 @@ class CharImageSprite(GameObject.GameObject):
         ),
     ) -> None:
         super().__init__(backgroundFlag=False, moveFlag=True, collisionFlag=True)
-        self.image = pygame.image.load(path)
+        self.image = pygame.image.load(path).convert_alpha()
         self.rect = self.image.get_rect()
         newSize = utils.ResizeMaxLength(
             dim=(self.rect.width, self.rect.height), maxSide=maxSize
@@ -82,7 +82,7 @@ class CharImageSprite(GameObject.GameObject):
         Args:
             newOutfitPath (str): Path to New Outfit
         """
-        newImage = pygame.image.load(newOutfitPath)
+        newImage = pygame.image.load(newOutfitPath).convert()
         newImageRect = newImage.get_rect()
         dim = utils.ResizeMaxLength(
             dim=(newImageRect.width, newImageRect.height),
@@ -157,7 +157,7 @@ class BackgroundElementSprite(GameObject.GameObject):
         super().__init__(backgroundFlag=True, moveFlag=False, collisionFlag=False)
         self.image = pygame.image.load(
             path
-        )  # Replace with the actual sprite image file
+        ).convert_alpha()  # Replace with the actual sprite image file
         self.rect = self.image.get_rect()
         dim = utils.ResizeMaxLength(
             dim=(self.rect.width, self.rect.height), maxSide=maxSize

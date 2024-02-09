@@ -41,6 +41,7 @@ class Game:
         self.UserInventory = Inventory.Inventory()
         if self.ShowScreen:
             self.StartScreen(size=size)
+        AssetLibrary.Background = AssetLibrary.Background.convert()
 
     def StartScreen(self, size) -> None:
         """Begins the screen and sets size

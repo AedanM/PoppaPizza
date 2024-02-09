@@ -77,7 +77,7 @@ class GameClock:
                 self.DayChange()
             if self.Day >= self.CurrMonth.Days:
                 self.MonthChange()
-            self.PygameClock.tick(45)
+            self.PygameClock.tick(60)
 
     @property
     def DayPercentage(self) -> float:
