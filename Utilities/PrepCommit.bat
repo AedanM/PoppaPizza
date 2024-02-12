@@ -30,3 +30,5 @@ del packages.dot
 del classes.dot
 
 ECHO ~~~~~~~~~~~~
+GenDocument.bat
+ECHO ~~~~~~~~~~~~
