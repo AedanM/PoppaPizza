@@ -1,5 +1,6 @@
 """Main Body of Game"""
 
+import argparse
 import os
 
 # *OS Call used to prevent a time printout from Pygame on first import
@@ -17,11 +18,13 @@ from Handlers import EventHandler
 
 def Main() -> None:
     """Main Loop of Game"""
+    debugFlag = True
+    profileFlag = False
     Game.MasterGame = Game.Game()
     pygame.event.post(CustomEvents.UpdateBackground)
     # Enables a series of functions to run automatically
-    debugFlag = True
-
+    if profileFlag:
+        startTime = time.time()
     if debugFlag:
         EventHandler.DebugSetup()
     while True:
@@ -40,6 +43,8 @@ def Main() -> None:
 
         # Control the frame rate
         Game.MasterGame.GameClock.UpdateClock()
+        if profileFlag and (time.time() - startTime > 15):
+            break
 
 
 if __name__ == "__main__":
