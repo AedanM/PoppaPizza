@@ -12,6 +12,7 @@ class ImagePaths:
     AssetFolder = r"Assets" if not hasattr(sys, "_MEIPASS") else sys._MEIPASS
     BackgroundPath = AssetFolder + r"\background.png"
     ButtonPath = AssetFolder + r"\button.png"
+    LightMaskPath = AssetFolder + r"\lightMask.png"
 
     CustomerCoffeePath = AssetFolder + r"\customerCoffee.png"
     CustomerCowboyPath = AssetFolder + r"\customerCowboy.png"

@@ -39,9 +39,15 @@ class Game:
         self.StartTime = pygame.time.get_ticks()
         self.ShowScreen = activateScreen
         self.UserInventory = Inventory.Inventory()
+
         if self.ShowScreen:
             self.StartScreen(size=size)
+        self.ConvertPreRendered()
+
+    def ConvertPreRendered(self) -> None:
+        """Speeds up blitting by converting colorspaces"""
         AssetLibrary.Background = AssetLibrary.Background.convert()
+        self.Lighting.LightMask = self.Lighting.LightMask.convert()
 
     def StartScreen(self, size) -> None:
         """Begins the screen and sets size
