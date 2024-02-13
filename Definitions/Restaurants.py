@@ -26,13 +26,27 @@ class Restaurant:
     CustomerImageTypes: list[AssetLibrary.ImageTypes]
     WorkerImageTypes: list[AssetLibrary.ImageTypes]
     LockerRoom: LockerRoom
+    Size: tuple = (180, 150)
 
     @property
     def LogoPath(self) -> str:
-        return AssetLibrary.LogoPaths[self.Logo]
+        return AssetLibrary.LogoPaths[self.Logo] if self.Logo else None
 
 
 RestaurantList = [
+    # Restaurant(
+    #     Name="Kitchen",
+    #     CustomerImageTypes=[],
+    #     WorkerImageTypes=[],
+    #     Logo=None,
+    #     LockerRoom=LockerRoom(
+    #         Location=DefinedLocations.LocationDefs.LockerRoom0,
+    #         Color=ColorTools.DarkRed,
+    #         Price=0,
+    #         Unlocked=True,
+    #     ),
+    #     Size=(250, 150),
+    # ),
     Restaurant(
         Name="Formal Dining",
         CustomerImageTypes=[AssetLibrary.ImageTypes.CustomerSuit],

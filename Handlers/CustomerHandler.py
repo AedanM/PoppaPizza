@@ -119,7 +119,7 @@ def BeginWait(target) -> None:
         length=(target.DataObject.DesiredJob.Urgency.value * 30.0),
         assocId=target.DataObject.IdNum,
         startingState=target.DataObject.CurrentState.value,
-        fillColor=ColorTools.Red,
+        fillColor=ColorTools.DarkRed,
     )
 
 

@@ -4,7 +4,7 @@ import math
 
 import pygame
 
-from Classes import Game, Matching
+from Classes import Matching
 from Definitions import ColorTools
 
 
@@ -27,8 +27,8 @@ class TimerBar:
         self,
         duration: float,
         position: tuple,
+        activeGame,
         assocId=0,
-        activeGame=Game.MasterGame,
         offset=(0, 0),
     ) -> None:
         """Init for Timer Bar
@@ -59,7 +59,7 @@ class TimerBar:
     @property
     def DynamicColor(
         self,
-    ) -> Color.RGB:
+    ) -> tuple:
         """Generates the gradient transistion between start and end colors
 
         Returns:
@@ -91,7 +91,7 @@ class TimerBar:
             self.Height,
         )
 
-    def StartTimer(self, activeGame=Game.MasterGame) -> None:
+    def StartTimer(self, activeGame) -> None:
         """Begins the timer and sets the reference start time
 
         Args:
@@ -100,7 +100,7 @@ class TimerBar:
         self.StartTime = activeGame.GameClock.Minute
         self.Running = True
 
-    def AgeTimer(self, activeGame=Game.MasterGame) -> None:
+    def AgeTimer(self, activeGame) -> None:
         """Increments timer based on the game clock
 
         Args:
@@ -122,14 +122,14 @@ class TimerBar:
                 self.Running = False
                 self.AssocId = 0
 
-    def UpdateAndDraw(self, activeGame=Game.MasterGame) -> None:
+    def UpdateAndDraw(self, activeGame) -> None:
         """Update Timer Dimensions and Redraw if active
 
         Args:
             activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
         """
         if self.Running:
-            self.AgeTimer()
+            self.AgeTimer(activeGame=activeGame)
             customerObj = Matching.MatchIdToPerson(
                 activeGame=activeGame, inputId=self.AssocId, targetOutput="customer"
             )

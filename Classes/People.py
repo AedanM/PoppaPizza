@@ -77,6 +77,7 @@ class Worker(Person):
             ),
             path=AssetLibrary.ImagePath.WorkerSuitPath,
             objID=worker.IdNum,
+            activeGame=activeGame,
         )
         worker.BasePay = random.uniform(0.25, 5.0)
         activeGame.CharSpriteGroup.add(workerSprite)
@@ -120,6 +121,7 @@ class Customer(Person):
             ),
             path=AssetLibrary.PathLookup(imageType),
             objID=cust.IdNum,
+            activeGame=activeGame,
         )
         activeGame.CharSpriteGroup.add(customerSprite)
         activeGame.CustomerList.append(cust)

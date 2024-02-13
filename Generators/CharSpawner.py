@@ -61,12 +61,12 @@ def GetRandomCustomerType() -> AssetLibrary.ImageTypes:
     activeClientTypes = [
         x.CustomerImageTypes
         for x in Restaurants.RestaurantList
-        if x.LockerRoom.Unlocked
+        if x.LockerRoom.Unlocked and x.CustomerImageTypes
     ]
     inactiveClientTypes = [
         x.CustomerImageTypes
         for x in Restaurants.RestaurantList
-        if not x.LockerRoom.Unlocked
+        if not x.LockerRoom.Unlocked and x.CustomerImageTypes
     ]
     customerType = random.choice(
         random.choice(

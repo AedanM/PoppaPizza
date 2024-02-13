@@ -22,6 +22,7 @@ class CharImageSprite(GameObject.GameObject):
         self,
         position,
         path,
+        activeGame,
         objID,
         maxSize=utils.ScaleToSize(
             value=100, newSize=DefinedLocations.LocationDefs.ScreenSize
@@ -43,7 +44,7 @@ class CharImageSprite(GameObject.GameObject):
         self.MvmHandler = MovementHandler.CharacterMovementHandler()
         self.ImageType = AssetLibrary.PathToTypeDict[path]
         # self.CheckSpawnCollision()
-
+        self.ActiveGame = activeGame
         self.CorrespondingID = objID
 
     @property
@@ -54,26 +55,26 @@ class CharImageSprite(GameObject.GameObject):
             Customer | Worker: Data Object Assoc with Sprite
         """
         objDict = Matching.MatchIdToPerson(
-            activeGame=Game.MasterGame, inputId=self.CorrespondingID
+            activeGame=self.ActiveGame, inputId=self.CorrespondingID
         )
         objDict.pop("sprite")
         obj = list(objDict.values())[0]
         return obj
 
-    def CheckSpawnCollision(self, activeGame=Game.MasterGame) -> None:
+    def CheckSpawnCollision(self) -> None:
         """Changes spawn location until new sprite is not colliding
 
         Args:
             activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
         """
         currentCenter = self.rect.center
-        for group in activeGame.SpriteGroups:
+        for group in self.ActiveGame.SpriteGroups:
             for sprite in group:
                 while sprite.rect.colliderect(self.rect) and sprite is not self:
                     self.rect.center = utils.PositionRandomVariance(
                         position=currentCenter,
                         percentVarianceTuple=(0.1, 1),
-                        screenSize=activeGame.ScreenSize,
+                        screenSize=self.ActiveGame.ScreenSize,
                     )
 
     def ChangeOutfit(self, newOutfitPath) -> None:
@@ -82,7 +83,7 @@ class CharImageSprite(GameObject.GameObject):
         Args:
             newOutfitPath (str): Path to New Outfit
         """
-        newImage = pygame.image.load(newOutfitPath).convert()
+        newImage = pygame.image.load(newOutfitPath).convert_alpha()
         newImageRect = newImage.get_rect()
         dim = utils.ResizeMaxLength(
             dim=(newImageRect.width, newImageRect.height),
@@ -96,7 +97,7 @@ class CharImageSprite(GameObject.GameObject):
     def UpdateSprite(self) -> None:
         """Update sprite for each frame"""
         if self.PersonalTimer is not None:
-            self.PersonalTimer.UpdateAndDraw()
+            self.PersonalTimer.UpdateAndDraw(activeGame=self.ActiveGame)
             self.PersonalTimer.Rect = self.rect.topleft
         self.Update()
 
@@ -126,13 +127,14 @@ class CharImageSprite(GameObject.GameObject):
             position=(self.rect.topleft),
             assocId=assocId,
             offset=offset,
+            activeGame=self.ActiveGame,
         )
         self.PersonalTimer.StartingState = startingState
         self.PersonalTimer.OnComplete = completeTask
         self.PersonalTimer.TimerRect.y -= 25
         self.PersonalTimer.SetMaxSize(size=self.rect.width if width == 0 else width)
         self.PersonalTimer.FillColor = fillColor
-        self.PersonalTimer.StartTimer()
+        self.PersonalTimer.StartTimer(activeGame=self.ActiveGame)
 
     def __repr__(self) -> str:
         """String Rep of Object"""
@@ -234,3 +236,28 @@ class ButtonObject(GameObject.GameObject):
 
         self.rect = self.image.get_rect()
         self.rect.center = position
+
+    @classmethod
+    def AddButton(cls, location, text, color, backColor, enabled, activeGame) -> None:
+        """Generates a Button on a specified location
+
+        Args:
+            location (tuple): tuple position of button center
+            text (str): Button Label
+            color (Color): Main Color
+            backColor (Color): Background Color of Button
+            enabled (bool): Button Enable
+            activeGame (Game, optional): Current Game being used. Defaults to Game.MasterGame.
+        """
+        buttonObj = ButtonObject(
+            position=location,
+            color=color,
+            backColor=backColor,
+            text=text,
+            size=[125, 50],
+            enabled=enabled,
+        )
+
+        activeGame.ForegroundSpriteGroup.add(buttonObj)
+        if not [x for x in activeGame.ButtonList if x.position == location]:
+            activeGame.ButtonList.append(buttonObj)

@@ -14,7 +14,6 @@ class ImageTypes(Enum):
 
     (
         Null,
-        Button,
         LogoCoffee,
         LogoCowboy,
         CustomerCoffee,
@@ -77,7 +76,6 @@ def PathLookup(imageType) -> str | None:
 
 
 PathToTypeDict = {
-    ImagePath.ButtonPath: ImageTypes.Button,
     ImagePath.CustomerCoffeePath: ImageTypes.CustomerCoffee,
     ImagePath.CustomerCowboyPath: ImageTypes.CustomerCowboy,
     ImagePath.CustomerLuauPath: ImageTypes.CustomerLuau,
@@ -98,3 +96,4 @@ PathToTypeDict = {
     ImagePath.WorkerSuitPath: ImageTypes.WorkerSuit,
 }
 Background = pygame.image.load(ImagePath.BackgroundPath)
+TriviaBackground = pygame.image.load(ImagePath.TriviaBackgroundPath)

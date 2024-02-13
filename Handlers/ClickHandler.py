@@ -2,7 +2,7 @@
 
 from enum import Enum
 
-from Classes import Game
+from Classes import Game, MiniGames
 from Definitions import AssetLibrary, CustomerDefs, Restaurants
 from Handlers import CustomerHandler, ShopHandler, WorkerHandler
 from Utilities import Utils
@@ -19,7 +19,21 @@ GlobalClickState = ClickState.Neutral
 GlobalTarget = None
 
 
-def MouseHandler(mousePos, lClick) -> None:
+def TriviaMouseHandler(mousePos) -> None:
+    for button in Game.MasterGame.MiniGame.MasterSpriteGroup:
+        if button.rect.collidepoint(mousePos[0], mousePos[1]):
+            clickedText = (
+                [
+                    x.Text
+                    for x in Game.MasterGame.MiniGame.DisplayedText.values()
+                    if x.Center == button.rect.center
+                ]
+            )[0]
+    Game.MasterGame.MiniGame.UpdateStateMachine(buttonChoice = clickedText)
+        
+
+
+def MainMouseHandler(mousePos, lClick) -> None:
     """Handler for mouse clicks
 
     Args:

@@ -2,9 +2,16 @@
 
 import pygame
 
-from Classes import Game, GameClock, Inventory, LightingEngine, Settings, Writing
-from Definitions import AssetLibrary, Chances, DefinedLocations
-from Utilities import Utils
+from Classes import (
+    Game,
+    GameClock,
+    Inventory,
+    LightingEngine,
+    MiniGames,
+    Settings,
+    Writing,
+)
+from Definitions import AssetLibrary, Chances, ColorTools, DefinedLocations
 
 
 class Game:
@@ -23,6 +30,8 @@ class Game:
     Lighting: LightingEngine.LightingEffects = LightingEngine.LightingEffects()
     Running: bool = True
     ShowScreen: bool = True
+    Mode: MiniGames.GameMode = MiniGames.GameMode.Base
+    MiniGame: MiniGames.RoundBasedGame = None
 
     def __init__(
         self, activateScreen=True, size=DefinedLocations.LocationDefs.ScreenSize
@@ -47,6 +56,7 @@ class Game:
     def ConvertPreRendered(self) -> None:
         """Speeds up blitting by converting colorspaces"""
         AssetLibrary.Background = AssetLibrary.Background.convert()
+        AssetLibrary.TriviaBackground = AssetLibrary.TriviaBackground.convert()
         self.Lighting.LightMask = self.Lighting.LightMask.convert()
 
     def StartScreen(self, size) -> None:
@@ -69,16 +79,19 @@ class Game:
         self.Screen.set_alpha(None)
         pygame.display.set_caption("Poppa Pizza Clone")
 
-        self.Font = pygame.font.Font(None, 36)
-
     def WriteAllText(self) -> None:
         """Write all text visible in game"""
         Writing.WriteButtonLabel(activeGame=self)
         Writing.WriteDateLabel(activeGame=self)
 
-    def DrawBackground(self) -> None:
+    def DrawBackground(
+        self, source: pygame.Surface = None, color: ColorTools.Color = None
+    ) -> None:
         """Wiping screen with background image"""
-        self.Screen.blit(source=AssetLibrary.Background, dest=(0, 0))
+        if source:
+            self.Screen.blit(source=source, dest=(0, 0))
+        elif color:
+            self.Screen.fill(color.RGB)
 
     def UpdateSprites(self) -> None:
         """Update each sprite each frame"""
@@ -99,6 +112,11 @@ class Game:
             tuple: tuple of current Size
         """
         return (self.Screen.get_width(), self.Screen.get_height())
+
+    def ClearMiniGame(self) -> None:
+        self.MiniGame = None
+        self.Mode = MiniGames.GameMode.Base
+        self.GameClock.SetRunning(True)
 
 
 MasterGame = Game()

@@ -77,6 +77,7 @@ class TriviaGame(RoundBasedGame):
         while responseCode != 0:
             rawResponse = self.TriviaAPI.request(num_questions=self.Rounds + 1)
             responseCode = rawResponse["response_code"]
+            print(responseCode)
         self.QuestionList = rawResponse["results"]
 
     def PlayRound(self) -> None:
@@ -90,7 +91,9 @@ class TriviaGame(RoundBasedGame):
             correctAnswer = self.PresentQuestion()
             answer = input()
             self.RoundResult = fuzz.token_set_ratio(answer, correctAnswer) > 50
-            self.PresentationMethod("Correct" if self.RoundResult else "Incorrect")
+            self.PresentationMethod(
+                "Correct" if self.RoundResult else f"Incorrect: {correctAnswer}"
+            )
 
     def PresentQuestion(self) -> str:
         question = self.QuestionList[self.CurrentRound - 1]

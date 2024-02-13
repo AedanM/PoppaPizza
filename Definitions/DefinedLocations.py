@@ -13,6 +13,16 @@ class DefinedLocations:
     ScreenSize = StandardDimensions["Medium"]
 
     @property
+    def LockerRoom0(self) -> tuple:
+        """Location of First Locker Room
+
+        Returns:
+            tuple: Scaled Location
+        """
+        location = (125, 65)
+        return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
+
+    @property
     def LockerRoom1(self) -> tuple:
         """Location of First Locker Room
 
@@ -121,6 +131,62 @@ class DefinedLocations:
         """
         location = (50, 100)
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
+
+    @property
+    def TriviaTitleText(self) -> tuple:
+        """Location of Main Trivia Game Text
+
+        Returns:
+            tuple: Scaled Location
+        """
+        location = (600, 100)
+        return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
+
+    @property
+    def TriviaMainText(self) -> tuple:
+        """Location of Main Trivia Title Text
+
+        Returns:
+            tuple: Scaled Location
+        """
+        location = (600, 250)
+        return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
+
+    @property
+    def TriviaMinorText(self) -> tuple:
+        """Location of Secondary Trivia Game Text
+
+        Returns:
+            tuple: Scaled Location
+        """
+        location = (600, 600)
+        return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
+
+    @property
+    def TriviaRoundText(self) -> tuple:
+        """Location of Round Label for Trivia Game
+
+        Returns:
+            tuple: Scaled Location
+        """
+        location = (100, 100)
+        return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
+
+    def Answers(self, num) -> list:
+        """Location of Round Label for Trivia Game
+
+        Returns:
+            tuple: Scaled Location
+        """
+        location = []
+        match num:
+            case 4:
+                location = [(350, 500), (850, 500), (350, 700), (850, 700)]
+            case 2:
+                location = [(350, 600), (850, 600)]
+            case 1:
+                location = [(600, 500)]
+        return [Utils.ScaleToSize(value=x, newSize=self.ScreenSize) for x in location]
 
 
 LocationDefs = DefinedLocations()
