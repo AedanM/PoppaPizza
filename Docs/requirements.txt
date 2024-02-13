@@ -9,3 +9,4 @@ pyinstaller
 pdoc3
 pylint
 code2flow
+snakeviz
