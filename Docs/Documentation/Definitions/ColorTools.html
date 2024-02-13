@@ -37,6 +37,21 @@ import numpy as np
 from Utilities import Utils
 
 
+def RGB_to_HSV(red, green, blue) -&gt; None:
+    red_percentage = red / float(255)
+    green_percentage = green / float(255)
+    blue_percentage = blue / float(255)
+    color_hsv_percentage = colorsys.rgb_to_hsv(
+        red_percentage, green_percentage, blue_percentage
+    )
+
+    h = round(255 * color_hsv_percentage[0])
+    s = round(255 * color_hsv_percentage[1])
+    v = round(255 * color_hsv_percentage[2])
+
+    return h, s, v
+
+
 @dataclass
 class Color:
     &#34;&#34;&#34;Class for Defined Colors&#34;&#34;&#34;
@@ -45,11 +60,28 @@ class Color:
     S: int
     V: int
 
-    def __init__(self, h, s, v) -&gt; None:
-        &#34;&#34;&#34;Creates a color from HSV input&#34;&#34;&#34;
-        self.H = Utils.Bind(val=h, inRange=(0, 255))
-        self.S = Utils.Bind(val=s, inRange=(0, 255))
-        self.V = Utils.Bind(val=v, inRange=(0, 255))
+    def __init__(
+        self, h=None, s=None, v=None, r=None, g=None, b=None, hexstring=None
+    ) -&gt; None:
+        &#34;&#34;&#34;Creates a color from HSV or RGB input&#34;&#34;&#34;
+        try:
+            if h is not None and s is not None and v is not None:
+                self.H = Utils.Bind(val=h, inRange=(0, 255))
+                self.S = Utils.Bind(val=s, inRange=(0, 255))
+                self.V = Utils.Bind(val=v, inRange=(0, 255))
+            elif r is not None and g is not None and b is not None:
+                self.H, self.S, self.V = RGB_to_HSV(red=r, green=g, blue=b)
+            elif hexstring is not None:
+                hexstring = hexstring.replace(&#34;0x&#34;, &#34;&#34;).replace(&#34;#&#34;, &#34;&#34;)
+                self.H, self.S, self.V = RGB_to_HSV(
+                    red=int(hexstring[0:1], 16) * (256 / 16),
+                    green=int(hexstring[2:3], 16) * (256 / 16),
+                    blue=int(hexstring[4:5], 16) * (256 / 16),
+                )
+            else:
+                raise Exception(&#34;Invalid Inputs&#34;)
+        except Exception as e:
+            raise Exception(f&#34;Invalid Inputs: {e}&#34;)
 
     def GetNumPy(self) -&gt; &#34;np.NDArray[np.uint8]&#34;:
         &#34;&#34;&#34;Numpy Representation&#34;&#34;&#34;
@@ -81,18 +113,29 @@ class Color:
         rgb = self.RGB
         return (rgb[2], rgb[1], rgb[0])
 
+    @property
+    def HexString(self) -&gt; str:
+        &#34;&#34;&#34;Returns the hex string representation&#34;&#34;&#34;
+        R, G, B = self.RGB
+        return f&#34;#{R:2x}{G:2x}{B:2x}&#34;
+
 
 White = Color(h=0, s=0, v=255)
 Blue = Color(h=150, s=200, v=128)
 Green = Color(h=70, s=200, v=128)
 LimeGreen = Color(h=70, s=200, v=255)
-Red = Color(h=0, s=200, v=255)
+DarkRed = Color(h=0, s=255, v=140)
 Grey = Color(h=0, s=0, v=200)
 Pink = Color(h=220, s=200, v=128)
 Yellow = Color(h=25, s=200, v=180)
 CautionTapeYellow = Color(h=37, s=255, v=255)
 Brown = Color(h=29, s=230, v=100)
-Black = Color(h=0, s=0, v=0)</code></pre>
+Black = Color(h=0, s=0, v=0)
+OrangeMorning = Color(h=15, s=50, v=255)
+OrangeNight = Color(h=15, s=130, v=200)
+BlueMorning = Color(h=200, s=50, v=255)
+BlueNight = Color(h=200, s=130, v=200)
+TriviaBlue = Color(h=167, s=170, v=200)</code></pre>
 </details>
 </section>
 <section>
@@ -100,17 +143,44 @@ Black = Color(h=0, s=0, v=0)</code></pre>
 <section>
 </section>
 <section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="Definitions.ColorTools.RGB_to_HSV"><code class="name flex">
+<span>def <span class="ident">RGB_to_HSV</span></span>(<span>red, green, blue) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def RGB_to_HSV(red, green, blue) -&gt; None:
+    red_percentage = red / float(255)
+    green_percentage = green / float(255)
+    blue_percentage = blue / float(255)
+    color_hsv_percentage = colorsys.rgb_to_hsv(
+        red_percentage, green_percentage, blue_percentage
+    )
+
+    h = round(255 * color_hsv_percentage[0])
+    s = round(255 * color_hsv_percentage[1])
+    v = round(255 * color_hsv_percentage[2])
+
+    return h, s, v</code></pre>
+</details>
+</dd>
+</dl>
 </section>
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
 <dt id="Definitions.ColorTools.Color"><code class="flex name class">
 <span>class <span class="ident">Color</span></span>
-<span>(</span><span>h, s, v)</span>
+<span>(</span><span>h=None, s=None, v=None, r=None, g=None, b=None, hexstring=None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Class for Defined Colors</p>
-<p>Creates a color from HSV input</p></div>
+<p>Creates a color from HSV or RGB input</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -123,11 +193,28 @@ class Color:
     S: int
     V: int
 
-    def __init__(self, h, s, v) -&gt; None:
-        &#34;&#34;&#34;Creates a color from HSV input&#34;&#34;&#34;
-        self.H = Utils.Bind(val=h, inRange=(0, 255))
-        self.S = Utils.Bind(val=s, inRange=(0, 255))
-        self.V = Utils.Bind(val=v, inRange=(0, 255))
+    def __init__(
+        self, h=None, s=None, v=None, r=None, g=None, b=None, hexstring=None
+    ) -&gt; None:
+        &#34;&#34;&#34;Creates a color from HSV or RGB input&#34;&#34;&#34;
+        try:
+            if h is not None and s is not None and v is not None:
+                self.H = Utils.Bind(val=h, inRange=(0, 255))
+                self.S = Utils.Bind(val=s, inRange=(0, 255))
+                self.V = Utils.Bind(val=v, inRange=(0, 255))
+            elif r is not None and g is not None and b is not None:
+                self.H, self.S, self.V = RGB_to_HSV(red=r, green=g, blue=b)
+            elif hexstring is not None:
+                hexstring = hexstring.replace(&#34;0x&#34;, &#34;&#34;).replace(&#34;#&#34;, &#34;&#34;)
+                self.H, self.S, self.V = RGB_to_HSV(
+                    red=int(hexstring[0:1], 16) * (256 / 16),
+                    green=int(hexstring[2:3], 16) * (256 / 16),
+                    blue=int(hexstring[4:5], 16) * (256 / 16),
+                )
+            else:
+                raise Exception(&#34;Invalid Inputs&#34;)
+        except Exception as e:
+            raise Exception(f&#34;Invalid Inputs: {e}&#34;)
 
     def GetNumPy(self) -&gt; &#34;np.NDArray[np.uint8]&#34;:
         &#34;&#34;&#34;Numpy Representation&#34;&#34;&#34;
@@ -157,7 +244,13 @@ class Color:
     def BGR(self) -&gt; tuple[int, int, int]:
         &#34;&#34;&#34;BGR Representation&#34;&#34;&#34;
         rgb = self.RGB
-        return (rgb[2], rgb[1], rgb[0])</code></pre>
+        return (rgb[2], rgb[1], rgb[0])
+
+    @property
+    def HexString(self) -&gt; str:
+        &#34;&#34;&#34;Returns the hex string representation&#34;&#34;&#34;
+        R, G, B = self.RGB
+        return f&#34;#{R:2x}{G:2x}{B:2x}&#34;</code></pre>
 </details>
 <h3>Class variables</h3>
 <dl>
@@ -201,6 +294,20 @@ def BGR(self) -&gt; tuple[int, int, int]:
 def HSV(self) -&gt; tuple[int, int, int]:
     &#34;&#34;&#34;HSV Representation&#34;&#34;&#34;
     return (self.H, self.S, self.V)</code></pre>
+</details>
+</dd>
+<dt id="Definitions.ColorTools.Color.HexString"><code class="name">var <span class="ident">HexString</span> : str</code></dt>
+<dd>
+<div class="desc"><p>Returns the hex string representation</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def HexString(self) -&gt; str:
+    &#34;&#34;&#34;Returns the hex string representation&#34;&#34;&#34;
+    R, G, B = self.RGB
+    return f&#34;#{R:2x}{G:2x}{B:2x}&#34;</code></pre>
 </details>
 </dd>
 <dt id="Definitions.ColorTools.Color.RGB"><code class="name">var <span class="ident">RGB</span> : tuple[int, ...]</code></dt>
@@ -259,6 +366,11 @@ def RGB(self) -&gt; tuple[int, ...]:
 <li><code><a title="Definitions" href="index.html">Definitions</a></code></li>
 </ul>
 </li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="Definitions.ColorTools.RGB_to_HSV" href="#Definitions.ColorTools.RGB_to_HSV">RGB_to_HSV</a></code></li>
+</ul>
+</li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
@@ -268,6 +380,7 @@ def RGB(self) -&gt; tuple[int, ...]:
 <li><code><a title="Definitions.ColorTools.Color.GetNumPy" href="#Definitions.ColorTools.Color.GetNumPy">GetNumPy</a></code></li>
 <li><code><a title="Definitions.ColorTools.Color.H" href="#Definitions.ColorTools.Color.H">H</a></code></li>
 <li><code><a title="Definitions.ColorTools.Color.HSV" href="#Definitions.ColorTools.Color.HSV">HSV</a></code></li>
+<li><code><a title="Definitions.ColorTools.Color.HexString" href="#Definitions.ColorTools.Color.HexString">HexString</a></code></li>
 <li><code><a title="Definitions.ColorTools.Color.RGB" href="#Definitions.ColorTools.Color.RGB">RGB</a></code></li>
 <li><code><a title="Definitions.ColorTools.Color.S" href="#Definitions.ColorTools.Color.S">S</a></code></li>
 <li><code><a title="Definitions.ColorTools.Color.V" href="#Definitions.ColorTools.Color.V">V</a></code></li>

@@ -29,6 +29,7 @@
 </summary>
 <pre><code class="python">&#34;&#34;&#34;Generator Functions for Menus&#34;&#34;&#34;
 
+import pygame
 import pygame_menu
 
 from Classes import Game
@@ -118,6 +119,12 @@ def OptionsMenu(surface=Game.MasterGame.Screen) -&gt; None:
         value_format=lambda x: f&#34;{pow(base=2, exp=x)}x&#34;,
         range_text_value_enabled=False,
         onchange=lambda x: (Game.MasterGame.Settings.SetClockMul(value=x)),
+    )
+    menu.add.dropselect(
+        title=&#34;Night Color: &#34;,
+        items=Game.MasterGame.Lighting.NightColorOptions,
+        default=Game.MasterGame.GameClock.LightColor,
+        onchange=lambda x: Game.MasterGame.GameClock.ChangeNightColor(rgb=x),
     )
     menu.add.button(title=&#34;Return&#34;, action=pygame_menu.events.CLOSE)
     menu.mainloop(surface=surface, wait_for_event=True)
@@ -247,7 +254,7 @@ def GameOverMenu(surface=Game.MasterGame.Screen, reason=&#34;You ran out of Mone
 </details>
 </dd>
 <dt id="Generators.Menus.GameOverMenu"><code class="name flex">
-<span>def <span class="ident">GameOverMenu</span></span>(<span>surface=&lt;Surface(1200x800x32 SW)&gt;, reason='You ran out of Money') ‑> None</span>
+<span>def <span class="ident">GameOverMenu</span></span>(<span>surface=&lt;Surface(1200x800x32)&gt;, reason='You ran out of Money') ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Displayed Screen when Game Ends</p>
@@ -297,7 +304,7 @@ def GameOverMenu(surface=Game.MasterGame.Screen, reason=&#34;You ran out of Mone
 </details>
 </dd>
 <dt id="Generators.Menus.OptionsMenu"><code class="name flex">
-<span>def <span class="ident">OptionsMenu</span></span>(<span>surface=&lt;Surface(1200x800x32 SW)&gt;) ‑> None</span>
+<span>def <span class="ident">OptionsMenu</span></span>(<span>surface=&lt;Surface(1200x800x32)&gt;) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Menu for Game Configuration</p>
@@ -345,12 +352,18 @@ def GameOverMenu(surface=Game.MasterGame.Screen, reason=&#34;You ran out of Mone
         range_text_value_enabled=False,
         onchange=lambda x: (Game.MasterGame.Settings.SetClockMul(value=x)),
     )
+    menu.add.dropselect(
+        title=&#34;Night Color: &#34;,
+        items=Game.MasterGame.Lighting.NightColorOptions,
+        default=Game.MasterGame.GameClock.LightColor,
+        onchange=lambda x: Game.MasterGame.GameClock.ChangeNightColor(rgb=x),
+    )
     menu.add.button(title=&#34;Return&#34;, action=pygame_menu.events.CLOSE)
     menu.mainloop(surface=surface, wait_for_event=True)</code></pre>
 </details>
 </dd>
 <dt id="Generators.Menus.ShopMenu"><code class="name flex">
-<span>def <span class="ident">ShopMenu</span></span>(<span>surface=&lt;Surface(1200x800x32 SW)&gt;) ‑> None</span>
+<span>def <span class="ident">ShopMenu</span></span>(<span>surface=&lt;Surface(1200x800x32)&gt;) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Menu for shop screen</p>

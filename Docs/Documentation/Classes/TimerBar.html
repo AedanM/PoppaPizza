@@ -33,7 +33,7 @@ import math
 
 import pygame
 
-from Classes import Game, Matching
+from Classes import Matching
 from Definitions import ColorTools
 
 
@@ -56,8 +56,8 @@ class TimerBar:
         self,
         duration: float,
         position: tuple,
+        activeGame,
         assocId=0,
-        activeGame=Game.MasterGame,
         offset=(0, 0),
     ) -&gt; None:
         &#34;&#34;&#34;Init for Timer Bar
@@ -88,7 +88,7 @@ class TimerBar:
     @property
     def DynamicColor(
         self,
-    ) -&gt; Color.RGB:
+    ) -&gt; tuple:
         &#34;&#34;&#34;Generates the gradient transistion between start and end colors
 
         Returns:
@@ -120,7 +120,7 @@ class TimerBar:
             self.Height,
         )
 
-    def StartTimer(self, activeGame=Game.MasterGame) -&gt; None:
+    def StartTimer(self, activeGame) -&gt; None:
         &#34;&#34;&#34;Begins the timer and sets the reference start time
 
         Args:
@@ -129,7 +129,7 @@ class TimerBar:
         self.StartTime = activeGame.GameClock.Minute
         self.Running = True
 
-    def AgeTimer(self, activeGame=Game.MasterGame) -&gt; None:
+    def AgeTimer(self, activeGame) -&gt; None:
         &#34;&#34;&#34;Increments timer based on the game clock
 
         Args:
@@ -151,14 +151,14 @@ class TimerBar:
                 self.Running = False
                 self.AssocId = 0
 
-    def UpdateAndDraw(self, activeGame=Game.MasterGame) -&gt; None:
+    def UpdateAndDraw(self, activeGame) -&gt; None:
         &#34;&#34;&#34;Update Timer Dimensions and Redraw if active
 
         Args:
             activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
         &#34;&#34;&#34;
         if self.Running:
-            self.AgeTimer()
+            self.AgeTimer(activeGame=activeGame)
             customerObj = Matching.MatchIdToPerson(
                 activeGame=activeGame, inputId=self.AssocId, targetOutput=&#34;customer&#34;
             )
@@ -195,7 +195,7 @@ class TimerBar:
 <dl>
 <dt id="Classes.TimerBar.TimerBar"><code class="flex name class">
 <span>class <span class="ident">TimerBar</span></span>
-<span>(</span><span>duration: float, position: tuple, assocId=0, activeGame=&lt;Classes.Game.Game object&gt;, offset=(0, 0))</span>
+<span>(</span><span>duration: float, position: tuple, activeGame, assocId=0, offset=(0, 0))</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Class for Progress Bars with a Running Timer</p>
@@ -236,8 +236,8 @@ class TimerBar:
         self,
         duration: float,
         position: tuple,
+        activeGame,
         assocId=0,
-        activeGame=Game.MasterGame,
         offset=(0, 0),
     ) -&gt; None:
         &#34;&#34;&#34;Init for Timer Bar
@@ -268,7 +268,7 @@ class TimerBar:
     @property
     def DynamicColor(
         self,
-    ) -&gt; Color.RGB:
+    ) -&gt; tuple:
         &#34;&#34;&#34;Generates the gradient transistion between start and end colors
 
         Returns:
@@ -300,7 +300,7 @@ class TimerBar:
             self.Height,
         )
 
-    def StartTimer(self, activeGame=Game.MasterGame) -&gt; None:
+    def StartTimer(self, activeGame) -&gt; None:
         &#34;&#34;&#34;Begins the timer and sets the reference start time
 
         Args:
@@ -309,7 +309,7 @@ class TimerBar:
         self.StartTime = activeGame.GameClock.Minute
         self.Running = True
 
-    def AgeTimer(self, activeGame=Game.MasterGame) -&gt; None:
+    def AgeTimer(self, activeGame) -&gt; None:
         &#34;&#34;&#34;Increments timer based on the game clock
 
         Args:
@@ -331,14 +331,14 @@ class TimerBar:
                 self.Running = False
                 self.AssocId = 0
 
-    def UpdateAndDraw(self, activeGame=Game.MasterGame) -&gt; None:
+    def UpdateAndDraw(self, activeGame) -&gt; None:
         &#34;&#34;&#34;Update Timer Dimensions and Redraw if active
 
         Args:
             activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
         &#34;&#34;&#34;
         if self.Running:
-            self.AgeTimer()
+            self.AgeTimer(activeGame=activeGame)
             customerObj = Matching.MatchIdToPerson(
                 activeGame=activeGame, inputId=self.AssocId, targetOutput=&#34;customer&#34;
             )
@@ -412,7 +412,7 @@ class TimerBar:
 </dl>
 <h3>Instance variables</h3>
 <dl>
-<dt id="Classes.TimerBar.TimerBar.DynamicColor"><code class="name">var <span class="ident">DynamicColor</span> : (126, 255, 55)</code></dt>
+<dt id="Classes.TimerBar.TimerBar.DynamicColor"><code class="name">var <span class="ident">DynamicColor</span> : tuple</code></dt>
 <dd>
 <div class="desc"><p>Generates the gradient transistion between start and end colors</p>
 <h2 id="returns">Returns</h2>
@@ -427,7 +427,7 @@ class TimerBar:
 <pre><code class="python">@property
 def DynamicColor(
     self,
-) -&gt; Color.RGB:
+) -&gt; tuple:
     &#34;&#34;&#34;Generates the gradient transistion between start and end colors
 
     Returns:
@@ -449,7 +449,7 @@ def DynamicColor(
 <h3>Methods</h3>
 <dl>
 <dt id="Classes.TimerBar.TimerBar.AgeTimer"><code class="name flex">
-<span>def <span class="ident">AgeTimer</span></span>(<span>self, activeGame=&lt;Classes.Game.Game object&gt;) ‑> None</span>
+<span>def <span class="ident">AgeTimer</span></span>(<span>self, activeGame) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Increments timer based on the game clock</p>
@@ -462,7 +462,7 @@ def DynamicColor(
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def AgeTimer(self, activeGame=Game.MasterGame) -&gt; None:
+<pre><code class="python">def AgeTimer(self, activeGame) -&gt; None:
     &#34;&#34;&#34;Increments timer based on the game clock
 
     Args:
@@ -513,7 +513,7 @@ def DynamicColor(
 </details>
 </dd>
 <dt id="Classes.TimerBar.TimerBar.StartTimer"><code class="name flex">
-<span>def <span class="ident">StartTimer</span></span>(<span>self, activeGame=&lt;Classes.Game.Game object&gt;) ‑> None</span>
+<span>def <span class="ident">StartTimer</span></span>(<span>self, activeGame) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Begins the timer and sets the reference start time</p>
@@ -526,7 +526,7 @@ def DynamicColor(
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def StartTimer(self, activeGame=Game.MasterGame) -&gt; None:
+<pre><code class="python">def StartTimer(self, activeGame) -&gt; None:
     &#34;&#34;&#34;Begins the timer and sets the reference start time
 
     Args:
@@ -537,7 +537,7 @@ def DynamicColor(
 </details>
 </dd>
 <dt id="Classes.TimerBar.TimerBar.UpdateAndDraw"><code class="name flex">
-<span>def <span class="ident">UpdateAndDraw</span></span>(<span>self, activeGame=&lt;Classes.Game.Game object&gt;) ‑> None</span>
+<span>def <span class="ident">UpdateAndDraw</span></span>(<span>self, activeGame) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Update Timer Dimensions and Redraw if active</p>
@@ -550,14 +550,14 @@ def DynamicColor(
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def UpdateAndDraw(self, activeGame=Game.MasterGame) -&gt; None:
+<pre><code class="python">def UpdateAndDraw(self, activeGame) -&gt; None:
     &#34;&#34;&#34;Update Timer Dimensions and Redraw if active
 
     Args:
         activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
     &#34;&#34;&#34;
     if self.Running:
-        self.AgeTimer()
+        self.AgeTimer(activeGame=activeGame)
         customerObj = Matching.MatchIdToPerson(
             activeGame=activeGame, inputId=self.AssocId, targetOutput=&#34;customer&#34;
         )

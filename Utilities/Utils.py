@@ -215,3 +215,16 @@ def ScaleToSize(
     if isinstance(value, tuple):
         return (value[0] * scaleX, value[1] * scaleY)
     return value * scaleX
+
+
+def ScaleTuple(tupleArg, scale) -> tuple:
+    """Mutiply scalar by tuple
+
+    Args:
+        tupleArg (tuple): input Tuple
+        scale (int | float): product
+
+    Returns:
+        tuple: Scaled Tuple
+    """
+    return (tupleArg[0] * scale, tupleArg[1] * scale)

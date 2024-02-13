@@ -6,7 +6,8 @@ from dataclasses import dataclass
 import pygame
 
 from Classes import Settings
-from Definitions import CustomEvents
+from Definitions import ColorTools, CustomEvents
+from Utilities import Utils
 
 
 @dataclass
@@ -76,7 +77,16 @@ class GameClock:
                 self.DayChange()
             if self.Day >= self.CurrMonth.Days:
                 self.MonthChange()
-            self.PygameClock.tick(120)
+            if Settings.GameSettings.CapFrames:
+                self.PygameClock.tick(60)
+            else:
+                self.PygameClock.tick()
+
+    @property
+    def DayPercentage(self) -> float:
+        return (self.Minute - (self.WorkingDayStart * 60)) / float(
+            (self.WorkingDayEnd - self.WorkingDayStart) * 60
+        )
 
     def DayChange(self) -> None:
         """Update the day as the previous ends"""

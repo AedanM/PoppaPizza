@@ -2,8 +2,16 @@
 
 import pygame
 
-from Classes import Game, GameClock, Inventory, Settings, Writing
-from Definitions import AssetLibrary, Chances, DefinedLocations
+from Classes import (
+    Game,
+    GameClock,
+    Inventory,
+    LightingEngine,
+    MiniGames,
+    Settings,
+    Writing,
+)
+from Definitions import AssetLibrary, Chances, ColorTools, DefinedLocations
 
 
 class Game:
@@ -18,9 +26,12 @@ class Game:
     JobList: list = []
     ButtonList: list = []
     UserInventory: Inventory.Inventory = None
-    ShowScreen: bool = True
     GameClock = GameClock.GameClock(clock=pygame.time.Clock())
+    Lighting: LightingEngine.LightingEffects = None
     Running: bool = True
+    ShowScreen: bool = True
+    Mode: MiniGames.GameMode = MiniGames.GameMode.Base
+    MiniGame: MiniGames.RoundBasedGame = None
 
     def __init__(
         self, activateScreen=True, size=DefinedLocations.LocationDefs.ScreenSize
@@ -37,8 +48,16 @@ class Game:
         self.StartTime = pygame.time.get_ticks()
         self.ShowScreen = activateScreen
         self.UserInventory = Inventory.Inventory()
+        self.Lighting = LightingEngine.LightingEffects(screenSize=size)
         if self.ShowScreen:
             self.StartScreen(size=size)
+        self.ConvertPreRendered()
+
+    def ConvertPreRendered(self) -> None:
+        """Speeds up blitting by converting colorspaces"""
+        AssetLibrary.Background = AssetLibrary.Background.convert()
+        AssetLibrary.TriviaBackground = AssetLibrary.TriviaBackground.convert()
+        self.Lighting.LightMask = self.Lighting.LightMask.convert()
 
     def StartScreen(self, size) -> None:
         """Begins the screen and sets size
@@ -54,20 +73,26 @@ class Game:
         else:
             width, height = size
             DefinedLocations.LocationDefs.ScreenSize = (width, height)
-        self.Screen = pygame.display.set_mode(size=(width, height))
-        pygame.display.set_caption(title="Poppa Pizza Clone")
-
-        self.Font = pygame.font.Font(None, 36)
+        self.Screen = pygame.display.set_mode(
+            size=(width, height), flags=pygame.DOUBLEBUF
+        )
+        self.Screen.set_alpha(None)
+        pygame.display.set_caption("Poppa Pizza Clone")
 
     def WriteAllText(self) -> None:
         """Write all text visible in game"""
         Writing.WriteButtonLabel(activeGame=self)
         Writing.WriteDateLabel(activeGame=self)
+        Writing.WriteKitchenLabel(activeGame=self)
 
-    def DrawBackground(self) -> None:
+    def DrawBackground(
+        self, source: pygame.Surface = None, color: ColorTools.Color = None
+    ) -> None:
         """Wiping screen with background image"""
-        bg = pygame.image.load(AssetLibrary.ImagePath.BackgroundPath)
-        self.Screen.blit(source=bg, dest=(0, 0))
+        if source:
+            self.Screen.blit(source=source, dest=(0, 0))
+        elif color:
+            self.Screen.fill(color.RGB)
 
     def UpdateSprites(self) -> None:
         """Update each sprite each frame"""
@@ -77,6 +102,9 @@ class Game:
                 sprite.UpdateSprite()
             group.draw(self.Screen)
 
+    def UpdateLightingEngine(self) -> None:
+        self.Lighting.LightingEngine(activeGame=self)
+
     @property
     def ScreenSize(self) -> tuple[int, int]:
         """Current size of screen
@@ -85,6 +113,11 @@ class Game:
             tuple: tuple of current Size
         """
         return (self.Screen.get_width(), self.Screen.get_height())
+
+    def ClearMiniGame(self) -> None:
+        self.MiniGame = None
+        self.Mode = MiniGames.GameMode.Base
+        self.GameClock.SetRunning(True)
 
 
 MasterGame = Game()

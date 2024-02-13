@@ -34,9 +34,9 @@ from dataclasses import dataclass
 
 import names
 
-import Utilities.Utils as utils
 from Classes import Game, Jobs, Sprite
 from Definitions import AssetLibrary, CustomerDefs, DefinedLocations
+from Utilities import Utils
 
 IDCOUNT = 1
 
@@ -85,7 +85,7 @@ class Worker(Person):
     @classmethod
     def CreateWorker(
         cls,
-        startLocation=DefinedLocations.LocationDefs.KitchenLocation,
+        startLocation=DefinedLocations.LocationDefs.WorkerSpawn,
         activeGame=Game.MasterGame,
     ) -&gt; tuple:
         &#34;&#34;&#34;Create and Spawn in Worker and Worker Sprite
@@ -99,13 +99,12 @@ class Worker(Person):
         &#34;&#34;&#34;
         worker = cls.Create()
         workerSprite = Sprite.CharImageSprite(
-            position=utils.PositionRandomVariance(
-                position=startLocation,
-                percentVarianceTuple=(0.05, 0.5),
-                screenSize=activeGame.ScreenSize,
+            center=Utils.OffsetTuple(
+                inputTuple=startLocation, offset=(0, random.randint(-500, 0))
             ),
             path=AssetLibrary.ImagePath.WorkerSuitPath,
             objID=worker.IdNum,
+            activeGame=activeGame,
         )
         worker.BasePay = random.uniform(0.25, 5.0)
         activeGame.CharSpriteGroup.add(workerSprite)
@@ -142,13 +141,14 @@ class Customer(Person):
         activeGame.JobList.append(Jobs.Job.SpawnJob())
         activeGame.JobList[-1].Assign(cust)
         customerSprite = Sprite.CharImageSprite(
-            position=utils.PositionRandomVariance(
+            position=Utils.PositionRandomVariance(
                 position=startLocation,
                 percentVarianceTuple=(0.0005, 0.1),
                 screenSize=activeGame.ScreenSize,
             ),
             path=AssetLibrary.PathLookup(imageType),
             objID=cust.IdNum,
+            activeGame=activeGame,
         )
         activeGame.CharSpriteGroup.add(customerSprite)
         activeGame.CustomerList.append(cust)
@@ -203,13 +203,14 @@ class Customer(Person):
         activeGame.JobList.append(Jobs.Job.SpawnJob())
         activeGame.JobList[-1].Assign(cust)
         customerSprite = Sprite.CharImageSprite(
-            position=utils.PositionRandomVariance(
+            position=Utils.PositionRandomVariance(
                 position=startLocation,
                 percentVarianceTuple=(0.0005, 0.1),
                 screenSize=activeGame.ScreenSize,
             ),
             path=AssetLibrary.PathLookup(imageType),
             objID=cust.IdNum,
+            activeGame=activeGame,
         )
         activeGame.CharSpriteGroup.add(customerSprite)
         activeGame.CustomerList.append(cust)
@@ -280,13 +281,14 @@ def CreateCustomer(
     activeGame.JobList.append(Jobs.Job.SpawnJob())
     activeGame.JobList[-1].Assign(cust)
     customerSprite = Sprite.CharImageSprite(
-        position=utils.PositionRandomVariance(
+        position=Utils.PositionRandomVariance(
             position=startLocation,
             percentVarianceTuple=(0.0005, 0.1),
             screenSize=activeGame.ScreenSize,
         ),
         path=AssetLibrary.PathLookup(imageType),
         objID=cust.IdNum,
+        activeGame=activeGame,
     )
     activeGame.CharSpriteGroup.add(customerSprite)
     activeGame.CustomerList.append(cust)
@@ -453,7 +455,7 @@ class Worker(Person):
     @classmethod
     def CreateWorker(
         cls,
-        startLocation=DefinedLocations.LocationDefs.KitchenLocation,
+        startLocation=DefinedLocations.LocationDefs.WorkerSpawn,
         activeGame=Game.MasterGame,
     ) -&gt; tuple:
         &#34;&#34;&#34;Create and Spawn in Worker and Worker Sprite
@@ -467,13 +469,12 @@ class Worker(Person):
         &#34;&#34;&#34;
         worker = cls.Create()
         workerSprite = Sprite.CharImageSprite(
-            position=utils.PositionRandomVariance(
-                position=startLocation,
-                percentVarianceTuple=(0.05, 0.5),
-                screenSize=activeGame.ScreenSize,
+            center=Utils.OffsetTuple(
+                inputTuple=startLocation, offset=(0, random.randint(-500, 0))
             ),
             path=AssetLibrary.ImagePath.WorkerSuitPath,
             objID=worker.IdNum,
+            activeGame=activeGame,
         )
         worker.BasePay = random.uniform(0.25, 5.0)
         activeGame.CharSpriteGroup.add(workerSprite)
@@ -494,7 +495,7 @@ class Worker(Person):
 <h3>Static methods</h3>
 <dl>
 <dt id="Classes.People.Worker.CreateWorker"><code class="name flex">
-<span>def <span class="ident">CreateWorker</span></span>(<span>startLocation=(220, 225), activeGame=&lt;Classes.Game.Game object&gt;) ‑> tuple</span>
+<span>def <span class="ident">CreateWorker</span></span>(<span>startLocation=(125, 1600), activeGame=&lt;Classes.Game.Game object&gt;) ‑> tuple</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Create and Spawn in Worker and Worker Sprite</p>
@@ -517,7 +518,7 @@ class Worker(Person):
 <pre><code class="python">@classmethod
 def CreateWorker(
     cls,
-    startLocation=DefinedLocations.LocationDefs.KitchenLocation,
+    startLocation=DefinedLocations.LocationDefs.WorkerSpawn,
     activeGame=Game.MasterGame,
 ) -&gt; tuple:
     &#34;&#34;&#34;Create and Spawn in Worker and Worker Sprite
@@ -531,13 +532,12 @@ def CreateWorker(
     &#34;&#34;&#34;
     worker = cls.Create()
     workerSprite = Sprite.CharImageSprite(
-        position=utils.PositionRandomVariance(
-            position=startLocation,
-            percentVarianceTuple=(0.05, 0.5),
-            screenSize=activeGame.ScreenSize,
+        center=Utils.OffsetTuple(
+            inputTuple=startLocation, offset=(0, random.randint(-500, 0))
         ),
         path=AssetLibrary.ImagePath.WorkerSuitPath,
         objID=worker.IdNum,
+        activeGame=activeGame,
     )
     worker.BasePay = random.uniform(0.25, 5.0)
     activeGame.CharSpriteGroup.add(workerSprite)

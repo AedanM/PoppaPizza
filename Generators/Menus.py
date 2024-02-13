@@ -1,5 +1,6 @@
 """Generator Functions for Menus"""
 
+import pygame
 import pygame_menu
 
 from Classes import Game
@@ -89,6 +90,12 @@ def OptionsMenu(surface=Game.MasterGame.Screen) -> None:
         value_format=lambda x: f"{pow(base=2, exp=x)}x",
         range_text_value_enabled=False,
         onchange=lambda x: (Game.MasterGame.Settings.SetClockMul(value=x)),
+    )
+    menu.add.dropselect(
+        title="Night Color: ",
+        items=Game.MasterGame.Lighting.NightColorOptions,
+        default=Game.MasterGame.GameClock.LightColor,
+        onchange=lambda x: Game.MasterGame.GameClock.ChangeNightColor(rgb=x),
     )
     menu.add.button(title="Return", action=pygame_menu.events.CLOSE)
     menu.mainloop(surface=surface, wait_for_event=True)

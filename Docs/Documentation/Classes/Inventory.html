@@ -53,7 +53,7 @@ class Inventory:
         self.Statistics.UpdateMoney(amount=amount)
         pygame.event.post(CustomEvents.UpdateBackground)
 
-    def PayMoney(self, amount, update=True) -&gt; None:
+    def PayMoney(self, amount, update=False) -&gt; None:
         &#34;&#34;&#34;Pay an Amount of Money and Update the Stats
 
         Args:
@@ -104,7 +104,7 @@ class Inventory:
         self.Statistics.UpdateMoney(amount=amount)
         pygame.event.post(CustomEvents.UpdateBackground)
 
-    def PayMoney(self, amount, update=True) -&gt; None:
+    def PayMoney(self, amount, update=False) -&gt; None:
         &#34;&#34;&#34;Pay an Amount of Money and Update the Stats
 
         Args:
@@ -159,7 +159,7 @@ class Inventory:
 </details>
 </dd>
 <dt id="Classes.Inventory.Inventory.PayMoney"><code class="name flex">
-<span>def <span class="ident">PayMoney</span></span>(<span>self, amount, update=True) ‑> None</span>
+<span>def <span class="ident">PayMoney</span></span>(<span>self, amount, update=False) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Pay an Amount of Money and Update the Stats</p>
@@ -173,7 +173,7 @@ class Inventory:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def PayMoney(self, amount, update=True) -&gt; None:
+<pre><code class="python">def PayMoney(self, amount, update=False) -&gt; None:
     &#34;&#34;&#34;Pay an Amount of Money and Update the Stats
 
     Args:

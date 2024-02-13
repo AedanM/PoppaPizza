@@ -31,7 +31,7 @@
 
 from enum import Enum
 
-from Classes import Game
+from Classes import Game, MiniGames
 from Definitions import AssetLibrary, CustomerDefs, Restaurants
 from Handlers import CustomerHandler, ShopHandler, WorkerHandler
 from Utilities import Utils
@@ -48,7 +48,20 @@ GlobalClickState = ClickState.Neutral
 GlobalTarget = None
 
 
-def MouseHandler(mousePos, lClick) -&gt; None:
+def TriviaMouseHandler(mousePos) -&gt; None:
+    for button in Game.MasterGame.MiniGame.MasterSpriteGroup:
+        if button.rect.collidepoint(mousePos[0], mousePos[1]):
+            clickedText = (
+                [
+                    x.Text
+                    for x in Game.MasterGame.MiniGame.DisplayedText.values()
+                    if x.Center == button.rect.center
+                ]
+            )[0]
+    Game.MasterGame.MiniGame.UpdateStateMachine(buttonChoice=clickedText)
+
+
+def MainMouseHandler(mousePos, lClick) -&gt; None:
     &#34;&#34;&#34;Handler for mouse clicks
 
     Args:
@@ -65,6 +78,7 @@ def MouseHandler(mousePos, lClick) -&gt; None:
                 )
                 and lockerRoom.Unlocked
                 and GlobalTarget.ImageType not in restaurant.WorkerImageTypes
+                and restaurant.WorkerImageTypes
             ):
                 WorkerHandler.GetChanged(
                     workerSprite=GlobalTarget, restaurant=restaurant
@@ -165,8 +179,8 @@ def WorkerClickRoutine(target) -&gt; None:
                 pass</code></pre>
 </details>
 </dd>
-<dt id="Handlers.ClickHandler.MouseHandler"><code class="name flex">
-<span>def <span class="ident">MouseHandler</span></span>(<span>mousePos, lClick) ‑> None</span>
+<dt id="Handlers.ClickHandler.MainMouseHandler"><code class="name flex">
+<span>def <span class="ident">MainMouseHandler</span></span>(<span>mousePos, lClick) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Handler for mouse clicks</p>
@@ -181,7 +195,7 @@ def WorkerClickRoutine(target) -&gt; None:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def MouseHandler(mousePos, lClick) -&gt; None:
+<pre><code class="python">def MainMouseHandler(mousePos, lClick) -&gt; None:
     &#34;&#34;&#34;Handler for mouse clicks
 
     Args:
@@ -198,6 +212,7 @@ def WorkerClickRoutine(target) -&gt; None:
                 )
                 and lockerRoom.Unlocked
                 and GlobalTarget.ImageType not in restaurant.WorkerImageTypes
+                and restaurant.WorkerImageTypes
             ):
                 WorkerHandler.GetChanged(
                     workerSprite=GlobalTarget, restaurant=restaurant
@@ -216,6 +231,28 @@ def WorkerClickRoutine(target) -&gt; None:
                     WorkerClickRoutine(target=sprite)
     else:
         GlobalClickState = ClickState.Neutral</code></pre>
+</details>
+</dd>
+<dt id="Handlers.ClickHandler.TriviaMouseHandler"><code class="name flex">
+<span>def <span class="ident">TriviaMouseHandler</span></span>(<span>mousePos) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def TriviaMouseHandler(mousePos) -&gt; None:
+    for button in Game.MasterGame.MiniGame.MasterSpriteGroup:
+        if button.rect.collidepoint(mousePos[0], mousePos[1]):
+            clickedText = (
+                [
+                    x.Text
+                    for x in Game.MasterGame.MiniGame.DisplayedText.values()
+                    if x.Center == button.rect.center
+                ]
+            )[0]
+    Game.MasterGame.MiniGame.UpdateStateMachine(buttonChoice=clickedText)</code></pre>
 </details>
 </dd>
 <dt id="Handlers.ClickHandler.WorkerClickRoutine"><code class="name flex">
@@ -298,7 +335,8 @@ def WorkerClickRoutine(target) -&gt; None:
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
 <li><code><a title="Handlers.ClickHandler.CustomerClickRoutine" href="#Handlers.ClickHandler.CustomerClickRoutine">CustomerClickRoutine</a></code></li>
-<li><code><a title="Handlers.ClickHandler.MouseHandler" href="#Handlers.ClickHandler.MouseHandler">MouseHandler</a></code></li>
+<li><code><a title="Handlers.ClickHandler.MainMouseHandler" href="#Handlers.ClickHandler.MainMouseHandler">MainMouseHandler</a></code></li>
+<li><code><a title="Handlers.ClickHandler.TriviaMouseHandler" href="#Handlers.ClickHandler.TriviaMouseHandler">TriviaMouseHandler</a></code></li>
 <li><code><a title="Handlers.ClickHandler.WorkerClickRoutine" href="#Handlers.ClickHandler.WorkerClickRoutine">WorkerClickRoutine</a></code></li>
 </ul>
 </li>

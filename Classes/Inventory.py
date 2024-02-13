@@ -24,7 +24,7 @@ class Inventory:
         self.Statistics.UpdateMoney(amount=amount)
         pygame.event.post(CustomEvents.UpdateBackground)
 
-    def PayMoney(self, amount, update=True) -> None:
+    def PayMoney(self, amount, update=False) -> None:
         """Pay an Amount of Money and Update the Stats
 
         Args:

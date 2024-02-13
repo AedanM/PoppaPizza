@@ -18,7 +18,7 @@ What if a bunch of restaurants couldn't afford individual working spaces so deci
 
 ## Releases
 
-Latest version in an EXE can be found in the Releases folder
+Latest version in an EXE can be found in the Releases folder. Releases will be packaged into executables but python dependencies still listed in [requirements.txt](Docs/requirements.txt)
 
 ## [Code Documentation](https://aedanm.github.io/PoppaPizza/Docs/Documentation/index.html)
 

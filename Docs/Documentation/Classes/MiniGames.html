@@ -1,0 +1,1477 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>Classes.MiniGames API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>Classes.MiniGames</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import random
+import threading
+from enum import Enum
+
+import pygame
+from fuzzywuzzy import fuzz
+from pytrivia import Trivia
+
+from Classes import Game, Sprite, Writing
+from Definitions import ColorTools, DefinedLocations
+from Utilities import Utils
+
+
+class GameMode(Enum):
+    (Base, DiceGame, TriviaGame, *_) = range(10)
+
+
+class GameStates(Enum):
+    (
+        Loading,
+        Start,
+        PlayOrSkip,
+        Questions,
+        Wait,
+        CorrectAnswer,
+        IncorrectAnswer,
+        End,
+        Exit,
+        *_,
+    ) = range(10)
+
+
+class RoundBasedGame:
+    Rounds: int
+    Screen = pygame.Surface
+    GameState = GameStates = GameStates.Loading
+    ResultsList: list = []
+    MaxRounds: int = 10
+    CurrentRound: int = 1
+    OnRoundWin: callable = lambda self: None
+    OnRoundLoss: callable = lambda self: None
+    RoundResult: bool = False
+    MasterSpriteGroup: pygame.sprite.Group = pygame.sprite.Group()
+    BackgroundColor: ColorTools.Color = ColorTools.Black
+    DisplayedText: dict = {
+        &#34;Round Text&#34;: Writing.TextBox(
+            center=DefinedLocations.LocationDefs.TriviaRoundText,
+            font=Writing.DefinedFonts[&#34;Datetime&#34;],
+        ),
+        &#34;Title Text&#34;: Writing.TextBox(
+            center=DefinedLocations.LocationDefs.TriviaTitleText,
+            text=&#34;Trivia Minigame&#34;,
+            font=Writing.DefinedFonts[&#34;Titles&#34;],
+        ),
+        &#34;Main Text L1&#34;: Writing.TextBox(
+            center=DefinedLocations.LocationDefs.TriviaMainText,
+            font=Writing.DefinedFonts[&#34;Trivia Game&#34;],
+        ),
+        &#34;Main Text L2&#34;: Writing.TextBox(
+            center=Utils.OffsetTuple(
+                inputTuple=DefinedLocations.LocationDefs.TriviaMainText, offset=(0, 48)
+            ),
+            font=Writing.DefinedFonts[&#34;Trivia Game&#34;],
+        ),
+        &#34;Minor Text&#34;: Writing.TextBox(
+            center=DefinedLocations.LocationDefs.TriviaMinorText
+        ),
+    }
+
+    def __init__(self, rounds, activeGame) -&gt; None:
+        self.Rounds = Utils.Bind(val=rounds, inRange=[0, self.MaxRounds])
+        self.Screen = activeGame.Screen
+
+    def StartRound(self) -&gt; None:
+        self.DisplayedText[
+            &#34;Round Text&#34;
+        ].Text = f&#34;Round {self.CurrentRound}/{self.Rounds}&#34;
+        self.MasterSpriteGroup.update()
+        self.MasterSpriteGroup.draw(self.Screen)
+        for text in self.DisplayedText.values():
+            text.Rect = text.WriteToScreen(activeScreen=self.Screen)
+            pass
+
+    def UpdateStateMachine(self, input) -&gt; None:
+        pass
+
+    def PlayGame(self, activeGame) -&gt; None:
+        self.StartRound(activeGame=activeGame)
+
+
+class TriviaGame(RoundBasedGame):
+    TriviaAPI = Trivia(True)
+    QuestionList: list = []
+
+    def __init__(self, rounds, activeGame) -&gt; None:
+        super().__init__(rounds=rounds, activeGame=activeGame)
+        self.BackgroundColor = ColorTools.TriviaBlue
+        questionThread = threading.Thread(target=self.GetQuestions)
+        self.StartingCash = activeGame.UserInventory.Money
+        self.CurrentCash = activeGame.UserInventory.Money
+        questionThread.start()
+
+    def UpdateStateMachine(self, buttonChoice) -&gt; None:
+        super().UpdateStateMachine(input=buttonChoice)
+        match buttonChoice:
+            case &#34;Loading Questions&#34;:
+                self.GameState = GameStates.Start
+            case &#34;Begin&#34;:
+                self.GameState = GameStates.PlayOrSkip
+            case &#34;Play&#34;:
+                self.GameState = GameStates.Questions
+            case &#34;Skip&#34;:
+                self.CurrentRound += 1
+            case &#34;Exit&#34;:
+                self.GameState = GameStates.Exit
+            case &#34;Continue&#34;:
+                self.CurrentRound += 1
+                self.GameState = GameStates.PlayOrSkip
+            case other:
+                answer = self.QuestionList[self.CurrentRound - 1][&#34;Correct Answer&#34;]
+                self.GameState = (
+                    GameStates.CorrectAnswer
+                    if other == answer
+                    else GameStates.IncorrectAnswer
+                )
+        if self.CurrentRound &gt; self.Rounds and self.GameState != GameStates.Exit:
+            self.GameState = GameStates.End
+            self.CurrentRound = self.Rounds
+
+    def GetQuestions(self) -&gt; None:
+        responseCode = 100
+        while responseCode != 0:
+            rawResponse = self.TriviaAPI.request(num_questions=self.Rounds + 1)
+            responseCode = rawResponse[&#34;response_code&#34;]
+        results = rawResponse[&#34;results&#34;]
+        for question in results:
+            questionDict = {}
+            questionDict[&#34;Question&#34;] = question[&#34;question&#34;]
+            questionDict[&#34;Difficulty&#34;] = question[&#34;difficulty&#34;]
+            questionDict[&#34;Category&#34;] = question[&#34;category&#34;]
+            questionDict[&#34;Answers&#34;] = question[&#34;incorrect_answers&#34;] + [
+                question[&#34;correct_answer&#34;]
+            ]
+            random.shuffle(questionDict[&#34;Answers&#34;])
+            questionDict[&#34;Correct Answer&#34;] = question[&#34;correct_answer&#34;]
+            self.QuestionList.append(questionDict)
+
+    def PopulateButtons(self, textList) -&gt; None:
+        self.MasterSpriteGroup.empty()
+        for textBox in [
+            value for key, value in self.DisplayedText.items() if &#34;Button&#34; in key
+        ]:
+            textBox.Text = &#34;&#34;
+        answerLocations = DefinedLocations.LocationDefs.Answers(num=len(textList))
+        for idx, text in enumerate(textList):
+            self.DisplayedText[f&#34;Button {idx}&#34;] = Writing.TextBox(
+                center=answerLocations[idx],
+                text=text,
+                font=Writing.DefinedFonts[&#34;Trivia Answers&#34;],
+            )
+
+            self.MasterSpriteGroup.add(
+                Sprite.ButtonObject(
+                    position=answerLocations[idx],
+                    backColor=ColorTools.TriviaBlue,
+                    size=(400, 150) if self.QuestionList else (600, 150),
+                )
+            )
+
+    def StartGame(self) -&gt; None:
+        self.DisplayedText[&#34;Main Text L1&#34;].Text = &#34;Press to Begin&#34;
+        self.PopulateButtons(
+            textList=[&#34;Begin&#34; if self.QuestionList else &#34;Loading Questions&#34;]
+        )
+
+    def PlayOrSkip(self) -&gt; None:
+        question = self.QuestionList[self.CurrentRound - 1]
+        self.DisplayedText[
+            &#34;Main Text L1&#34;
+        ].Text = f&#34;This question is ranked {question[&#39;Difficulty&#39;]}&#34;
+        self.DisplayedText[&#34;Main Text L2&#34;].Text = f&#34;Category is {question[&#39;Category&#39;]}&#34;
+        self.PopulateButtons(
+            textList=[&#34;Play&#34;, &#34;Skip&#34;],
+        )
+        self.GameState = GameStates.Wait
+
+    # TODO - Fix wordwrap
+    def PresentQuestion(self) -&gt; str:
+        question = self.QuestionList[self.CurrentRound - 1]
+        if len(question[&#34;Question&#34;]) &lt; 50:
+            self.DisplayedText[&#34;Main Text L1&#34;].Text = question[&#34;Question&#34;]
+            self.DisplayedText[&#34;Main Text L2&#34;].Text = &#34;&#34;
+        else:
+            self.DisplayedText[&#34;Main Text L1&#34;].Text = question[&#34;Question&#34;][:25]
+            self.DisplayedText[&#34;Main Text L2&#34;].Text = question[&#34;Question&#34;][25:]
+        # TODO- fix buttons to text size
+        self.PopulateButtons(textList=question[&#34;Answers&#34;])
+        self.GameState = GameStates.Wait
+
+    def Results(self) -&gt; None:
+        scale = 1
+        match self.QuestionList[self.CurrentRound - 1][&#34;Difficulty&#34;]:
+            case &#34;hard&#34;:
+                scale = 2
+            case &#34;medium&#34;:
+                scale = 1.5
+            case &#34;easy&#34;:
+                scale = 1.25
+
+        if self.GameState is GameStates.CorrectAnswer:
+            self.DisplayedText[
+                &#34;Main Text L1&#34;
+            ].Text = f&#34;Correct! You have earned ${((self.CurrentCash * scale) - self.CurrentCash):.2f}&#34;
+            self.DisplayedText[&#34;Main Text L2&#34;].Text = &#34;&#34;
+            self.ResultsList.append(True)
+            self.CurrentCash *= scale
+        else:
+            self.DisplayedText[
+                &#34;Main Text L1&#34;
+            ].Text = f&#34;Incorrect! You have lost ${abs((self.CurrentCash / scale) - self.CurrentCash):.2f}&#34;
+            self.DisplayedText[
+                &#34;Main Text L2&#34;
+            ].Text = f&#34;Correct Answer was {self.QuestionList[self.CurrentRound -1][&#39;Correct Answer&#39;]}&#34;
+            self.ResultsList.append(False)
+            self.CurrentCash /= scale
+
+        self.PopulateButtons(textList=[&#34;Continue&#34;])
+        self.GameState = GameStates.Wait
+
+    def Summary(self) -&gt; None:
+        self.DisplayedText[
+            &#34;Main Text L1&#34;
+        ].Text = f&#34;You answered {len([x for x in self.ResultsList if x])}/{len(self.ResultsList)} correctly and skipped {self.Rounds - len(self.ResultsList)}&#34;
+        deltaMoney = self.CurrentCash - self.StartingCash
+        descriptor = &#34;earnings&#34; if deltaMoney &gt; 0 else &#34;losses&#34;
+        self.DisplayedText[
+            &#34;Main Text L2&#34;
+        ].Text = f&#34;Resulting in total {descriptor} ${abs(deltaMoney):.2f}&#34;
+        self.PopulateButtons(textList=[&#34;Exit&#34;])
+        self.GameState = GameStates.Wait
+
+    def StartRound(self, activeGame) -&gt; None:
+        super().StartRound()
+        match self.GameState:
+            case GameStates.Loading | GameStates.Start:
+                self.StartGame()
+            case GameStates.PlayOrSkip:
+                self.PlayOrSkip()
+            case GameStates.Questions:
+                self.PresentQuestion()
+            case GameStates.IncorrectAnswer:
+                self.Results()
+            case GameStates.CorrectAnswer:
+                self.Results()
+            case GameStates.End:
+                self.Summary()
+            case GameStates.Exit:
+                Game.MasterGame.ClearMiniGame()
+            case other:
+                pass
+
+    def PlayGame(self, activeGame) -&gt; None:
+        super().PlayGame(activeGame=activeGame)
+
+
+def MakeTriviaGame(activeGame) -&gt; None:
+    activeGame.GameClock.SetRunning(False)
+    activeGame.MiniGame = TriviaGame(rounds=5, activeGame=activeGame)
+    activeGame.Mode = GameMode.TriviaGame
+
+
+class DiceGame(RoundBasedGame):
+    Dice: int
+    MaxDice: int = 45
+    DiceBounds: tuple = (6, 48)
+
+    def __init__(self, rounds, dice) -&gt; None:
+        super().__init__(rounds=rounds)
+        self.Dice = Utils.Bind(val=dice, inRange=[0, self.MaxDice])
+
+    def StartRound(self) -&gt; None:
+        super().StartRound()
+
+        markToBeat = random.randint(self.DiceBounds[0], self.DiceBounds[1])
+        self.DisplayedText[&#34;Main Text&#34;].Text = f&#34;Mark to Beat is {markToBeat}&#34;
+
+        numDice = self.GetDiceCount() if self.Dice &gt; 0 else 0
+        self.Dice -= numDice
+        diceSum = self.MakeDiceRoll(numDice=numDice)
+
+    def GetDiceCount(self) -&gt; int:
+        numDice = input(
+            f&#34;How many dice would you like to use? ({self.Dice} remaining) &#34;
+        )
+        while not numDice.isnumeric() or int(numDice) &gt; self.Dice:
+            numDice = input(f&#34;Invalid Choice: &#34;)
+        return int(numDice)
+
+    def MakeDiceRoll(self, numDice) -&gt; int:
+        diceTotal = 0
+        for i in range(numDice):
+            diceRoll = random.randint(1, 6)
+            diceTotal += diceRoll
+            print(f&#34;Die {i} rolled {diceRoll}&#34;)
+        print(
+            f&#34;Total for round is {diceTotal}&#34;
+            if diceTotal != 0
+            else &#34;Round is forfeit without dice&#34;
+        )
+        return diceTotal</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="Classes.MiniGames.MakeTriviaGame"><code class="name flex">
+<span>def <span class="ident">MakeTriviaGame</span></span>(<span>activeGame) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def MakeTriviaGame(activeGame) -&gt; None:
+    activeGame.GameClock.SetRunning(False)
+    activeGame.MiniGame = TriviaGame(rounds=5, activeGame=activeGame)
+    activeGame.Mode = GameMode.TriviaGame</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="Classes.MiniGames.DiceGame"><code class="flex name class">
+<span>class <span class="ident">DiceGame</span></span>
+<span>(</span><span>rounds, dice)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class DiceGame(RoundBasedGame):
+    Dice: int
+    MaxDice: int = 45
+    DiceBounds: tuple = (6, 48)
+
+    def __init__(self, rounds, dice) -&gt; None:
+        super().__init__(rounds=rounds)
+        self.Dice = Utils.Bind(val=dice, inRange=[0, self.MaxDice])
+
+    def StartRound(self) -&gt; None:
+        super().StartRound()
+
+        markToBeat = random.randint(self.DiceBounds[0], self.DiceBounds[1])
+        self.DisplayedText[&#34;Main Text&#34;].Text = f&#34;Mark to Beat is {markToBeat}&#34;
+
+        numDice = self.GetDiceCount() if self.Dice &gt; 0 else 0
+        self.Dice -= numDice
+        diceSum = self.MakeDiceRoll(numDice=numDice)
+
+    def GetDiceCount(self) -&gt; int:
+        numDice = input(
+            f&#34;How many dice would you like to use? ({self.Dice} remaining) &#34;
+        )
+        while not numDice.isnumeric() or int(numDice) &gt; self.Dice:
+            numDice = input(f&#34;Invalid Choice: &#34;)
+        return int(numDice)
+
+    def MakeDiceRoll(self, numDice) -&gt; int:
+        diceTotal = 0
+        for i in range(numDice):
+            diceRoll = random.randint(1, 6)
+            diceTotal += diceRoll
+            print(f&#34;Die {i} rolled {diceRoll}&#34;)
+        print(
+            f&#34;Total for round is {diceTotal}&#34;
+            if diceTotal != 0
+            else &#34;Round is forfeit without dice&#34;
+        )
+        return diceTotal</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="Classes.MiniGames.RoundBasedGame" href="#Classes.MiniGames.RoundBasedGame">RoundBasedGame</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="Classes.MiniGames.DiceGame.Dice"><code class="name">var <span class="ident">Dice</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="Classes.MiniGames.DiceGame.DiceBounds"><code class="name">var <span class="ident">DiceBounds</span> : tuple</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="Classes.MiniGames.DiceGame.MaxDice"><code class="name">var <span class="ident">MaxDice</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="Classes.MiniGames.DiceGame.GetDiceCount"><code class="name flex">
+<span>def <span class="ident">GetDiceCount</span></span>(<span>self) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def GetDiceCount(self) -&gt; int:
+    numDice = input(
+        f&#34;How many dice would you like to use? ({self.Dice} remaining) &#34;
+    )
+    while not numDice.isnumeric() or int(numDice) &gt; self.Dice:
+        numDice = input(f&#34;Invalid Choice: &#34;)
+    return int(numDice)</code></pre>
+</details>
+</dd>
+<dt id="Classes.MiniGames.DiceGame.MakeDiceRoll"><code class="name flex">
+<span>def <span class="ident">MakeDiceRoll</span></span>(<span>self, numDice) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def MakeDiceRoll(self, numDice) -&gt; int:
+    diceTotal = 0
+    for i in range(numDice):
+        diceRoll = random.randint(1, 6)
+        diceTotal += diceRoll
+        print(f&#34;Die {i} rolled {diceRoll}&#34;)
+    print(
+        f&#34;Total for round is {diceTotal}&#34;
+        if diceTotal != 0
+        else &#34;Round is forfeit without dice&#34;
+    )
+    return diceTotal</code></pre>
+</details>
+</dd>
+<dt id="Classes.MiniGames.DiceGame.StartRound"><code class="name flex">
+<span>def <span class="ident">StartRound</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def StartRound(self) -&gt; None:
+    super().StartRound()
+
+    markToBeat = random.randint(self.DiceBounds[0], self.DiceBounds[1])
+    self.DisplayedText[&#34;Main Text&#34;].Text = f&#34;Mark to Beat is {markToBeat}&#34;
+
+    numDice = self.GetDiceCount() if self.Dice &gt; 0 else 0
+    self.Dice -= numDice
+    diceSum = self.MakeDiceRoll(numDice=numDice)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="Classes.MiniGames.RoundBasedGame" href="#Classes.MiniGames.RoundBasedGame">RoundBasedGame</a></b></code>:
+<ul class="hlist">
+<li><code><a title="Classes.MiniGames.RoundBasedGame.Screen" href="#Classes.MiniGames.RoundBasedGame.Screen">Screen</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="Classes.MiniGames.GameMode"><code class="flex name class">
+<span>class <span class="ident">GameMode</span></span>
+<span>(</span><span>*args, **kwds)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create a collection of name/value pairs.</p>
+<p>Example enumeration:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; class Color(Enum):
+...     RED = 1
+...     BLUE = 2
+...     GREEN = 3
+</code></pre>
+<p>Access them by:</p>
+<ul>
+<li>attribute access:</li>
+</ul>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>Color.RED
+<Color.RED: 1></p>
+</blockquote>
+</blockquote>
+</blockquote>
+<ul>
+<li>value lookup:</li>
+</ul>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>Color(1)
+<Color.RED: 1></p>
+</blockquote>
+</blockquote>
+</blockquote>
+<ul>
+<li>name lookup:</li>
+</ul>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>Color['RED']
+<Color.RED: 1></p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Enumerations can be iterated over, and know how many members they have:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; len(Color)
+3
+</code></pre>
+<pre><code class="language-python-repl">&gt;&gt;&gt; list(Color)
+[&lt;Color.RED: 1&gt;, &lt;Color.BLUE: 2&gt;, &lt;Color.GREEN: 3&gt;]
+</code></pre>
+<p>Methods can be added to enumerations, and members can have their own
+attributes &ndash; see the documentation for details.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class GameMode(Enum):
+    (Base, DiceGame, TriviaGame, *_) = range(10)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>enum.Enum</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="Classes.MiniGames.GameMode.Base"><code class="name">var <span class="ident">Base</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="Classes.MiniGames.GameMode.DiceGame"><code class="name">var <span class="ident">DiceGame</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="Classes.MiniGames.GameMode.TriviaGame"><code class="name">var <span class="ident">TriviaGame</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="Classes.MiniGames.GameStates"><code class="flex name class">
+<span>class <span class="ident">GameStates</span></span>
+<span>(</span><span>*args, **kwds)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create a collection of name/value pairs.</p>
+<p>Example enumeration:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; class Color(Enum):
+...     RED = 1
+...     BLUE = 2
+...     GREEN = 3
+</code></pre>
+<p>Access them by:</p>
+<ul>
+<li>attribute access:</li>
+</ul>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>Color.RED
+<Color.RED: 1></p>
+</blockquote>
+</blockquote>
+</blockquote>
+<ul>
+<li>value lookup:</li>
+</ul>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>Color(1)
+<Color.RED: 1></p>
+</blockquote>
+</blockquote>
+</blockquote>
+<ul>
+<li>name lookup:</li>
+</ul>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>Color['RED']
+<Color.RED: 1></p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Enumerations can be iterated over, and know how many members they have:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; len(Color)
+3
+</code></pre>
+<pre><code class="language-python-repl">&gt;&gt;&gt; list(Color)
+[&lt;Color.RED: 1&gt;, &lt;Color.BLUE: 2&gt;, &lt;Color.GREEN: 3&gt;]
+</code></pre>
+<p>Methods can be added to enumerations, and members can have their own
+attributes &ndash; see the documentation for details.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class GameStates(Enum):
+    (
+        Loading,
+        Start,
+        PlayOrSkip,
+        Questions,
+        Wait,
+        CorrectAnswer,
+        IncorrectAnswer,
+        End,
+        Exit,
+        *_,
+    ) = range(10)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>enum.Enum</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="Classes.MiniGames.GameStates.CorrectAnswer"><code class="name">var <span class="ident">CorrectAnswer</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="Classes.MiniGames.GameStates.End"><code class="name">var <span class="ident">End</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="Classes.MiniGames.GameStates.Exit"><code class="name">var <span class="ident">Exit</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="Classes.MiniGames.GameStates.IncorrectAnswer"><code class="name">var <span class="ident">IncorrectAnswer</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="Classes.MiniGames.GameStates.Loading"><code class="name">var <span class="ident">Loading</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="Classes.MiniGames.GameStates.PlayOrSkip"><code class="name">var <span class="ident">PlayOrSkip</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="Classes.MiniGames.GameStates.Questions"><code class="name">var <span class="ident">Questions</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="Classes.MiniGames.GameStates.Start"><code class="name">var <span class="ident">Start</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="Classes.MiniGames.GameStates.Wait"><code class="name">var <span class="ident">Wait</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="Classes.MiniGames.RoundBasedGame"><code class="flex name class">
+<span>class <span class="ident">RoundBasedGame</span></span>
+<span>(</span><span>rounds, activeGame)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RoundBasedGame:
+    Rounds: int
+    Screen = pygame.Surface
+    GameState = GameStates = GameStates.Loading
+    ResultsList: list = []
+    MaxRounds: int = 10
+    CurrentRound: int = 1
+    OnRoundWin: callable = lambda self: None
+    OnRoundLoss: callable = lambda self: None
+    RoundResult: bool = False
+    MasterSpriteGroup: pygame.sprite.Group = pygame.sprite.Group()
+    BackgroundColor: ColorTools.Color = ColorTools.Black
+    DisplayedText: dict = {
+        &#34;Round Text&#34;: Writing.TextBox(
+            center=DefinedLocations.LocationDefs.TriviaRoundText,
+            font=Writing.DefinedFonts[&#34;Datetime&#34;],
+        ),
+        &#34;Title Text&#34;: Writing.TextBox(
+            center=DefinedLocations.LocationDefs.TriviaTitleText,
+            text=&#34;Trivia Minigame&#34;,
+            font=Writing.DefinedFonts[&#34;Titles&#34;],
+        ),
+        &#34;Main Text L1&#34;: Writing.TextBox(
+            center=DefinedLocations.LocationDefs.TriviaMainText,
+            font=Writing.DefinedFonts[&#34;Trivia Game&#34;],
+        ),
+        &#34;Main Text L2&#34;: Writing.TextBox(
+            center=Utils.OffsetTuple(
+                inputTuple=DefinedLocations.LocationDefs.TriviaMainText, offset=(0, 48)
+            ),
+            font=Writing.DefinedFonts[&#34;Trivia Game&#34;],
+        ),
+        &#34;Minor Text&#34;: Writing.TextBox(
+            center=DefinedLocations.LocationDefs.TriviaMinorText
+        ),
+    }
+
+    def __init__(self, rounds, activeGame) -&gt; None:
+        self.Rounds = Utils.Bind(val=rounds, inRange=[0, self.MaxRounds])
+        self.Screen = activeGame.Screen
+
+    def StartRound(self) -&gt; None:
+        self.DisplayedText[
+            &#34;Round Text&#34;
+        ].Text = f&#34;Round {self.CurrentRound}/{self.Rounds}&#34;
+        self.MasterSpriteGroup.update()
+        self.MasterSpriteGroup.draw(self.Screen)
+        for text in self.DisplayedText.values():
+            text.Rect = text.WriteToScreen(activeScreen=self.Screen)
+            pass
+
+    def UpdateStateMachine(self, input) -&gt; None:
+        pass
+
+    def PlayGame(self, activeGame) -&gt; None:
+        self.StartRound(activeGame=activeGame)</code></pre>
+</details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="Classes.MiniGames.DiceGame" href="#Classes.MiniGames.DiceGame">DiceGame</a></li>
+<li><a title="Classes.MiniGames.TriviaGame" href="#Classes.MiniGames.TriviaGame">TriviaGame</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="Classes.MiniGames.RoundBasedGame.BackgroundColor"><code class="name">var <span class="ident">BackgroundColor</span> : Definitions.ColorTools.Color</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="Classes.MiniGames.RoundBasedGame.CurrentRound"><code class="name">var <span class="ident">CurrentRound</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="Classes.MiniGames.RoundBasedGame.DisplayedText"><code class="name">var <span class="ident">DisplayedText</span> : dict</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="Classes.MiniGames.RoundBasedGame.GameState"><code class="name">var <span class="ident">GameState</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="Classes.MiniGames.RoundBasedGame.GameStates"><code class="name">var <span class="ident">GameStates</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="Classes.MiniGames.RoundBasedGame.MasterSpriteGroup"><code class="name">var <span class="ident">MasterSpriteGroup</span> : pygame.sprite.Group</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="Classes.MiniGames.RoundBasedGame.MaxRounds"><code class="name">var <span class="ident">MaxRounds</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="Classes.MiniGames.RoundBasedGame.ResultsList"><code class="name">var <span class="ident">ResultsList</span> : list</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="Classes.MiniGames.RoundBasedGame.RoundResult"><code class="name">var <span class="ident">RoundResult</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="Classes.MiniGames.RoundBasedGame.Rounds"><code class="name">var <span class="ident">Rounds</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="Classes.MiniGames.RoundBasedGame.Screen"><code class="name">var <span class="ident">Screen</span></code></dt>
+<dd>
+<div class="desc"><p>Surface((width, height), flags=0, depth=0, masks=None) -&gt; Surface
+Surface((width, height), flags=0, Surface) -&gt; Surface
+pygame object for representing images</p></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="Classes.MiniGames.RoundBasedGame.OnRoundLoss"><code class="name flex">
+<span>def <span class="ident">OnRoundLoss</span></span>(<span>self) ‑> <built-in function callable></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">OnRoundLoss: callable = lambda self: None</code></pre>
+</details>
+</dd>
+<dt id="Classes.MiniGames.RoundBasedGame.OnRoundWin"><code class="name flex">
+<span>def <span class="ident">OnRoundWin</span></span>(<span>self) ‑> <built-in function callable></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">OnRoundWin: callable = lambda self: None</code></pre>
+</details>
+</dd>
+<dt id="Classes.MiniGames.RoundBasedGame.PlayGame"><code class="name flex">
+<span>def <span class="ident">PlayGame</span></span>(<span>self, activeGame) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def PlayGame(self, activeGame) -&gt; None:
+    self.StartRound(activeGame=activeGame)</code></pre>
+</details>
+</dd>
+<dt id="Classes.MiniGames.RoundBasedGame.StartRound"><code class="name flex">
+<span>def <span class="ident">StartRound</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def StartRound(self) -&gt; None:
+    self.DisplayedText[
+        &#34;Round Text&#34;
+    ].Text = f&#34;Round {self.CurrentRound}/{self.Rounds}&#34;
+    self.MasterSpriteGroup.update()
+    self.MasterSpriteGroup.draw(self.Screen)
+    for text in self.DisplayedText.values():
+        text.Rect = text.WriteToScreen(activeScreen=self.Screen)
+        pass</code></pre>
+</details>
+</dd>
+<dt id="Classes.MiniGames.RoundBasedGame.UpdateStateMachine"><code class="name flex">
+<span>def <span class="ident">UpdateStateMachine</span></span>(<span>self, input) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def UpdateStateMachine(self, input) -&gt; None:
+    pass</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="Classes.MiniGames.TriviaGame"><code class="flex name class">
+<span>class <span class="ident">TriviaGame</span></span>
+<span>(</span><span>rounds, activeGame)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TriviaGame(RoundBasedGame):
+    TriviaAPI = Trivia(True)
+    QuestionList: list = []
+
+    def __init__(self, rounds, activeGame) -&gt; None:
+        super().__init__(rounds=rounds, activeGame=activeGame)
+        self.BackgroundColor = ColorTools.TriviaBlue
+        questionThread = threading.Thread(target=self.GetQuestions)
+        self.StartingCash = activeGame.UserInventory.Money
+        self.CurrentCash = activeGame.UserInventory.Money
+        questionThread.start()
+
+    def UpdateStateMachine(self, buttonChoice) -&gt; None:
+        super().UpdateStateMachine(input=buttonChoice)
+        match buttonChoice:
+            case &#34;Loading Questions&#34;:
+                self.GameState = GameStates.Start
+            case &#34;Begin&#34;:
+                self.GameState = GameStates.PlayOrSkip
+            case &#34;Play&#34;:
+                self.GameState = GameStates.Questions
+            case &#34;Skip&#34;:
+                self.CurrentRound += 1
+            case &#34;Exit&#34;:
+                self.GameState = GameStates.Exit
+            case &#34;Continue&#34;:
+                self.CurrentRound += 1
+                self.GameState = GameStates.PlayOrSkip
+            case other:
+                answer = self.QuestionList[self.CurrentRound - 1][&#34;Correct Answer&#34;]
+                self.GameState = (
+                    GameStates.CorrectAnswer
+                    if other == answer
+                    else GameStates.IncorrectAnswer
+                )
+        if self.CurrentRound &gt; self.Rounds and self.GameState != GameStates.Exit:
+            self.GameState = GameStates.End
+            self.CurrentRound = self.Rounds
+
+    def GetQuestions(self) -&gt; None:
+        responseCode = 100
+        while responseCode != 0:
+            rawResponse = self.TriviaAPI.request(num_questions=self.Rounds + 1)
+            responseCode = rawResponse[&#34;response_code&#34;]
+        results = rawResponse[&#34;results&#34;]
+        for question in results:
+            questionDict = {}
+            questionDict[&#34;Question&#34;] = question[&#34;question&#34;]
+            questionDict[&#34;Difficulty&#34;] = question[&#34;difficulty&#34;]
+            questionDict[&#34;Category&#34;] = question[&#34;category&#34;]
+            questionDict[&#34;Answers&#34;] = question[&#34;incorrect_answers&#34;] + [
+                question[&#34;correct_answer&#34;]
+            ]
+            random.shuffle(questionDict[&#34;Answers&#34;])
+            questionDict[&#34;Correct Answer&#34;] = question[&#34;correct_answer&#34;]
+            self.QuestionList.append(questionDict)
+
+    def PopulateButtons(self, textList) -&gt; None:
+        self.MasterSpriteGroup.empty()
+        for textBox in [
+            value for key, value in self.DisplayedText.items() if &#34;Button&#34; in key
+        ]:
+            textBox.Text = &#34;&#34;
+        answerLocations = DefinedLocations.LocationDefs.Answers(num=len(textList))
+        for idx, text in enumerate(textList):
+            self.DisplayedText[f&#34;Button {idx}&#34;] = Writing.TextBox(
+                center=answerLocations[idx],
+                text=text,
+                font=Writing.DefinedFonts[&#34;Trivia Answers&#34;],
+            )
+
+            self.MasterSpriteGroup.add(
+                Sprite.ButtonObject(
+                    position=answerLocations[idx],
+                    backColor=ColorTools.TriviaBlue,
+                    size=(400, 150) if self.QuestionList else (600, 150),
+                )
+            )
+
+    def StartGame(self) -&gt; None:
+        self.DisplayedText[&#34;Main Text L1&#34;].Text = &#34;Press to Begin&#34;
+        self.PopulateButtons(
+            textList=[&#34;Begin&#34; if self.QuestionList else &#34;Loading Questions&#34;]
+        )
+
+    def PlayOrSkip(self) -&gt; None:
+        question = self.QuestionList[self.CurrentRound - 1]
+        self.DisplayedText[
+            &#34;Main Text L1&#34;
+        ].Text = f&#34;This question is ranked {question[&#39;Difficulty&#39;]}&#34;
+        self.DisplayedText[&#34;Main Text L2&#34;].Text = f&#34;Category is {question[&#39;Category&#39;]}&#34;
+        self.PopulateButtons(
+            textList=[&#34;Play&#34;, &#34;Skip&#34;],
+        )
+        self.GameState = GameStates.Wait
+
+    # TODO - Fix wordwrap
+    def PresentQuestion(self) -&gt; str:
+        question = self.QuestionList[self.CurrentRound - 1]
+        if len(question[&#34;Question&#34;]) &lt; 50:
+            self.DisplayedText[&#34;Main Text L1&#34;].Text = question[&#34;Question&#34;]
+            self.DisplayedText[&#34;Main Text L2&#34;].Text = &#34;&#34;
+        else:
+            self.DisplayedText[&#34;Main Text L1&#34;].Text = question[&#34;Question&#34;][:25]
+            self.DisplayedText[&#34;Main Text L2&#34;].Text = question[&#34;Question&#34;][25:]
+        # TODO- fix buttons to text size
+        self.PopulateButtons(textList=question[&#34;Answers&#34;])
+        self.GameState = GameStates.Wait
+
+    def Results(self) -&gt; None:
+        scale = 1
+        match self.QuestionList[self.CurrentRound - 1][&#34;Difficulty&#34;]:
+            case &#34;hard&#34;:
+                scale = 2
+            case &#34;medium&#34;:
+                scale = 1.5
+            case &#34;easy&#34;:
+                scale = 1.25
+
+        if self.GameState is GameStates.CorrectAnswer:
+            self.DisplayedText[
+                &#34;Main Text L1&#34;
+            ].Text = f&#34;Correct! You have earned ${((self.CurrentCash * scale) - self.CurrentCash):.2f}&#34;
+            self.DisplayedText[&#34;Main Text L2&#34;].Text = &#34;&#34;
+            self.ResultsList.append(True)
+            self.CurrentCash *= scale
+        else:
+            self.DisplayedText[
+                &#34;Main Text L1&#34;
+            ].Text = f&#34;Incorrect! You have lost ${abs((self.CurrentCash / scale) - self.CurrentCash):.2f}&#34;
+            self.DisplayedText[
+                &#34;Main Text L2&#34;
+            ].Text = f&#34;Correct Answer was {self.QuestionList[self.CurrentRound -1][&#39;Correct Answer&#39;]}&#34;
+            self.ResultsList.append(False)
+            self.CurrentCash /= scale
+
+        self.PopulateButtons(textList=[&#34;Continue&#34;])
+        self.GameState = GameStates.Wait
+
+    def Summary(self) -&gt; None:
+        self.DisplayedText[
+            &#34;Main Text L1&#34;
+        ].Text = f&#34;You answered {len([x for x in self.ResultsList if x])}/{len(self.ResultsList)} correctly and skipped {self.Rounds - len(self.ResultsList)}&#34;
+        deltaMoney = self.CurrentCash - self.StartingCash
+        descriptor = &#34;earnings&#34; if deltaMoney &gt; 0 else &#34;losses&#34;
+        self.DisplayedText[
+            &#34;Main Text L2&#34;
+        ].Text = f&#34;Resulting in total {descriptor} ${abs(deltaMoney):.2f}&#34;
+        self.PopulateButtons(textList=[&#34;Exit&#34;])
+        self.GameState = GameStates.Wait
+
+    def StartRound(self, activeGame) -&gt; None:
+        super().StartRound()
+        match self.GameState:
+            case GameStates.Loading | GameStates.Start:
+                self.StartGame()
+            case GameStates.PlayOrSkip:
+                self.PlayOrSkip()
+            case GameStates.Questions:
+                self.PresentQuestion()
+            case GameStates.IncorrectAnswer:
+                self.Results()
+            case GameStates.CorrectAnswer:
+                self.Results()
+            case GameStates.End:
+                self.Summary()
+            case GameStates.Exit:
+                Game.MasterGame.ClearMiniGame()
+            case other:
+                pass
+
+    def PlayGame(self, activeGame) -&gt; None:
+        super().PlayGame(activeGame=activeGame)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="Classes.MiniGames.RoundBasedGame" href="#Classes.MiniGames.RoundBasedGame">RoundBasedGame</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="Classes.MiniGames.TriviaGame.QuestionList"><code class="name">var <span class="ident">QuestionList</span> : list</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="Classes.MiniGames.TriviaGame.TriviaAPI"><code class="name">var <span class="ident">TriviaAPI</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="Classes.MiniGames.TriviaGame.GetQuestions"><code class="name flex">
+<span>def <span class="ident">GetQuestions</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def GetQuestions(self) -&gt; None:
+    responseCode = 100
+    while responseCode != 0:
+        rawResponse = self.TriviaAPI.request(num_questions=self.Rounds + 1)
+        responseCode = rawResponse[&#34;response_code&#34;]
+    results = rawResponse[&#34;results&#34;]
+    for question in results:
+        questionDict = {}
+        questionDict[&#34;Question&#34;] = question[&#34;question&#34;]
+        questionDict[&#34;Difficulty&#34;] = question[&#34;difficulty&#34;]
+        questionDict[&#34;Category&#34;] = question[&#34;category&#34;]
+        questionDict[&#34;Answers&#34;] = question[&#34;incorrect_answers&#34;] + [
+            question[&#34;correct_answer&#34;]
+        ]
+        random.shuffle(questionDict[&#34;Answers&#34;])
+        questionDict[&#34;Correct Answer&#34;] = question[&#34;correct_answer&#34;]
+        self.QuestionList.append(questionDict)</code></pre>
+</details>
+</dd>
+<dt id="Classes.MiniGames.TriviaGame.PlayGame"><code class="name flex">
+<span>def <span class="ident">PlayGame</span></span>(<span>self, activeGame) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def PlayGame(self, activeGame) -&gt; None:
+    super().PlayGame(activeGame=activeGame)</code></pre>
+</details>
+</dd>
+<dt id="Classes.MiniGames.TriviaGame.PlayOrSkip"><code class="name flex">
+<span>def <span class="ident">PlayOrSkip</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def PlayOrSkip(self) -&gt; None:
+    question = self.QuestionList[self.CurrentRound - 1]
+    self.DisplayedText[
+        &#34;Main Text L1&#34;
+    ].Text = f&#34;This question is ranked {question[&#39;Difficulty&#39;]}&#34;
+    self.DisplayedText[&#34;Main Text L2&#34;].Text = f&#34;Category is {question[&#39;Category&#39;]}&#34;
+    self.PopulateButtons(
+        textList=[&#34;Play&#34;, &#34;Skip&#34;],
+    )
+    self.GameState = GameStates.Wait</code></pre>
+</details>
+</dd>
+<dt id="Classes.MiniGames.TriviaGame.PopulateButtons"><code class="name flex">
+<span>def <span class="ident">PopulateButtons</span></span>(<span>self, textList) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def PopulateButtons(self, textList) -&gt; None:
+    self.MasterSpriteGroup.empty()
+    for textBox in [
+        value for key, value in self.DisplayedText.items() if &#34;Button&#34; in key
+    ]:
+        textBox.Text = &#34;&#34;
+    answerLocations = DefinedLocations.LocationDefs.Answers(num=len(textList))
+    for idx, text in enumerate(textList):
+        self.DisplayedText[f&#34;Button {idx}&#34;] = Writing.TextBox(
+            center=answerLocations[idx],
+            text=text,
+            font=Writing.DefinedFonts[&#34;Trivia Answers&#34;],
+        )
+
+        self.MasterSpriteGroup.add(
+            Sprite.ButtonObject(
+                position=answerLocations[idx],
+                backColor=ColorTools.TriviaBlue,
+                size=(400, 150) if self.QuestionList else (600, 150),
+            )
+        )</code></pre>
+</details>
+</dd>
+<dt id="Classes.MiniGames.TriviaGame.PresentQuestion"><code class="name flex">
+<span>def <span class="ident">PresentQuestion</span></span>(<span>self) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def PresentQuestion(self) -&gt; str:
+    question = self.QuestionList[self.CurrentRound - 1]
+    if len(question[&#34;Question&#34;]) &lt; 50:
+        self.DisplayedText[&#34;Main Text L1&#34;].Text = question[&#34;Question&#34;]
+        self.DisplayedText[&#34;Main Text L2&#34;].Text = &#34;&#34;
+    else:
+        self.DisplayedText[&#34;Main Text L1&#34;].Text = question[&#34;Question&#34;][:25]
+        self.DisplayedText[&#34;Main Text L2&#34;].Text = question[&#34;Question&#34;][25:]
+    # TODO- fix buttons to text size
+    self.PopulateButtons(textList=question[&#34;Answers&#34;])
+    self.GameState = GameStates.Wait</code></pre>
+</details>
+</dd>
+<dt id="Classes.MiniGames.TriviaGame.Results"><code class="name flex">
+<span>def <span class="ident">Results</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def Results(self) -&gt; None:
+    scale = 1
+    match self.QuestionList[self.CurrentRound - 1][&#34;Difficulty&#34;]:
+        case &#34;hard&#34;:
+            scale = 2
+        case &#34;medium&#34;:
+            scale = 1.5
+        case &#34;easy&#34;:
+            scale = 1.25
+
+    if self.GameState is GameStates.CorrectAnswer:
+        self.DisplayedText[
+            &#34;Main Text L1&#34;
+        ].Text = f&#34;Correct! You have earned ${((self.CurrentCash * scale) - self.CurrentCash):.2f}&#34;
+        self.DisplayedText[&#34;Main Text L2&#34;].Text = &#34;&#34;
+        self.ResultsList.append(True)
+        self.CurrentCash *= scale
+    else:
+        self.DisplayedText[
+            &#34;Main Text L1&#34;
+        ].Text = f&#34;Incorrect! You have lost ${abs((self.CurrentCash / scale) - self.CurrentCash):.2f}&#34;
+        self.DisplayedText[
+            &#34;Main Text L2&#34;
+        ].Text = f&#34;Correct Answer was {self.QuestionList[self.CurrentRound -1][&#39;Correct Answer&#39;]}&#34;
+        self.ResultsList.append(False)
+        self.CurrentCash /= scale
+
+    self.PopulateButtons(textList=[&#34;Continue&#34;])
+    self.GameState = GameStates.Wait</code></pre>
+</details>
+</dd>
+<dt id="Classes.MiniGames.TriviaGame.StartGame"><code class="name flex">
+<span>def <span class="ident">StartGame</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def StartGame(self) -&gt; None:
+    self.DisplayedText[&#34;Main Text L1&#34;].Text = &#34;Press to Begin&#34;
+    self.PopulateButtons(
+        textList=[&#34;Begin&#34; if self.QuestionList else &#34;Loading Questions&#34;]
+    )</code></pre>
+</details>
+</dd>
+<dt id="Classes.MiniGames.TriviaGame.StartRound"><code class="name flex">
+<span>def <span class="ident">StartRound</span></span>(<span>self, activeGame) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def StartRound(self, activeGame) -&gt; None:
+    super().StartRound()
+    match self.GameState:
+        case GameStates.Loading | GameStates.Start:
+            self.StartGame()
+        case GameStates.PlayOrSkip:
+            self.PlayOrSkip()
+        case GameStates.Questions:
+            self.PresentQuestion()
+        case GameStates.IncorrectAnswer:
+            self.Results()
+        case GameStates.CorrectAnswer:
+            self.Results()
+        case GameStates.End:
+            self.Summary()
+        case GameStates.Exit:
+            Game.MasterGame.ClearMiniGame()
+        case other:
+            pass</code></pre>
+</details>
+</dd>
+<dt id="Classes.MiniGames.TriviaGame.Summary"><code class="name flex">
+<span>def <span class="ident">Summary</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def Summary(self) -&gt; None:
+    self.DisplayedText[
+        &#34;Main Text L1&#34;
+    ].Text = f&#34;You answered {len([x for x in self.ResultsList if x])}/{len(self.ResultsList)} correctly and skipped {self.Rounds - len(self.ResultsList)}&#34;
+    deltaMoney = self.CurrentCash - self.StartingCash
+    descriptor = &#34;earnings&#34; if deltaMoney &gt; 0 else &#34;losses&#34;
+    self.DisplayedText[
+        &#34;Main Text L2&#34;
+    ].Text = f&#34;Resulting in total {descriptor} ${abs(deltaMoney):.2f}&#34;
+    self.PopulateButtons(textList=[&#34;Exit&#34;])
+    self.GameState = GameStates.Wait</code></pre>
+</details>
+</dd>
+<dt id="Classes.MiniGames.TriviaGame.UpdateStateMachine"><code class="name flex">
+<span>def <span class="ident">UpdateStateMachine</span></span>(<span>self, buttonChoice) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def UpdateStateMachine(self, buttonChoice) -&gt; None:
+    super().UpdateStateMachine(input=buttonChoice)
+    match buttonChoice:
+        case &#34;Loading Questions&#34;:
+            self.GameState = GameStates.Start
+        case &#34;Begin&#34;:
+            self.GameState = GameStates.PlayOrSkip
+        case &#34;Play&#34;:
+            self.GameState = GameStates.Questions
+        case &#34;Skip&#34;:
+            self.CurrentRound += 1
+        case &#34;Exit&#34;:
+            self.GameState = GameStates.Exit
+        case &#34;Continue&#34;:
+            self.CurrentRound += 1
+            self.GameState = GameStates.PlayOrSkip
+        case other:
+            answer = self.QuestionList[self.CurrentRound - 1][&#34;Correct Answer&#34;]
+            self.GameState = (
+                GameStates.CorrectAnswer
+                if other == answer
+                else GameStates.IncorrectAnswer
+            )
+    if self.CurrentRound &gt; self.Rounds and self.GameState != GameStates.Exit:
+        self.GameState = GameStates.End
+        self.CurrentRound = self.Rounds</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="Classes.MiniGames.RoundBasedGame" href="#Classes.MiniGames.RoundBasedGame">RoundBasedGame</a></b></code>:
+<ul class="hlist">
+<li><code><a title="Classes.MiniGames.RoundBasedGame.Screen" href="#Classes.MiniGames.RoundBasedGame.Screen">Screen</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="Classes" href="index.html">Classes</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="Classes.MiniGames.MakeTriviaGame" href="#Classes.MiniGames.MakeTriviaGame">MakeTriviaGame</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="Classes.MiniGames.DiceGame" href="#Classes.MiniGames.DiceGame">DiceGame</a></code></h4>
+<ul class="two-column">
+<li><code><a title="Classes.MiniGames.DiceGame.Dice" href="#Classes.MiniGames.DiceGame.Dice">Dice</a></code></li>
+<li><code><a title="Classes.MiniGames.DiceGame.DiceBounds" href="#Classes.MiniGames.DiceGame.DiceBounds">DiceBounds</a></code></li>
+<li><code><a title="Classes.MiniGames.DiceGame.GetDiceCount" href="#Classes.MiniGames.DiceGame.GetDiceCount">GetDiceCount</a></code></li>
+<li><code><a title="Classes.MiniGames.DiceGame.MakeDiceRoll" href="#Classes.MiniGames.DiceGame.MakeDiceRoll">MakeDiceRoll</a></code></li>
+<li><code><a title="Classes.MiniGames.DiceGame.MaxDice" href="#Classes.MiniGames.DiceGame.MaxDice">MaxDice</a></code></li>
+<li><code><a title="Classes.MiniGames.DiceGame.StartRound" href="#Classes.MiniGames.DiceGame.StartRound">StartRound</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="Classes.MiniGames.GameMode" href="#Classes.MiniGames.GameMode">GameMode</a></code></h4>
+<ul class="">
+<li><code><a title="Classes.MiniGames.GameMode.Base" href="#Classes.MiniGames.GameMode.Base">Base</a></code></li>
+<li><code><a title="Classes.MiniGames.GameMode.DiceGame" href="#Classes.MiniGames.GameMode.DiceGame">DiceGame</a></code></li>
+<li><code><a title="Classes.MiniGames.GameMode.TriviaGame" href="#Classes.MiniGames.GameMode.TriviaGame">TriviaGame</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="Classes.MiniGames.GameStates" href="#Classes.MiniGames.GameStates">GameStates</a></code></h4>
+<ul class="two-column">
+<li><code><a title="Classes.MiniGames.GameStates.CorrectAnswer" href="#Classes.MiniGames.GameStates.CorrectAnswer">CorrectAnswer</a></code></li>
+<li><code><a title="Classes.MiniGames.GameStates.End" href="#Classes.MiniGames.GameStates.End">End</a></code></li>
+<li><code><a title="Classes.MiniGames.GameStates.Exit" href="#Classes.MiniGames.GameStates.Exit">Exit</a></code></li>
+<li><code><a title="Classes.MiniGames.GameStates.IncorrectAnswer" href="#Classes.MiniGames.GameStates.IncorrectAnswer">IncorrectAnswer</a></code></li>
+<li><code><a title="Classes.MiniGames.GameStates.Loading" href="#Classes.MiniGames.GameStates.Loading">Loading</a></code></li>
+<li><code><a title="Classes.MiniGames.GameStates.PlayOrSkip" href="#Classes.MiniGames.GameStates.PlayOrSkip">PlayOrSkip</a></code></li>
+<li><code><a title="Classes.MiniGames.GameStates.Questions" href="#Classes.MiniGames.GameStates.Questions">Questions</a></code></li>
+<li><code><a title="Classes.MiniGames.GameStates.Start" href="#Classes.MiniGames.GameStates.Start">Start</a></code></li>
+<li><code><a title="Classes.MiniGames.GameStates.Wait" href="#Classes.MiniGames.GameStates.Wait">Wait</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="Classes.MiniGames.RoundBasedGame" href="#Classes.MiniGames.RoundBasedGame">RoundBasedGame</a></code></h4>
+<ul class="two-column">
+<li><code><a title="Classes.MiniGames.RoundBasedGame.BackgroundColor" href="#Classes.MiniGames.RoundBasedGame.BackgroundColor">BackgroundColor</a></code></li>
+<li><code><a title="Classes.MiniGames.RoundBasedGame.CurrentRound" href="#Classes.MiniGames.RoundBasedGame.CurrentRound">CurrentRound</a></code></li>
+<li><code><a title="Classes.MiniGames.RoundBasedGame.DisplayedText" href="#Classes.MiniGames.RoundBasedGame.DisplayedText">DisplayedText</a></code></li>
+<li><code><a title="Classes.MiniGames.RoundBasedGame.GameState" href="#Classes.MiniGames.RoundBasedGame.GameState">GameState</a></code></li>
+<li><code><a title="Classes.MiniGames.RoundBasedGame.GameStates" href="#Classes.MiniGames.RoundBasedGame.GameStates">GameStates</a></code></li>
+<li><code><a title="Classes.MiniGames.RoundBasedGame.MasterSpriteGroup" href="#Classes.MiniGames.RoundBasedGame.MasterSpriteGroup">MasterSpriteGroup</a></code></li>
+<li><code><a title="Classes.MiniGames.RoundBasedGame.MaxRounds" href="#Classes.MiniGames.RoundBasedGame.MaxRounds">MaxRounds</a></code></li>
+<li><code><a title="Classes.MiniGames.RoundBasedGame.OnRoundLoss" href="#Classes.MiniGames.RoundBasedGame.OnRoundLoss">OnRoundLoss</a></code></li>
+<li><code><a title="Classes.MiniGames.RoundBasedGame.OnRoundWin" href="#Classes.MiniGames.RoundBasedGame.OnRoundWin">OnRoundWin</a></code></li>
+<li><code><a title="Classes.MiniGames.RoundBasedGame.PlayGame" href="#Classes.MiniGames.RoundBasedGame.PlayGame">PlayGame</a></code></li>
+<li><code><a title="Classes.MiniGames.RoundBasedGame.ResultsList" href="#Classes.MiniGames.RoundBasedGame.ResultsList">ResultsList</a></code></li>
+<li><code><a title="Classes.MiniGames.RoundBasedGame.RoundResult" href="#Classes.MiniGames.RoundBasedGame.RoundResult">RoundResult</a></code></li>
+<li><code><a title="Classes.MiniGames.RoundBasedGame.Rounds" href="#Classes.MiniGames.RoundBasedGame.Rounds">Rounds</a></code></li>
+<li><code><a title="Classes.MiniGames.RoundBasedGame.Screen" href="#Classes.MiniGames.RoundBasedGame.Screen">Screen</a></code></li>
+<li><code><a title="Classes.MiniGames.RoundBasedGame.StartRound" href="#Classes.MiniGames.RoundBasedGame.StartRound">StartRound</a></code></li>
+<li><code><a title="Classes.MiniGames.RoundBasedGame.UpdateStateMachine" href="#Classes.MiniGames.RoundBasedGame.UpdateStateMachine">UpdateStateMachine</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="Classes.MiniGames.TriviaGame" href="#Classes.MiniGames.TriviaGame">TriviaGame</a></code></h4>
+<ul class="two-column">
+<li><code><a title="Classes.MiniGames.TriviaGame.GetQuestions" href="#Classes.MiniGames.TriviaGame.GetQuestions">GetQuestions</a></code></li>
+<li><code><a title="Classes.MiniGames.TriviaGame.PlayGame" href="#Classes.MiniGames.TriviaGame.PlayGame">PlayGame</a></code></li>
+<li><code><a title="Classes.MiniGames.TriviaGame.PlayOrSkip" href="#Classes.MiniGames.TriviaGame.PlayOrSkip">PlayOrSkip</a></code></li>
+<li><code><a title="Classes.MiniGames.TriviaGame.PopulateButtons" href="#Classes.MiniGames.TriviaGame.PopulateButtons">PopulateButtons</a></code></li>
+<li><code><a title="Classes.MiniGames.TriviaGame.PresentQuestion" href="#Classes.MiniGames.TriviaGame.PresentQuestion">PresentQuestion</a></code></li>
+<li><code><a title="Classes.MiniGames.TriviaGame.QuestionList" href="#Classes.MiniGames.TriviaGame.QuestionList">QuestionList</a></code></li>
+<li><code><a title="Classes.MiniGames.TriviaGame.Results" href="#Classes.MiniGames.TriviaGame.Results">Results</a></code></li>
+<li><code><a title="Classes.MiniGames.TriviaGame.StartGame" href="#Classes.MiniGames.TriviaGame.StartGame">StartGame</a></code></li>
+<li><code><a title="Classes.MiniGames.TriviaGame.StartRound" href="#Classes.MiniGames.TriviaGame.StartRound">StartRound</a></code></li>
+<li><code><a title="Classes.MiniGames.TriviaGame.Summary" href="#Classes.MiniGames.TriviaGame.Summary">Summary</a></code></li>
+<li><code><a title="Classes.MiniGames.TriviaGame.TriviaAPI" href="#Classes.MiniGames.TriviaGame.TriviaAPI">TriviaAPI</a></code></li>
+<li><code><a title="Classes.MiniGames.TriviaGame.UpdateStateMachine" href="#Classes.MiniGames.TriviaGame.UpdateStateMachine">UpdateStateMachine</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>

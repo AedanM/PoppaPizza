@@ -5,9 +5,9 @@ from dataclasses import dataclass
 
 import names
 
-import Utilities.Utils as utils
 from Classes import Game, Jobs, Sprite
 from Definitions import AssetLibrary, CustomerDefs, DefinedLocations
+from Utilities import Utils
 
 IDCOUNT = 1
 
@@ -56,7 +56,7 @@ class Worker(Person):
     @classmethod
     def CreateWorker(
         cls,
-        startLocation=DefinedLocations.LocationDefs.KitchenLocation,
+        startLocation=DefinedLocations.LocationDefs.WorkerSpawn,
         activeGame=Game.MasterGame,
     ) -> tuple:
         """Create and Spawn in Worker and Worker Sprite
@@ -70,13 +70,12 @@ class Worker(Person):
         """
         worker = cls.Create()
         workerSprite = Sprite.CharImageSprite(
-            position=utils.PositionRandomVariance(
-                position=startLocation,
-                percentVarianceTuple=(0.05, 0.5),
-                screenSize=activeGame.ScreenSize,
+            center=Utils.OffsetTuple(
+                inputTuple=startLocation, offset=(0, random.randint(-500, 0))
             ),
             path=AssetLibrary.ImagePath.WorkerSuitPath,
             objID=worker.IdNum,
+            activeGame=activeGame,
         )
         worker.BasePay = random.uniform(0.25, 5.0)
         activeGame.CharSpriteGroup.add(workerSprite)
@@ -113,13 +112,14 @@ class Customer(Person):
         activeGame.JobList.append(Jobs.Job.SpawnJob())
         activeGame.JobList[-1].Assign(cust)
         customerSprite = Sprite.CharImageSprite(
-            position=utils.PositionRandomVariance(
+            position=Utils.PositionRandomVariance(
                 position=startLocation,
                 percentVarianceTuple=(0.0005, 0.1),
                 screenSize=activeGame.ScreenSize,
             ),
             path=AssetLibrary.PathLookup(imageType),
             objID=cust.IdNum,
+            activeGame=activeGame,
         )
         activeGame.CharSpriteGroup.add(customerSprite)
         activeGame.CustomerList.append(cust)

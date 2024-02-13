@@ -34,7 +34,7 @@ import sys
 
 import pygame
 
-from Classes import Game, Matching, Stats
+from Classes import Game, Matching, MiniGames, Stats
 from Definitions import AssetLibrary, CustomEvents
 from Generators import BackgroundPopulator, CharSpawner, Menus
 from Handlers import ClickHandler, ShopHandler, WorkerHandler
@@ -46,6 +46,7 @@ def MainEventHandler(activeGame=Game.MasterGame) -&gt; None:
     Args:
         activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
     &#34;&#34;&#34;
+    RandomSpawnHandler()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -59,9 +60,14 @@ def MainEventHandler(activeGame=Game.MasterGame) -&gt; None:
                 case CustomEvents.GameOver:
                     GameOver()
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            ClickHandler.MouseHandler(mousePos=event.pos, lClick=(event.button == 1))
+            ClickHandler.MainMouseHandler(
+                mousePos=event.pos, lClick=(event.button == 1)
+            )
         elif event.type == pygame.KEYDOWN:
             match (event.key):
+                case pygame.K_a:
+                    Game.MasterGame.Mode = MiniGames.GameMode.TriviaGame
+                    MiniGames.MakeTriviaGame(activeGame=Game.MasterGame)
                 case pygame.K_m:
                     Game.MasterGame.UserInventory.GetPaid(amount=1000.0)
                 case pygame.K_t:
@@ -112,7 +118,7 @@ def DayNightEvent() -&gt; None:
         Menus.DayTransistion()
     else:
         GameOver()
-    ResetSprites()
+    ResetSprites(activeGame=Game.MasterGame)
     Stats.AllStats[f&#34;Day {Game.MasterGame.GameClock.Day}&#34;] = copy.deepcopy(
         Game.MasterGame.UserInventory.Statistics
     )
@@ -120,7 +126,7 @@ def DayNightEvent() -&gt; None:
     BackgroundPopulator.SetupBackground()
 
 
-def ResetSprites(activeGame=Game.MasterGame) -&gt; None:
+def ResetSprites(activeGame) -&gt; None:
     &#34;&#34;&#34;Reset all Sprites
 
         Kill Customer Sprites
@@ -139,7 +145,22 @@ def ResetSprites(activeGame=Game.MasterGame) -&gt; None:
 def GameOver() -&gt; None:
     &#34;&#34;&#34;Logic for End of Game&#34;&#34;&#34;
     Game.MasterGame.Running = False
-    Menus.GameOverMenu()</code></pre>
+    Menus.GameOverMenu()
+
+
+def TriviaEventHandler(activeGame) -&gt; None:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            ClickHandler.TriviaMouseHandler(mousePos=event.pos)
+        elif event.type == pygame.KEYDOWN:
+            match (event.key):
+                case pygame.K_a:
+                    activeGame.Mode = MiniGames.GameMode.Base
+                    activeGame.MiniGame = None
+                    activeGame.GameClock.SetRunning(True)</code></pre>
 </details>
 </section>
 <section>
@@ -178,7 +199,7 @@ Resets Background</p></div>
         Menus.DayTransistion()
     else:
         GameOver()
-    ResetSprites()
+    ResetSprites(activeGame=Game.MasterGame)
     Stats.AllStats[f&#34;Day {Game.MasterGame.GameClock.Day}&#34;] = copy.deepcopy(
         Game.MasterGame.UserInventory.Statistics
     )
@@ -236,6 +257,7 @@ Resets Background</p></div>
     Args:
         activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
     &#34;&#34;&#34;
+    RandomSpawnHandler()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -249,9 +271,14 @@ Resets Background</p></div>
                 case CustomEvents.GameOver:
                     GameOver()
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            ClickHandler.MouseHandler(mousePos=event.pos, lClick=(event.button == 1))
+            ClickHandler.MainMouseHandler(
+                mousePos=event.pos, lClick=(event.button == 1)
+            )
         elif event.type == pygame.KEYDOWN:
             match (event.key):
+                case pygame.K_a:
+                    Game.MasterGame.Mode = MiniGames.GameMode.TriviaGame
+                    MiniGames.MakeTriviaGame(activeGame=Game.MasterGame)
                 case pygame.K_m:
                     Game.MasterGame.UserInventory.GetPaid(amount=1000.0)
                 case pygame.K_t:
@@ -291,7 +318,7 @@ Resets Background</p></div>
 </details>
 </dd>
 <dt id="Handlers.EventHandler.ResetSprites"><code class="name flex">
-<span>def <span class="ident">ResetSprites</span></span>(<span>activeGame=&lt;Classes.Game.Game object&gt;) ‑> None</span>
+<span>def <span class="ident">ResetSprites</span></span>(<span>activeGame) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Reset all Sprites</p>
@@ -307,7 +334,7 @@ Reset Workers to Kitchen
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def ResetSprites(activeGame=Game.MasterGame) -&gt; None:
+<pre><code class="python">def ResetSprites(activeGame) -&gt; None:
     &#34;&#34;&#34;Reset all Sprites
 
         Kill Customer Sprites
@@ -321,6 +348,30 @@ Reset Workers to Kitchen
             Matching.RemoveObjFromSprite(activeGame=activeGame, targetSprite=sprite)
         elif sprite.ImageType in AssetLibrary.WorkerOutfits:
             WorkerHandler.DailyReset(sprite=sprite)</code></pre>
+</details>
+</dd>
+<dt id="Handlers.EventHandler.TriviaEventHandler"><code class="name flex">
+<span>def <span class="ident">TriviaEventHandler</span></span>(<span>activeGame) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def TriviaEventHandler(activeGame) -&gt; None:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            ClickHandler.TriviaMouseHandler(mousePos=event.pos)
+        elif event.type == pygame.KEYDOWN:
+            match (event.key):
+                case pygame.K_a:
+                    activeGame.Mode = MiniGames.GameMode.Base
+                    activeGame.MiniGame = None
+                    activeGame.GameClock.SetRunning(True)</code></pre>
 </details>
 </dd>
 </dl>
@@ -347,6 +398,7 @@ Reset Workers to Kitchen
 <li><code><a title="Handlers.EventHandler.MainEventHandler" href="#Handlers.EventHandler.MainEventHandler">MainEventHandler</a></code></li>
 <li><code><a title="Handlers.EventHandler.RandomSpawnHandler" href="#Handlers.EventHandler.RandomSpawnHandler">RandomSpawnHandler</a></code></li>
 <li><code><a title="Handlers.EventHandler.ResetSprites" href="#Handlers.EventHandler.ResetSprites">ResetSprites</a></code></li>
+<li><code><a title="Handlers.EventHandler.TriviaEventHandler" href="#Handlers.EventHandler.TriviaEventHandler">TriviaEventHandler</a></code></li>
 </ul>
 </li>
 </ul>

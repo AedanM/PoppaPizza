@@ -5,7 +5,7 @@ import sys
 
 import pygame
 
-from Classes import Game, Matching, Stats
+from Classes import Game, Matching, MiniGames, Stats
 from Definitions import AssetLibrary, CustomEvents
 from Generators import BackgroundPopulator, CharSpawner, Menus
 from Handlers import ClickHandler, ShopHandler, WorkerHandler
@@ -17,6 +17,7 @@ def MainEventHandler(activeGame=Game.MasterGame) -> None:
     Args:
         activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
     """
+    RandomSpawnHandler()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -30,9 +31,14 @@ def MainEventHandler(activeGame=Game.MasterGame) -> None:
                 case CustomEvents.GameOver:
                     GameOver()
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            ClickHandler.MouseHandler(mousePos=event.pos, lClick=(event.button == 1))
+            ClickHandler.MainMouseHandler(
+                mousePos=event.pos, lClick=(event.button == 1)
+            )
         elif event.type == pygame.KEYDOWN:
             match (event.key):
+                case pygame.K_a:
+                    Game.MasterGame.Mode = MiniGames.GameMode.TriviaGame
+                    MiniGames.MakeTriviaGame(activeGame=Game.MasterGame)
                 case pygame.K_m:
                     Game.MasterGame.UserInventory.GetPaid(amount=1000.0)
                 case pygame.K_t:
@@ -83,7 +89,7 @@ def DayNightEvent() -> None:
         Menus.DayTransistion()
     else:
         GameOver()
-    ResetSprites()
+    ResetSprites(activeGame=Game.MasterGame)
     Stats.AllStats[f"Day {Game.MasterGame.GameClock.Day}"] = copy.deepcopy(
         Game.MasterGame.UserInventory.Statistics
     )
@@ -91,7 +97,7 @@ def DayNightEvent() -> None:
     BackgroundPopulator.SetupBackground()
 
 
-def ResetSprites(activeGame=Game.MasterGame) -> None:
+def ResetSprites(activeGame) -> None:
     """Reset all Sprites
 
         Kill Customer Sprites
@@ -111,3 +117,18 @@ def GameOver() -> None:
     """Logic for End of Game"""
     Game.MasterGame.Running = False
     Menus.GameOverMenu()
+
+
+def TriviaEventHandler(activeGame) -> None:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            ClickHandler.TriviaMouseHandler(mousePos=event.pos)
+        elif event.type == pygame.KEYDOWN:
+            match (event.key):
+                case pygame.K_a:
+                    activeGame.Mode = MiniGames.GameMode.Base
+                    activeGame.MiniGame = None
+                    activeGame.GameClock.SetRunning(True)

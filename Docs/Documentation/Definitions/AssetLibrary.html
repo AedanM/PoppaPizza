@@ -31,6 +31,8 @@
 
 from enum import Enum
 
+import pygame
+
 from Definitions import ImagePaths
 
 ImagePath = ImagePaths.ImagePaths()
@@ -41,7 +43,6 @@ class ImageTypes(Enum):
 
     (
         Null,
-        Button,
         LogoCoffee,
         LogoCowboy,
         CustomerCoffee,
@@ -104,7 +105,6 @@ def PathLookup(imageType) -&gt; str | None:
 
 
 PathToTypeDict = {
-    ImagePath.ButtonPath: ImageTypes.Button,
     ImagePath.CustomerCoffeePath: ImageTypes.CustomerCoffee,
     ImagePath.CustomerCowboyPath: ImageTypes.CustomerCowboy,
     ImagePath.CustomerLuauPath: ImageTypes.CustomerLuau,
@@ -123,7 +123,9 @@ PathToTypeDict = {
     ImagePath.WorkerLuauPath: ImageTypes.WorkerLuau,
     ImagePath.WorkerSafariPath: ImageTypes.WorkerSafari,
     ImagePath.WorkerSuitPath: ImageTypes.WorkerSuit,
-}</code></pre>
+}
+Background = pygame.image.load(ImagePath.BackgroundPath)
+TriviaBackground = pygame.image.load(ImagePath.TriviaBackgroundPath)</code></pre>
 </details>
 </section>
 <section>
@@ -187,7 +189,6 @@ PathToTypeDict = {
 
     (
         Null,
-        Button,
         LogoCoffee,
         LogoCowboy,
         CustomerCoffee,
@@ -214,10 +215,6 @@ PathToTypeDict = {
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="Definitions.AssetLibrary.ImageTypes.Button"><code class="name">var <span class="ident">Button</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
 <dt id="Definitions.AssetLibrary.ImageTypes.CustomerCoffee"><code class="name">var <span class="ident">CustomerCoffee</span></code></dt>
 <dd>
 <div class="desc"></div>
@@ -316,7 +313,6 @@ PathToTypeDict = {
 <li>
 <h4><code><a title="Definitions.AssetLibrary.ImageTypes" href="#Definitions.AssetLibrary.ImageTypes">ImageTypes</a></code></h4>
 <ul class="two-column">
-<li><code><a title="Definitions.AssetLibrary.ImageTypes.Button" href="#Definitions.AssetLibrary.ImageTypes.Button">Button</a></code></li>
 <li><code><a title="Definitions.AssetLibrary.ImageTypes.CustomerCoffee" href="#Definitions.AssetLibrary.ImageTypes.CustomerCoffee">CustomerCoffee</a></code></li>
 <li><code><a title="Definitions.AssetLibrary.ImageTypes.CustomerCowboy" href="#Definitions.AssetLibrary.ImageTypes.CustomerCowboy">CustomerCowboy</a></code></li>
 <li><code><a title="Definitions.AssetLibrary.ImageTypes.CustomerLuau" href="#Definitions.AssetLibrary.ImageTypes.CustomerLuau">CustomerLuau</a></code></li>

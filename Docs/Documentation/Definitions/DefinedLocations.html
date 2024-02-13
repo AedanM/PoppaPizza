@@ -42,6 +42,16 @@ class DefinedLocations:
     ScreenSize = StandardDimensions[&#34;Medium&#34;]
 
     @property
+    def LockerRoom0(self) -&gt; tuple:
+        &#34;&#34;&#34;Location of First Locker Room
+
+        Returns:
+            tuple: Scaled Location
+        &#34;&#34;&#34;
+        location = (125, 65)
+        return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
+
+    @property
     def LockerRoom1(self) -&gt; tuple:
         &#34;&#34;&#34;Location of First Locker Room
 
@@ -92,13 +102,23 @@ class DefinedLocations:
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
+    def KitchenEntrance(self) -&gt; tuple:
+        &#34;&#34;&#34;Location of Kitchen Entrance
+
+        Returns:
+            tuple: Scaled Location
+        &#34;&#34;&#34;
+        location = (125, 225)
+        return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
+
+    @property
     def KitchenLocation(self) -&gt; tuple:
         &#34;&#34;&#34;Location of Kitchen Entrance
 
         Returns:
             tuple: Scaled Location
         &#34;&#34;&#34;
-        location = (220, 225)
+        location = (125, 50)
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
@@ -128,7 +148,7 @@ class DefinedLocations:
         Returns:
             tuple: Scaled Location
         &#34;&#34;&#34;
-        location = (1050, 700)
+        location = (1100, 700)
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
@@ -143,13 +163,69 @@ class DefinedLocations:
 
     @property
     def WorkerSpawn(self) -&gt; tuple:
-        &#34;&#34;&#34;Location of Worker Spawn
+        &#34;&#34;&#34;Location of Customer Spawn in
 
         Returns:
             tuple: Scaled Location
         &#34;&#34;&#34;
-        location = (50, 100)
+        location = (125, 1600)
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
+
+    @property
+    def TriviaTitleText(self) -&gt; tuple:
+        &#34;&#34;&#34;Location of Main Trivia Game Text
+
+        Returns:
+            tuple: Scaled Location
+        &#34;&#34;&#34;
+        location = (600, 100)
+        return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
+
+    @property
+    def TriviaMainText(self) -&gt; tuple:
+        &#34;&#34;&#34;Location of Main Trivia Title Text
+
+        Returns:
+            tuple: Scaled Location
+        &#34;&#34;&#34;
+        location = (600, 250)
+        return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
+
+    @property
+    def TriviaMinorText(self) -&gt; tuple:
+        &#34;&#34;&#34;Location of Secondary Trivia Game Text
+
+        Returns:
+            tuple: Scaled Location
+        &#34;&#34;&#34;
+        location = (600, 600)
+        return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
+
+    @property
+    def TriviaRoundText(self) -&gt; tuple:
+        &#34;&#34;&#34;Location of Round Label for Trivia Game
+
+        Returns:
+            tuple: Scaled Location
+        &#34;&#34;&#34;
+        location = (100, 100)
+        return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
+
+    def Answers(self, num) -&gt; list:
+        &#34;&#34;&#34;Location of Round Label for Trivia Game
+
+        Returns:
+            tuple: Scaled Location
+        &#34;&#34;&#34;
+        location = []
+        match num:
+            case 4:
+                location = [(350, 500), (850, 500), (350, 700), (850, 700)]
+            case 2:
+                location = [(350, 600), (850, 600)]
+            case 1:
+                location = [(600, 500)]
+        return [Utils.ScaleToSize(value=x, newSize=self.ScreenSize) for x in location]
 
 
 LocationDefs = DefinedLocations()
@@ -234,6 +310,18 @@ class SeatingPlanClass:
         lastTableCol = (self.NumCols * self.TableYSpacing) + self.TableYStart
         return list(range(self.TableYStart, lastTableCol, self.TableYSpacing))
 
+    def GenerateTablePlaces(self) -&gt; list:
+        &#34;&#34;&#34;Generates list of table position tuples
+
+        Returns:
+            list: Array of Tuple Positions
+        &#34;&#34;&#34;
+        locationArray = []
+        for row in self.TableRows():
+            for col in self.TableCols():
+                locationArray.append(tuple((row, col)))
+        return locationArray
+
 
 SeatingPlan = SeatingPlanClass()</code></pre>
 </details>
@@ -260,6 +348,16 @@ SeatingPlan = SeatingPlanClass()</code></pre>
     &#34;&#34;&#34;Defined Locations and their scaling&#34;&#34;&#34;
 
     ScreenSize = StandardDimensions[&#34;Medium&#34;]
+
+    @property
+    def LockerRoom0(self) -&gt; tuple:
+        &#34;&#34;&#34;Location of First Locker Room
+
+        Returns:
+            tuple: Scaled Location
+        &#34;&#34;&#34;
+        location = (125, 65)
+        return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
     def LockerRoom1(self) -&gt; tuple:
@@ -312,13 +410,23 @@ SeatingPlan = SeatingPlanClass()</code></pre>
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
+    def KitchenEntrance(self) -&gt; tuple:
+        &#34;&#34;&#34;Location of Kitchen Entrance
+
+        Returns:
+            tuple: Scaled Location
+        &#34;&#34;&#34;
+        location = (125, 225)
+        return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
+
+    @property
     def KitchenLocation(self) -&gt; tuple:
         &#34;&#34;&#34;Location of Kitchen Entrance
 
         Returns:
             tuple: Scaled Location
         &#34;&#34;&#34;
-        location = (220, 225)
+        location = (125, 50)
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
@@ -348,7 +456,7 @@ SeatingPlan = SeatingPlanClass()</code></pre>
         Returns:
             tuple: Scaled Location
         &#34;&#34;&#34;
-        location = (1050, 700)
+        location = (1100, 700)
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
@@ -363,13 +471,69 @@ SeatingPlan = SeatingPlanClass()</code></pre>
 
     @property
     def WorkerSpawn(self) -&gt; tuple:
-        &#34;&#34;&#34;Location of Worker Spawn
+        &#34;&#34;&#34;Location of Customer Spawn in
 
         Returns:
             tuple: Scaled Location
         &#34;&#34;&#34;
-        location = (50, 100)
-        return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)</code></pre>
+        location = (125, 1600)
+        return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
+
+    @property
+    def TriviaTitleText(self) -&gt; tuple:
+        &#34;&#34;&#34;Location of Main Trivia Game Text
+
+        Returns:
+            tuple: Scaled Location
+        &#34;&#34;&#34;
+        location = (600, 100)
+        return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
+
+    @property
+    def TriviaMainText(self) -&gt; tuple:
+        &#34;&#34;&#34;Location of Main Trivia Title Text
+
+        Returns:
+            tuple: Scaled Location
+        &#34;&#34;&#34;
+        location = (600, 250)
+        return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
+
+    @property
+    def TriviaMinorText(self) -&gt; tuple:
+        &#34;&#34;&#34;Location of Secondary Trivia Game Text
+
+        Returns:
+            tuple: Scaled Location
+        &#34;&#34;&#34;
+        location = (600, 600)
+        return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
+
+    @property
+    def TriviaRoundText(self) -&gt; tuple:
+        &#34;&#34;&#34;Location of Round Label for Trivia Game
+
+        Returns:
+            tuple: Scaled Location
+        &#34;&#34;&#34;
+        location = (100, 100)
+        return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
+
+    def Answers(self, num) -&gt; list:
+        &#34;&#34;&#34;Location of Round Label for Trivia Game
+
+        Returns:
+            tuple: Scaled Location
+        &#34;&#34;&#34;
+        location = []
+        match num:
+            case 4:
+                location = [(350, 500), (850, 500), (350, 700), (850, 700)]
+            case 2:
+                location = [(350, 600), (850, 600)]
+            case 1:
+                location = [(600, 500)]
+        return [Utils.ScaleToSize(value=x, newSize=self.ScreenSize) for x in location]</code></pre>
 </details>
 <h3>Class variables</h3>
 <dl>
@@ -468,7 +632,30 @@ def EndOfLine(self) -&gt; tuple:
     Returns:
         tuple: Scaled Location
     &#34;&#34;&#34;
-    location = (1050, 700)
+    location = (1100, 700)
+    return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)</code></pre>
+</details>
+</dd>
+<dt id="Definitions.DefinedLocations.DefinedLocations.KitchenEntrance"><code class="name">var <span class="ident">KitchenEntrance</span> : tuple</code></dt>
+<dd>
+<div class="desc"><p>Location of Kitchen Entrance</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tuple</code></dt>
+<dd>Scaled Location</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def KitchenEntrance(self) -&gt; tuple:
+    &#34;&#34;&#34;Location of Kitchen Entrance
+
+    Returns:
+        tuple: Scaled Location
+    &#34;&#34;&#34;
+    location = (125, 225)
     return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)</code></pre>
 </details>
 </dd>
@@ -491,7 +678,30 @@ def KitchenLocation(self) -&gt; tuple:
     Returns:
         tuple: Scaled Location
     &#34;&#34;&#34;
-    location = (220, 225)
+    location = (125, 50)
+    return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)</code></pre>
+</details>
+</dd>
+<dt id="Definitions.DefinedLocations.DefinedLocations.LockerRoom0"><code class="name">var <span class="ident">LockerRoom0</span> : tuple</code></dt>
+<dd>
+<div class="desc"><p>Location of First Locker Room</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tuple</code></dt>
+<dd>Scaled Location</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def LockerRoom0(self) -&gt; tuple:
+    &#34;&#34;&#34;Location of First Locker Room
+
+    Returns:
+        tuple: Scaled Location
+    &#34;&#34;&#34;
+    location = (125, 65)
     return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)</code></pre>
 </details>
 </dd>
@@ -610,9 +820,101 @@ def LockerRoom5(self) -&gt; tuple:
     return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)</code></pre>
 </details>
 </dd>
+<dt id="Definitions.DefinedLocations.DefinedLocations.TriviaMainText"><code class="name">var <span class="ident">TriviaMainText</span> : tuple</code></dt>
+<dd>
+<div class="desc"><p>Location of Main Trivia Title Text</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tuple</code></dt>
+<dd>Scaled Location</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def TriviaMainText(self) -&gt; tuple:
+    &#34;&#34;&#34;Location of Main Trivia Title Text
+
+    Returns:
+        tuple: Scaled Location
+    &#34;&#34;&#34;
+    location = (600, 250)
+    return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)</code></pre>
+</details>
+</dd>
+<dt id="Definitions.DefinedLocations.DefinedLocations.TriviaMinorText"><code class="name">var <span class="ident">TriviaMinorText</span> : tuple</code></dt>
+<dd>
+<div class="desc"><p>Location of Secondary Trivia Game Text</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tuple</code></dt>
+<dd>Scaled Location</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def TriviaMinorText(self) -&gt; tuple:
+    &#34;&#34;&#34;Location of Secondary Trivia Game Text
+
+    Returns:
+        tuple: Scaled Location
+    &#34;&#34;&#34;
+    location = (600, 600)
+    return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)</code></pre>
+</details>
+</dd>
+<dt id="Definitions.DefinedLocations.DefinedLocations.TriviaRoundText"><code class="name">var <span class="ident">TriviaRoundText</span> : tuple</code></dt>
+<dd>
+<div class="desc"><p>Location of Round Label for Trivia Game</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tuple</code></dt>
+<dd>Scaled Location</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def TriviaRoundText(self) -&gt; tuple:
+    &#34;&#34;&#34;Location of Round Label for Trivia Game
+
+    Returns:
+        tuple: Scaled Location
+    &#34;&#34;&#34;
+    location = (100, 100)
+    return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)</code></pre>
+</details>
+</dd>
+<dt id="Definitions.DefinedLocations.DefinedLocations.TriviaTitleText"><code class="name">var <span class="ident">TriviaTitleText</span> : tuple</code></dt>
+<dd>
+<div class="desc"><p>Location of Main Trivia Game Text</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tuple</code></dt>
+<dd>Scaled Location</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def TriviaTitleText(self) -&gt; tuple:
+    &#34;&#34;&#34;Location of Main Trivia Game Text
+
+    Returns:
+        tuple: Scaled Location
+    &#34;&#34;&#34;
+    location = (600, 100)
+    return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)</code></pre>
+</details>
+</dd>
 <dt id="Definitions.DefinedLocations.DefinedLocations.WorkerSpawn"><code class="name">var <span class="ident">WorkerSpawn</span> : tuple</code></dt>
 <dd>
-<div class="desc"><p>Location of Worker Spawn</p>
+<div class="desc"><p>Location of Customer Spawn in</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>tuple</code></dt>
@@ -624,13 +926,47 @@ def LockerRoom5(self) -&gt; tuple:
 </summary>
 <pre><code class="python">@property
 def WorkerSpawn(self) -&gt; tuple:
-    &#34;&#34;&#34;Location of Worker Spawn
+    &#34;&#34;&#34;Location of Customer Spawn in
 
     Returns:
         tuple: Scaled Location
     &#34;&#34;&#34;
-    location = (50, 100)
+    location = (125, 1600)
     return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="Definitions.DefinedLocations.DefinedLocations.Answers"><code class="name flex">
+<span>def <span class="ident">Answers</span></span>(<span>self, num) ‑> list</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Location of Round Label for Trivia Game</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tuple</code></dt>
+<dd>Scaled Location</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def Answers(self, num) -&gt; list:
+    &#34;&#34;&#34;Location of Round Label for Trivia Game
+
+    Returns:
+        tuple: Scaled Location
+    &#34;&#34;&#34;
+    location = []
+    match num:
+        case 4:
+            location = [(350, 500), (850, 500), (350, 700), (850, 700)]
+        case 2:
+            location = [(350, 600), (850, 600)]
+        case 1:
+            location = [(600, 500)]
+    return [Utils.ScaleToSize(value=x, newSize=self.ScreenSize) for x in location]</code></pre>
 </details>
 </dd>
 </dl>
@@ -720,7 +1056,19 @@ def WorkerSpawn(self) -&gt; tuple:
             list[int]: List of Column Locations
         &#34;&#34;&#34;
         lastTableCol = (self.NumCols * self.TableYSpacing) + self.TableYStart
-        return list(range(self.TableYStart, lastTableCol, self.TableYSpacing))</code></pre>
+        return list(range(self.TableYStart, lastTableCol, self.TableYSpacing))
+
+    def GenerateTablePlaces(self) -&gt; list:
+        &#34;&#34;&#34;Generates list of table position tuples
+
+        Returns:
+            list: Array of Tuple Positions
+        &#34;&#34;&#34;
+        locationArray = []
+        for row in self.TableRows():
+            for col in self.TableCols():
+                locationArray.append(tuple((row, col)))
+        return locationArray</code></pre>
 </details>
 <h3>Class variables</h3>
 <dl>
@@ -868,6 +1216,33 @@ def TableYStart(self) -&gt; int:
 </dl>
 <h3>Methods</h3>
 <dl>
+<dt id="Definitions.DefinedLocations.SeatingPlanClass.GenerateTablePlaces"><code class="name flex">
+<span>def <span class="ident">GenerateTablePlaces</span></span>(<span>self) ‑> list</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Generates list of table position tuples</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>list</code></dt>
+<dd>Array of Tuple Positions</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def GenerateTablePlaces(self) -&gt; list:
+    &#34;&#34;&#34;Generates list of table position tuples
+
+    Returns:
+        list: Array of Tuple Positions
+    &#34;&#34;&#34;
+    locationArray = []
+    for row in self.TableRows():
+        for col in self.TableCols():
+            locationArray.append(tuple((row, col)))
+    return locationArray</code></pre>
+</details>
+</dd>
 <dt id="Definitions.DefinedLocations.SeatingPlanClass.TableCols"><code class="name flex">
 <span>def <span class="ident">TableCols</span></span>(<span>self) ‑> list[int]</span>
 </code></dt>
@@ -937,23 +1312,31 @@ def TableYStart(self) -&gt; int:
 <li>
 <h4><code><a title="Definitions.DefinedLocations.DefinedLocations" href="#Definitions.DefinedLocations.DefinedLocations">DefinedLocations</a></code></h4>
 <ul class="two-column">
+<li><code><a title="Definitions.DefinedLocations.DefinedLocations.Answers" href="#Definitions.DefinedLocations.DefinedLocations.Answers">Answers</a></code></li>
 <li><code><a title="Definitions.DefinedLocations.DefinedLocations.CustomerEntrance" href="#Definitions.DefinedLocations.DefinedLocations.CustomerEntrance">CustomerEntrance</a></code></li>
 <li><code><a title="Definitions.DefinedLocations.DefinedLocations.CustomerExit" href="#Definitions.DefinedLocations.DefinedLocations.CustomerExit">CustomerExit</a></code></li>
 <li><code><a title="Definitions.DefinedLocations.DefinedLocations.CustomerSpawn" href="#Definitions.DefinedLocations.DefinedLocations.CustomerSpawn">CustomerSpawn</a></code></li>
 <li><code><a title="Definitions.DefinedLocations.DefinedLocations.EndOfLine" href="#Definitions.DefinedLocations.DefinedLocations.EndOfLine">EndOfLine</a></code></li>
+<li><code><a title="Definitions.DefinedLocations.DefinedLocations.KitchenEntrance" href="#Definitions.DefinedLocations.DefinedLocations.KitchenEntrance">KitchenEntrance</a></code></li>
 <li><code><a title="Definitions.DefinedLocations.DefinedLocations.KitchenLocation" href="#Definitions.DefinedLocations.DefinedLocations.KitchenLocation">KitchenLocation</a></code></li>
+<li><code><a title="Definitions.DefinedLocations.DefinedLocations.LockerRoom0" href="#Definitions.DefinedLocations.DefinedLocations.LockerRoom0">LockerRoom0</a></code></li>
 <li><code><a title="Definitions.DefinedLocations.DefinedLocations.LockerRoom1" href="#Definitions.DefinedLocations.DefinedLocations.LockerRoom1">LockerRoom1</a></code></li>
 <li><code><a title="Definitions.DefinedLocations.DefinedLocations.LockerRoom2" href="#Definitions.DefinedLocations.DefinedLocations.LockerRoom2">LockerRoom2</a></code></li>
 <li><code><a title="Definitions.DefinedLocations.DefinedLocations.LockerRoom3" href="#Definitions.DefinedLocations.DefinedLocations.LockerRoom3">LockerRoom3</a></code></li>
 <li><code><a title="Definitions.DefinedLocations.DefinedLocations.LockerRoom4" href="#Definitions.DefinedLocations.DefinedLocations.LockerRoom4">LockerRoom4</a></code></li>
 <li><code><a title="Definitions.DefinedLocations.DefinedLocations.LockerRoom5" href="#Definitions.DefinedLocations.DefinedLocations.LockerRoom5">LockerRoom5</a></code></li>
 <li><code><a title="Definitions.DefinedLocations.DefinedLocations.ScreenSize" href="#Definitions.DefinedLocations.DefinedLocations.ScreenSize">ScreenSize</a></code></li>
+<li><code><a title="Definitions.DefinedLocations.DefinedLocations.TriviaMainText" href="#Definitions.DefinedLocations.DefinedLocations.TriviaMainText">TriviaMainText</a></code></li>
+<li><code><a title="Definitions.DefinedLocations.DefinedLocations.TriviaMinorText" href="#Definitions.DefinedLocations.DefinedLocations.TriviaMinorText">TriviaMinorText</a></code></li>
+<li><code><a title="Definitions.DefinedLocations.DefinedLocations.TriviaRoundText" href="#Definitions.DefinedLocations.DefinedLocations.TriviaRoundText">TriviaRoundText</a></code></li>
+<li><code><a title="Definitions.DefinedLocations.DefinedLocations.TriviaTitleText" href="#Definitions.DefinedLocations.DefinedLocations.TriviaTitleText">TriviaTitleText</a></code></li>
 <li><code><a title="Definitions.DefinedLocations.DefinedLocations.WorkerSpawn" href="#Definitions.DefinedLocations.DefinedLocations.WorkerSpawn">WorkerSpawn</a></code></li>
 </ul>
 </li>
 <li>
 <h4><code><a title="Definitions.DefinedLocations.SeatingPlanClass" href="#Definitions.DefinedLocations.SeatingPlanClass">SeatingPlanClass</a></code></h4>
 <ul class="two-column">
+<li><code><a title="Definitions.DefinedLocations.SeatingPlanClass.GenerateTablePlaces" href="#Definitions.DefinedLocations.SeatingPlanClass.GenerateTablePlaces">GenerateTablePlaces</a></code></li>
 <li><code><a title="Definitions.DefinedLocations.SeatingPlanClass.MaxCols" href="#Definitions.DefinedLocations.SeatingPlanClass.MaxCols">MaxCols</a></code></li>
 <li><code><a title="Definitions.DefinedLocations.SeatingPlanClass.MaxRows" href="#Definitions.DefinedLocations.SeatingPlanClass.MaxRows">MaxRows</a></code></li>
 <li><code><a title="Definitions.DefinedLocations.SeatingPlanClass.MaxX" href="#Definitions.DefinedLocations.SeatingPlanClass.MaxX">MaxX</a></code></li>

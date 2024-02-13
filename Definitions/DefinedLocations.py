@@ -13,6 +13,16 @@ class DefinedLocations:
     ScreenSize = StandardDimensions["Medium"]
 
     @property
+    def LockerRoom0(self) -> tuple:
+        """Location of First Locker Room
+
+        Returns:
+            tuple: Scaled Location
+        """
+        location = (125, 65)
+        return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
+
+    @property
     def LockerRoom1(self) -> tuple:
         """Location of First Locker Room
 
@@ -63,13 +73,23 @@ class DefinedLocations:
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
+    def KitchenEntrance(self) -> tuple:
+        """Location of Kitchen Entrance
+
+        Returns:
+            tuple: Scaled Location
+        """
+        location = (125, 225)
+        return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
+
+    @property
     def KitchenLocation(self) -> tuple:
         """Location of Kitchen Entrance
 
         Returns:
             tuple: Scaled Location
         """
-        location = (220, 225)
+        location = (125, 50)
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
@@ -99,7 +119,7 @@ class DefinedLocations:
         Returns:
             tuple: Scaled Location
         """
-        location = (1050, 700)
+        location = (1100, 700)
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
@@ -114,13 +134,69 @@ class DefinedLocations:
 
     @property
     def WorkerSpawn(self) -> tuple:
-        """Location of Worker Spawn
+        """Location of Customer Spawn in
 
         Returns:
             tuple: Scaled Location
         """
-        location = (50, 100)
+        location = (125, 1600)
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
+
+    @property
+    def TriviaTitleText(self) -> tuple:
+        """Location of Main Trivia Game Text
+
+        Returns:
+            tuple: Scaled Location
+        """
+        location = (600, 100)
+        return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
+
+    @property
+    def TriviaMainText(self) -> tuple:
+        """Location of Main Trivia Title Text
+
+        Returns:
+            tuple: Scaled Location
+        """
+        location = (600, 250)
+        return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
+
+    @property
+    def TriviaMinorText(self) -> tuple:
+        """Location of Secondary Trivia Game Text
+
+        Returns:
+            tuple: Scaled Location
+        """
+        location = (600, 600)
+        return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
+
+    @property
+    def TriviaRoundText(self) -> tuple:
+        """Location of Round Label for Trivia Game
+
+        Returns:
+            tuple: Scaled Location
+        """
+        location = (100, 100)
+        return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
+
+    def Answers(self, num) -> list:
+        """Location of Round Label for Trivia Game
+
+        Returns:
+            tuple: Scaled Location
+        """
+        location = []
+        match num:
+            case 4:
+                location = [(350, 500), (850, 500), (350, 700), (850, 700)]
+            case 2:
+                location = [(350, 600), (850, 600)]
+            case 1:
+                location = [(600, 500)]
+        return [Utils.ScaleToSize(value=x, newSize=self.ScreenSize) for x in location]
 
 
 LocationDefs = DefinedLocations()
@@ -204,6 +280,18 @@ class SeatingPlanClass:
         """
         lastTableCol = (self.NumCols * self.TableYSpacing) + self.TableYStart
         return list(range(self.TableYStart, lastTableCol, self.TableYSpacing))
+
+    def GenerateTablePlaces(self) -> list:
+        """Generates list of table position tuples
+
+        Returns:
+            list: Array of Tuple Positions
+        """
+        locationArray = []
+        for row in self.TableRows():
+            for col in self.TableCols():
+                locationArray.append(tuple((row, col)))
+        return locationArray
 
 
 SeatingPlan = SeatingPlanClass()

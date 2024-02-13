@@ -243,7 +243,20 @@ def ScaleToSize(
     scaleY = newSize[1] / origSize[1]
     if isinstance(value, tuple):
         return (value[0] * scaleX, value[1] * scaleY)
-    return value * scaleX</code></pre>
+    return value * scaleX
+
+
+def ScaleTuple(tupleArg, scale) -&gt; tuple:
+    &#34;&#34;&#34;Mutiply scalar by tuple
+
+    Args:
+        tupleArg (tuple): input Tuple
+        scale (int | float): product
+
+    Returns:
+        tuple: Scaled Tuple
+    &#34;&#34;&#34;
+    return (tupleArg[0] * scale, tupleArg[1] * scale)</code></pre>
 </details>
 </section>
 <section>
@@ -668,6 +681,39 @@ Amount to offset by</p>
     return value * scaleX</code></pre>
 </details>
 </dd>
+<dt id="Utils.ScaleTuple"><code class="name flex">
+<span>def <span class="ident">ScaleTuple</span></span>(<span>tupleArg, scale) ‑> tuple</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Mutiply scalar by tuple</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>tupleArg</code></strong> :&ensp;<code>tuple</code></dt>
+<dd>input Tuple</dd>
+</dl>
+<p>scale (int | float): product</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tuple</code></dt>
+<dd>Scaled Tuple</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def ScaleTuple(tupleArg, scale) -&gt; tuple:
+    &#34;&#34;&#34;Mutiply scalar by tuple
+
+    Args:
+        tupleArg (tuple): input Tuple
+        scale (int | float): product
+
+    Returns:
+        tuple: Scaled Tuple
+    &#34;&#34;&#34;
+    return (tupleArg[0] * scale, tupleArg[1] * scale)</code></pre>
+</details>
+</dd>
 <dt id="Utils.Sign"><code class="name flex">
 <span>def <span class="ident">Sign</span></span>(<span>num: int | float) ‑> int</span>
 </code></dt>
@@ -720,6 +766,7 @@ Amount to offset by</p>
 <li><code><a title="Utils.ProRateValue" href="#Utils.ProRateValue">ProRateValue</a></code></li>
 <li><code><a title="Utils.ResizeMaxLength" href="#Utils.ResizeMaxLength">ResizeMaxLength</a></code></li>
 <li><code><a title="Utils.ScaleToSize" href="#Utils.ScaleToSize">ScaleToSize</a></code></li>
+<li><code><a title="Utils.ScaleTuple" href="#Utils.ScaleTuple">ScaleTuple</a></code></li>
 <li><code><a title="Utils.Sign" href="#Utils.Sign">Sign</a></code></li>
 </ul>
 </li>

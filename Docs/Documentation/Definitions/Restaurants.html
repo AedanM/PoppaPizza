@@ -55,13 +55,27 @@ class Restaurant:
     CustomerImageTypes: list[AssetLibrary.ImageTypes]
     WorkerImageTypes: list[AssetLibrary.ImageTypes]
     LockerRoom: LockerRoom
+    Size: tuple = (180, 150)
 
     @property
     def LogoPath(self) -&gt; str:
-        return AssetLibrary.LogoPaths[self.Logo]
+        return AssetLibrary.LogoPaths[self.Logo] if self.Logo else None
 
 
 RestaurantList = [
+    Restaurant(
+        Name=&#34;Kitchen&#34;,
+        CustomerImageTypes=[],
+        WorkerImageTypes=[],
+        Logo=None,
+        LockerRoom=LockerRoom(
+            Location=DefinedLocations.LocationDefs.LockerRoom0,
+            Color=ColorTools.DarkRed,
+            Price=0,
+            Unlocked=True,
+        ),
+        Size=(250, 150),
+    ),
     Restaurant(
         Name=&#34;Formal Dining&#34;,
         CustomerImageTypes=[AssetLibrary.ImageTypes.CustomerSuit],
@@ -234,7 +248,7 @@ class LockerRoom:
 </dd>
 <dt id="Definitions.Restaurants.Restaurant"><code class="flex name class">
 <span>class <span class="ident">Restaurant</span></span>
-<span>(</span><span>Name: str, Logo: <a title="Definitions.AssetLibrary.ImageTypes" href="AssetLibrary.html#Definitions.AssetLibrary.ImageTypes">ImageTypes</a>, CustomerImageTypes: list[<a title="Definitions.AssetLibrary.ImageTypes" href="AssetLibrary.html#Definitions.AssetLibrary.ImageTypes">ImageTypes</a>], WorkerImageTypes: list[<a title="Definitions.AssetLibrary.ImageTypes" href="AssetLibrary.html#Definitions.AssetLibrary.ImageTypes">ImageTypes</a>], LockerRoom: <a title="Definitions.Restaurants.LockerRoom" href="#Definitions.Restaurants.LockerRoom">LockerRoom</a>)</span>
+<span>(</span><span>Name: str, Logo: <a title="Definitions.AssetLibrary.ImageTypes" href="AssetLibrary.html#Definitions.AssetLibrary.ImageTypes">ImageTypes</a>, CustomerImageTypes: list[<a title="Definitions.AssetLibrary.ImageTypes" href="AssetLibrary.html#Definitions.AssetLibrary.ImageTypes">ImageTypes</a>], WorkerImageTypes: list[<a title="Definitions.AssetLibrary.ImageTypes" href="AssetLibrary.html#Definitions.AssetLibrary.ImageTypes">ImageTypes</a>], LockerRoom: <a title="Definitions.Restaurants.LockerRoom" href="#Definitions.Restaurants.LockerRoom">LockerRoom</a>, Size: tuple = (180, 150))</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Restaurant Class</p></div>
@@ -251,10 +265,11 @@ class Restaurant:
     CustomerImageTypes: list[AssetLibrary.ImageTypes]
     WorkerImageTypes: list[AssetLibrary.ImageTypes]
     LockerRoom: LockerRoom
+    Size: tuple = (180, 150)
 
     @property
     def LogoPath(self) -&gt; str:
-        return AssetLibrary.LogoPaths[self.Logo]</code></pre>
+        return AssetLibrary.LogoPaths[self.Logo] if self.Logo else None</code></pre>
 </details>
 <h3>Class variables</h3>
 <dl>
@@ -274,6 +289,10 @@ class Restaurant:
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="Definitions.Restaurants.Restaurant.Size"><code class="name">var <span class="ident">Size</span> : tuple</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="Definitions.Restaurants.Restaurant.WorkerImageTypes"><code class="name">var <span class="ident">WorkerImageTypes</span> : list[<a title="Definitions.AssetLibrary.ImageTypes" href="AssetLibrary.html#Definitions.AssetLibrary.ImageTypes">ImageTypes</a>]</code></dt>
 <dd>
 <div class="desc"></div>
@@ -290,7 +309,7 @@ class Restaurant:
 </summary>
 <pre><code class="python">@property
 def LogoPath(self) -&gt; str:
-    return AssetLibrary.LogoPaths[self.Logo]</code></pre>
+    return AssetLibrary.LogoPaths[self.Logo] if self.Logo else None</code></pre>
 </details>
 </dd>
 </dl>
@@ -333,6 +352,7 @@ def LogoPath(self) -&gt; str:
 <li><code><a title="Definitions.Restaurants.Restaurant.Logo" href="#Definitions.Restaurants.Restaurant.Logo">Logo</a></code></li>
 <li><code><a title="Definitions.Restaurants.Restaurant.LogoPath" href="#Definitions.Restaurants.Restaurant.LogoPath">LogoPath</a></code></li>
 <li><code><a title="Definitions.Restaurants.Restaurant.Name" href="#Definitions.Restaurants.Restaurant.Name">Name</a></code></li>
+<li><code><a title="Definitions.Restaurants.Restaurant.Size" href="#Definitions.Restaurants.Restaurant.Size">Size</a></code></li>
 <li><code><a title="Definitions.Restaurants.Restaurant.WorkerImageTypes" href="#Definitions.Restaurants.Restaurant.WorkerImageTypes">WorkerImageTypes</a></code></li>
 </ul>
 </li>

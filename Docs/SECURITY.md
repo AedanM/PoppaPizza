@@ -6,7 +6,7 @@ None as there are no current releases
 
 | Version | Supported          |
 | ------- | ------------------ |
-| All   | :x: |
+| All   | X|
 
 ## Reporting a Vulnerability
 

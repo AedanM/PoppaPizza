@@ -9,6 +9,7 @@ class Settings:
     Clock24: bool = True
     ClockPow: int = 0
     ClockPowRange: tuple = (-4, 4)
+    CapFrames: bool = True
 
     @property
     def ClockSpeed(self) -> int:
