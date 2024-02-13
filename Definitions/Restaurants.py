@@ -34,19 +34,19 @@ class Restaurant:
 
 
 RestaurantList = [
-    # Restaurant(
-    #     Name="Kitchen",
-    #     CustomerImageTypes=[],
-    #     WorkerImageTypes=[],
-    #     Logo=None,
-    #     LockerRoom=LockerRoom(
-    #         Location=DefinedLocations.LocationDefs.LockerRoom0,
-    #         Color=ColorTools.DarkRed,
-    #         Price=0,
-    #         Unlocked=True,
-    #     ),
-    #     Size=(250, 150),
-    # ),
+    Restaurant(
+        Name="Kitchen",
+        CustomerImageTypes=[],
+        WorkerImageTypes=[],
+        Logo=None,
+        LockerRoom=LockerRoom(
+            Location=DefinedLocations.LocationDefs.LockerRoom0,
+            Color=ColorTools.DarkRed,
+            Price=0,
+            Unlocked=True,
+        ),
+        Size=(250, 150),
+    ),
     Restaurant(
         Name="Formal Dining",
         CustomerImageTypes=[AssetLibrary.ImageTypes.CustomerSuit],

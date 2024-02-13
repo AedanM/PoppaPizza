@@ -29,8 +29,7 @@ def TriviaMouseHandler(mousePos) -> None:
                     if x.Center == button.rect.center
                 ]
             )[0]
-    Game.MasterGame.MiniGame.UpdateStateMachine(buttonChoice = clickedText)
-        
+    Game.MasterGame.MiniGame.UpdateStateMachine(buttonChoice=clickedText)
 
 
 def MainMouseHandler(mousePos, lClick) -> None:
@@ -50,6 +49,7 @@ def MainMouseHandler(mousePos, lClick) -> None:
                 )
                 and lockerRoom.Unlocked
                 and GlobalTarget.ImageType not in restaurant.WorkerImageTypes
+                and restaurant.WorkerImageTypes
             ):
                 WorkerHandler.GetChanged(
                     workerSprite=GlobalTarget, restaurant=restaurant

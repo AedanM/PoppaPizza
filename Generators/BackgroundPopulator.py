@@ -61,7 +61,6 @@ def AddLockerRooms(activeGame=Game.MasterGame) -> None:
         rectObj = Sprite.RectangleObject(
             position=lockerRoom.Location, color=color, size=restaurant.Size
         )
-
         activeGame.ForegroundSpriteGroup.add(rectObj)
         if logo:
             activeGame.ForegroundSpriteGroup.add(logo)

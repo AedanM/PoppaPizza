@@ -77,3 +77,8 @@ def ReturnToKitchen(workerSprite) -> None:
     workerSprite.MvmHandler.StartNewListedMotion(
         DefinedPaths.DefinedPaths.BackToKitchen(sprite=workerSprite)
     )
+
+def EnterWork(workerSprite) -> None:
+    workerSprite.MvmHandler.StartNewListedMotion(
+        DefinedPaths.DefinedPaths.BackToKitchen(sprite=workerSprite)
+    )

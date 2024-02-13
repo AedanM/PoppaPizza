@@ -20,10 +20,11 @@ class CharImageSprite(GameObject.GameObject):
 
     def __init__(
         self,
-        position,
         path,
         activeGame,
         objID,
+        position=None,
+        center=None,
         maxSize=utils.ScaleToSize(
             value=100, newSize=DefinedLocations.LocationDefs.ScreenSize
         ),
@@ -39,8 +40,11 @@ class CharImageSprite(GameObject.GameObject):
             size=newSize,
         )
         self.rect = self.image.get_rect()
-        self.rect.x = position[0]
-        self.rect.y = position[1]
+        if position:
+            self.rect.x = position[0]
+            self.rect.y = position[1]
+        elif center:
+            self.rect.center = center
         self.MvmHandler = MovementHandler.CharacterMovementHandler()
         self.ImageType = AssetLibrary.PathToTypeDict[path]
         # self.CheckSpawnCollision()

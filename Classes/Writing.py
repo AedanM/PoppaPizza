@@ -4,7 +4,7 @@ from dataclasses import dataclass
 
 import pygame
 
-from Definitions import ColorTools
+from Definitions import AssetLibrary, ColorTools, DefinedLocations
 from Utilities import Utils
 
 pygame.font.init()
@@ -123,3 +123,29 @@ def WriteButtonLabel(activeGame) -> None:
             font=DefinedFonts["Buttons"],
             screen=activeGame.Screen,
         )
+
+
+def WriteKitchenLabel(activeGame) -> None:
+    kitchenRect = [
+        x
+        for x in activeGame.ForegroundSpriteGroup
+        if x.rect.center == DefinedLocations.LocationDefs.LockerRoom0
+    ][0].rect
+    numWorkers = len(
+        [
+            sprite
+            for sprite in activeGame.CharSpriteGroup
+            if sprite.ImageType in AssetLibrary.WorkerOutfits
+            and kitchenRect.collidepoint(sprite.rect.x, sprite.rect.y)
+        ]
+    )
+
+    kitchenText = f"{numWorkers} Worker{'s' if numWorkers != 1 else ''} inside"
+
+    CreateTextBox(
+        locationTopLeft=Utils.OffsetTuple(inputTuple=DefinedLocations.LocationDefs.LockerRoom0, offset=(-100,0)),
+        text=kitchenText,
+        foreColor=ColorTools.White,
+        font=DefinedFonts["Default"],
+        screen=activeGame.Screen,
+    )

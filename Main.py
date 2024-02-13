@@ -12,7 +12,7 @@ import time
 import pygame
 
 from Classes import Game, MiniGames
-from Definitions import AssetLibrary, CustomEvents, ColorTools
+from Definitions import AssetLibrary, ColorTools, CustomEvents
 from Handlers import EventHandler
 
 

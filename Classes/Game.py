@@ -83,6 +83,7 @@ class Game:
         """Write all text visible in game"""
         Writing.WriteButtonLabel(activeGame=self)
         Writing.WriteDateLabel(activeGame=self)
+        Writing.WriteKitchenLabel(activeGame=self)
 
     def DrawBackground(
         self, source: pygame.Surface = None, color: ColorTools.Color = None

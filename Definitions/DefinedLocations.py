@@ -73,13 +73,23 @@ class DefinedLocations:
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
+    def KitchenEntrance(self) -> tuple:
+        """Location of Kitchen Entrance
+
+        Returns:
+            tuple: Scaled Location
+        """
+        location = (125, 225)
+        return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
+
+    @property
     def KitchenLocation(self) -> tuple:
         """Location of Kitchen Entrance
 
         Returns:
             tuple: Scaled Location
         """
-        location = (220, 225)
+        location = (125, 50)
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
@@ -124,12 +134,12 @@ class DefinedLocations:
 
     @property
     def WorkerSpawn(self) -> tuple:
-        """Location of Worker Spawn
+        """Location of Customer Spawn in
 
         Returns:
             tuple: Scaled Location
         """
-        location = (50, 100)
+        location = (125, 1600)
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property

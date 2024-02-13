@@ -4,7 +4,7 @@ import random
 
 from Classes import Game, People
 from Definitions import AssetLibrary, DefinedLocations, Prices, Restaurants
-from Handlers import CustomerHandler
+from Handlers import CustomerHandler, WorkerHandler
 from Utilities import Utils
 
 # pylint: disable=C0103
@@ -87,14 +87,11 @@ def BuyWorker(free=False) -> None:
         free (bool, optional): Forces a free purchase. Defaults to False.
     """
     if Game.MasterGame.UserInventory.Money > Prices.CurrentWorkerPrice:
-        spawnLocation = Utils.PositionRandomVariance(
-            position=DefinedLocations.LocationDefs.WorkerSpawn,
-            percentVarianceTuple=(0.05, 0.15),
-            screenSize=DefinedLocations.LocationDefs.ScreenSize,
-        )
-        People.Worker.CreateWorker(startLocation=spawnLocation)
+        spawnLocation = DefinedLocations.LocationDefs.WorkerSpawn
+        _, workerSprite = People.Worker.CreateWorker(startLocation=spawnLocation)
         if not free:
             Game.MasterGame.UserInventory.Money -= Prices.CurrentWorkerPrice
             Prices.CurrentWorkerPrice = round(
                 Prices.CurrentWorkerPrice * random.uniform(1.0, 2.5), 2
             )
+        WorkerHandler.EnterWork(workerSprite=workerSprite)

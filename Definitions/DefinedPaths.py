@@ -67,8 +67,8 @@ class DefinedPaths:
         """
         path = [
             sprite.rect.center,
-            DefinedLocations.LocationDefs.KitchenLocation,
-            (dest[0], DefinedLocations.LocationDefs.KitchenLocation[1]),
+            DefinedLocations.LocationDefs.KitchenEntrance,
+            (dest[0], DefinedLocations.LocationDefs.KitchenEntrance[1]),
             dest,
         ]
         return path
@@ -104,21 +104,21 @@ class DefinedPaths:
         """
         path = [
             sprite.rect.center,
-            DefinedLocations.LocationDefs.KitchenLocation,
+            DefinedLocations.LocationDefs.KitchenEntrance,
             (
-                DefinedLocations.LocationDefs.KitchenLocation[0] + 100,
-                DefinedLocations.LocationDefs.KitchenLocation[1],
+                DefinedLocations.LocationDefs.KitchenEntrance[0] + 100,
+                DefinedLocations.LocationDefs.KitchenEntrance[1],
             ),
             (
                 dest.rect.center[0] - 100,
-                DefinedLocations.LocationDefs.KitchenLocation[1],
+                DefinedLocations.LocationDefs.KitchenEntrance[1],
             ),
             dest.rect.center,
         ]
         return path
 
     @staticmethod
-    def BackToKitchen(sprite, activeGame=Game.MasterGame) -> list:
+    def BackToKitchen(sprite, VertFirst=True) -> list:
         """From Current Location to Kitchen
 
         Args:
@@ -130,16 +130,19 @@ class DefinedPaths:
         """
         path = [
             sprite.rect.center,
-            (sprite.rect.center[0], DefinedLocations.LocationDefs.KitchenLocation[1]),
-            DefinedLocations.LocationDefs.KitchenLocation,
-            Utils.PositionRandomVariance(
-                position=(
-                    DefinedLocations.LocationDefs.KitchenLocation[0] - 50,
-                    DefinedLocations.LocationDefs.KitchenLocation[1],
-                ),
-                percentVarianceTuple=(0.05, 0.1),
-                screenSize=activeGame.ScreenSize,
+            (
+                (
+                    sprite.rect.center[0],
+                    DefinedLocations.LocationDefs.KitchenEntrance[1],
+                )
+                if VertFirst
+                else (
+                    DefinedLocations.LocationDefs.KitchenEntrance[0],
+                    sprite.rect.center[1],
+                )
             ),
+            DefinedLocations.LocationDefs.KitchenEntrance,
+            DefinedLocations.LocationDefs.KitchenLocation,
         ]
         return path
 
