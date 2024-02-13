@@ -4,7 +4,6 @@ from Definitions import AssetLibrary
 from Definitions.Restaurants import Restaurant, RestaurantList
 
 
-
 def MatchIdToPerson(activeGame, inputId, targetOutput="all") -> dict:
     """Match an id to corresponding people and sprites
 

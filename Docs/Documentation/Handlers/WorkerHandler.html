@@ -105,6 +105,12 @@ def ReturnToKitchen(workerSprite) -&gt; None:
     &#34;&#34;&#34;
     workerSprite.MvmHandler.StartNewListedMotion(
         DefinedPaths.DefinedPaths.BackToKitchen(sprite=workerSprite)
+    )
+
+
+def EnterWork(workerSprite) -&gt; None:
+    workerSprite.MvmHandler.StartNewListedMotion(
+        DefinedPaths.DefinedPaths.BackToKitchen(sprite=workerSprite)
     )</code></pre>
 </details>
 </section>
@@ -144,6 +150,21 @@ Unassigns the worker from any task as well</p>
         screenSize=DefinedLocations.LocationDefs.ScreenSize,
     )
     sprite.rect.center = spawnLocation</code></pre>
+</details>
+</dd>
+<dt id="Handlers.WorkerHandler.EnterWork"><code class="name flex">
+<span>def <span class="ident">EnterWork</span></span>(<span>workerSprite) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def EnterWork(workerSprite) -&gt; None:
+    workerSprite.MvmHandler.StartNewListedMotion(
+        DefinedPaths.DefinedPaths.BackToKitchen(sprite=workerSprite)
+    )</code></pre>
 </details>
 </dd>
 <dt id="Handlers.WorkerHandler.FinishCustomer"><code class="name flex">
@@ -274,8 +295,9 @@ Unassigns the worker from any task as well</p>
 </ul>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
-<ul class="">
+<ul class="two-column">
 <li><code><a title="Handlers.WorkerHandler.DailyReset" href="#Handlers.WorkerHandler.DailyReset">DailyReset</a></code></li>
+<li><code><a title="Handlers.WorkerHandler.EnterWork" href="#Handlers.WorkerHandler.EnterWork">EnterWork</a></code></li>
 <li><code><a title="Handlers.WorkerHandler.FinishCustomer" href="#Handlers.WorkerHandler.FinishCustomer">FinishCustomer</a></code></li>
 <li><code><a title="Handlers.WorkerHandler.GetChanged" href="#Handlers.WorkerHandler.GetChanged">GetChanged</a></code></li>
 <li><code><a title="Handlers.WorkerHandler.ReturnToKitchen" href="#Handlers.WorkerHandler.ReturnToKitchen">ReturnToKitchen</a></code></li>

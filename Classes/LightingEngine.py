@@ -11,7 +11,7 @@ class LightingEffects:
     MaxNightLightAlpha: float = 200
     NightTransitionCover: float = 0.05
     LightMask: pygame.Surface = pygame.image.load(AssetLibrary.ImagePath.LightMaskPath)
-
+    DayColorScreen: pygame.Surface = None
     MorningColorOptions: list = {
         "Blue": ColorTools.Blue,
         "Orange": ColorTools.OrangeMorning,
@@ -22,6 +22,9 @@ class LightingEffects:
     }
     NightTransitionColor: ColorTools.Color = NightColorOptions["Orange"]
     MorningTransitionColor: ColorTools.Color = MorningColorOptions["Orange"]
+
+    def __init__(self, screenSize) -> None:
+        self.DayColorScreen = pygame.Surface(screenSize)
 
     def AllDayBlend(self, gameClock, screenSize) -> None:
         dayPercent = gameClock.DayPercentage
@@ -37,9 +40,8 @@ class LightingEffects:
             + (self.NightTransitionColor.V * nightPercent)
             + (ColorTools.White.V * noonPercent),
         )
-        dayColorScreen = pygame.Surface(screenSize)
-        dayColorScreen.fill(currentColor.RGB)
-        return dayColorScreen
+        self.DayColorScreen.fill(currentColor.RGB)
+        return self.DayColorScreen
 
     def ChangeNightColor(self, rgb) -> None:
         if rgb != (-1, -1, -1):

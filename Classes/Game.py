@@ -27,7 +27,7 @@ class Game:
     ButtonList: list = []
     UserInventory: Inventory.Inventory = None
     GameClock = GameClock.GameClock(clock=pygame.time.Clock())
-    Lighting: LightingEngine.LightingEffects = LightingEngine.LightingEffects()
+    Lighting: LightingEngine.LightingEffects = None
     Running: bool = True
     ShowScreen: bool = True
     Mode: MiniGames.GameMode = MiniGames.GameMode.Base
@@ -48,7 +48,7 @@ class Game:
         self.StartTime = pygame.time.get_ticks()
         self.ShowScreen = activateScreen
         self.UserInventory = Inventory.Inventory()
-
+        self.Lighting = LightingEngine.LightingEffects(screenSize=size)
         if self.ShowScreen:
             self.StartScreen(size=size)
         self.ConvertPreRendered()

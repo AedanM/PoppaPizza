@@ -72,10 +72,9 @@ class RoundBasedGame:
         self.Screen = activeGame.Screen
 
     def StartRound(self) -> None:
-
-        self.DisplayedText["Round Text"].Text = (
-            f"Round {self.CurrentRound}/{self.Rounds}"
-        )
+        self.DisplayedText[
+            "Round Text"
+        ].Text = f"Round {self.CurrentRound}/{self.Rounds}"
         self.MasterSpriteGroup.update()
         self.MasterSpriteGroup.draw(self.Screen)
         for text in self.DisplayedText.values():
@@ -127,6 +126,7 @@ class TriviaGame(RoundBasedGame):
         if self.CurrentRound > self.Rounds and self.GameState != GameStates.Exit:
             self.GameState = GameStates.End
             self.CurrentRound = self.Rounds
+
     def GetQuestions(self) -> None:
         responseCode = 100
         while responseCode != 0:
@@ -153,7 +153,6 @@ class TriviaGame(RoundBasedGame):
             textBox.Text = ""
         answerLocations = DefinedLocations.LocationDefs.Answers(num=len(textList))
         for idx, text in enumerate(textList):
-
             self.DisplayedText[f"Button {idx}"] = Writing.TextBox(
                 center=answerLocations[idx],
                 text=text,
@@ -173,22 +172,19 @@ class TriviaGame(RoundBasedGame):
         self.PopulateButtons(
             textList=["Begin" if self.QuestionList else "Loading Questions"]
         )
-        
 
     def PlayOrSkip(self) -> None:
         question = self.QuestionList[self.CurrentRound - 1]
-        self.DisplayedText["Main Text L1"].Text = (
-            f"This question is ranked {question['Difficulty']}"
-        )
-        self.DisplayedText["Main Text L2"].Text = (
-            f"Category is {question['Category']}"
-        )
+        self.DisplayedText[
+            "Main Text L1"
+        ].Text = f"This question is ranked {question['Difficulty']}"
+        self.DisplayedText["Main Text L2"].Text = f"Category is {question['Category']}"
         self.PopulateButtons(
             textList=["Play", "Skip"],
         )
         self.GameState = GameStates.Wait
 
-    #TODO - Fix wordwrap
+    # TODO - Fix wordwrap
     def PresentQuestion(self) -> str:
         question = self.QuestionList[self.CurrentRound - 1]
         if len(question["Question"]) < 50:
@@ -197,7 +193,7 @@ class TriviaGame(RoundBasedGame):
         else:
             self.DisplayedText["Main Text L1"].Text = question["Question"][:25]
             self.DisplayedText["Main Text L2"].Text = question["Question"][25:]
-        #TODO- fix buttons to text size
+        # TODO- fix buttons to text size
         self.PopulateButtons(textList=question["Answers"])
         self.GameState = GameStates.Wait
 
@@ -212,19 +208,19 @@ class TriviaGame(RoundBasedGame):
                 scale = 1.25
 
         if self.GameState is GameStates.CorrectAnswer:
-            self.DisplayedText["Main Text L1"].Text = (
-                f"Correct! You have earned ${((self.CurrentCash * scale) - self.CurrentCash):.2f}"
-            )
+            self.DisplayedText[
+                "Main Text L1"
+            ].Text = f"Correct! You have earned ${((self.CurrentCash * scale) - self.CurrentCash):.2f}"
             self.DisplayedText["Main Text L2"].Text = ""
             self.ResultsList.append(True)
             self.CurrentCash *= scale
         else:
-            self.DisplayedText["Main Text L1"].Text = (
-                f"Incorrect! You have lost ${abs((self.CurrentCash / scale) - self.CurrentCash):.2f}"
-            )
-            self.DisplayedText["Main Text L2"].Text = (
-                f"Correct Answer was {self.QuestionList[self.CurrentRound -1]['Correct Answer']}"
-            )
+            self.DisplayedText[
+                "Main Text L1"
+            ].Text = f"Incorrect! You have lost ${abs((self.CurrentCash / scale) - self.CurrentCash):.2f}"
+            self.DisplayedText[
+                "Main Text L2"
+            ].Text = f"Correct Answer was {self.QuestionList[self.CurrentRound -1]['Correct Answer']}"
             self.ResultsList.append(False)
             self.CurrentCash /= scale
 
@@ -232,18 +228,16 @@ class TriviaGame(RoundBasedGame):
         self.GameState = GameStates.Wait
 
     def Summary(self) -> None:
-        self.DisplayedText["Main Text L1"].Text = (
-            f"You answered {len([x for x in self.ResultsList if x])}/{len(self.ResultsList)} correctly and skipped {self.Rounds - len(self.ResultsList)}"
-        )
-        deltaMoney = (self.CurrentCash - self.StartingCash)
-        self.DisplayedText["Main Text L2"].Text = (
-            f"Resulting in total {"earnings" if deltaMoney > 0 else "losses"} ${abs(deltaMoney):.2f}"
-        )
+        self.DisplayedText[
+            "Main Text L1"
+        ].Text = f"You answered {len([x for x in self.ResultsList if x])}/{len(self.ResultsList)} correctly and skipped {self.Rounds - len(self.ResultsList)}"
+        deltaMoney = self.CurrentCash - self.StartingCash
+        descriptor = "earnings" if deltaMoney > 0 else "losses"
+        self.DisplayedText[
+            "Main Text L2"
+        ].Text = f"Resulting in total {descriptor} ${abs(deltaMoney):.2f}"
         self.PopulateButtons(textList=["Exit"])
         self.GameState = GameStates.Wait
-
-
-        
 
     def StartRound(self, activeGame) -> None:
         super().StartRound()
@@ -266,7 +260,6 @@ class TriviaGame(RoundBasedGame):
                 pass
 
     def PlayGame(self, activeGame) -> None:
-
         super().PlayGame(activeGame=activeGame)
 
 

@@ -19,40 +19,39 @@ from Handlers import EventHandler
 def Main() -> None:
     """Main Loop of Game"""
     debugFlag = True
-    profileFlag = False
+    profileFlag = True
     Game.MasterGame = Game.Game()
     pygame.event.post(CustomEvents.UpdateBackground)
     # Enables a series of functions to run automatically
     if profileFlag:
         startTime = time.time()
+        Game.MasterGame.Settings.CapFrames = False
     if debugFlag:
         EventHandler.DebugSetup()
     while True:
         # try:
-            if Game.MasterGame.Running:
-                match Game.MasterGame.Mode:
-                    case MiniGames.GameMode.Base:
-                        EventHandler.MainEventHandler()
-                        Game.MasterGame.DrawBackground(source=AssetLibrary.Background)
-                        Game.MasterGame.UpdateSprites()
-                        Game.MasterGame.WriteAllText()
-                        Game.MasterGame.UpdateLightingEngine()
-                    case MiniGames.GameMode.TriviaGame:
-                        Game.MasterGame.DrawBackground(
-                            source=AssetLibrary.TriviaBackground
-                        )
-                        Game.MasterGame.MiniGame.PlayGame(activeGame=Game.MasterGame)
-                        EventHandler.TriviaEventHandler(activeGame=Game.MasterGame)
+        if Game.MasterGame.Running:
+            match Game.MasterGame.Mode:
+                case MiniGames.GameMode.Base:
+                    EventHandler.MainEventHandler()
+                    Game.MasterGame.DrawBackground(source=AssetLibrary.Background)
+                    Game.MasterGame.UpdateSprites()
+                    Game.MasterGame.WriteAllText()
+                    Game.MasterGame.UpdateLightingEngine()
+                case MiniGames.GameMode.TriviaGame:
+                    Game.MasterGame.DrawBackground(source=AssetLibrary.TriviaBackground)
+                    Game.MasterGame.MiniGame.PlayGame(activeGame=Game.MasterGame)
+                    EventHandler.TriviaEventHandler(activeGame=Game.MasterGame)
 
-            if Game.MasterGame.ShowScreen:
-                pygame.display.update()
+        if Game.MasterGame.ShowScreen:
+            pygame.display.update()
 
-            # Control the frame rate
-            Game.MasterGame.GameClock.UpdateClock()
-            if profileFlag and (time.time() - startTime > 15):
-                break
-        # except Exception as e:
-            # print(f"{e} Occured")
+        # Control the frame rate
+        Game.MasterGame.GameClock.UpdateClock()
+        if profileFlag and (time.time() - startTime > 30):
+            break
+    # except Exception as e:
+    # print(f"{e} Occured")
 
 
 if __name__ == "__main__":

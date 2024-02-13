@@ -49,9 +49,11 @@ class CharImageSprite(GameObject.GameObject):
 
     def __init__(
         self,
-        position,
         path,
+        activeGame,
         objID,
+        position=None,
+        center=None,
         maxSize=utils.ScaleToSize(
             value=100, newSize=DefinedLocations.LocationDefs.ScreenSize
         ),
@@ -67,12 +69,15 @@ class CharImageSprite(GameObject.GameObject):
             size=newSize,
         )
         self.rect = self.image.get_rect()
-        self.rect.x = position[0]
-        self.rect.y = position[1]
+        if position:
+            self.rect.x = position[0]
+            self.rect.y = position[1]
+        elif center:
+            self.rect.center = center
         self.MvmHandler = MovementHandler.CharacterMovementHandler()
         self.ImageType = AssetLibrary.PathToTypeDict[path]
         # self.CheckSpawnCollision()
-
+        self.ActiveGame = activeGame
         self.CorrespondingID = objID
 
     @property
@@ -83,26 +88,26 @@ class CharImageSprite(GameObject.GameObject):
             Customer | Worker: Data Object Assoc with Sprite
         &#34;&#34;&#34;
         objDict = Matching.MatchIdToPerson(
-            activeGame=Game.MasterGame, inputId=self.CorrespondingID
+            activeGame=self.ActiveGame, inputId=self.CorrespondingID
         )
         objDict.pop(&#34;sprite&#34;)
         obj = list(objDict.values())[0]
         return obj
 
-    def CheckSpawnCollision(self, activeGame=Game.MasterGame) -&gt; None:
+    def CheckSpawnCollision(self) -&gt; None:
         &#34;&#34;&#34;Changes spawn location until new sprite is not colliding
 
         Args:
             activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
         &#34;&#34;&#34;
         currentCenter = self.rect.center
-        for group in activeGame.SpriteGroups:
+        for group in self.ActiveGame.SpriteGroups:
             for sprite in group:
                 while sprite.rect.colliderect(self.rect) and sprite is not self:
                     self.rect.center = utils.PositionRandomVariance(
                         position=currentCenter,
                         percentVarianceTuple=(0.1, 1),
-                        screenSize=activeGame.ScreenSize,
+                        screenSize=self.ActiveGame.ScreenSize,
                     )
 
     def ChangeOutfit(self, newOutfitPath) -&gt; None:
@@ -111,7 +116,7 @@ class CharImageSprite(GameObject.GameObject):
         Args:
             newOutfitPath (str): Path to New Outfit
         &#34;&#34;&#34;
-        newImage = pygame.image.load(newOutfitPath).convert()
+        newImage = pygame.image.load(newOutfitPath).convert_alpha()
         newImageRect = newImage.get_rect()
         dim = utils.ResizeMaxLength(
             dim=(newImageRect.width, newImageRect.height),
@@ -125,7 +130,7 @@ class CharImageSprite(GameObject.GameObject):
     def UpdateSprite(self) -&gt; None:
         &#34;&#34;&#34;Update sprite for each frame&#34;&#34;&#34;
         if self.PersonalTimer is not None:
-            self.PersonalTimer.UpdateAndDraw()
+            self.PersonalTimer.UpdateAndDraw(activeGame=self.ActiveGame)
             self.PersonalTimer.Rect = self.rect.topleft
         self.Update()
 
@@ -155,13 +160,14 @@ class CharImageSprite(GameObject.GameObject):
             position=(self.rect.topleft),
             assocId=assocId,
             offset=offset,
+            activeGame=self.ActiveGame,
         )
         self.PersonalTimer.StartingState = startingState
         self.PersonalTimer.OnComplete = completeTask
         self.PersonalTimer.TimerRect.y -= 25
         self.PersonalTimer.SetMaxSize(size=self.rect.width if width == 0 else width)
         self.PersonalTimer.FillColor = fillColor
-        self.PersonalTimer.StartTimer()
+        self.PersonalTimer.StartTimer(activeGame=self.ActiveGame)
 
     def __repr__(self) -&gt; str:
         &#34;&#34;&#34;String Rep of Object&#34;&#34;&#34;
@@ -262,7 +268,32 @@ class ButtonObject(GameObject.GameObject):
         )
 
         self.rect = self.image.get_rect()
-        self.rect.center = position</code></pre>
+        self.rect.center = position
+
+    @classmethod
+    def AddButton(cls, location, text, color, backColor, enabled, activeGame) -&gt; None:
+        &#34;&#34;&#34;Generates a Button on a specified location
+
+        Args:
+            location (tuple): tuple position of button center
+            text (str): Button Label
+            color (Color): Main Color
+            backColor (Color): Background Color of Button
+            enabled (bool): Button Enable
+            activeGame (Game, optional): Current Game being used. Defaults to Game.MasterGame.
+        &#34;&#34;&#34;
+        buttonObj = ButtonObject(
+            position=location,
+            color=color,
+            backColor=backColor,
+            text=text,
+            size=[125, 50],
+            enabled=enabled,
+        )
+
+        activeGame.ForegroundSpriteGroup.add(buttonObj)
+        if not [x for x in activeGame.ButtonList if x.position == location]:
+            activeGame.ButtonList.append(buttonObj)</code></pre>
 </details>
 </section>
 <section>
@@ -413,13 +444,91 @@ class ButtonObject(GameObject.GameObject):
         )
 
         self.rect = self.image.get_rect()
-        self.rect.center = position</code></pre>
+        self.rect.center = position
+
+    @classmethod
+    def AddButton(cls, location, text, color, backColor, enabled, activeGame) -&gt; None:
+        &#34;&#34;&#34;Generates a Button on a specified location
+
+        Args:
+            location (tuple): tuple position of button center
+            text (str): Button Label
+            color (Color): Main Color
+            backColor (Color): Background Color of Button
+            enabled (bool): Button Enable
+            activeGame (Game, optional): Current Game being used. Defaults to Game.MasterGame.
+        &#34;&#34;&#34;
+        buttonObj = ButtonObject(
+            position=location,
+            color=color,
+            backColor=backColor,
+            text=text,
+            size=[125, 50],
+            enabled=enabled,
+        )
+
+        activeGame.ForegroundSpriteGroup.add(buttonObj)
+        if not [x for x in activeGame.ButtonList if x.position == location]:
+            activeGame.ButtonList.append(buttonObj)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="Classes.GameObject.GameObject" href="GameObject.html#Classes.GameObject.GameObject">GameObject</a></li>
 <li>pygame.sprite.Sprite</li>
 </ul>
+<h3>Static methods</h3>
+<dl>
+<dt id="Classes.Sprite.ButtonObject.AddButton"><code class="name flex">
+<span>def <span class="ident">AddButton</span></span>(<span>location, text, color, backColor, enabled, activeGame) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Generates a Button on a specified location</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>location</code></strong> :&ensp;<code>tuple</code></dt>
+<dd>tuple position of button center</dd>
+<dt><strong><code>text</code></strong> :&ensp;<code>str</code></dt>
+<dd>Button Label</dd>
+<dt><strong><code>color</code></strong> :&ensp;<code>Color</code></dt>
+<dd>Main Color</dd>
+<dt><strong><code>backColor</code></strong> :&ensp;<code>Color</code></dt>
+<dd>Background Color of Button</dd>
+<dt><strong><code>enabled</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Button Enable</dd>
+<dt><strong><code>activeGame</code></strong> :&ensp;<code>Game</code>, optional</dt>
+<dd>Current Game being used. Defaults to Game.MasterGame.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def AddButton(cls, location, text, color, backColor, enabled, activeGame) -&gt; None:
+    &#34;&#34;&#34;Generates a Button on a specified location
+
+    Args:
+        location (tuple): tuple position of button center
+        text (str): Button Label
+        color (Color): Main Color
+        backColor (Color): Background Color of Button
+        enabled (bool): Button Enable
+        activeGame (Game, optional): Current Game being used. Defaults to Game.MasterGame.
+    &#34;&#34;&#34;
+    buttonObj = ButtonObject(
+        position=location,
+        color=color,
+        backColor=backColor,
+        text=text,
+        size=[125, 50],
+        enabled=enabled,
+    )
+
+    activeGame.ForegroundSpriteGroup.add(buttonObj)
+    if not [x for x in activeGame.ButtonList if x.position == location]:
+        activeGame.ButtonList.append(buttonObj)</code></pre>
+</details>
+</dd>
+</dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
 <li><code><b><a title="Classes.GameObject.GameObject" href="GameObject.html#Classes.GameObject.GameObject">GameObject</a></b></code>:
@@ -432,7 +541,7 @@ class ButtonObject(GameObject.GameObject):
 </dd>
 <dt id="Classes.Sprite.CharImageSprite"><code class="flex name class">
 <span>class <span class="ident">CharImageSprite</span></span>
-<span>(</span><span>position, path, objID, maxSize=100)</span>
+<span>(</span><span>path, activeGame, objID, position=None, center=None, maxSize=100)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Class for Sprites of Characters</p>
@@ -462,9 +571,11 @@ class ButtonObject(GameObject.GameObject):
 
     def __init__(
         self,
-        position,
         path,
+        activeGame,
         objID,
+        position=None,
+        center=None,
         maxSize=utils.ScaleToSize(
             value=100, newSize=DefinedLocations.LocationDefs.ScreenSize
         ),
@@ -480,12 +591,15 @@ class ButtonObject(GameObject.GameObject):
             size=newSize,
         )
         self.rect = self.image.get_rect()
-        self.rect.x = position[0]
-        self.rect.y = position[1]
+        if position:
+            self.rect.x = position[0]
+            self.rect.y = position[1]
+        elif center:
+            self.rect.center = center
         self.MvmHandler = MovementHandler.CharacterMovementHandler()
         self.ImageType = AssetLibrary.PathToTypeDict[path]
         # self.CheckSpawnCollision()
-
+        self.ActiveGame = activeGame
         self.CorrespondingID = objID
 
     @property
@@ -496,26 +610,26 @@ class ButtonObject(GameObject.GameObject):
             Customer | Worker: Data Object Assoc with Sprite
         &#34;&#34;&#34;
         objDict = Matching.MatchIdToPerson(
-            activeGame=Game.MasterGame, inputId=self.CorrespondingID
+            activeGame=self.ActiveGame, inputId=self.CorrespondingID
         )
         objDict.pop(&#34;sprite&#34;)
         obj = list(objDict.values())[0]
         return obj
 
-    def CheckSpawnCollision(self, activeGame=Game.MasterGame) -&gt; None:
+    def CheckSpawnCollision(self) -&gt; None:
         &#34;&#34;&#34;Changes spawn location until new sprite is not colliding
 
         Args:
             activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
         &#34;&#34;&#34;
         currentCenter = self.rect.center
-        for group in activeGame.SpriteGroups:
+        for group in self.ActiveGame.SpriteGroups:
             for sprite in group:
                 while sprite.rect.colliderect(self.rect) and sprite is not self:
                     self.rect.center = utils.PositionRandomVariance(
                         position=currentCenter,
                         percentVarianceTuple=(0.1, 1),
-                        screenSize=activeGame.ScreenSize,
+                        screenSize=self.ActiveGame.ScreenSize,
                     )
 
     def ChangeOutfit(self, newOutfitPath) -&gt; None:
@@ -524,7 +638,7 @@ class ButtonObject(GameObject.GameObject):
         Args:
             newOutfitPath (str): Path to New Outfit
         &#34;&#34;&#34;
-        newImage = pygame.image.load(newOutfitPath).convert()
+        newImage = pygame.image.load(newOutfitPath).convert_alpha()
         newImageRect = newImage.get_rect()
         dim = utils.ResizeMaxLength(
             dim=(newImageRect.width, newImageRect.height),
@@ -538,7 +652,7 @@ class ButtonObject(GameObject.GameObject):
     def UpdateSprite(self) -&gt; None:
         &#34;&#34;&#34;Update sprite for each frame&#34;&#34;&#34;
         if self.PersonalTimer is not None:
-            self.PersonalTimer.UpdateAndDraw()
+            self.PersonalTimer.UpdateAndDraw(activeGame=self.ActiveGame)
             self.PersonalTimer.Rect = self.rect.topleft
         self.Update()
 
@@ -568,13 +682,14 @@ class ButtonObject(GameObject.GameObject):
             position=(self.rect.topleft),
             assocId=assocId,
             offset=offset,
+            activeGame=self.ActiveGame,
         )
         self.PersonalTimer.StartingState = startingState
         self.PersonalTimer.OnComplete = completeTask
         self.PersonalTimer.TimerRect.y -= 25
         self.PersonalTimer.SetMaxSize(size=self.rect.width if width == 0 else width)
         self.PersonalTimer.FillColor = fillColor
-        self.PersonalTimer.StartTimer()
+        self.PersonalTimer.StartTimer(activeGame=self.ActiveGame)
 
     def __repr__(self) -&gt; str:
         &#34;&#34;&#34;String Rep of Object&#34;&#34;&#34;
@@ -627,7 +742,7 @@ def DataObject(self):
         Customer | Worker: Data Object Assoc with Sprite
     &#34;&#34;&#34;
     objDict = Matching.MatchIdToPerson(
-        activeGame=Game.MasterGame, inputId=self.CorrespondingID
+        activeGame=self.ActiveGame, inputId=self.CorrespondingID
     )
     objDict.pop(&#34;sprite&#34;)
     obj = list(objDict.values())[0]
@@ -657,7 +772,7 @@ def DataObject(self):
     Args:
         newOutfitPath (str): Path to New Outfit
     &#34;&#34;&#34;
-    newImage = pygame.image.load(newOutfitPath).convert()
+    newImage = pygame.image.load(newOutfitPath).convert_alpha()
     newImageRect = newImage.get_rect()
     dim = utils.ResizeMaxLength(
         dim=(newImageRect.width, newImageRect.height),
@@ -670,7 +785,7 @@ def DataObject(self):
 </details>
 </dd>
 <dt id="Classes.Sprite.CharImageSprite.CheckSpawnCollision"><code class="name flex">
-<span>def <span class="ident">CheckSpawnCollision</span></span>(<span>self, activeGame=&lt;Classes.Game.Game object&gt;) ‑> None</span>
+<span>def <span class="ident">CheckSpawnCollision</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Changes spawn location until new sprite is not colliding</p>
@@ -683,20 +798,20 @@ def DataObject(self):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def CheckSpawnCollision(self, activeGame=Game.MasterGame) -&gt; None:
+<pre><code class="python">def CheckSpawnCollision(self) -&gt; None:
     &#34;&#34;&#34;Changes spawn location until new sprite is not colliding
 
     Args:
         activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
     &#34;&#34;&#34;
     currentCenter = self.rect.center
-    for group in activeGame.SpriteGroups:
+    for group in self.ActiveGame.SpriteGroups:
         for sprite in group:
             while sprite.rect.colliderect(self.rect) and sprite is not self:
                 self.rect.center = utils.PositionRandomVariance(
                     position=currentCenter,
                     percentVarianceTuple=(0.1, 1),
-                    screenSize=activeGame.ScreenSize,
+                    screenSize=self.ActiveGame.ScreenSize,
                 )</code></pre>
 </details>
 </dd>
@@ -752,13 +867,14 @@ def DataObject(self):
         position=(self.rect.topleft),
         assocId=assocId,
         offset=offset,
+        activeGame=self.ActiveGame,
     )
     self.PersonalTimer.StartingState = startingState
     self.PersonalTimer.OnComplete = completeTask
     self.PersonalTimer.TimerRect.y -= 25
     self.PersonalTimer.SetMaxSize(size=self.rect.width if width == 0 else width)
     self.PersonalTimer.FillColor = fillColor
-    self.PersonalTimer.StartTimer()</code></pre>
+    self.PersonalTimer.StartTimer(activeGame=self.ActiveGame)</code></pre>
 </details>
 </dd>
 <dt id="Classes.Sprite.CharImageSprite.UpdateSprite"><code class="name flex">
@@ -773,7 +889,7 @@ def DataObject(self):
 <pre><code class="python">def UpdateSprite(self) -&gt; None:
     &#34;&#34;&#34;Update sprite for each frame&#34;&#34;&#34;
     if self.PersonalTimer is not None:
-        self.PersonalTimer.UpdateAndDraw()
+        self.PersonalTimer.UpdateAndDraw(activeGame=self.ActiveGame)
         self.PersonalTimer.Rect = self.rect.topleft
     self.Update()</code></pre>
 </details>
@@ -870,6 +986,9 @@ def DataObject(self):
 </li>
 <li>
 <h4><code><a title="Classes.Sprite.ButtonObject" href="#Classes.Sprite.ButtonObject">ButtonObject</a></code></h4>
+<ul class="">
+<li><code><a title="Classes.Sprite.ButtonObject.AddButton" href="#Classes.Sprite.ButtonObject.AddButton">AddButton</a></code></li>
+</ul>
 </li>
 <li>
 <h4><code><a title="Classes.Sprite.CharImageSprite" href="#Classes.Sprite.CharImageSprite">CharImageSprite</a></code></h4>

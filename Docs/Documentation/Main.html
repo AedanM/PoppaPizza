@@ -40,40 +40,47 @@ import time
 
 import pygame
 
-from Classes import Game
-from Definitions import AssetLibrary, CustomEvents
+from Classes import Game, MiniGames
+from Definitions import AssetLibrary, ColorTools, CustomEvents
 from Handlers import EventHandler
 
 
 def Main() -&gt; None:
     &#34;&#34;&#34;Main Loop of Game&#34;&#34;&#34;
     debugFlag = True
-    profileFlag = False
+    profileFlag = True
     Game.MasterGame = Game.Game()
     pygame.event.post(CustomEvents.UpdateBackground)
     # Enables a series of functions to run automatically
     if profileFlag:
         startTime = time.time()
+        Game.MasterGame.Settings.CapFrames = False
     if debugFlag:
         EventHandler.DebugSetup()
     while True:
+        # try:
         if Game.MasterGame.Running:
-            try:
-                EventHandler.MainEventHandler()
-                Game.MasterGame.DrawBackground()
-                Game.MasterGame.UpdateSprites()
-                Game.MasterGame.WriteAllText()
-                Game.MasterGame.UpdateLightingEngine()
+            match Game.MasterGame.Mode:
+                case MiniGames.GameMode.Base:
+                    EventHandler.MainEventHandler()
+                    Game.MasterGame.DrawBackground(source=AssetLibrary.Background)
+                    Game.MasterGame.UpdateSprites()
+                    Game.MasterGame.WriteAllText()
+                    Game.MasterGame.UpdateLightingEngine()
+                case MiniGames.GameMode.TriviaGame:
+                    Game.MasterGame.DrawBackground(source=AssetLibrary.TriviaBackground)
+                    Game.MasterGame.MiniGame.PlayGame(activeGame=Game.MasterGame)
+                    EventHandler.TriviaEventHandler(activeGame=Game.MasterGame)
 
-            except Exception as e:
-                print(f&#34;{e} Occured&#34;)
         if Game.MasterGame.ShowScreen:
             pygame.display.update()
 
         # Control the frame rate
         Game.MasterGame.GameClock.UpdateClock()
-        if profileFlag and (time.time() - startTime &gt; 15):
+        if profileFlag and (time.time() - startTime &gt; 30):
             break
+    # except Exception as e:
+    # print(f&#34;{e} Occured&#34;)
 
 
 if __name__ == &#34;__main__&#34;:
@@ -99,32 +106,39 @@ if __name__ == &#34;__main__&#34;:
 <pre><code class="python">def Main() -&gt; None:
     &#34;&#34;&#34;Main Loop of Game&#34;&#34;&#34;
     debugFlag = True
-    profileFlag = False
+    profileFlag = True
     Game.MasterGame = Game.Game()
     pygame.event.post(CustomEvents.UpdateBackground)
     # Enables a series of functions to run automatically
     if profileFlag:
         startTime = time.time()
+        Game.MasterGame.Settings.CapFrames = False
     if debugFlag:
         EventHandler.DebugSetup()
     while True:
+        # try:
         if Game.MasterGame.Running:
-            try:
-                EventHandler.MainEventHandler()
-                Game.MasterGame.DrawBackground()
-                Game.MasterGame.UpdateSprites()
-                Game.MasterGame.WriteAllText()
-                Game.MasterGame.UpdateLightingEngine()
+            match Game.MasterGame.Mode:
+                case MiniGames.GameMode.Base:
+                    EventHandler.MainEventHandler()
+                    Game.MasterGame.DrawBackground(source=AssetLibrary.Background)
+                    Game.MasterGame.UpdateSprites()
+                    Game.MasterGame.WriteAllText()
+                    Game.MasterGame.UpdateLightingEngine()
+                case MiniGames.GameMode.TriviaGame:
+                    Game.MasterGame.DrawBackground(source=AssetLibrary.TriviaBackground)
+                    Game.MasterGame.MiniGame.PlayGame(activeGame=Game.MasterGame)
+                    EventHandler.TriviaEventHandler(activeGame=Game.MasterGame)
 
-            except Exception as e:
-                print(f&#34;{e} Occured&#34;)
         if Game.MasterGame.ShowScreen:
             pygame.display.update()
 
         # Control the frame rate
         Game.MasterGame.GameClock.UpdateClock()
-        if profileFlag and (time.time() - startTime &gt; 15):
-            break</code></pre>
+        if profileFlag and (time.time() - startTime &gt; 30):
+            break
+    # except Exception as e:
+    # print(f&#34;{e} Occured&#34;)</code></pre>
 </details>
 </dd>
 </dl>

@@ -106,7 +106,10 @@ class GameClock:
                 self.DayChange()
             if self.Day &gt;= self.CurrMonth.Days:
                 self.MonthChange()
-            self.PygameClock.tick(60)
+            if Settings.GameSettings.CapFrames:
+                self.PygameClock.tick(60)
+            else:
+                self.PygameClock.tick()
 
     @property
     def DayPercentage(self) -&gt; float:
@@ -258,7 +261,10 @@ class GameClock:
                 self.DayChange()
             if self.Day &gt;= self.CurrMonth.Days:
                 self.MonthChange()
-            self.PygameClock.tick(60)
+            if Settings.GameSettings.CapFrames:
+                self.PygameClock.tick(60)
+            else:
+                self.PygameClock.tick()
 
     @property
     def DayPercentage(self) -&gt; float:
@@ -640,7 +646,10 @@ def UnixTime(self) -&gt; int:
             self.DayChange()
         if self.Day &gt;= self.CurrMonth.Days:
             self.MonthChange()
-        self.PygameClock.tick(60)</code></pre>
+        if Settings.GameSettings.CapFrames:
+            self.PygameClock.tick(60)
+        else:
+            self.PygameClock.tick()</code></pre>
 </details>
 </dd>
 </dl>

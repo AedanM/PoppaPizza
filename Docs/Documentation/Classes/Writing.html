@@ -29,12 +29,69 @@
 </summary>
 <pre><code class="python">&#34;&#34;&#34;Functions for Text Generation&#34;&#34;&#34;
 
-from Definitions import ColorTools
+from dataclasses import dataclass
+
+import pygame
+
+from Definitions import AssetLibrary, ColorTools, DefinedLocations
 from Utilities import Utils
+
+pygame.font.init()
+DefinedFonts = {
+    &#34;Titles&#34;: pygame.font.Font(filename=pygame.font.match_font(&#34;elephant&#34;), size=60),
+    &#34;Trivia Game&#34;: pygame.font.Font(
+        filename=pygame.font.match_font(&#34;century schoolbook&#34;, True), size=36
+    ),
+    &#34;Datetime&#34;: pygame.font.Font(
+        filename=pygame.font.match_font(&#34;book antiqua&#34;), size=24
+    ),
+    &#34;Buttons&#34;: pygame.font.Font(
+        filename=pygame.font.match_font(&#34;gill sans&#34;, True), size=24
+    ),
+    &#34;Default&#34;: pygame.font.Font(
+        filename=pygame.font.match_font(&#34;century schoolbook&#34;), size=24
+    ),
+    &#34;Trivia Answers&#34;: pygame.font.Font(
+        filename=pygame.font.match_font(&#34;century schoolbook&#34;), size=48
+    ),
+}
+
+
+class TextBox:
+    Text: str
+    TopLeft: tuple
+    Center: tuple
+    ForeColor: ColorTools.Color
+    Font: pygame.font
+    Rect: pygame.Rect
+
+    def __init__(
+        self,
+        text=&#34;&#34;,
+        topLeft=None,
+        center=None,
+        foreColor=ColorTools.White,
+        font=DefinedFonts[&#34;Default&#34;],
+    ) -&gt; None:
+        self.Text = text
+        self.TopLeft = topLeft
+        self.Center = center
+        self.ForeColor = foreColor
+        self.Font = font
+
+    def WriteToScreen(self, activeScreen) -&gt; None:
+        return CreateTextBox(
+            text=self.Text,
+            foreColor=self.ForeColor,
+            font=self.Font,
+            screen=activeScreen,
+            locationTopLeft=self.TopLeft,
+            center=self.Center,
+        )
 
 
 def CreateTextBox(
-    locationTopLeft, text, foreColor, font, screen, backColor=None
+    text, foreColor, font, screen, backColor=None, locationTopLeft=None, center=None
 ) -&gt; None:
     &#34;&#34;&#34;Write a text box to the screen
 
@@ -52,9 +109,13 @@ def CreateTextBox(
         else font.render(text, False, foreColor.RGB, backColor.RGB)
     )
     textrect = text.get_rect()
-    textrect.x = locationTopLeft[0]
-    textrect.y = locationTopLeft[1]
+    if locationTopLeft:
+        textrect.x = locationTopLeft[0]
+        textrect.y = locationTopLeft[1]
+    elif center:
+        textrect.center = center
     screen.blit(source=text, dest=textrect)
+    return textrect
 
 
 def WriteDateLabel(activeGame) -&gt; None:
@@ -70,7 +131,7 @@ def WriteDateLabel(activeGame) -&gt; None:
         text=clockText,
         foreColor=ColorTools.White,
         backColor=ColorTools.Blue,
-        font=activeGame.Font,
+        font=DefinedFonts[&#34;Datetime&#34;],
         screen=activeGame.Screen,
     )
 
@@ -88,9 +149,37 @@ def WriteButtonLabel(activeGame) -&gt; None:
             ),
             text=button.text,
             foreColor=ColorTools.Black,
-            font=activeGame.Font,
+            font=DefinedFonts[&#34;Buttons&#34;],
             screen=activeGame.Screen,
-        )</code></pre>
+        )
+
+
+def WriteKitchenLabel(activeGame) -&gt; None:
+    kitchenRect = [
+        x
+        for x in activeGame.ForegroundSpriteGroup
+        if x.rect.center == DefinedLocations.LocationDefs.LockerRoom0
+    ][0].rect
+    numWorkers = len(
+        [
+            sprite
+            for sprite in activeGame.CharSpriteGroup
+            if sprite.ImageType in AssetLibrary.WorkerOutfits
+            and kitchenRect.collidepoint(sprite.rect.x, sprite.rect.y)
+        ]
+    )
+
+    kitchenText = f&#34;{numWorkers} Worker{&#39;s&#39; if numWorkers != 1 else &#39;&#39;} inside&#34;
+
+    CreateTextBox(
+        locationTopLeft=Utils.OffsetTuple(
+            inputTuple=DefinedLocations.LocationDefs.LockerRoom0, offset=(-100, 0)
+        ),
+        text=kitchenText,
+        foreColor=ColorTools.White,
+        font=DefinedFonts[&#34;Default&#34;],
+        screen=activeGame.Screen,
+    )</code></pre>
 </details>
 </section>
 <section>
@@ -101,7 +190,7 @@ def WriteButtonLabel(activeGame) -&gt; None:
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="Classes.Writing.CreateTextBox"><code class="name flex">
-<span>def <span class="ident">CreateTextBox</span></span>(<span>locationTopLeft, text, foreColor, font, screen, backColor=None) ‑> None</span>
+<span>def <span class="ident">CreateTextBox</span></span>(<span>text, foreColor, font, screen, backColor=None, locationTopLeft=None, center=None) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Write a text box to the screen</p>
@@ -125,7 +214,7 @@ def WriteButtonLabel(activeGame) -&gt; None:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def CreateTextBox(
-    locationTopLeft, text, foreColor, font, screen, backColor=None
+    text, foreColor, font, screen, backColor=None, locationTopLeft=None, center=None
 ) -&gt; None:
     &#34;&#34;&#34;Write a text box to the screen
 
@@ -143,9 +232,13 @@ def WriteButtonLabel(activeGame) -&gt; None:
         else font.render(text, False, foreColor.RGB, backColor.RGB)
     )
     textrect = text.get_rect()
-    textrect.x = locationTopLeft[0]
-    textrect.y = locationTopLeft[1]
-    screen.blit(source=text, dest=textrect)</code></pre>
+    if locationTopLeft:
+        textrect.x = locationTopLeft[0]
+        textrect.y = locationTopLeft[1]
+    elif center:
+        textrect.center = center
+    screen.blit(source=text, dest=textrect)
+    return textrect</code></pre>
 </details>
 </dd>
 <dt id="Classes.Writing.WriteButtonLabel"><code class="name flex">
@@ -175,7 +268,7 @@ def WriteButtonLabel(activeGame) -&gt; None:
             ),
             text=button.text,
             foreColor=ColorTools.Black,
-            font=activeGame.Font,
+            font=DefinedFonts[&#34;Buttons&#34;],
             screen=activeGame.Screen,
         )</code></pre>
 </details>
@@ -207,7 +300,44 @@ def WriteButtonLabel(activeGame) -&gt; None:
         text=clockText,
         foreColor=ColorTools.White,
         backColor=ColorTools.Blue,
-        font=activeGame.Font,
+        font=DefinedFonts[&#34;Datetime&#34;],
+        screen=activeGame.Screen,
+    )</code></pre>
+</details>
+</dd>
+<dt id="Classes.Writing.WriteKitchenLabel"><code class="name flex">
+<span>def <span class="ident">WriteKitchenLabel</span></span>(<span>activeGame) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def WriteKitchenLabel(activeGame) -&gt; None:
+    kitchenRect = [
+        x
+        for x in activeGame.ForegroundSpriteGroup
+        if x.rect.center == DefinedLocations.LocationDefs.LockerRoom0
+    ][0].rect
+    numWorkers = len(
+        [
+            sprite
+            for sprite in activeGame.CharSpriteGroup
+            if sprite.ImageType in AssetLibrary.WorkerOutfits
+            and kitchenRect.collidepoint(sprite.rect.x, sprite.rect.y)
+        ]
+    )
+
+    kitchenText = f&#34;{numWorkers} Worker{&#39;s&#39; if numWorkers != 1 else &#39;&#39;} inside&#34;
+
+    CreateTextBox(
+        locationTopLeft=Utils.OffsetTuple(
+            inputTuple=DefinedLocations.LocationDefs.LockerRoom0, offset=(-100, 0)
+        ),
+        text=kitchenText,
+        foreColor=ColorTools.White,
+        font=DefinedFonts[&#34;Default&#34;],
         screen=activeGame.Screen,
     )</code></pre>
 </details>
@@ -215,6 +345,102 @@ def WriteButtonLabel(activeGame) -&gt; None:
 </dl>
 </section>
 <section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="Classes.Writing.TextBox"><code class="flex name class">
+<span>class <span class="ident">TextBox</span></span>
+<span>(</span><span>text='', topLeft=None, center=None, foreColor=Color(H=0, S=0, V=255), font=&lt;pygame.font.Font object&gt;)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TextBox:
+    Text: str
+    TopLeft: tuple
+    Center: tuple
+    ForeColor: ColorTools.Color
+    Font: pygame.font
+    Rect: pygame.Rect
+
+    def __init__(
+        self,
+        text=&#34;&#34;,
+        topLeft=None,
+        center=None,
+        foreColor=ColorTools.White,
+        font=DefinedFonts[&#34;Default&#34;],
+    ) -&gt; None:
+        self.Text = text
+        self.TopLeft = topLeft
+        self.Center = center
+        self.ForeColor = foreColor
+        self.Font = font
+
+    def WriteToScreen(self, activeScreen) -&gt; None:
+        return CreateTextBox(
+            text=self.Text,
+            foreColor=self.ForeColor,
+            font=self.Font,
+            screen=activeScreen,
+            locationTopLeft=self.TopLeft,
+            center=self.Center,
+        )</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="Classes.Writing.TextBox.Center"><code class="name">var <span class="ident">Center</span> : tuple</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="Classes.Writing.TextBox.Font"><code class="name">var <span class="ident">Font</span> : <module 'pygame.font' from 'C:\\Users\\mchaae01\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\pygame\\font.cp312-win_amd64.pyd'></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="Classes.Writing.TextBox.ForeColor"><code class="name">var <span class="ident">ForeColor</span> : Definitions.ColorTools.Color</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="Classes.Writing.TextBox.Rect"><code class="name">var <span class="ident">Rect</span> : pygame.rect.Rect</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="Classes.Writing.TextBox.Text"><code class="name">var <span class="ident">Text</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="Classes.Writing.TextBox.TopLeft"><code class="name">var <span class="ident">TopLeft</span> : tuple</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="Classes.Writing.TextBox.WriteToScreen"><code class="name flex">
+<span>def <span class="ident">WriteToScreen</span></span>(<span>self, activeScreen) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def WriteToScreen(self, activeScreen) -&gt; None:
+    return CreateTextBox(
+        text=self.Text,
+        foreColor=self.ForeColor,
+        font=self.Font,
+        screen=activeScreen,
+        locationTopLeft=self.TopLeft,
+        center=self.Center,
+    )</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
 </section>
 </article>
 <nav id="sidebar">
@@ -233,6 +459,23 @@ def WriteButtonLabel(activeGame) -&gt; None:
 <li><code><a title="Classes.Writing.CreateTextBox" href="#Classes.Writing.CreateTextBox">CreateTextBox</a></code></li>
 <li><code><a title="Classes.Writing.WriteButtonLabel" href="#Classes.Writing.WriteButtonLabel">WriteButtonLabel</a></code></li>
 <li><code><a title="Classes.Writing.WriteDateLabel" href="#Classes.Writing.WriteDateLabel">WriteDateLabel</a></code></li>
+<li><code><a title="Classes.Writing.WriteKitchenLabel" href="#Classes.Writing.WriteKitchenLabel">WriteKitchenLabel</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="Classes.Writing.TextBox" href="#Classes.Writing.TextBox">TextBox</a></code></h4>
+<ul class="two-column">
+<li><code><a title="Classes.Writing.TextBox.Center" href="#Classes.Writing.TextBox.Center">Center</a></code></li>
+<li><code><a title="Classes.Writing.TextBox.Font" href="#Classes.Writing.TextBox.Font">Font</a></code></li>
+<li><code><a title="Classes.Writing.TextBox.ForeColor" href="#Classes.Writing.TextBox.ForeColor">ForeColor</a></code></li>
+<li><code><a title="Classes.Writing.TextBox.Rect" href="#Classes.Writing.TextBox.Rect">Rect</a></code></li>
+<li><code><a title="Classes.Writing.TextBox.Text" href="#Classes.Writing.TextBox.Text">Text</a></code></li>
+<li><code><a title="Classes.Writing.TextBox.TopLeft" href="#Classes.Writing.TextBox.TopLeft">TopLeft</a></code></li>
+<li><code><a title="Classes.Writing.TextBox.WriteToScreen" href="#Classes.Writing.TextBox.WriteToScreen">WriteToScreen</a></code></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

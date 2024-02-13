@@ -53,33 +53,6 @@ def AddTables(activeGame=Game.MasterGame) -&gt; None:
         activeGame.BackgroundSpriteGroup.add(table)
 
 
-def AddButton(
-    location, text, color, backColor, enabled, activeGame=Game.MasterGame
-) -&gt; None:
-    &#34;&#34;&#34;Generates a Button on a specified location
-
-    Args:
-        location (tuple): tuple position of button center
-        text (str): Button Label
-        color (Color): Main Color
-        backColor (Color): Background Color of Button
-        enabled (bool): Button Enable
-        activeGame (Game, optional): Current Game being used. Defaults to Game.MasterGame.
-    &#34;&#34;&#34;
-    buttonObj = Sprite.ButtonObject(
-        position=location,
-        color=color,
-        backColor=backColor,
-        text=text,
-        size=[125, 50],
-        enabled=enabled,
-    )
-
-    activeGame.ForegroundSpriteGroup.add(buttonObj)
-    if not [x for x in activeGame.ButtonList if x.position == location]:
-        activeGame.ButtonList.append(buttonObj)
-
-
 def AddLockerRooms(activeGame=Game.MasterGame) -&gt; None:
     &#34;&#34;&#34;Generate and Add Locker Rooms based on locked status
 
@@ -105,27 +78,29 @@ def AddLockerRooms(activeGame=Game.MasterGame) -&gt; None:
             offset = Utils.ScaleToSize(
                 value=(-90, -50), newSize=DefinedLocations.LocationDefs.ScreenSize
             )
-
-        logo = Sprite.BackgroundElementSprite(
-            position=lockerRoom.Location,
-            path=path,
-            maxSize=maxSize,
-            offset=offset,
-        )
+        logo = None
+        if restaurant.LogoPath:
+            logo = Sprite.BackgroundElementSprite(
+                position=lockerRoom.Location,
+                path=path,
+                maxSize=maxSize,
+                offset=offset,
+            )
 
         rectObj = Sprite.RectangleObject(
-            position=lockerRoom.Location, color=color, size=[180, 150]
+            position=lockerRoom.Location, color=color, size=restaurant.Size
         )
-
         activeGame.ForegroundSpriteGroup.add(rectObj)
-        activeGame.ForegroundSpriteGroup.add(logo)
+        if logo:
+            activeGame.ForegroundSpriteGroup.add(logo)
         if not lockerRoom.Unlocked:
-            AddButton(
+            Sprite.ButtonObject.AddButton(
                 location=lockerRoom.Location,
                 text=&#34;Buy Me&#34;,
                 backColor=ColorTools.CautionTapeYellow,
                 color=ColorTools.Black,
                 enabled=lockerRoom.Price &lt; activeGame.UserInventory.Money,
+                activeGame=Game.MasterGame,
             )
 
 
@@ -164,57 +139,6 @@ def SetupBackground(activeGame=Game.MasterGame) -&gt; None:
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="Generators.BackgroundPopulator.AddButton"><code class="name flex">
-<span>def <span class="ident">AddButton</span></span>(<span>location, text, color, backColor, enabled, activeGame=&lt;Classes.Game.Game object&gt;) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Generates a Button on a specified location</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>location</code></strong> :&ensp;<code>tuple</code></dt>
-<dd>tuple position of button center</dd>
-<dt><strong><code>text</code></strong> :&ensp;<code>str</code></dt>
-<dd>Button Label</dd>
-<dt><strong><code>color</code></strong> :&ensp;<code>Color</code></dt>
-<dd>Main Color</dd>
-<dt><strong><code>backColor</code></strong> :&ensp;<code>Color</code></dt>
-<dd>Background Color of Button</dd>
-<dt><strong><code>enabled</code></strong> :&ensp;<code>bool</code></dt>
-<dd>Button Enable</dd>
-<dt><strong><code>activeGame</code></strong> :&ensp;<code>Game</code>, optional</dt>
-<dd>Current Game being used. Defaults to Game.MasterGame.</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def AddButton(
-    location, text, color, backColor, enabled, activeGame=Game.MasterGame
-) -&gt; None:
-    &#34;&#34;&#34;Generates a Button on a specified location
-
-    Args:
-        location (tuple): tuple position of button center
-        text (str): Button Label
-        color (Color): Main Color
-        backColor (Color): Background Color of Button
-        enabled (bool): Button Enable
-        activeGame (Game, optional): Current Game being used. Defaults to Game.MasterGame.
-    &#34;&#34;&#34;
-    buttonObj = Sprite.ButtonObject(
-        position=location,
-        color=color,
-        backColor=backColor,
-        text=text,
-        size=[125, 50],
-        enabled=enabled,
-    )
-
-    activeGame.ForegroundSpriteGroup.add(buttonObj)
-    if not [x for x in activeGame.ButtonList if x.position == location]:
-        activeGame.ButtonList.append(buttonObj)</code></pre>
-</details>
-</dd>
 <dt id="Generators.BackgroundPopulator.AddLockerRooms"><code class="name flex">
 <span>def <span class="ident">AddLockerRooms</span></span>(<span>activeGame=&lt;Classes.Game.Game object&gt;) ‑> None</span>
 </code></dt>
@@ -254,27 +178,29 @@ def SetupBackground(activeGame=Game.MasterGame) -&gt; None:
             offset = Utils.ScaleToSize(
                 value=(-90, -50), newSize=DefinedLocations.LocationDefs.ScreenSize
             )
-
-        logo = Sprite.BackgroundElementSprite(
-            position=lockerRoom.Location,
-            path=path,
-            maxSize=maxSize,
-            offset=offset,
-        )
+        logo = None
+        if restaurant.LogoPath:
+            logo = Sprite.BackgroundElementSprite(
+                position=lockerRoom.Location,
+                path=path,
+                maxSize=maxSize,
+                offset=offset,
+            )
 
         rectObj = Sprite.RectangleObject(
-            position=lockerRoom.Location, color=color, size=[180, 150]
+            position=lockerRoom.Location, color=color, size=restaurant.Size
         )
-
         activeGame.ForegroundSpriteGroup.add(rectObj)
-        activeGame.ForegroundSpriteGroup.add(logo)
+        if logo:
+            activeGame.ForegroundSpriteGroup.add(logo)
         if not lockerRoom.Unlocked:
-            AddButton(
+            Sprite.ButtonObject.AddButton(
                 location=lockerRoom.Location,
                 text=&#34;Buy Me&#34;,
                 backColor=ColorTools.CautionTapeYellow,
                 color=ColorTools.Black,
                 enabled=lockerRoom.Price &lt; activeGame.UserInventory.Money,
+                activeGame=Game.MasterGame,
             )</code></pre>
 </details>
 </dd>
@@ -383,7 +309,6 @@ def SetupBackground(activeGame=Game.MasterGame) -&gt; None:
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
-<li><code><a title="Generators.BackgroundPopulator.AddButton" href="#Generators.BackgroundPopulator.AddButton">AddButton</a></code></li>
 <li><code><a title="Generators.BackgroundPopulator.AddLockerRooms" href="#Generators.BackgroundPopulator.AddLockerRooms">AddLockerRooms</a></code></li>
 <li><code><a title="Generators.BackgroundPopulator.AddTables" href="#Generators.BackgroundPopulator.AddTables">AddTables</a></code></li>
 <li><code><a title="Generators.BackgroundPopulator.SetupBackground" href="#Generators.BackgroundPopulator.SetupBackground">SetupBackground</a></code></li>

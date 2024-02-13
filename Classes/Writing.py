@@ -143,7 +143,9 @@ def WriteKitchenLabel(activeGame) -> None:
     kitchenText = f"{numWorkers} Worker{'s' if numWorkers != 1 else ''} inside"
 
     CreateTextBox(
-        locationTopLeft=Utils.OffsetTuple(inputTuple=DefinedLocations.LocationDefs.LockerRoom0, offset=(-100,0)),
+        locationTopLeft=Utils.OffsetTuple(
+            inputTuple=DefinedLocations.LocationDefs.LockerRoom0, offset=(-100, 0)
+        ),
         text=kitchenText,
         foreColor=ColorTools.White,
         font=DefinedFonts["Default"],

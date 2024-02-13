@@ -96,8 +96,8 @@ class DefinedPaths:
         &#34;&#34;&#34;
         path = [
             sprite.rect.center,
-            DefinedLocations.LocationDefs.KitchenLocation,
-            (dest[0], DefinedLocations.LocationDefs.KitchenLocation[1]),
+            DefinedLocations.LocationDefs.KitchenEntrance,
+            (dest[0], DefinedLocations.LocationDefs.KitchenEntrance[1]),
             dest,
         ]
         return path
@@ -133,21 +133,21 @@ class DefinedPaths:
         &#34;&#34;&#34;
         path = [
             sprite.rect.center,
-            DefinedLocations.LocationDefs.KitchenLocation,
+            DefinedLocations.LocationDefs.KitchenEntrance,
             (
-                DefinedLocations.LocationDefs.KitchenLocation[0] + 100,
-                DefinedLocations.LocationDefs.KitchenLocation[1],
+                DefinedLocations.LocationDefs.KitchenEntrance[0] + 100,
+                DefinedLocations.LocationDefs.KitchenEntrance[1],
             ),
             (
                 dest.rect.center[0] - 100,
-                DefinedLocations.LocationDefs.KitchenLocation[1],
+                DefinedLocations.LocationDefs.KitchenEntrance[1],
             ),
             dest.rect.center,
         ]
         return path
 
     @staticmethod
-    def BackToKitchen(sprite, activeGame=Game.MasterGame) -&gt; list:
+    def BackToKitchen(sprite, VertFirst=True) -&gt; list:
         &#34;&#34;&#34;From Current Location to Kitchen
 
         Args:
@@ -159,16 +159,19 @@ class DefinedPaths:
         &#34;&#34;&#34;
         path = [
             sprite.rect.center,
-            (sprite.rect.center[0], DefinedLocations.LocationDefs.KitchenLocation[1]),
-            DefinedLocations.LocationDefs.KitchenLocation,
-            Utils.PositionRandomVariance(
-                position=(
-                    DefinedLocations.LocationDefs.KitchenLocation[0] - 50,
-                    DefinedLocations.LocationDefs.KitchenLocation[1],
-                ),
-                percentVarianceTuple=(0.05, 0.1),
-                screenSize=activeGame.ScreenSize,
+            (
+                (
+                    sprite.rect.center[0],
+                    DefinedLocations.LocationDefs.KitchenEntrance[1],
+                )
+                if VertFirst
+                else (
+                    DefinedLocations.LocationDefs.KitchenEntrance[0],
+                    sprite.rect.center[1],
+                )
             ),
+            DefinedLocations.LocationDefs.KitchenEntrance,
+            DefinedLocations.LocationDefs.KitchenLocation,
         ]
         return path
 
@@ -330,8 +333,8 @@ class DefinedPaths:
         &#34;&#34;&#34;
         path = [
             sprite.rect.center,
-            DefinedLocations.LocationDefs.KitchenLocation,
-            (dest[0], DefinedLocations.LocationDefs.KitchenLocation[1]),
+            DefinedLocations.LocationDefs.KitchenEntrance,
+            (dest[0], DefinedLocations.LocationDefs.KitchenEntrance[1]),
             dest,
         ]
         return path
@@ -367,21 +370,21 @@ class DefinedPaths:
         &#34;&#34;&#34;
         path = [
             sprite.rect.center,
-            DefinedLocations.LocationDefs.KitchenLocation,
+            DefinedLocations.LocationDefs.KitchenEntrance,
             (
-                DefinedLocations.LocationDefs.KitchenLocation[0] + 100,
-                DefinedLocations.LocationDefs.KitchenLocation[1],
+                DefinedLocations.LocationDefs.KitchenEntrance[0] + 100,
+                DefinedLocations.LocationDefs.KitchenEntrance[1],
             ),
             (
                 dest.rect.center[0] - 100,
-                DefinedLocations.LocationDefs.KitchenLocation[1],
+                DefinedLocations.LocationDefs.KitchenEntrance[1],
             ),
             dest.rect.center,
         ]
         return path
 
     @staticmethod
-    def BackToKitchen(sprite, activeGame=Game.MasterGame) -&gt; list:
+    def BackToKitchen(sprite, VertFirst=True) -&gt; list:
         &#34;&#34;&#34;From Current Location to Kitchen
 
         Args:
@@ -393,16 +396,19 @@ class DefinedPaths:
         &#34;&#34;&#34;
         path = [
             sprite.rect.center,
-            (sprite.rect.center[0], DefinedLocations.LocationDefs.KitchenLocation[1]),
-            DefinedLocations.LocationDefs.KitchenLocation,
-            Utils.PositionRandomVariance(
-                position=(
-                    DefinedLocations.LocationDefs.KitchenLocation[0] - 50,
-                    DefinedLocations.LocationDefs.KitchenLocation[1],
-                ),
-                percentVarianceTuple=(0.05, 0.1),
-                screenSize=activeGame.ScreenSize,
+            (
+                (
+                    sprite.rect.center[0],
+                    DefinedLocations.LocationDefs.KitchenEntrance[1],
+                )
+                if VertFirst
+                else (
+                    DefinedLocations.LocationDefs.KitchenEntrance[0],
+                    sprite.rect.center[1],
+                )
             ),
+            DefinedLocations.LocationDefs.KitchenEntrance,
+            DefinedLocations.LocationDefs.KitchenLocation,
         ]
         return path
 
@@ -456,7 +462,7 @@ class DefinedPaths:
 <h3>Static methods</h3>
 <dl>
 <dt id="Definitions.DefinedPaths.DefinedPaths.BackToKitchen"><code class="name flex">
-<span>def <span class="ident">BackToKitchen</span></span>(<span>sprite, activeGame=&lt;Classes.Game.Game object&gt;) ‑> list</span>
+<span>def <span class="ident">BackToKitchen</span></span>(<span>sprite, VertFirst=True) ‑> list</span>
 </code></dt>
 <dd>
 <div class="desc"><p>From Current Location to Kitchen</p>
@@ -477,7 +483,7 @@ class DefinedPaths:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@staticmethod
-def BackToKitchen(sprite, activeGame=Game.MasterGame) -&gt; list:
+def BackToKitchen(sprite, VertFirst=True) -&gt; list:
     &#34;&#34;&#34;From Current Location to Kitchen
 
     Args:
@@ -489,16 +495,19 @@ def BackToKitchen(sprite, activeGame=Game.MasterGame) -&gt; list:
     &#34;&#34;&#34;
     path = [
         sprite.rect.center,
-        (sprite.rect.center[0], DefinedLocations.LocationDefs.KitchenLocation[1]),
-        DefinedLocations.LocationDefs.KitchenLocation,
-        Utils.PositionRandomVariance(
-            position=(
-                DefinedLocations.LocationDefs.KitchenLocation[0] - 50,
-                DefinedLocations.LocationDefs.KitchenLocation[1],
-            ),
-            percentVarianceTuple=(0.05, 0.1),
-            screenSize=activeGame.ScreenSize,
+        (
+            (
+                sprite.rect.center[0],
+                DefinedLocations.LocationDefs.KitchenEntrance[1],
+            )
+            if VertFirst
+            else (
+                DefinedLocations.LocationDefs.KitchenEntrance[0],
+                sprite.rect.center[1],
+            )
         ),
+        DefinedLocations.LocationDefs.KitchenEntrance,
+        DefinedLocations.LocationDefs.KitchenLocation,
     ]
     return path</code></pre>
 </details>
@@ -637,14 +646,14 @@ def KitchenToCustomer(sprite, dest) -&gt; list:
     &#34;&#34;&#34;
     path = [
         sprite.rect.center,
-        DefinedLocations.LocationDefs.KitchenLocation,
+        DefinedLocations.LocationDefs.KitchenEntrance,
         (
-            DefinedLocations.LocationDefs.KitchenLocation[0] + 100,
-            DefinedLocations.LocationDefs.KitchenLocation[1],
+            DefinedLocations.LocationDefs.KitchenEntrance[0] + 100,
+            DefinedLocations.LocationDefs.KitchenEntrance[1],
         ),
         (
             dest.rect.center[0] - 100,
-            DefinedLocations.LocationDefs.KitchenLocation[1],
+            DefinedLocations.LocationDefs.KitchenEntrance[1],
         ),
         dest.rect.center,
     ]
@@ -685,8 +694,8 @@ def KitchenToLockerRoom(sprite, dest) -&gt; list:
     &#34;&#34;&#34;
     path = [
         sprite.rect.center,
-        DefinedLocations.LocationDefs.KitchenLocation,
-        (dest[0], DefinedLocations.LocationDefs.KitchenLocation[1]),
+        DefinedLocations.LocationDefs.KitchenEntrance,
+        (dest[0], DefinedLocations.LocationDefs.KitchenEntrance[1]),
         dest,
     ]
     return path</code></pre>
