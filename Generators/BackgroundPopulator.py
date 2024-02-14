@@ -1,16 +1,16 @@
 """Populate Background with Elements"""
 
-from Classes import Game, Matching, Sprite
-from Definitions import AssetLibrary, ColorTools, DefinedLocations, Restaurants
-from Utilities import Utils
+from Classes import GameBase, Matching, Sprite
+from Definitions import AssetLibrary, ColorDefines, DefinedLocations, Restaurants
+from Engine import SpriteObjects, Utils
 
 # TODO - Stop Recalcing Tables
 
 
-def AddTables(activeGame=Game.MasterGame) -> None:
+def AddTables(activeGame=GameBase.MasterGame) -> None:
     """Places tables as they are unlocked
 
-    Args:
+    Args-
         activeGame (Game, optional): Current Game being used. Defaults to Game.MasterGame.
     """
     for location in DefinedLocations.SeatingPlan.GenerateTablePlaces():
@@ -24,10 +24,10 @@ def AddTables(activeGame=Game.MasterGame) -> None:
         activeGame.BackgroundSpriteGroup.add(table)
 
 
-def AddLockerRooms(activeGame=Game.MasterGame) -> None:
+def AddLockerRooms(activeGame=GameBase.MasterGame) -> None:
     """Generate and Add Locker Rooms based on locked status
 
-    Args:
+    Args-
         activeGame (Game, optional): Current Game Class being used. Defaults to Game.MasterGame.
     """
     for restaurant in Restaurants.RestaurantList:
@@ -44,7 +44,7 @@ def AddLockerRooms(activeGame=Game.MasterGame) -> None:
             )
         else:
             path = AssetLibrary.ImagePath.LogoLockedPath
-            color = ColorTools.Grey
+            color = ColorDefines.Grey
             maxSize = 180
             offset = Utils.ScaleToSize(
                 value=(-90, -50), newSize=DefinedLocations.LocationDefs.ScreenSize
@@ -58,7 +58,7 @@ def AddLockerRooms(activeGame=Game.MasterGame) -> None:
                 offset=offset,
             )
 
-        rectObj = Sprite.RectangleObject(
+        rectObj = SpriteObjects.RectangleObject(
             position=lockerRoom.Location, color=color, size=restaurant.Size
         )
         activeGame.ForegroundSpriteGroup.add(rectObj)
@@ -68,17 +68,17 @@ def AddLockerRooms(activeGame=Game.MasterGame) -> None:
             Sprite.ButtonObject.AddButton(
                 location=lockerRoom.Location,
                 text="Buy Me",
-                backColor=ColorTools.CautionTapeYellow,
-                color=ColorTools.Black,
+                backColor=ColorDefines.CautionTapeYellow,
+                color=ColorDefines.Black,
                 enabled=lockerRoom.Price < activeGame.UserInventory.Money,
-                activeGame=Game.MasterGame,
+                activeGame=GameBase.MasterGame,
             )
 
 
 def UnlockLockerRooms(activeGame) -> None:
     """Updates the locker rooms to unlock the purchased rooms
 
-    Args:
+    Args-
         activeGame (Game): Current Game Class being used
     """
     for button in activeGame.ButtonList:
@@ -91,10 +91,10 @@ def UnlockLockerRooms(activeGame) -> None:
             activeGame.ButtonList.remove(button)
 
 
-def SetupBackground(activeGame=Game.MasterGame) -> None:
+def SetupBackground(activeGame=GameBase.MasterGame) -> None:
     """Regenerates the Background Elements
 
-    Args:
+    Args-
         activeGame (Game, optional): Current Game Class being used. Defaults to Game.MasterGame.
     """
     activeGame.BackgroundSpriteGroup.empty()

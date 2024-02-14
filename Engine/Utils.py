@@ -7,25 +7,27 @@ import random
 def InRandomVariance(num, percentVariance) -> float:
     """Returns random num in % variance
 
-    Args:
+    Args-
         num (int | float): Base Number
         percentVariance (float): Percentage to vary by
 
-    Returns:
+    Returns-
         float: New Varied Number
     """
     percentVariance = CheckDecimalPercent(percentVariance)
-    varyAmount = random.randint(a=-100, b=100) * percentVariance * 0.01 * num
+    varyAmount = (
+        random.randint(a=-100, b=100) * percentVariance * 0.01 * num  # type:ignore
+    )
     return num + varyAmount
 
 
 def CheckDecimalPercent(val) -> float | tuple:
     """Normalizes Percentages from 0-100 to 0-1
 
-    Args:
+    Args-
         val (tuple | int | float): input value
 
-    Returns:
+    Returns-
         float | tuple: Normalized Output
     """
     returnVal = None
@@ -45,26 +47,26 @@ def PositionRandomVariance(
 ) -> tuple[int, int]:
     """Generates a position in random variance of input
 
-    Args:
+    Args-
         position (tuple): Basse Location
         percentVarianceTuple (tuple): Variance in X and Y direction as a % of screen
         screenSize (tuple): Size of Screen as tuple(width, height)
 
-    Returns:
+    Returns-
         tuple[int, int]: Random Position
     """
     percentVarianceTuple = CheckDecimalPercent(val=percentVarianceTuple)
     varyAmountX = math.ceil(
-        (random.randint(-100, 100) * 0.01 * percentVarianceTuple[0] * screenSize[0])
+        (random.randint(-100, 100) * 0.01 * percentVarianceTuple[0] * screenSize[0])  # type: ignore
         + position[0]
     )
     varyAmountY = math.ceil(
-        (random.randint(-100, 100) * 0.01 * percentVarianceTuple[1] * screenSize[1])
+        (random.randint(-100, 100) * 0.01 * percentVarianceTuple[1] * screenSize[1])  # type: ignore
         + position[1]
     )
     out = (
-        Bind(val=varyAmountX, inRange=(0, screenSize[0])),
-        Bind(val=varyAmountY, inRange=(0, screenSize[1])),
+        int(Bind(val=varyAmountX, inRange=(0, screenSize[0]))),
+        int(Bind(val=varyAmountY, inRange=(0, screenSize[1]))),
     )
     return out
 
@@ -72,12 +74,12 @@ def PositionRandomVariance(
 def InTolerance(num1, num2, tolerance) -> bool:
     """Returns if numbers are wthin a numeric tolerance
 
-    Args:
+    Args-
         num1 (int | float): 1st number
         num2 (int | float): 2nd number
         tolerance (int | float): Range of Acceptance
 
-    Returns:
+    Returns-
         bool: Status of Tolerance
     """
     return abs(num1 - num2) <= abs(tolerance)
@@ -86,30 +88,31 @@ def InTolerance(num1, num2, tolerance) -> bool:
 def InPercentTolerance(num1, num2, tolerance) -> bool:
     """Returns if numbers are wthin a percentage tolerance
 
-    Args:
+    Args-
         num1 (int | float): 1st number
         num2 (int | float): 2nd number
         tolerance (float): Tolerance %
 
-    Returns:
+    Returns-
         bool: Status of Tolerance
     """
-    tolerance = CheckDecimalPercent(val=tolerance)
+    tol = CheckDecimalPercent(val=tolerance)
+    tolerance = tol if isinstance(tol, float) else 0.0
     if num1 == 0:
         return False
     seperation = abs((num1 - num2) / num1)
     return seperation <= abs(tolerance)
 
 
-def ProRateValue(value, inRange, outRange) -> int | float | None:
+def ProRateValue(value, inRange, outRange) -> int | float | str:
     """Changes the range of a value
 
-    Args:
+    Args-
         value (int | float): _description_
         inRange (tuple): Original Range
         outRange (tuple): New Range
 
-    Returns:
+    Returns-
         int | float | None: _description_
     """
     return (
@@ -122,11 +125,11 @@ def ProRateValue(value, inRange, outRange) -> int | float | None:
 def Bind(val, inRange) -> int | float:
     """Binds a value into a range
 
-    Args:
+    Args-
         val (int | float): Input value
         inRange (tuple): Range to bind to
 
-    Returns:
+    Returns-
         int | float: Bound Value
     """
     return min(inRange[1], max(inRange[0], val))
@@ -136,11 +139,11 @@ def Bind(val, inRange) -> int | float:
 def ResizeMaxLength(dim, maxSide) -> tuple:
     """Resize a set of dimensions to a maximum
 
-    Args:
+    Args-
         dim (tuple): Dimensions
         maxSide (int): Max side length
 
-    Returns:
+    Returns-
         tuple: New Dimensions
     """
     val = (math.floor(dim[0] / dim[1] * maxSide), maxSide)
@@ -152,12 +155,12 @@ def ResizeMaxLength(dim, maxSide) -> tuple:
 def PositionInTolerance(pos1, pos2, tolerance) -> bool:
     """Checks if 2 positions are within a numeric tolerance
 
-    Args:
+    Args-
         pos1 (tuple): Position 1
         pos2 (tuple): Position 2
         tolerance (int | float): Numerical Tolerance
 
-    Returns:
+    Returns-
         bool: X in Tolerance and Y in Tolerance
     """
     return InTolerance(num1=pos1[1], num2=pos2[1], tolerance=tolerance) and InTolerance(
@@ -169,11 +172,11 @@ def PositionInTolerance(pos1, pos2, tolerance) -> bool:
 def OffsetTuple(inputTuple, offset) -> tuple:
     """Tuple Addition Funciton
 
-    Args:
+    Args-
         inputTuple (tuple): Input
         offset (tuple| int | float):  Amount to offset by
 
-    Returns:
+    Returns-
         tuple: Offset Tuple
     """
     element1 = inputTuple[0] + (offset[0] if isinstance(offset, tuple) else offset)
@@ -184,10 +187,10 @@ def OffsetTuple(inputTuple, offset) -> tuple:
 def Sign(num: int | float) -> int:
     """Return Sign from Value
 
-    Args:
+    Args-
         num (int | float): Input
 
-    Returns:
+    Returns-
         int: Sign of Number
     """
     return int(num / abs(num)) if num != 0 else 0
@@ -201,12 +204,12 @@ def ScaleToSize(
 ) -> tuple:
     """Scale a set of dimensions to a new screen size
 
-    Args:
+    Args-
         value (tuple): Dimensions
         newSize (tuple): New Screen Size
         origSize (tuple, optional): Old Screen Size. Defaults to StandardDimensions["Medium"].
 
-    Returns:
+    Returns-
         tuple: New Dimensions
     """
     return value
@@ -220,11 +223,11 @@ def ScaleToSize(
 def ScaleTuple(tupleArg, scale) -> tuple:
     """Mutiply scalar by tuple
 
-    Args:
+    Args-
         tupleArg (tuple): input Tuple
         scale (int | float): product
 
-    Returns:
+    Returns-
         tuple: Scaled Tuple
     """
     return (tupleArg[0] * scale, tupleArg[1] * scale)

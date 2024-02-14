@@ -3,21 +3,22 @@
 import copy
 import random
 
-from Classes import Game
+from Classes import GameBase
 from Definitions import AssetLibrary, DefinedLocations
-from Utilities import Utils
+from Engine import Utils
 
 
+# TODO- CheckOnTheWay and Make work
 def IsSeatTaken(seatLocation) -> bool:
     """Checks if Customer Sat in Seat
 
-    Args:
+    Args-
         seatLocation (tuple): Location of Seat
 
-    Returns:
+    Returns-
         bool: Is Seat Free
     """
-    for sprite in Game.MasterGame.CharSpriteGroup:
+    for sprite in GameBase.MasterGame.CharSpriteGroup:
         if sprite.ImageType in AssetLibrary.CustomerOutfits:
             xCheck = Utils.InTolerance(
                 num1=sprite.rect.centerx, num2=seatLocation[0], tolerance=15
@@ -39,7 +40,7 @@ def IsSeatTaken(seatLocation) -> bool:
 def GetRandomSeatPosition() -> tuple | None:
     """Picks a random seat position or returns None if None free
 
-    Returns:
+    Returns-
         tuple | None: Seat position
     """
     seatingPlan = DefinedLocations.SeatingPlan
@@ -58,11 +59,11 @@ class DefinedPaths:
     def KitchenToLockerRoom(sprite, dest) -> list:
         """Kitchen to a desired changing room
 
-        Args:
+        Args-
             sprite (Sprite): Worker To Change
             dest (tuple): Destination Position
 
-        Returns:
+        Returns-
             list: List of Points for Path
         """
         path = [
@@ -74,12 +75,12 @@ class DefinedPaths:
         return path
 
     @staticmethod
-    def CustomerToRandomSeat(sprite) -> list:
+    def CustomerToRandomSeat(sprite) -> list | None:
         """Picks a random seat and generates a path to it
 
         sprite (Sprite): Active Customer
 
-        Returns:
+        Returns-
             list: List of Points for Path
         """
         randomSeatPosition = GetRandomSeatPosition()
@@ -90,16 +91,17 @@ class DefinedPaths:
                 (randomSeatPosition[0], randomSeatPosition[1] + 50),
             ]
             return path
+        return None
 
     @staticmethod
     def KitchenToCustomer(sprite, dest) -> list:
         """Path for kitchen to customer's seat
 
-        Args:
+        Args-
             sprite (Sprite): Active Worker
             dest (tuple): Customer's Seat
 
-        Returns:
+        Returns-
             list: List of Points for Path
         """
         path = [
@@ -121,11 +123,11 @@ class DefinedPaths:
     def BackToKitchen(sprite, VertFirst=True) -> list:
         """From Current Location to Kitchen
 
-        Args:
+        Args-
             sprite (Sprite): Active Worker
             activeGame (Game, optional): Current Game. Defaults to Game.MasterGame
 
-        Returns:
+        Returns-
             list: List of Points for Path
         """
         path = [
@@ -150,10 +152,10 @@ class DefinedPaths:
     def CustomerToExit(sprite) -> list:
         """Queued Customer to Leave the Restaurant
 
-        Args:
+        Args-
             sprite (Sprite): Active Customer
 
-        Returns:
+        Returns-
             list: List of Points for Path
         """
         path = [sprite.rect.center, DefinedLocations.LocationDefs.CustomerExit]
@@ -163,10 +165,10 @@ class DefinedPaths:
     def TableToExit(sprite) -> list:
         """Seated Customer to Exit
 
-        Args:
+        Args-
             sprite (Sprite): Active Customer
 
-        Returns:
+        Returns-
             list: List of Points for Path
         """
         path = [
@@ -184,10 +186,10 @@ class DefinedPaths:
     def CustomerToEntrance(sprite) -> list:
         """Walk In Logic Path
 
-        Args:
+        Args-
             sprite (Sprite): Active Customer
 
-        Returns:
+        Returns-
             list: List of Points for Path
         """
         path = [sprite.rect.center, DefinedLocations.LocationDefs.CustomerEntrance]

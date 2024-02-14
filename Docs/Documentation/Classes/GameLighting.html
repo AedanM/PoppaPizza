@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>Classes.GameObject API documentation</title>
-<meta name="description" content="Class for Game Object BaseClass" />
+<title>Classes.GameLighting API documentation</title>
+<meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -19,48 +19,38 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>Classes.GameObject</code></h1>
+<h1 class="title">Module <code>Classes.GameLighting</code></h1>
 </header>
 <section id="section-intro">
-<p>Class for Game Object BaseClass</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">&#34;&#34;&#34;Class for Game Object BaseClass&#34;&#34;&#34;
+<pre><code class="python">import pygame
 
-import pygame
+from Definitions import AssetLibrary, ColorDefines
+from Engine import Color, LightingEngine
 
 
-class GameObject(pygame.sprite.Sprite):
-    &#34;&#34;&#34;Base class for all images in game&#34;&#34;&#34;
+class GameLighting(LightingEngine.LightingEngine):
+    MorningColorOptions: list = {
+        &#34;Blue&#34;: ColorDefines.Blue,
+        &#34;Orange&#34;: ColorDefines.OrangeMorning,
+    }
+    NightColorOptions: list = {
+        &#34;Blue&#34;: ColorDefines.Blue,
+        &#34;Orange&#34;: ColorDefines.OrangeNight,
+    }
+    LightMask: pygame.Surface = pygame.image.load(AssetLibrary.ImagePath.LightMaskPath)
+    NightTransitionColor: Color.Color = NightColorOptions[&#34;Orange&#34;]
+    MorningTransitionColor: Color.Color = MorningColorOptions[&#34;Orange&#34;]
 
-    IsBackground: bool = False
-    IsRendered: bool = False
-    Moveable: bool = False
-    Collision: bool = False
+    def __init__(self, screenSize) -&gt; None:
+        super().__init__(screenSize=screenSize)
+        self.LightMask = self.LightMask.convert()
 
-    def __init__(self, backgroundFlag, moveFlag, collisionFlag) -&gt; None:
-        &#34;&#34;&#34;Init for Game Object
-
-        Args:
-            backgroundFlag (bool): Is the object in the background
-            moveFlag (bool): Can the object move
-            collisionFlag (bool): Can the object collide
-        &#34;&#34;&#34;
-        super().__init__()
-        self.IsBackground = backgroundFlag
-        self.Moveable = moveFlag
-        self.Collision = collisionFlag
-
-    def UpdateSprite(self) -&gt; None:
-        &#34;&#34;&#34;Virtual method for inherited classes to update&#34;&#34;&#34;
-        self.Update()
-
-    def Update(self) -&gt; None:
-        &#34;&#34;&#34;Update the sprite on screen&#34;&#34;&#34;
-        if self.Moveable and &#34;MvmHandler&#34; in dir(self):
-            self.MvmHandler.CalcNewPosition(self)</code></pre>
+    def LightingEngine(self, activeGame, dayTransition=False) -&gt; None:
+        super().LightingEngine(activeGame=activeGame, dayTransition=dayTransition)</code></pre>
 </details>
 </section>
 <section>
@@ -72,115 +62,76 @@ class GameObject(pygame.sprite.Sprite):
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="Classes.GameObject.GameObject"><code class="flex name class">
-<span>class <span class="ident">GameObject</span></span>
-<span>(</span><span>backgroundFlag, moveFlag, collisionFlag)</span>
+<dt id="Classes.GameLighting.GameLighting"><code class="flex name class">
+<span>class <span class="ident">GameLighting</span></span>
+<span>(</span><span>screenSize)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Base class for all images in game</p>
-<p>Init for Game Object</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>backgroundFlag</code></strong> :&ensp;<code>bool</code></dt>
-<dd>Is the object in the background</dd>
-<dt><strong><code>moveFlag</code></strong> :&ensp;<code>bool</code></dt>
-<dd>Can the object move</dd>
-<dt><strong><code>collisionFlag</code></strong> :&ensp;<code>bool</code></dt>
-<dd>Can the object collide</dd>
-</dl></div>
+<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class GameObject(pygame.sprite.Sprite):
-    &#34;&#34;&#34;Base class for all images in game&#34;&#34;&#34;
+<pre><code class="python">class GameLighting(LightingEngine.LightingEngine):
+    MorningColorOptions: list = {
+        &#34;Blue&#34;: ColorDefines.Blue,
+        &#34;Orange&#34;: ColorDefines.OrangeMorning,
+    }
+    NightColorOptions: list = {
+        &#34;Blue&#34;: ColorDefines.Blue,
+        &#34;Orange&#34;: ColorDefines.OrangeNight,
+    }
+    LightMask: pygame.Surface = pygame.image.load(AssetLibrary.ImagePath.LightMaskPath)
+    NightTransitionColor: Color.Color = NightColorOptions[&#34;Orange&#34;]
+    MorningTransitionColor: Color.Color = MorningColorOptions[&#34;Orange&#34;]
 
-    IsBackground: bool = False
-    IsRendered: bool = False
-    Moveable: bool = False
-    Collision: bool = False
+    def __init__(self, screenSize) -&gt; None:
+        super().__init__(screenSize=screenSize)
+        self.LightMask = self.LightMask.convert()
 
-    def __init__(self, backgroundFlag, moveFlag, collisionFlag) -&gt; None:
-        &#34;&#34;&#34;Init for Game Object
-
-        Args:
-            backgroundFlag (bool): Is the object in the background
-            moveFlag (bool): Can the object move
-            collisionFlag (bool): Can the object collide
-        &#34;&#34;&#34;
-        super().__init__()
-        self.IsBackground = backgroundFlag
-        self.Moveable = moveFlag
-        self.Collision = collisionFlag
-
-    def UpdateSprite(self) -&gt; None:
-        &#34;&#34;&#34;Virtual method for inherited classes to update&#34;&#34;&#34;
-        self.Update()
-
-    def Update(self) -&gt; None:
-        &#34;&#34;&#34;Update the sprite on screen&#34;&#34;&#34;
-        if self.Moveable and &#34;MvmHandler&#34; in dir(self):
-            self.MvmHandler.CalcNewPosition(self)</code></pre>
+    def LightingEngine(self, activeGame, dayTransition=False) -&gt; None:
+        super().LightingEngine(activeGame=activeGame, dayTransition=dayTransition)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li>pygame.sprite.Sprite</li>
-</ul>
-<h3>Subclasses</h3>
-<ul class="hlist">
-<li><a title="Classes.Sprite.BackgroundElementSprite" href="Sprite.html#Classes.Sprite.BackgroundElementSprite">BackgroundElementSprite</a></li>
-<li><a title="Classes.Sprite.ButtonObject" href="Sprite.html#Classes.Sprite.ButtonObject">ButtonObject</a></li>
-<li><a title="Classes.Sprite.CharImageSprite" href="Sprite.html#Classes.Sprite.CharImageSprite">CharImageSprite</a></li>
-<li><a title="Classes.Sprite.RectangleObject" href="Sprite.html#Classes.Sprite.RectangleObject">RectangleObject</a></li>
+<li>Engine.LightingEngine.LightingEngine</li>
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="Classes.GameObject.GameObject.Collision"><code class="name">var <span class="ident">Collision</span> : bool</code></dt>
+<dt id="Classes.GameLighting.GameLighting.LightMask"><code class="name">var <span class="ident">LightMask</span> : pygame.surface.Surface</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="Classes.GameObject.GameObject.IsBackground"><code class="name">var <span class="ident">IsBackground</span> : bool</code></dt>
+<dt id="Classes.GameLighting.GameLighting.MorningColorOptions"><code class="name">var <span class="ident">MorningColorOptions</span> : list</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="Classes.GameObject.GameObject.IsRendered"><code class="name">var <span class="ident">IsRendered</span> : bool</code></dt>
+<dt id="Classes.GameLighting.GameLighting.MorningTransitionColor"><code class="name">var <span class="ident">MorningTransitionColor</span> : Engine.Color.Color</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="Classes.GameObject.GameObject.Moveable"><code class="name">var <span class="ident">Moveable</span> : bool</code></dt>
+<dt id="Classes.GameLighting.GameLighting.NightColorOptions"><code class="name">var <span class="ident">NightColorOptions</span> : list</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="Classes.GameLighting.GameLighting.NightTransitionColor"><code class="name">var <span class="ident">NightTransitionColor</span> : Engine.Color.Color</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
 </dl>
 <h3>Methods</h3>
 <dl>
-<dt id="Classes.GameObject.GameObject.Update"><code class="name flex">
-<span>def <span class="ident">Update</span></span>(<span>self) ‑> None</span>
+<dt id="Classes.GameLighting.GameLighting.LightingEngine"><code class="name flex">
+<span>def <span class="ident">LightingEngine</span></span>(<span>self, activeGame, dayTransition=False) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Update the sprite on screen</p></div>
+<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def Update(self) -&gt; None:
-    &#34;&#34;&#34;Update the sprite on screen&#34;&#34;&#34;
-    if self.Moveable and &#34;MvmHandler&#34; in dir(self):
-        self.MvmHandler.CalcNewPosition(self)</code></pre>
-</details>
-</dd>
-<dt id="Classes.GameObject.GameObject.UpdateSprite"><code class="name flex">
-<span>def <span class="ident">UpdateSprite</span></span>(<span>self) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Virtual method for inherited classes to update</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def UpdateSprite(self) -&gt; None:
-    &#34;&#34;&#34;Virtual method for inherited classes to update&#34;&#34;&#34;
-    self.Update()</code></pre>
+<pre><code class="python">def LightingEngine(self, activeGame, dayTransition=False) -&gt; None:
+    super().LightingEngine(activeGame=activeGame, dayTransition=dayTransition)</code></pre>
 </details>
 </dd>
 </dl>
@@ -202,14 +153,14 @@ class GameObject(pygame.sprite.Sprite):
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="Classes.GameObject.GameObject" href="#Classes.GameObject.GameObject">GameObject</a></code></h4>
-<ul class="two-column">
-<li><code><a title="Classes.GameObject.GameObject.Collision" href="#Classes.GameObject.GameObject.Collision">Collision</a></code></li>
-<li><code><a title="Classes.GameObject.GameObject.IsBackground" href="#Classes.GameObject.GameObject.IsBackground">IsBackground</a></code></li>
-<li><code><a title="Classes.GameObject.GameObject.IsRendered" href="#Classes.GameObject.GameObject.IsRendered">IsRendered</a></code></li>
-<li><code><a title="Classes.GameObject.GameObject.Moveable" href="#Classes.GameObject.GameObject.Moveable">Moveable</a></code></li>
-<li><code><a title="Classes.GameObject.GameObject.Update" href="#Classes.GameObject.GameObject.Update">Update</a></code></li>
-<li><code><a title="Classes.GameObject.GameObject.UpdateSprite" href="#Classes.GameObject.GameObject.UpdateSprite">UpdateSprite</a></code></li>
+<h4><code><a title="Classes.GameLighting.GameLighting" href="#Classes.GameLighting.GameLighting">GameLighting</a></code></h4>
+<ul class="">
+<li><code><a title="Classes.GameLighting.GameLighting.LightMask" href="#Classes.GameLighting.GameLighting.LightMask">LightMask</a></code></li>
+<li><code><a title="Classes.GameLighting.GameLighting.LightingEngine" href="#Classes.GameLighting.GameLighting.LightingEngine">LightingEngine</a></code></li>
+<li><code><a title="Classes.GameLighting.GameLighting.MorningColorOptions" href="#Classes.GameLighting.GameLighting.MorningColorOptions">MorningColorOptions</a></code></li>
+<li><code><a title="Classes.GameLighting.GameLighting.MorningTransitionColor" href="#Classes.GameLighting.GameLighting.MorningTransitionColor">MorningTransitionColor</a></code></li>
+<li><code><a title="Classes.GameLighting.GameLighting.NightColorOptions" href="#Classes.GameLighting.GameLighting.NightColorOptions">NightColorOptions</a></code></li>
+<li><code><a title="Classes.GameLighting.GameLighting.NightTransitionColor" href="#Classes.GameLighting.GameLighting.NightTransitionColor">NightTransitionColor</a></code></li>
 </ul>
 </li>
 </ul>

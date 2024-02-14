@@ -36,12 +36,12 @@ from Definitions.Restaurants import Restaurant, RestaurantList
 def MatchIdToPerson(activeGame, inputId, targetOutput=&#34;all&#34;) -&gt; dict:
     &#34;&#34;&#34;Match an id to corresponding people and sprites
 
-    Args:
+    Args-
         activeGame (Game): Current Game
         inputId (int): ID of object to find
         targetOutput (str, optional): Defines what the requested reponse is. Defaults to &#34;all&#34;.
 
-    Returns:
+    Returns-
         dict: _description_
     &#34;&#34;&#34;
     output = {}
@@ -62,7 +62,7 @@ def MatchIdToPerson(activeGame, inputId, targetOutput=&#34;all&#34;) -&gt; dict:
 def RemoveObjFromSprite(activeGame, targetSprite) -&gt; None:
     &#34;&#34;&#34;Delete data class and kill sprite
 
-    Args:
+    Args-
         activeGame (Game): Current Game
         targetSprite (CharImageSprite): Sprite to delete
     &#34;&#34;&#34;
@@ -79,7 +79,7 @@ def RemoveObjFromSprite(activeGame, targetSprite) -&gt; None:
 def RemoveButtonFromLocation(activeGame, location) -&gt; None:
     &#34;&#34;&#34;Remove a given button
 
-    Args:
+    Args-
         activeGame (Game): Current Game
         location (tuple): Location of button to be destroyed
     &#34;&#34;&#34;
@@ -91,10 +91,10 @@ def RemoveButtonFromLocation(activeGame, location) -&gt; None:
 def FindRestaurant(imageType) -&gt; Restaurant | None:
     &#34;&#34;&#34;Matches image type to Restaurant
 
-    Args:
+    Args-
         imageType (Image Type): Input Type
 
-    Returns:
+    Returns-
         Restaurant | None: Matched Restaurant Object
     &#34;&#34;&#34;
     potentialList = [None]
@@ -108,11 +108,11 @@ def FindRestaurant(imageType) -&gt; Restaurant | None:
 def CostumeMatch(workerSprite, customerSprite) -&gt; bool:
     &#34;&#34;&#34;Checks if customer and worker match outfits
 
-    Args:
+    Args-
         workerSprite (CharImageSprite): Active Worker
         customerSprite (CharImageSprite): Active Customer
 
-    Returns:
+    Returns-
         bool: Do they belong to same Restaurants
     &#34;&#34;&#34;
     if workerSprite is not None:
@@ -134,18 +134,11 @@ def CostumeMatch(workerSprite, customerSprite) -&gt; bool:
 </code></dt>
 <dd>
 <div class="desc"><p>Checks if customer and worker match outfits</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>workerSprite</code></strong> :&ensp;<code>CharImageSprite</code></dt>
-<dd>Active Worker</dd>
-<dt><strong><code>customerSprite</code></strong> :&ensp;<code>CharImageSprite</code></dt>
-<dd>Active Customer</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>bool</code></dt>
-<dd>Do they belong to same Restaurants</dd>
-</dl></div>
+<p>Args-
+workerSprite (CharImageSprite): Active Worker
+customerSprite (CharImageSprite): Active Customer</p>
+<p>Returns-
+bool: Do they belong to same Restaurants</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -153,11 +146,11 @@ def CostumeMatch(workerSprite, customerSprite) -&gt; bool:
 <pre><code class="python">def CostumeMatch(workerSprite, customerSprite) -&gt; bool:
     &#34;&#34;&#34;Checks if customer and worker match outfits
 
-    Args:
+    Args-
         workerSprite (CharImageSprite): Active Worker
         customerSprite (CharImageSprite): Active Customer
 
-    Returns:
+    Returns-
         bool: Do they belong to same Restaurants
     &#34;&#34;&#34;
     if workerSprite is not None:
@@ -172,13 +165,10 @@ def CostumeMatch(workerSprite, customerSprite) -&gt; bool:
 </code></dt>
 <dd>
 <div class="desc"><p>Matches image type to Restaurant</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>imageType</code></strong> :&ensp;<code>Image Type</code></dt>
-<dd>Input Type</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<p>Restaurant | None: Matched Restaurant Object</p></div>
+<p>Args-
+imageType (Image Type): Input Type</p>
+<p>Returns-
+Restaurant | None: Matched Restaurant Object</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -186,10 +176,10 @@ def CostumeMatch(workerSprite, customerSprite) -&gt; bool:
 <pre><code class="python">def FindRestaurant(imageType) -&gt; Restaurant | None:
     &#34;&#34;&#34;Matches image type to Restaurant
 
-    Args:
+    Args-
         imageType (Image Type): Input Type
 
-    Returns:
+    Returns-
         Restaurant | None: Matched Restaurant Object
     &#34;&#34;&#34;
     potentialList = [None]
@@ -205,20 +195,12 @@ def CostumeMatch(workerSprite, customerSprite) -&gt; bool:
 </code></dt>
 <dd>
 <div class="desc"><p>Match an id to corresponding people and sprites</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>activeGame</code></strong> :&ensp;<code>Game</code></dt>
-<dd>Current Game</dd>
-<dt><strong><code>inputId</code></strong> :&ensp;<code>int</code></dt>
-<dd>ID of object to find</dd>
-<dt><strong><code>targetOutput</code></strong> :&ensp;<code>str</code>, optional</dt>
-<dd>Defines what the requested reponse is. Defaults to "all".</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>dict</code></dt>
-<dd><em>description</em></dd>
-</dl></div>
+<p>Args-
+activeGame (Game): Current Game
+inputId (int): ID of object to find
+targetOutput (str, optional): Defines what the requested reponse is. Defaults to "all".</p>
+<p>Returns-
+dict: <em>description</em></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -226,12 +208,12 @@ def CostumeMatch(workerSprite, customerSprite) -&gt; bool:
 <pre><code class="python">def MatchIdToPerson(activeGame, inputId, targetOutput=&#34;all&#34;) -&gt; dict:
     &#34;&#34;&#34;Match an id to corresponding people and sprites
 
-    Args:
+    Args-
         activeGame (Game): Current Game
         inputId (int): ID of object to find
         targetOutput (str, optional): Defines what the requested reponse is. Defaults to &#34;all&#34;.
 
-    Returns:
+    Returns-
         dict: _description_
     &#34;&#34;&#34;
     output = {}
@@ -254,13 +236,9 @@ def CostumeMatch(workerSprite, customerSprite) -&gt; bool:
 </code></dt>
 <dd>
 <div class="desc"><p>Remove a given button</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>activeGame</code></strong> :&ensp;<code>Game</code></dt>
-<dd>Current Game</dd>
-<dt><strong><code>location</code></strong> :&ensp;<code>tuple</code></dt>
-<dd>Location of button to be destroyed</dd>
-</dl></div>
+<p>Args-
+activeGame (Game): Current Game
+location (tuple): Location of button to be destroyed</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -268,7 +246,7 @@ def CostumeMatch(workerSprite, customerSprite) -&gt; bool:
 <pre><code class="python">def RemoveButtonFromLocation(activeGame, location) -&gt; None:
     &#34;&#34;&#34;Remove a given button
 
-    Args:
+    Args-
         activeGame (Game): Current Game
         location (tuple): Location of button to be destroyed
     &#34;&#34;&#34;
@@ -282,13 +260,9 @@ def CostumeMatch(workerSprite, customerSprite) -&gt; bool:
 </code></dt>
 <dd>
 <div class="desc"><p>Delete data class and kill sprite</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>activeGame</code></strong> :&ensp;<code>Game</code></dt>
-<dd>Current Game</dd>
-<dt><strong><code>targetSprite</code></strong> :&ensp;<code>CharImageSprite</code></dt>
-<dd>Sprite to delete</dd>
-</dl></div>
+<p>Args-
+activeGame (Game): Current Game
+targetSprite (CharImageSprite): Sprite to delete</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -296,7 +270,7 @@ def CostumeMatch(workerSprite, customerSprite) -&gt; bool:
 <pre><code class="python">def RemoveObjFromSprite(activeGame, targetSprite) -&gt; None:
     &#34;&#34;&#34;Delete data class and kill sprite
 
-    Args:
+    Args-
         activeGame (Game): Current Game
         targetSprite (CharImageSprite): Sprite to delete
     &#34;&#34;&#34;

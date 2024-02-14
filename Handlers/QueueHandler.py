@@ -1,8 +1,8 @@
 """Handler for Queueing Actions"""
 
-from Classes import Game
+from Classes import GameBase
 from Definitions import AssetLibrary, CustomerDefs
-from Utilities import Utils
+from Engine import Utils
 
 QUEUEDISTANCE = 75
 
@@ -10,10 +10,10 @@ QUEUEDISTANCE = 75
 def NeedsToQueue(movingSprite) -> bool:
     """Checks if the Customer needs to Queue
 
-    Args:
+    Args-
         movingSprite (Sprite): Customer
 
-    Returns:
+    Returns-
         bool: Does the customer have to queue
     """
     dataObject = movingSprite.DataObject
@@ -27,7 +27,7 @@ def NeedsToQueue(movingSprite) -> bool:
             return NeedsToQueue(movingSprite=movingSprite)
 
         case CustomerDefs.CustomerStates.WalkingIn:
-            for sprite in Game.MasterGame.CharSpriteGroup:
+            for sprite in GameBase.MasterGame.CharSpriteGroup:
                 if (
                     sprite is not movingSprite
                     and sprite.ImageType in AssetLibrary.CustomerOutfits
@@ -39,21 +39,19 @@ def NeedsToQueue(movingSprite) -> bool:
                     )
                 ):
                     return True
-        # pylint: disable=unused-variable
-        case other:
-            return False
+    return False
 
 
 def FirstInLine(movingSprite) -> bool:
     """Checks if the customer is first in Queue
 
-    Args:
+    Args-
         movingSprite (Sprite): Customer Sprite
 
-    Returns:
+    Returns-
         bool: Is the Customer the first in the line
     """
-    for sprite in Game.MasterGame.CharSpriteGroup:
+    for sprite in GameBase.MasterGame.CharSpriteGroup:
         if (
             sprite is not movingSprite
             and sprite.rect.centerx == movingSprite.rect.centerx

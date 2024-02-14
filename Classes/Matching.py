@@ -1,18 +1,19 @@
 """Matching Functions for Person Objects"""
 
-from Definitions import AssetLibrary
-from Definitions.Restaurants import Restaurant, RestaurantList
+from typing import Any
+
+from Definitions import AssetLibrary, Restaurants
 
 
-def MatchIdToPerson(activeGame, inputId, targetOutput="all") -> dict:
+def MatchIdToPerson(activeGame, inputId, targetOutput="all") -> dict[str, Any] | None:
     """Match an id to corresponding people and sprites
 
-    Args:
+    Args-
         activeGame (Game): Current Game
         inputId (int): ID of object to find
         targetOutput (str, optional): Defines what the requested reponse is. Defaults to "all".
 
-    Returns:
+    Returns-
         dict: _description_
     """
     output = {}
@@ -33,14 +34,16 @@ def MatchIdToPerson(activeGame, inputId, targetOutput="all") -> dict:
 def RemoveObjFromSprite(activeGame, targetSprite) -> None:
     """Delete data class and kill sprite
 
-    Args:
+    Args-
         activeGame (Game): Current Game
         targetSprite (CharImageSprite): Sprite to delete
     """
     responseDict = MatchIdToPerson(
         activeGame=activeGame, inputId=targetSprite.CorrespondingID
     )
-    if "customer" in responseDict:
+    if responseDict is None:
+        pass
+    elif "customer" in responseDict:
         activeGame.CustomerList.remove(responseDict["customer"])
     elif "worker" in responseDict:
         activeGame.WorkerList.remove(responseDict["worker"])
@@ -50,7 +53,7 @@ def RemoveObjFromSprite(activeGame, targetSprite) -> None:
 def RemoveButtonFromLocation(activeGame, location) -> None:
     """Remove a given button
 
-    Args:
+    Args-
         activeGame (Game): Current Game
         location (tuple): Location of button to be destroyed
     """
@@ -59,35 +62,39 @@ def RemoveButtonFromLocation(activeGame, location) -> None:
         activeGame.ButtonList.remove(button)
 
 
-def FindRestaurant(imageType) -> Restaurant | None:
+def FindRestaurant(imageType) -> Restaurants.Restaurant | None:
     """Matches image type to Restaurant
 
-    Args:
+    Args-
         imageType (Image Type): Input Type
 
-    Returns:
+    Returns-
         Restaurant | None: Matched Restaurant Object
     """
     potentialList = [None]
     if imageType in AssetLibrary.WorkerOutfits:
-        potentialList = [x for x in RestaurantList if imageType in x.WorkerImageTypes]
+        potentialList = [
+            x for x in Restaurants.RestaurantList if imageType in x.WorkerImageTypes
+        ]
     elif imageType in AssetLibrary.CustomerOutfits:
-        potentialList = [x for x in RestaurantList if imageType in x.CustomerImageTypes]
+        potentialList = [
+            x for x in Restaurants.RestaurantList if imageType in x.CustomerImageTypes
+        ]
     return potentialList[0]
 
 
 def CostumeMatch(workerSprite, customerSprite) -> bool:
     """Checks if customer and worker match outfits
 
-    Args:
+    Args-
         workerSprite (CharImageSprite): Active Worker
         customerSprite (CharImageSprite): Active Customer
 
-    Returns:
+    Returns-
         bool: Do they belong to same Restaurants
     """
     if workerSprite is not None:
         desiredRest = FindRestaurant(imageType=customerSprite.ImageType)
-        return workerSprite.ImageType in desiredRest.WorkerImageTypes
+        return workerSprite.ImageType in desiredRest.WorkerImageTypes  # type: ignore
 
     return False

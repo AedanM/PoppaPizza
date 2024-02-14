@@ -32,24 +32,24 @@
 import pygame
 import pygame_menu
 
-from Classes import Game
+from Classes import GameBase
 from Handlers import ShopHandler
 
 
 def OpenMenu() -&gt; None:
     &#34;&#34;&#34;Default Entry Point for Menus&#34;&#34;&#34;
-    Game.MasterGame.GameClock.SetRunning(state=False)
+    GameBase.MasterGame.GameClock.SetRunning(state=False)
 
 
 def CloseMenu() -&gt; None:
     &#34;&#34;&#34;Default Exit Point for Menus&#34;&#34;&#34;
-    Game.MasterGame.GameClock.SetRunning(state=True)
+    GameBase.MasterGame.GameClock.SetRunning(state=True)
 
 
-def DayTransistion(activeGame=Game.MasterGame) -&gt; None:
+def DayTransistion(activeGame=GameBase.MasterGame) -&gt; None:
     &#34;&#34;&#34;Splash screen between days
 
-    Args:
+    Args-
         surface (pygame.Surface, optional): Screen to render menu on. Defaults to Game.MasterGame.Screen.
     &#34;&#34;&#34;
     OpenMenu()
@@ -60,35 +60,35 @@ def DayTransistion(activeGame=Game.MasterGame) -&gt; None:
         theme=pygame_menu.themes.THEME_GREEN,
         onclose=CloseMenu,
     )
-    menu.add.label(title=f&#34;Day {Game.MasterGame.GameClock.Day}&#34;, label_id=&#34;Title&#34;)
+    menu.add.label(title=f&#34;Day {GameBase.MasterGame.GameClock.Day}&#34;, label_id=&#34;Title&#34;)
     menu.get_widget(widget_id=&#34;Title&#34;).scale(width=2, height=2, smooth=True)
     menu.add.label(
         title=(
-            f&#34;Customers Served: {Game.MasterGame.UserInventory.Statistics.GetDailyServedCustomers()}&#34;
+            f&#34;Customers Served: {GameBase.MasterGame.UserInventory.Statistics.GetDailyServedCustomers()}&#34;
             + &#34; / &#34;
-            + f&#34;{Game.MasterGame.UserInventory.Statistics.GetDailyTotalCustomers()}&#34;
+            + f&#34;{GameBase.MasterGame.UserInventory.Statistics.GetDailyTotalCustomers()}&#34;
         )
     )
     menu.add.label(
-        title=f&#34;Costume Changes: {Game.MasterGame.UserInventory.Statistics.GetDailyCostumeChanges()}&#34;
+        title=f&#34;Costume Changes: {GameBase.MasterGame.UserInventory.Statistics.GetDailyCostumeChanges()}&#34;
     )
     menu.add.label(
-        title=f&#34;Money Earned: {Game.MasterGame.UserInventory.Statistics.GetDailyEarnings():.2f}&#34;
+        title=f&#34;Money Earned: {GameBase.MasterGame.UserInventory.Statistics.GetDailyEarnings():.2f}&#34;
     )
     menu.add.label(
-        title=f&#34;Money Spent: {Game.MasterGame.UserInventory.Statistics.GetDailySpend():.2f}&#34;
+        title=f&#34;Money Spent: {GameBase.MasterGame.UserInventory.Statistics.GetDailySpend():.2f}&#34;
     )
     menu.add.label(
-        title=f&#34;Profit: {Game.MasterGame.UserInventory.Statistics.GetDailyProfit():.2f}&#34;
+        title=f&#34;Profit: {GameBase.MasterGame.UserInventory.Statistics.GetDailyProfit():.2f}&#34;
     )
     menu.add.button(title=&#34;Continue to Next Day&#34;, action=pygame_menu.events.CLOSE)
     menu.mainloop(surface=activeGame.Screen, wait_for_event=True)
 
 
-def OptionsMenu(surface=Game.MasterGame.Screen) -&gt; None:
+def OptionsMenu(surface=GameBase.MasterGame.Screen) -&gt; None:
     &#34;&#34;&#34;Menu for Game Configuration
 
-    Args:
+    Args-
         surface (pygame.Surface, optional): Screen to render menu on. Defaults to Game.MasterGame.Screen.
     &#34;&#34;&#34;
     OpenMenu()
@@ -102,38 +102,38 @@ def OptionsMenu(surface=Game.MasterGame.Screen) -&gt; None:
     menu.add.toggle_switch(
         toggleswitch_id=&#34;24Toggle&#34;,
         title=&#34;24 Hour Clock&#34;,
-        default=Game.MasterGame.Settings.Clock24,
+        default=GameBase.MasterGame.Settings.Clock24,
         state_text=(&#34;Off&#34;, &#34;On&#34;),
         state_values=(False, True),
-        onchange=lambda x: Game.MasterGame.Settings.SetClock24(value=x),
+        onchange=lambda x: GameBase.MasterGame.Settings.SetClock24(value=x),
     )
     menu.add.range_slider(
         title=&#34;Speed&#34;,
         default=0,
         range_values=list(
             range(
-                Game.MasterGame.Settings.ClockPowRange[0],
-                Game.MasterGame.Settings.ClockPowRange[1] + 1,
+                GameBase.MasterGame.Settings.ClockPowRange[0],
+                GameBase.MasterGame.Settings.ClockPowRange[1] + 1,
             )
         ),
         value_format=lambda x: f&#34;{pow(base=2, exp=x)}x&#34;,
         range_text_value_enabled=False,
-        onchange=lambda x: (Game.MasterGame.Settings.SetClockMul(value=x)),
+        onchange=lambda x: (GameBase.MasterGame.Settings.SetClockMul(value=x)),
     )
     menu.add.dropselect(
         title=&#34;Night Color: &#34;,
-        items=Game.MasterGame.Lighting.NightColorOptions,
-        default=Game.MasterGame.GameClock.LightColor,
-        onchange=lambda x: Game.MasterGame.GameClock.ChangeNightColor(rgb=x),
+        items=GameBase.MasterGame.Lighting.NightColorOptions,
+        default=GameBase.MasterGame.GameClock.LightColor,
+        onchange=lambda x: GameBase.MasterGame.GameClock.ChangeNightColor(rgb=x),
     )
     menu.add.button(title=&#34;Return&#34;, action=pygame_menu.events.CLOSE)
     menu.mainloop(surface=surface, wait_for_event=True)
 
 
-def ShopMenu(surface=Game.MasterGame.Screen) -&gt; None:
+def ShopMenu(surface=GameBase.MasterGame.Screen) -&gt; None:
     &#34;&#34;&#34;Menu for shop screen
 
-    Args:
+    Args-
         surface (pygame.Surface, optional): Screen to generate Menu on. Defaults to Game.MasterGame.Screen.
     &#34;&#34;&#34;
     OpenMenu()
@@ -159,18 +159,20 @@ def ShopMenu(surface=Game.MasterGame.Screen) -&gt; None:
 
 
 # TODO- Move Reason to Enum
-def GameOverMenu(surface=Game.MasterGame.Screen, reason=&#34;You ran out of Money&#34;) -&gt; None:
+def GameOverMenu(
+    surface=GameBase.MasterGame.Screen, reason=&#34;You ran out of Money&#34;
+) -&gt; None:
     &#34;&#34;&#34;Displayed Screen when Game Ends
 
-    Args:
+    Args-
         surface (pygame.Screen, optional): Screen which the menu is rendered on. Defaults to Game.MasterGame.Screen.
         reason (str, optional): Reason for Game Over as a Str. Defaults to &#34;You ran out of Money&#34;.
     &#34;&#34;&#34;
     OpenMenu()
     menu = pygame_menu.Menu(
         title=&#34;Game Over&#34;,
-        width=Game.MasterGame.Screen.get_width(),
-        height=Game.MasterGame.Screen.get_height(),
+        width=GameBase.MasterGame.Screen.get_width(),
+        height=GameBase.MasterGame.Screen.get_height(),
         onclose=pygame_menu.events.EXIT,
         theme=pygame_menu.themes.THEME_DARK,
     )
@@ -197,27 +199,24 @@ def GameOverMenu(surface=Game.MasterGame.Screen, reason=&#34;You ran out of Mone
 </summary>
 <pre><code class="python">def CloseMenu() -&gt; None:
     &#34;&#34;&#34;Default Exit Point for Menus&#34;&#34;&#34;
-    Game.MasterGame.GameClock.SetRunning(state=True)</code></pre>
+    GameBase.MasterGame.GameClock.SetRunning(state=True)</code></pre>
 </details>
 </dd>
 <dt id="Generators.Menus.DayTransistion"><code class="name flex">
-<span>def <span class="ident">DayTransistion</span></span>(<span>activeGame=&lt;Classes.Game.Game object&gt;) ‑> None</span>
+<span>def <span class="ident">DayTransistion</span></span>(<span>activeGame=&lt;Classes.GameBase.MainGame object&gt;) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Splash screen between days</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>surface</code></strong> :&ensp;<code>pygame.Surface</code>, optional</dt>
-<dd>Screen to render menu on. Defaults to Game.MasterGame.Screen.</dd>
-</dl></div>
+<p>Args-
+surface (pygame.Surface, optional): Screen to render menu on. Defaults to Game.MasterGame.Screen.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def DayTransistion(activeGame=Game.MasterGame) -&gt; None:
+<pre><code class="python">def DayTransistion(activeGame=GameBase.MasterGame) -&gt; None:
     &#34;&#34;&#34;Splash screen between days
 
-    Args:
+    Args-
         surface (pygame.Surface, optional): Screen to render menu on. Defaults to Game.MasterGame.Screen.
     &#34;&#34;&#34;
     OpenMenu()
@@ -228,26 +227,26 @@ def GameOverMenu(surface=Game.MasterGame.Screen, reason=&#34;You ran out of Mone
         theme=pygame_menu.themes.THEME_GREEN,
         onclose=CloseMenu,
     )
-    menu.add.label(title=f&#34;Day {Game.MasterGame.GameClock.Day}&#34;, label_id=&#34;Title&#34;)
+    menu.add.label(title=f&#34;Day {GameBase.MasterGame.GameClock.Day}&#34;, label_id=&#34;Title&#34;)
     menu.get_widget(widget_id=&#34;Title&#34;).scale(width=2, height=2, smooth=True)
     menu.add.label(
         title=(
-            f&#34;Customers Served: {Game.MasterGame.UserInventory.Statistics.GetDailyServedCustomers()}&#34;
+            f&#34;Customers Served: {GameBase.MasterGame.UserInventory.Statistics.GetDailyServedCustomers()}&#34;
             + &#34; / &#34;
-            + f&#34;{Game.MasterGame.UserInventory.Statistics.GetDailyTotalCustomers()}&#34;
+            + f&#34;{GameBase.MasterGame.UserInventory.Statistics.GetDailyTotalCustomers()}&#34;
         )
     )
     menu.add.label(
-        title=f&#34;Costume Changes: {Game.MasterGame.UserInventory.Statistics.GetDailyCostumeChanges()}&#34;
+        title=f&#34;Costume Changes: {GameBase.MasterGame.UserInventory.Statistics.GetDailyCostumeChanges()}&#34;
     )
     menu.add.label(
-        title=f&#34;Money Earned: {Game.MasterGame.UserInventory.Statistics.GetDailyEarnings():.2f}&#34;
+        title=f&#34;Money Earned: {GameBase.MasterGame.UserInventory.Statistics.GetDailyEarnings():.2f}&#34;
     )
     menu.add.label(
-        title=f&#34;Money Spent: {Game.MasterGame.UserInventory.Statistics.GetDailySpend():.2f}&#34;
+        title=f&#34;Money Spent: {GameBase.MasterGame.UserInventory.Statistics.GetDailySpend():.2f}&#34;
     )
     menu.add.label(
-        title=f&#34;Profit: {Game.MasterGame.UserInventory.Statistics.GetDailyProfit():.2f}&#34;
+        title=f&#34;Profit: {GameBase.MasterGame.UserInventory.Statistics.GetDailyProfit():.2f}&#34;
     )
     menu.add.button(title=&#34;Continue to Next Day&#34;, action=pygame_menu.events.CLOSE)
     menu.mainloop(surface=activeGame.Screen, wait_for_event=True)</code></pre>
@@ -258,29 +257,27 @@ def GameOverMenu(surface=Game.MasterGame.Screen, reason=&#34;You ran out of Mone
 </code></dt>
 <dd>
 <div class="desc"><p>Displayed Screen when Game Ends</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>surface</code></strong> :&ensp;<code>pygame.Screen</code>, optional</dt>
-<dd>Screen which the menu is rendered on. Defaults to Game.MasterGame.Screen.</dd>
-<dt><strong><code>reason</code></strong> :&ensp;<code>str</code>, optional</dt>
-<dd>Reason for Game Over as a Str. Defaults to "You ran out of Money".</dd>
-</dl></div>
+<p>Args-
+surface (pygame.Screen, optional): Screen which the menu is rendered on. Defaults to Game.MasterGame.Screen.
+reason (str, optional): Reason for Game Over as a Str. Defaults to "You ran out of Money".</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def GameOverMenu(surface=Game.MasterGame.Screen, reason=&#34;You ran out of Money&#34;) -&gt; None:
+<pre><code class="python">def GameOverMenu(
+    surface=GameBase.MasterGame.Screen, reason=&#34;You ran out of Money&#34;
+) -&gt; None:
     &#34;&#34;&#34;Displayed Screen when Game Ends
 
-    Args:
+    Args-
         surface (pygame.Screen, optional): Screen which the menu is rendered on. Defaults to Game.MasterGame.Screen.
         reason (str, optional): Reason for Game Over as a Str. Defaults to &#34;You ran out of Money&#34;.
     &#34;&#34;&#34;
     OpenMenu()
     menu = pygame_menu.Menu(
         title=&#34;Game Over&#34;,
-        width=Game.MasterGame.Screen.get_width(),
-        height=Game.MasterGame.Screen.get_height(),
+        width=GameBase.MasterGame.Screen.get_width(),
+        height=GameBase.MasterGame.Screen.get_height(),
         onclose=pygame_menu.events.EXIT,
         theme=pygame_menu.themes.THEME_DARK,
     )
@@ -300,7 +297,7 @@ def GameOverMenu(surface=Game.MasterGame.Screen, reason=&#34;You ran out of Mone
 </summary>
 <pre><code class="python">def OpenMenu() -&gt; None:
     &#34;&#34;&#34;Default Entry Point for Menus&#34;&#34;&#34;
-    Game.MasterGame.GameClock.SetRunning(state=False)</code></pre>
+    GameBase.MasterGame.GameClock.SetRunning(state=False)</code></pre>
 </details>
 </dd>
 <dt id="Generators.Menus.OptionsMenu"><code class="name flex">
@@ -308,19 +305,16 @@ def GameOverMenu(surface=Game.MasterGame.Screen, reason=&#34;You ran out of Mone
 </code></dt>
 <dd>
 <div class="desc"><p>Menu for Game Configuration</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>surface</code></strong> :&ensp;<code>pygame.Surface</code>, optional</dt>
-<dd>Screen to render menu on. Defaults to Game.MasterGame.Screen.</dd>
-</dl></div>
+<p>Args-
+surface (pygame.Surface, optional): Screen to render menu on. Defaults to Game.MasterGame.Screen.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def OptionsMenu(surface=Game.MasterGame.Screen) -&gt; None:
+<pre><code class="python">def OptionsMenu(surface=GameBase.MasterGame.Screen) -&gt; None:
     &#34;&#34;&#34;Menu for Game Configuration
 
-    Args:
+    Args-
         surface (pygame.Surface, optional): Screen to render menu on. Defaults to Game.MasterGame.Screen.
     &#34;&#34;&#34;
     OpenMenu()
@@ -334,29 +328,29 @@ def GameOverMenu(surface=Game.MasterGame.Screen, reason=&#34;You ran out of Mone
     menu.add.toggle_switch(
         toggleswitch_id=&#34;24Toggle&#34;,
         title=&#34;24 Hour Clock&#34;,
-        default=Game.MasterGame.Settings.Clock24,
+        default=GameBase.MasterGame.Settings.Clock24,
         state_text=(&#34;Off&#34;, &#34;On&#34;),
         state_values=(False, True),
-        onchange=lambda x: Game.MasterGame.Settings.SetClock24(value=x),
+        onchange=lambda x: GameBase.MasterGame.Settings.SetClock24(value=x),
     )
     menu.add.range_slider(
         title=&#34;Speed&#34;,
         default=0,
         range_values=list(
             range(
-                Game.MasterGame.Settings.ClockPowRange[0],
-                Game.MasterGame.Settings.ClockPowRange[1] + 1,
+                GameBase.MasterGame.Settings.ClockPowRange[0],
+                GameBase.MasterGame.Settings.ClockPowRange[1] + 1,
             )
         ),
         value_format=lambda x: f&#34;{pow(base=2, exp=x)}x&#34;,
         range_text_value_enabled=False,
-        onchange=lambda x: (Game.MasterGame.Settings.SetClockMul(value=x)),
+        onchange=lambda x: (GameBase.MasterGame.Settings.SetClockMul(value=x)),
     )
     menu.add.dropselect(
         title=&#34;Night Color: &#34;,
-        items=Game.MasterGame.Lighting.NightColorOptions,
-        default=Game.MasterGame.GameClock.LightColor,
-        onchange=lambda x: Game.MasterGame.GameClock.ChangeNightColor(rgb=x),
+        items=GameBase.MasterGame.Lighting.NightColorOptions,
+        default=GameBase.MasterGame.GameClock.LightColor,
+        onchange=lambda x: GameBase.MasterGame.GameClock.ChangeNightColor(rgb=x),
     )
     menu.add.button(title=&#34;Return&#34;, action=pygame_menu.events.CLOSE)
     menu.mainloop(surface=surface, wait_for_event=True)</code></pre>
@@ -367,19 +361,16 @@ def GameOverMenu(surface=Game.MasterGame.Screen, reason=&#34;You ran out of Mone
 </code></dt>
 <dd>
 <div class="desc"><p>Menu for shop screen</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>surface</code></strong> :&ensp;<code>pygame.Surface</code>, optional</dt>
-<dd>Screen to generate Menu on. Defaults to Game.MasterGame.Screen.</dd>
-</dl></div>
+<p>Args-
+surface (pygame.Surface, optional): Screen to generate Menu on. Defaults to Game.MasterGame.Screen.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def ShopMenu(surface=Game.MasterGame.Screen) -&gt; None:
+<pre><code class="python">def ShopMenu(surface=GameBase.MasterGame.Screen) -&gt; None:
     &#34;&#34;&#34;Menu for shop screen
 
-    Args:
+    Args-
         surface (pygame.Surface, optional): Screen to generate Menu on. Defaults to Game.MasterGame.Screen.
     &#34;&#34;&#34;
     OpenMenu()

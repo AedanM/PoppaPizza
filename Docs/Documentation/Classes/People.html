@@ -32,52 +32,15 @@
 import random
 from dataclasses import dataclass
 
-import names
-
-from Classes import Game, Jobs, Sprite
+from Classes import GameBase, Jobs, Sprite
 from Definitions import AssetLibrary, CustomerDefs, DefinedLocations
-from Utilities import Utils
+from Engine import Person, Utils
 
 IDCOUNT = 1
 
 
 @dataclass
-class Person:
-    &#34;&#34;&#34;Base class for all People Data Classes&#34;&#34;&#34;
-
-    FirstName: str
-    LastName: str
-    IdNum: int
-    Body: None = None
-    IsAssigned: bool = False
-
-    @classmethod
-    def Create(cls) -&gt; &#34;Person&#34;:
-        &#34;&#34;&#34;Creates a person object
-
-        Returns:
-            Person: Base Person Object
-        &#34;&#34;&#34;
-        fName = names.get_first_name(gender=&#34;female&#34;)
-        lName = names.get_last_name()
-        selfid = cls.GenerateID()
-        return cls(FirstName=fName, LastName=lName, IdNum=selfid)
-
-    @staticmethod
-    def GenerateID() -&gt; int:
-        &#34;&#34;&#34;Generates unique ID for person
-
-        Returns:
-            int: Personal ID
-        &#34;&#34;&#34;
-        # pylint: disable=global-statement
-        global IDCOUNT
-        IDCOUNT += 1
-        return IDCOUNT
-
-
-@dataclass
-class Worker(Person):
+class Worker(Person.Person):
     &#34;&#34;&#34;Data class for Workers, inherits from Person Class&#34;&#34;&#34;
 
     BasePay: float = 1.0
@@ -86,15 +49,15 @@ class Worker(Person):
     def CreateWorker(
         cls,
         startLocation=DefinedLocations.LocationDefs.WorkerSpawn,
-        activeGame=Game.MasterGame,
+        activeGame=GameBase.MasterGame,
     ) -&gt; tuple:
         &#34;&#34;&#34;Create and Spawn in Worker and Worker Sprite
 
-        Args:
+        Args-
             startLocation (tuple, optional): Spawn Location. Defaults to DefinedLocations.LocationDefs.KitchenLocation.
             activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
 
-        Returns:
+        Returns-
             tuple: (Dataclass, Image Classs)
         &#34;&#34;&#34;
         worker = cls.Create()
@@ -113,7 +76,7 @@ class Worker(Person):
 
 
 @dataclass
-class Customer(Person):
+class Customer(Person.Person):
     &#34;&#34;&#34;Data Class for Customers, inherits from Person Class&#34;&#34;&#34;
 
     DesiredJob: Jobs.Job = None
@@ -124,17 +87,17 @@ class Customer(Person):
     def CreateCustomer(
         cls,
         startLocation=DefinedLocations.LocationDefs.CustomerSpawn,
-        activeGame=Game.MasterGame,
+        activeGame=GameBase.MasterGame,
         imageType=AssetLibrary.ImageTypes.CustomerSuit,
     ) -&gt; tuple:
         &#34;&#34;&#34;Creates a Customer nad Customer Sprite
 
-        Args:
+        Args-
             startLocation (tuple, optional): Spawn Location. Defaults to DefinedLocations.LocationDefs.CustomerEntrance.
             activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
             imageType (AssetLibrary.ImageType, optional): Type of Image to Load onto Customer. Defaults to AssetLibrary.ImageTypes.CustomerSuit.
 
-        Returns:
+        Returns-
             tuple: (Dataclass, Image Class)
         &#34;&#34;&#34;
         cust = cls.Create()
@@ -175,7 +138,7 @@ class Customer(Person):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass
-class Customer(Person):
+class Customer(Person.Person):
     &#34;&#34;&#34;Data Class for Customers, inherits from Person Class&#34;&#34;&#34;
 
     DesiredJob: Jobs.Job = None
@@ -186,17 +149,17 @@ class Customer(Person):
     def CreateCustomer(
         cls,
         startLocation=DefinedLocations.LocationDefs.CustomerSpawn,
-        activeGame=Game.MasterGame,
+        activeGame=GameBase.MasterGame,
         imageType=AssetLibrary.ImageTypes.CustomerSuit,
     ) -&gt; tuple:
         &#34;&#34;&#34;Creates a Customer nad Customer Sprite
 
-        Args:
+        Args-
             startLocation (tuple, optional): Spawn Location. Defaults to DefinedLocations.LocationDefs.CustomerEntrance.
             activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
             imageType (AssetLibrary.ImageType, optional): Type of Image to Load onto Customer. Defaults to AssetLibrary.ImageTypes.CustomerSuit.
 
-        Returns:
+        Returns-
             tuple: (Dataclass, Image Class)
         &#34;&#34;&#34;
         cust = cls.Create()
@@ -218,7 +181,7 @@ class Customer(Person):
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="Classes.People.Person" href="#Classes.People.Person">Person</a></li>
+<li>Engine.Person.Person</li>
 </ul>
 <h3>Class variables</h3>
 <dl>
@@ -238,24 +201,16 @@ class Customer(Person):
 <h3>Static methods</h3>
 <dl>
 <dt id="Classes.People.Customer.CreateCustomer"><code class="name flex">
-<span>def <span class="ident">CreateCustomer</span></span>(<span>startLocation=(1150, 1000), activeGame=&lt;Classes.Game.Game object&gt;, imageType=ImageTypes.CustomerSuit) ‑> tuple</span>
+<span>def <span class="ident">CreateCustomer</span></span>(<span>startLocation=(1150, 1000), activeGame=&lt;Classes.GameBase.MainGame object&gt;, imageType=ImageTypes.CustomerSuit) ‑> tuple</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates a Customer nad Customer Sprite</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>startLocation</code></strong> :&ensp;<code>tuple</code>, optional</dt>
-<dd>Spawn Location. Defaults to DefinedLocations.LocationDefs.CustomerEntrance.</dd>
-<dt><strong><code>activeGame</code></strong> :&ensp;<code>Game</code>, optional</dt>
-<dd>Current Game. Defaults to Game.MasterGame.</dd>
-<dt><strong><code>imageType</code></strong> :&ensp;<code>AssetLibrary.ImageType</code>, optional</dt>
-<dd>Type of Image to Load onto Customer. Defaults to AssetLibrary.ImageTypes.CustomerSuit.</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>tuple</code></dt>
-<dd>(Dataclass, Image Class)</dd>
-</dl></div>
+<p>Args-
+startLocation (tuple, optional): Spawn Location. Defaults to DefinedLocations.LocationDefs.CustomerEntrance.
+activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
+imageType (AssetLibrary.ImageType, optional): Type of Image to Load onto Customer. Defaults to AssetLibrary.ImageTypes.CustomerSuit.</p>
+<p>Returns-
+tuple: (Dataclass, Image Class)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -264,17 +219,17 @@ class Customer(Person):
 def CreateCustomer(
     cls,
     startLocation=DefinedLocations.LocationDefs.CustomerSpawn,
-    activeGame=Game.MasterGame,
+    activeGame=GameBase.MasterGame,
     imageType=AssetLibrary.ImageTypes.CustomerSuit,
 ) -&gt; tuple:
     &#34;&#34;&#34;Creates a Customer nad Customer Sprite
 
-    Args:
+    Args-
         startLocation (tuple, optional): Spawn Location. Defaults to DefinedLocations.LocationDefs.CustomerEntrance.
         activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
         imageType (AssetLibrary.ImageType, optional): Type of Image to Load onto Customer. Defaults to AssetLibrary.ImageTypes.CustomerSuit.
 
-    Returns:
+    Returns-
         tuple: (Dataclass, Image Class)
     &#34;&#34;&#34;
     cust = cls.Create()
@@ -296,145 +251,6 @@ def CreateCustomer(
 </details>
 </dd>
 </dl>
-<h3>Inherited members</h3>
-<ul class="hlist">
-<li><code><b><a title="Classes.People.Person" href="#Classes.People.Person">Person</a></b></code>:
-<ul class="hlist">
-<li><code><a title="Classes.People.Person.Create" href="#Classes.People.Person.Create">Create</a></code></li>
-<li><code><a title="Classes.People.Person.GenerateID" href="#Classes.People.Person.GenerateID">GenerateID</a></code></li>
-</ul>
-</li>
-</ul>
-</dd>
-<dt id="Classes.People.Person"><code class="flex name class">
-<span>class <span class="ident">Person</span></span>
-<span>(</span><span>FirstName: str, LastName: str, IdNum: int, Body: None = None, IsAssigned: bool = False)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Base class for all People Data Classes</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@dataclass
-class Person:
-    &#34;&#34;&#34;Base class for all People Data Classes&#34;&#34;&#34;
-
-    FirstName: str
-    LastName: str
-    IdNum: int
-    Body: None = None
-    IsAssigned: bool = False
-
-    @classmethod
-    def Create(cls) -&gt; &#34;Person&#34;:
-        &#34;&#34;&#34;Creates a person object
-
-        Returns:
-            Person: Base Person Object
-        &#34;&#34;&#34;
-        fName = names.get_first_name(gender=&#34;female&#34;)
-        lName = names.get_last_name()
-        selfid = cls.GenerateID()
-        return cls(FirstName=fName, LastName=lName, IdNum=selfid)
-
-    @staticmethod
-    def GenerateID() -&gt; int:
-        &#34;&#34;&#34;Generates unique ID for person
-
-        Returns:
-            int: Personal ID
-        &#34;&#34;&#34;
-        # pylint: disable=global-statement
-        global IDCOUNT
-        IDCOUNT += 1
-        return IDCOUNT</code></pre>
-</details>
-<h3>Subclasses</h3>
-<ul class="hlist">
-<li><a title="Classes.People.Customer" href="#Classes.People.Customer">Customer</a></li>
-<li><a title="Classes.People.Worker" href="#Classes.People.Worker">Worker</a></li>
-</ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="Classes.People.Person.Body"><code class="name">var <span class="ident">Body</span> : None</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="Classes.People.Person.FirstName"><code class="name">var <span class="ident">FirstName</span> : str</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="Classes.People.Person.IdNum"><code class="name">var <span class="ident">IdNum</span> : int</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="Classes.People.Person.IsAssigned"><code class="name">var <span class="ident">IsAssigned</span> : bool</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="Classes.People.Person.LastName"><code class="name">var <span class="ident">LastName</span> : str</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
-<h3>Static methods</h3>
-<dl>
-<dt id="Classes.People.Person.Create"><code class="name flex">
-<span>def <span class="ident">Create</span></span>(<span>) ‑> <a title="Classes.People.Person" href="#Classes.People.Person">Person</a></span>
-</code></dt>
-<dd>
-<div class="desc"><p>Creates a person object</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code><a title="Classes.People.Person" href="#Classes.People.Person">Person</a></code></dt>
-<dd>Base Person Object</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def Create(cls) -&gt; &#34;Person&#34;:
-    &#34;&#34;&#34;Creates a person object
-
-    Returns:
-        Person: Base Person Object
-    &#34;&#34;&#34;
-    fName = names.get_first_name(gender=&#34;female&#34;)
-    lName = names.get_last_name()
-    selfid = cls.GenerateID()
-    return cls(FirstName=fName, LastName=lName, IdNum=selfid)</code></pre>
-</details>
-</dd>
-<dt id="Classes.People.Person.GenerateID"><code class="name flex">
-<span>def <span class="ident">GenerateID</span></span>(<span>) ‑> int</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Generates unique ID for person</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>int</code></dt>
-<dd>Personal ID</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@staticmethod
-def GenerateID() -&gt; int:
-    &#34;&#34;&#34;Generates unique ID for person
-
-    Returns:
-        int: Personal ID
-    &#34;&#34;&#34;
-    # pylint: disable=global-statement
-    global IDCOUNT
-    IDCOUNT += 1
-    return IDCOUNT</code></pre>
-</details>
-</dd>
-</dl>
 </dd>
 <dt id="Classes.People.Worker"><code class="flex name class">
 <span>class <span class="ident">Worker</span></span>
@@ -447,7 +263,7 @@ def GenerateID() -&gt; int:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass
-class Worker(Person):
+class Worker(Person.Person):
     &#34;&#34;&#34;Data class for Workers, inherits from Person Class&#34;&#34;&#34;
 
     BasePay: float = 1.0
@@ -456,15 +272,15 @@ class Worker(Person):
     def CreateWorker(
         cls,
         startLocation=DefinedLocations.LocationDefs.WorkerSpawn,
-        activeGame=Game.MasterGame,
+        activeGame=GameBase.MasterGame,
     ) -&gt; tuple:
         &#34;&#34;&#34;Create and Spawn in Worker and Worker Sprite
 
-        Args:
+        Args-
             startLocation (tuple, optional): Spawn Location. Defaults to DefinedLocations.LocationDefs.KitchenLocation.
             activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
 
-        Returns:
+        Returns-
             tuple: (Dataclass, Image Classs)
         &#34;&#34;&#34;
         worker = cls.Create()
@@ -483,7 +299,7 @@ class Worker(Person):
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="Classes.People.Person" href="#Classes.People.Person">Person</a></li>
+<li>Engine.Person.Person</li>
 </ul>
 <h3>Class variables</h3>
 <dl>
@@ -495,22 +311,15 @@ class Worker(Person):
 <h3>Static methods</h3>
 <dl>
 <dt id="Classes.People.Worker.CreateWorker"><code class="name flex">
-<span>def <span class="ident">CreateWorker</span></span>(<span>startLocation=(125, 1600), activeGame=&lt;Classes.Game.Game object&gt;) ‑> tuple</span>
+<span>def <span class="ident">CreateWorker</span></span>(<span>startLocation=(125, 1600), activeGame=&lt;Classes.GameBase.MainGame object&gt;) ‑> tuple</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Create and Spawn in Worker and Worker Sprite</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>startLocation</code></strong> :&ensp;<code>tuple</code>, optional</dt>
-<dd>Spawn Location. Defaults to DefinedLocations.LocationDefs.KitchenLocation.</dd>
-<dt><strong><code>activeGame</code></strong> :&ensp;<code>Game</code>, optional</dt>
-<dd>Current Game. Defaults to Game.MasterGame.</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>tuple</code></dt>
-<dd>(Dataclass, Image Classs)</dd>
-</dl></div>
+<p>Args-
+startLocation (tuple, optional): Spawn Location. Defaults to DefinedLocations.LocationDefs.KitchenLocation.
+activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.</p>
+<p>Returns-
+tuple: (Dataclass, Image Classs)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -519,15 +328,15 @@ class Worker(Person):
 def CreateWorker(
     cls,
     startLocation=DefinedLocations.LocationDefs.WorkerSpawn,
-    activeGame=Game.MasterGame,
+    activeGame=GameBase.MasterGame,
 ) -&gt; tuple:
     &#34;&#34;&#34;Create and Spawn in Worker and Worker Sprite
 
-    Args:
+    Args-
         startLocation (tuple, optional): Spawn Location. Defaults to DefinedLocations.LocationDefs.KitchenLocation.
         activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
 
-    Returns:
+    Returns-
         tuple: (Dataclass, Image Classs)
     &#34;&#34;&#34;
     worker = cls.Create()
@@ -546,15 +355,6 @@ def CreateWorker(
 </details>
 </dd>
 </dl>
-<h3>Inherited members</h3>
-<ul class="hlist">
-<li><code><b><a title="Classes.People.Person" href="#Classes.People.Person">Person</a></b></code>:
-<ul class="hlist">
-<li><code><a title="Classes.People.Person.Create" href="#Classes.People.Person.Create">Create</a></code></li>
-<li><code><a title="Classes.People.Person.GenerateID" href="#Classes.People.Person.GenerateID">GenerateID</a></code></li>
-</ul>
-</li>
-</ul>
 </dd>
 </dl>
 </section>
@@ -579,18 +379,6 @@ def CreateWorker(
 <li><code><a title="Classes.People.Customer.CurrentState" href="#Classes.People.Customer.CurrentState">CurrentState</a></code></li>
 <li><code><a title="Classes.People.Customer.DesiredJob" href="#Classes.People.Customer.DesiredJob">DesiredJob</a></code></li>
 <li><code><a title="Classes.People.Customer.WorkerAssigned" href="#Classes.People.Customer.WorkerAssigned">WorkerAssigned</a></code></li>
-</ul>
-</li>
-<li>
-<h4><code><a title="Classes.People.Person" href="#Classes.People.Person">Person</a></code></h4>
-<ul class="two-column">
-<li><code><a title="Classes.People.Person.Body" href="#Classes.People.Person.Body">Body</a></code></li>
-<li><code><a title="Classes.People.Person.Create" href="#Classes.People.Person.Create">Create</a></code></li>
-<li><code><a title="Classes.People.Person.FirstName" href="#Classes.People.Person.FirstName">FirstName</a></code></li>
-<li><code><a title="Classes.People.Person.GenerateID" href="#Classes.People.Person.GenerateID">GenerateID</a></code></li>
-<li><code><a title="Classes.People.Person.IdNum" href="#Classes.People.Person.IdNum">IdNum</a></code></li>
-<li><code><a title="Classes.People.Person.IsAssigned" href="#Classes.People.Person.IsAssigned">IsAssigned</a></code></li>
-<li><code><a title="Classes.People.Person.LastName" href="#Classes.People.Person.LastName">LastName</a></code></li>
 </ul>
 </li>
 <li>

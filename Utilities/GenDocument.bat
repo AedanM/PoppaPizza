@@ -2,6 +2,7 @@
 cd ..\
 
 pdoc3 --html Main.py -o Docs\Documentation --force
+
 pdoc3 --html Classes -o Docs\Documentation --force
 python Utilities\RestructureDocumentation.py -f .\Docs\Documentation\Classes\index.html
 
@@ -17,7 +18,6 @@ python Utilities\RestructureDocumentation.py -f .\Docs\Documentation\Definitions
 pdoc3 --html Testing -o Docs\Documentation --force
 python Utilities\RestructureDocumentation.py -f .\Docs\Documentation\Testing\index.html
 
-pdoc3 --html Utilities\Utils.py -o Docs\Documentation\ --force
-python Utilities\RestructureDocumentation.py -f .\Docs\Documentation\Utils.html
-
+pdoc3 --html Engine -o Docs\Documentation\ --force
+python Utilities\RestructureDocumentation.py -f .\Docs\Documentation\Engine\index.html
 

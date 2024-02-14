@@ -9,7 +9,7 @@ class ImagePaths:
     """Object to hold all image paths and handle packaging"""
 
     # pylint: disable=W0212, E1101
-    AssetFolder = r"Assets" if not hasattr(sys, "_MEIPASS") else sys._MEIPASS
+    AssetFolder = r"Assets" if not hasattr(sys, "_MEIPASS") else sys._MEIPASS  # type: ignore
     BackgroundPath = AssetFolder + r"\Backgrounds\background.png"
     TriviaBackgroundPath = AssetFolder + r"\Backgrounds\triviaBackground.png"
     LightMaskPath = AssetFolder + r"\Backgrounds\lightMask.png"

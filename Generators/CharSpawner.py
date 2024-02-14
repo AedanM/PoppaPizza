@@ -2,10 +2,10 @@
 
 import random
 
-from Classes import Game, People
+from Classes import GameBase, People
 from Definitions import AssetLibrary, DefinedLocations, Prices, Restaurants
+from Engine import Utils
 from Handlers import CustomerHandler, WorkerHandler
-from Utilities import Utils
 
 # pylint: disable=C0103
 LastSpawnTime = 0
@@ -14,13 +14,13 @@ LastSpawnTime = 0
 def SpawnLocationFree(spawnPoint=DefinedLocations.LocationDefs.EndOfLine) -> bool:
     """Determines if spawn location has another sprite on it
 
-    Args:
+    Args-
         spawnPoint (tuple, optional): Spawn location as a tuple. Defaults to DefinedLocations.LocationDefs.EndOfLine.
 
-    Returns:
+    Returns-
         bool: Free status of Spawn Location
     """
-    for sprite in Game.MasterGame.CharSpriteGroup:
+    for sprite in GameBase.MasterGame.CharSpriteGroup:
         if sprite.rect.collidepoint(spawnPoint[0], spawnPoint[1]):
             return False
     return True
@@ -29,12 +29,12 @@ def SpawnLocationFree(spawnPoint=DefinedLocations.LocationDefs.EndOfLine) -> boo
 def CustomerSpawner(force=False) -> None:
     """Randomly Spawns Customers
 
-    Args:
+    Args-
         force (bool, optional): Force a spawn on this run. Defaults to False.
     """
     global LastSpawnTime
-    currentTime = Game.MasterGame.GameClock.UnixTime
-    chanceOfSpawn = Game.MasterGame.Chances.CustomerSpawn * float(
+    currentTime = GameBase.MasterGame.GameClock.UnixTime
+    chanceOfSpawn = GameBase.MasterGame.Chances.CustomerSpawn * float(
         currentTime - LastSpawnTime
     )
     if (random.random() < chanceOfSpawn or force) and SpawnLocationFree():
@@ -45,7 +45,7 @@ def CustomerSpawner(force=False) -> None:
         )
         CustomerHandler.WalkIn(target=customerSprite)
         LastSpawnTime = currentTime
-        Game.MasterGame.UserInventory.Statistics.CustomersEntered += 1
+        GameBase.MasterGame.UserInventory.Statistics.CustomersEntered += 1
 
 
 def GetRandomCustomerType() -> AssetLibrary.ImageTypes:
@@ -55,7 +55,7 @@ def GetRandomCustomerType() -> AssetLibrary.ImageTypes:
         The random list is developed with an ActiveRestLuck number of active customers
         and 1 inactive customer. This is to not punish the player too severely
 
-    Returns:
+    Returns-
         AssetLibrary.ImageTypes: Image Type of Customer
     """
     activeClientTypes = [
@@ -71,8 +71,8 @@ def GetRandomCustomerType() -> AssetLibrary.ImageTypes:
     customerType = random.choice(
         random.choice(
             random.choice(
-                [activeClientTypes] * Game.MasterGame.Chances.ActiveRestLuck
-                + [inactiveClientTypes]
+                [activeClientTypes] * GameBase.MasterGame.Chances.ActiveRestLuck
+                + [inactiveClientTypes]  # type:ignore
             )
         )
     )
@@ -83,14 +83,14 @@ def GetRandomCustomerType() -> AssetLibrary.ImageTypes:
 def BuyWorker(free=False) -> None:
     """Buy Worker and Spawn Them In
 
-    Args:
+    Args-
         free (bool, optional): Forces a free purchase. Defaults to False.
     """
-    if Game.MasterGame.UserInventory.Money > Prices.CurrentWorkerPrice:
+    if GameBase.MasterGame.UserInventory.Money > Prices.CurrentWorkerPrice:
         spawnLocation = DefinedLocations.LocationDefs.WorkerSpawn
         _, workerSprite = People.Worker.CreateWorker(startLocation=spawnLocation)
         if not free:
-            Game.MasterGame.UserInventory.Money -= Prices.CurrentWorkerPrice
+            GameBase.MasterGame.UserInventory.Money -= Prices.CurrentWorkerPrice
             Prices.CurrentWorkerPrice = round(
                 Prices.CurrentWorkerPrice * random.uniform(1.0, 2.5), 2
             )

@@ -31,10 +31,10 @@
 
 import random
 
-from Classes import Game, People
+from Classes import GameBase, People
 from Definitions import AssetLibrary, DefinedLocations, Prices, Restaurants
 from Handlers import CustomerHandler, WorkerHandler
-from Utilities import Utils
+from Engine import Utils
 
 # pylint: disable=C0103
 LastSpawnTime = 0
@@ -43,13 +43,13 @@ LastSpawnTime = 0
 def SpawnLocationFree(spawnPoint=DefinedLocations.LocationDefs.EndOfLine) -&gt; bool:
     &#34;&#34;&#34;Determines if spawn location has another sprite on it
 
-    Args:
+    Args-
         spawnPoint (tuple, optional): Spawn location as a tuple. Defaults to DefinedLocations.LocationDefs.EndOfLine.
 
-    Returns:
+    Returns-
         bool: Free status of Spawn Location
     &#34;&#34;&#34;
-    for sprite in Game.MasterGame.CharSpriteGroup:
+    for sprite in GameBase.MasterGame.CharSpriteGroup:
         if sprite.rect.collidepoint(spawnPoint[0], spawnPoint[1]):
             return False
     return True
@@ -58,12 +58,12 @@ def SpawnLocationFree(spawnPoint=DefinedLocations.LocationDefs.EndOfLine) -&gt; 
 def CustomerSpawner(force=False) -&gt; None:
     &#34;&#34;&#34;Randomly Spawns Customers
 
-    Args:
+    Args-
         force (bool, optional): Force a spawn on this run. Defaults to False.
     &#34;&#34;&#34;
     global LastSpawnTime
-    currentTime = Game.MasterGame.GameClock.UnixTime
-    chanceOfSpawn = Game.MasterGame.Chances.CustomerSpawn * float(
+    currentTime = GameBase.MasterGame.GameClock.UnixTime
+    chanceOfSpawn = GameBase.MasterGame.Chances.CustomerSpawn * float(
         currentTime - LastSpawnTime
     )
     if (random.random() &lt; chanceOfSpawn or force) and SpawnLocationFree():
@@ -74,7 +74,7 @@ def CustomerSpawner(force=False) -&gt; None:
         )
         CustomerHandler.WalkIn(target=customerSprite)
         LastSpawnTime = currentTime
-        Game.MasterGame.UserInventory.Statistics.CustomersEntered += 1
+        GameBase.MasterGame.UserInventory.Statistics.CustomersEntered += 1
 
 
 def GetRandomCustomerType() -&gt; AssetLibrary.ImageTypes:
@@ -84,7 +84,7 @@ def GetRandomCustomerType() -&gt; AssetLibrary.ImageTypes:
         The random list is developed with an ActiveRestLuck number of active customers
         and 1 inactive customer. This is to not punish the player too severely
 
-    Returns:
+    Returns-
         AssetLibrary.ImageTypes: Image Type of Customer
     &#34;&#34;&#34;
     activeClientTypes = [
@@ -100,7 +100,7 @@ def GetRandomCustomerType() -&gt; AssetLibrary.ImageTypes:
     customerType = random.choice(
         random.choice(
             random.choice(
-                [activeClientTypes] * Game.MasterGame.Chances.ActiveRestLuck
+                [activeClientTypes] * GameBase.MasterGame.Chances.ActiveRestLuck
                 + [inactiveClientTypes]
             )
         )
@@ -112,14 +112,14 @@ def GetRandomCustomerType() -&gt; AssetLibrary.ImageTypes:
 def BuyWorker(free=False) -&gt; None:
     &#34;&#34;&#34;Buy Worker and Spawn Them In
 
-    Args:
+    Args-
         free (bool, optional): Forces a free purchase. Defaults to False.
     &#34;&#34;&#34;
-    if Game.MasterGame.UserInventory.Money &gt; Prices.CurrentWorkerPrice:
+    if GameBase.MasterGame.UserInventory.Money &gt; Prices.CurrentWorkerPrice:
         spawnLocation = DefinedLocations.LocationDefs.WorkerSpawn
         _, workerSprite = People.Worker.CreateWorker(startLocation=spawnLocation)
         if not free:
-            Game.MasterGame.UserInventory.Money -= Prices.CurrentWorkerPrice
+            GameBase.MasterGame.UserInventory.Money -= Prices.CurrentWorkerPrice
             Prices.CurrentWorkerPrice = round(
                 Prices.CurrentWorkerPrice * random.uniform(1.0, 2.5), 2
             )
@@ -138,11 +138,8 @@ def BuyWorker(free=False) -&gt; None:
 </code></dt>
 <dd>
 <div class="desc"><p>Buy Worker and Spawn Them In</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>free</code></strong> :&ensp;<code>bool</code>, optional</dt>
-<dd>Forces a free purchase. Defaults to False.</dd>
-</dl></div>
+<p>Args-
+free (bool, optional): Forces a free purchase. Defaults to False.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -150,14 +147,14 @@ def BuyWorker(free=False) -&gt; None:
 <pre><code class="python">def BuyWorker(free=False) -&gt; None:
     &#34;&#34;&#34;Buy Worker and Spawn Them In
 
-    Args:
+    Args-
         free (bool, optional): Forces a free purchase. Defaults to False.
     &#34;&#34;&#34;
-    if Game.MasterGame.UserInventory.Money &gt; Prices.CurrentWorkerPrice:
+    if GameBase.MasterGame.UserInventory.Money &gt; Prices.CurrentWorkerPrice:
         spawnLocation = DefinedLocations.LocationDefs.WorkerSpawn
         _, workerSprite = People.Worker.CreateWorker(startLocation=spawnLocation)
         if not free:
-            Game.MasterGame.UserInventory.Money -= Prices.CurrentWorkerPrice
+            GameBase.MasterGame.UserInventory.Money -= Prices.CurrentWorkerPrice
             Prices.CurrentWorkerPrice = round(
                 Prices.CurrentWorkerPrice * random.uniform(1.0, 2.5), 2
             )
@@ -169,11 +166,8 @@ def BuyWorker(free=False) -&gt; None:
 </code></dt>
 <dd>
 <div class="desc"><p>Randomly Spawns Customers</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>force</code></strong> :&ensp;<code>bool</code>, optional</dt>
-<dd>Force a spawn on this run. Defaults to False.</dd>
-</dl></div>
+<p>Args-
+force (bool, optional): Force a spawn on this run. Defaults to False.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -181,12 +175,12 @@ def BuyWorker(free=False) -&gt; None:
 <pre><code class="python">def CustomerSpawner(force=False) -&gt; None:
     &#34;&#34;&#34;Randomly Spawns Customers
 
-    Args:
+    Args-
         force (bool, optional): Force a spawn on this run. Defaults to False.
     &#34;&#34;&#34;
     global LastSpawnTime
-    currentTime = Game.MasterGame.GameClock.UnixTime
-    chanceOfSpawn = Game.MasterGame.Chances.CustomerSpawn * float(
+    currentTime = GameBase.MasterGame.GameClock.UnixTime
+    chanceOfSpawn = GameBase.MasterGame.Chances.CustomerSpawn * float(
         currentTime - LastSpawnTime
     )
     if (random.random() &lt; chanceOfSpawn or force) and SpawnLocationFree():
@@ -197,7 +191,7 @@ def BuyWorker(free=False) -&gt; None:
         )
         CustomerHandler.WalkIn(target=customerSprite)
         LastSpawnTime = currentTime
-        Game.MasterGame.UserInventory.Statistics.CustomersEntered += 1</code></pre>
+        GameBase.MasterGame.UserInventory.Statistics.CustomersEntered += 1</code></pre>
 </details>
 </dd>
 <dt id="Generators.CharSpawner.GetRandomCustomerType"><code class="name flex">
@@ -209,11 +203,8 @@ def BuyWorker(free=False) -&gt; None:
 The random list is developed with an ActiveRestLuck number of active customers
 and 1 inactive customer. This is to not punish the player too severely
 </code></pre>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>AssetLibrary.ImageTypes</code></dt>
-<dd>Image Type of Customer</dd>
-</dl></div>
+<p>Returns-
+AssetLibrary.ImageTypes: Image Type of Customer</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -225,7 +216,7 @@ and 1 inactive customer. This is to not punish the player too severely
         The random list is developed with an ActiveRestLuck number of active customers
         and 1 inactive customer. This is to not punish the player too severely
 
-    Returns:
+    Returns-
         AssetLibrary.ImageTypes: Image Type of Customer
     &#34;&#34;&#34;
     activeClientTypes = [
@@ -241,7 +232,7 @@ and 1 inactive customer. This is to not punish the player too severely
     customerType = random.choice(
         random.choice(
             random.choice(
-                [activeClientTypes] * Game.MasterGame.Chances.ActiveRestLuck
+                [activeClientTypes] * GameBase.MasterGame.Chances.ActiveRestLuck
                 + [inactiveClientTypes]
             )
         )
@@ -255,16 +246,10 @@ and 1 inactive customer. This is to not punish the player too severely
 </code></dt>
 <dd>
 <div class="desc"><p>Determines if spawn location has another sprite on it</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>spawnPoint</code></strong> :&ensp;<code>tuple</code>, optional</dt>
-<dd>Spawn location as a tuple. Defaults to DefinedLocations.LocationDefs.EndOfLine.</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>bool</code></dt>
-<dd>Free status of Spawn Location</dd>
-</dl></div>
+<p>Args-
+spawnPoint (tuple, optional): Spawn location as a tuple. Defaults to DefinedLocations.LocationDefs.EndOfLine.</p>
+<p>Returns-
+bool: Free status of Spawn Location</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -272,13 +257,13 @@ and 1 inactive customer. This is to not punish the player too severely
 <pre><code class="python">def SpawnLocationFree(spawnPoint=DefinedLocations.LocationDefs.EndOfLine) -&gt; bool:
     &#34;&#34;&#34;Determines if spawn location has another sprite on it
 
-    Args:
+    Args-
         spawnPoint (tuple, optional): Spawn location as a tuple. Defaults to DefinedLocations.LocationDefs.EndOfLine.
 
-    Returns:
+    Returns-
         bool: Free status of Spawn Location
     &#34;&#34;&#34;
-    for sprite in Game.MasterGame.CharSpriteGroup:
+    for sprite in GameBase.MasterGame.CharSpriteGroup:
         if sprite.rect.collidepoint(spawnPoint[0], spawnPoint[1]):
             return False
     return True</code></pre>

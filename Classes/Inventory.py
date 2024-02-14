@@ -16,7 +16,7 @@ class Inventory:
     def GetPaid(self, amount) -> None:
         """Get paid an amount of cash
 
-        Args:
+        Args-
             amount (int | float): Amount Paid
         """
         amount = round(max(amount, 0), 2)
@@ -27,7 +27,7 @@ class Inventory:
     def PayMoney(self, amount, update=False) -> None:
         """Pay an Amount of Money and Update the Stats
 
-        Args:
+        Args-
             amount (int | float): Amount spent
             update (bool, optional): To Update the Game Over ticker or not. Defaults to True.
         """

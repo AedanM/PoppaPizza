@@ -1,14 +1,12 @@
-"""Class for Altering Colors"""
-
 import colorsys
 from dataclasses import dataclass
 
 import numpy as np
 
-from Utilities import Utils
+from Engine import Utils
 
 
-def RGB_to_HSV(red, green, blue) -> None:
+def RGB_to_HSV(red, green, blue) -> tuple:
     red_percentage = red / float(255)
     green_percentage = green / float(255)
     blue_percentage = blue / float(255)
@@ -37,9 +35,9 @@ class Color:
         """Creates a color from HSV or RGB input"""
         try:
             if h is not None and s is not None and v is not None:
-                self.H = Utils.Bind(val=h, inRange=(0, 255))
-                self.S = Utils.Bind(val=s, inRange=(0, 255))
-                self.V = Utils.Bind(val=v, inRange=(0, 255))
+                self.H = int(Utils.Bind(val=h, inRange=(0, 255)))
+                self.S = int(Utils.Bind(val=s, inRange=(0, 255)))
+                self.V = int(Utils.Bind(val=v, inRange=(0, 255)))
             elif r is not None and g is not None and b is not None:
                 self.H, self.S, self.V = RGB_to_HSV(red=r, green=g, blue=b)
             elif hexstring is not None:
@@ -52,9 +50,9 @@ class Color:
             else:
                 raise Exception("Invalid Inputs")
         except Exception as e:
-            raise Exception(f"Invalid Inputs: {e}")
+            raise Exception(f"Invalid Inputs: {e}") from e
 
-    def GetNumPy(self) -> "np.NDArray[np.uint8]":
+    def GetNumPy(self) -> "np.NDArray[np.uint8]":  # type: ignore
         """Numpy Representation"""
         return np.array([self.H, self.S, self.V], dtype=np.uint8)
 
@@ -89,21 +87,3 @@ class Color:
         """Returns the hex string representation"""
         R, G, B = self.RGB
         return f"#{R:2x}{G:2x}{B:2x}"
-
-
-White = Color(h=0, s=0, v=255)
-Blue = Color(h=150, s=200, v=128)
-Green = Color(h=70, s=200, v=128)
-LimeGreen = Color(h=70, s=200, v=255)
-DarkRed = Color(h=0, s=255, v=140)
-Grey = Color(h=0, s=0, v=200)
-Pink = Color(h=220, s=200, v=128)
-Yellow = Color(h=25, s=200, v=180)
-CautionTapeYellow = Color(h=37, s=255, v=255)
-Brown = Color(h=29, s=230, v=100)
-Black = Color(h=0, s=0, v=0)
-OrangeMorning = Color(h=15, s=50, v=255)
-OrangeNight = Color(h=15, s=130, v=200)
-BlueMorning = Color(h=200, s=50, v=255)
-BlueNight = Color(h=200, s=130, v=200)
-TriviaBlue = Color(h=167, s=170, v=200)

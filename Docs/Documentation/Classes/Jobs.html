@@ -64,7 +64,7 @@ class Job:
     def SpawnJob(cls) -&gt; &#34;Job&#34;:
         &#34;&#34;&#34;Create a Job
 
-        Returns:
+        Returns-
             Job: Generated Job
         &#34;&#34;&#34;
         # pylint: disable=global-statement
@@ -91,11 +91,11 @@ class Job:
     def GetAssignedFromID(jobList, targetID) -&gt; tuple:
         &#34;&#34;&#34;Find assigned people to job
 
-        Args:
+        Args-
             jobList (list): Master list of jobs
             targetID (_type_): ID of job to lookup
 
-        Returns:
+        Returns-
             tuple: (Assigned Worker, Assigned Customer)
         &#34;&#34;&#34;
         assignedMems = [
@@ -110,7 +110,7 @@ class Job:
     def Assign(self, target) -&gt; None:
         &#34;&#34;&#34;Assign Job to Person
             If customer then the job is placed given to them as their desired
-        Args:
+        Args-
             target (Person): Person to assign job to
         &#34;&#34;&#34;
         if &#34;DesiredJob&#34; in dir(target):
@@ -157,7 +157,7 @@ class Job:
     def SpawnJob(cls) -&gt; &#34;Job&#34;:
         &#34;&#34;&#34;Create a Job
 
-        Returns:
+        Returns-
             Job: Generated Job
         &#34;&#34;&#34;
         # pylint: disable=global-statement
@@ -184,11 +184,11 @@ class Job:
     def GetAssignedFromID(jobList, targetID) -&gt; tuple:
         &#34;&#34;&#34;Find assigned people to job
 
-        Args:
+        Args-
             jobList (list): Master list of jobs
             targetID (_type_): ID of job to lookup
 
-        Returns:
+        Returns-
             tuple: (Assigned Worker, Assigned Customer)
         &#34;&#34;&#34;
         assignedMems = [
@@ -203,7 +203,7 @@ class Job:
     def Assign(self, target) -&gt; None:
         &#34;&#34;&#34;Assign Job to Person
             If customer then the job is placed given to them as their desired
-        Args:
+        Args-
             target (Person): Person to assign job to
         &#34;&#34;&#34;
         if &#34;DesiredJob&#34; in dir(target):
@@ -252,18 +252,11 @@ class Job:
 </code></dt>
 <dd>
 <div class="desc"><p>Find assigned people to job</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>jobList</code></strong> :&ensp;<code>list</code></dt>
-<dd>Master list of jobs</dd>
-<dt><strong><code>targetID</code></strong> :&ensp;<code>_type_</code></dt>
-<dd>ID of job to lookup</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>tuple</code></dt>
-<dd>(Assigned Worker, Assigned Customer)</dd>
-</dl></div>
+<p>Args-
+jobList (list): Master list of jobs
+targetID (<em>type</em>): ID of job to lookup</p>
+<p>Returns-
+tuple: (Assigned Worker, Assigned Customer)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -272,11 +265,11 @@ class Job:
 def GetAssignedFromID(jobList, targetID) -&gt; tuple:
     &#34;&#34;&#34;Find assigned people to job
 
-    Args:
+    Args-
         jobList (list): Master list of jobs
         targetID (_type_): ID of job to lookup
 
-    Returns:
+    Returns-
         tuple: (Assigned Worker, Assigned Customer)
     &#34;&#34;&#34;
     assignedMems = [
@@ -294,11 +287,8 @@ def GetAssignedFromID(jobList, targetID) -&gt; tuple:
 </code></dt>
 <dd>
 <div class="desc"><p>Create a Job</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code><a title="Classes.Jobs.Job" href="#Classes.Jobs.Job">Job</a></code></dt>
-<dd>Generated Job</dd>
-</dl></div>
+<p>Returns-
+Job: Generated Job</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -307,7 +297,7 @@ def GetAssignedFromID(jobList, targetID) -&gt; tuple:
 def SpawnJob(cls) -&gt; &#34;Job&#34;:
     &#34;&#34;&#34;Create a Job
 
-    Returns:
+    Returns-
         Job: Generated Job
     &#34;&#34;&#34;
     # pylint: disable=global-statement
@@ -339,12 +329,9 @@ def SpawnJob(cls) -&gt; &#34;Job&#34;:
 </code></dt>
 <dd>
 <div class="desc"><p>Assign Job to Person
-If customer then the job is placed given to them as their desired</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>target</code></strong> :&ensp;<code>Person</code></dt>
-<dd>Person to assign job to</dd>
-</dl></div>
+If customer then the job is placed given to them as their desired
+Args-
+target (Person): Person to assign job to</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -352,7 +339,7 @@ If customer then the job is placed given to them as their desired</p>
 <pre><code class="python">def Assign(self, target) -&gt; None:
     &#34;&#34;&#34;Assign Job to Person
         If customer then the job is placed given to them as their desired
-    Args:
+    Args-
         target (Person): Person to assign job to
     &#34;&#34;&#34;
     if &#34;DesiredJob&#34; in dir(target):

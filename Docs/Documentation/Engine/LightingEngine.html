@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>Classes.LightingEngine API documentation</title>
+<title>Engine.LightingEngine API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,37 +19,26 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>Classes.LightingEngine</code></h1>
+<h1 class="title">Module <code>Engine.LightingEngine</code></h1>
 </header>
 <section id="section-intro">
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">import time
+<pre><code class="python">import pygame
 
-import pygame
-
-from Definitions import AssetLibrary, ColorTools, DefinedLocations
-from Utilities import Utils
+from Engine import Color, Utils
 
 
-class LightingEffects:
+class LightingEngine:
     CurrentNightTransitionAlpha: int = 0
     MaxNightLightAlpha: float = 200
     NightTransitionCover: float = 0.05
-    LightMask: pygame.Surface = pygame.image.load(AssetLibrary.ImagePath.LightMaskPath)
+    LightMask: pygame.Surface = pygame.Surface((1, 1))
     DayColorScreen: pygame.Surface = None
-    MorningColorOptions: list = {
-        &#34;Blue&#34;: ColorTools.Blue,
-        &#34;Orange&#34;: ColorTools.OrangeMorning,
-    }
-    NightColorOptions: list = {
-        &#34;Blue&#34;: ColorTools.Blue,
-        &#34;Orange&#34;: ColorTools.OrangeNight,
-    }
-    NightTransitionColor: ColorTools.Color = NightColorOptions[&#34;Orange&#34;]
-    MorningTransitionColor: ColorTools.Color = MorningColorOptions[&#34;Orange&#34;]
+    NightTransitionColor: Color.Color = Color.Color(hexstring=&#34;#FFFFFF&#34;)
+    MorningTransitionColor: Color.Color = Color.Color(hexstring=&#34;#000000&#34;)
 
     def __init__(self, screenSize) -&gt; None:
         self.DayColorScreen = pygame.Surface(screenSize)
@@ -59,14 +48,14 @@ class LightingEffects:
         morningPercent = Utils.Bind(val=1 - (dayPercent * 2), inRange=(0, 1))
         nightPercent = Utils.Bind(val=((dayPercent - 0.5) * 2), inRange=(0, 1))
         noonPercent = (1 - morningPercent) - nightPercent
-        currentColor = ColorTools.Color(
+        currentColor = Color.Color(
             h=(self.MorningTransitionColor.H * morningPercent)
             + (self.NightTransitionColor.H * nightPercent),
             s=(self.MorningTransitionColor.S * morningPercent)
             + (self.NightTransitionColor.S * nightPercent),
             v=(self.MorningTransitionColor.V * morningPercent)
             + (self.NightTransitionColor.V * nightPercent)
-            + (ColorTools.White.V * noonPercent),
+            + (255 * noonPercent),
         )
         self.DayColorScreen.fill(currentColor.RGB)
         return self.DayColorScreen
@@ -74,22 +63,23 @@ class LightingEffects:
     def ChangeNightColor(self, rgb) -&gt; None:
         if rgb != (-1, -1, -1):
             r, g, b = rgb
-            self.NightTransitionColor = ColorTools.Color(r=r, g=g, b=b)
+            self.NightTransitionColor = Color.Color(r=r, g=g, b=b)
 
-    def LightingEngine(self, activeGame) -&gt; None:
-        lightLayer = self.AllDayBlend(
-            gameClock=activeGame.GameClock, screenSize=activeGame.ScreenSize
-        )
-        lightLayer.blit(
-            self.LightMask,
-            (0, 0),
-            special_flags=(pygame.BLEND_ADD),
-        )
-        activeGame.Screen.blit(
-            lightLayer,
-            (0, 0),
-            special_flags=(pygame.BLEND_MULT),
-        )</code></pre>
+    def LightingEngine(self, activeGame, dayTransition=False) -&gt; None:
+        if dayTransition:
+            lightLayer = self.AllDayBlend(
+                gameClock=activeGame.GameClock, screenSize=activeGame.ScreenSize
+            )
+            lightLayer.blit(
+                self.LightMask,
+                (0, 0),
+                special_flags=(pygame.BLEND_ADD),
+            )
+            activeGame.Screen.blit(
+                lightLayer,
+                (0, 0),
+                special_flags=(pygame.BLEND_MULT),
+            )</code></pre>
 </details>
 </section>
 <section>
@@ -101,8 +91,8 @@ class LightingEffects:
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="Classes.LightingEngine.LightingEffects"><code class="flex name class">
-<span>class <span class="ident">LightingEffects</span></span>
+<dt id="Engine.LightingEngine.LightingEngine"><code class="flex name class">
+<span>class <span class="ident">LightingEngine</span></span>
 <span>(</span><span>screenSize)</span>
 </code></dt>
 <dd>
@@ -111,22 +101,14 @@ class LightingEffects:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class LightingEffects:
+<pre><code class="python">class LightingEngine:
     CurrentNightTransitionAlpha: int = 0
     MaxNightLightAlpha: float = 200
     NightTransitionCover: float = 0.05
-    LightMask: pygame.Surface = pygame.image.load(AssetLibrary.ImagePath.LightMaskPath)
+    LightMask: pygame.Surface = pygame.Surface((1, 1))
     DayColorScreen: pygame.Surface = None
-    MorningColorOptions: list = {
-        &#34;Blue&#34;: ColorTools.Blue,
-        &#34;Orange&#34;: ColorTools.OrangeMorning,
-    }
-    NightColorOptions: list = {
-        &#34;Blue&#34;: ColorTools.Blue,
-        &#34;Orange&#34;: ColorTools.OrangeNight,
-    }
-    NightTransitionColor: ColorTools.Color = NightColorOptions[&#34;Orange&#34;]
-    MorningTransitionColor: ColorTools.Color = MorningColorOptions[&#34;Orange&#34;]
+    NightTransitionColor: Color.Color = Color.Color(hexstring=&#34;#FFFFFF&#34;)
+    MorningTransitionColor: Color.Color = Color.Color(hexstring=&#34;#000000&#34;)
 
     def __init__(self, screenSize) -&gt; None:
         self.DayColorScreen = pygame.Surface(screenSize)
@@ -136,14 +118,14 @@ class LightingEffects:
         morningPercent = Utils.Bind(val=1 - (dayPercent * 2), inRange=(0, 1))
         nightPercent = Utils.Bind(val=((dayPercent - 0.5) * 2), inRange=(0, 1))
         noonPercent = (1 - morningPercent) - nightPercent
-        currentColor = ColorTools.Color(
+        currentColor = Color.Color(
             h=(self.MorningTransitionColor.H * morningPercent)
             + (self.NightTransitionColor.H * nightPercent),
             s=(self.MorningTransitionColor.S * morningPercent)
             + (self.NightTransitionColor.S * nightPercent),
             v=(self.MorningTransitionColor.V * morningPercent)
             + (self.NightTransitionColor.V * nightPercent)
-            + (ColorTools.White.V * noonPercent),
+            + (255 * noonPercent),
         )
         self.DayColorScreen.fill(currentColor.RGB)
         return self.DayColorScreen
@@ -151,65 +133,58 @@ class LightingEffects:
     def ChangeNightColor(self, rgb) -&gt; None:
         if rgb != (-1, -1, -1):
             r, g, b = rgb
-            self.NightTransitionColor = ColorTools.Color(r=r, g=g, b=b)
+            self.NightTransitionColor = Color.Color(r=r, g=g, b=b)
 
-    def LightingEngine(self, activeGame) -&gt; None:
-        lightLayer = self.AllDayBlend(
-            gameClock=activeGame.GameClock, screenSize=activeGame.ScreenSize
-        )
-        lightLayer.blit(
-            self.LightMask,
-            (0, 0),
-            special_flags=(pygame.BLEND_ADD),
-        )
-        activeGame.Screen.blit(
-            lightLayer,
-            (0, 0),
-            special_flags=(pygame.BLEND_MULT),
-        )</code></pre>
+    def LightingEngine(self, activeGame, dayTransition=False) -&gt; None:
+        if dayTransition:
+            lightLayer = self.AllDayBlend(
+                gameClock=activeGame.GameClock, screenSize=activeGame.ScreenSize
+            )
+            lightLayer.blit(
+                self.LightMask,
+                (0, 0),
+                special_flags=(pygame.BLEND_ADD),
+            )
+            activeGame.Screen.blit(
+                lightLayer,
+                (0, 0),
+                special_flags=(pygame.BLEND_MULT),
+            )</code></pre>
 </details>
 <h3>Class variables</h3>
 <dl>
-<dt id="Classes.LightingEngine.LightingEffects.CurrentNightTransitionAlpha"><code class="name">var <span class="ident">CurrentNightTransitionAlpha</span> : int</code></dt>
+<dt id="Engine.LightingEngine.LightingEngine.CurrentNightTransitionAlpha"><code class="name">var <span class="ident">CurrentNightTransitionAlpha</span> : int</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="Classes.LightingEngine.LightingEffects.DayColorScreen"><code class="name">var <span class="ident">DayColorScreen</span> : pygame.surface.Surface</code></dt>
+<dt id="Engine.LightingEngine.LightingEngine.DayColorScreen"><code class="name">var <span class="ident">DayColorScreen</span> : pygame.surface.Surface</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="Classes.LightingEngine.LightingEffects.LightMask"><code class="name">var <span class="ident">LightMask</span> : pygame.surface.Surface</code></dt>
+<dt id="Engine.LightingEngine.LightingEngine.LightMask"><code class="name">var <span class="ident">LightMask</span> : pygame.surface.Surface</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="Classes.LightingEngine.LightingEffects.MaxNightLightAlpha"><code class="name">var <span class="ident">MaxNightLightAlpha</span> : float</code></dt>
+<dt id="Engine.LightingEngine.LightingEngine.MaxNightLightAlpha"><code class="name">var <span class="ident">MaxNightLightAlpha</span> : float</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="Classes.LightingEngine.LightingEffects.MorningColorOptions"><code class="name">var <span class="ident">MorningColorOptions</span> : list</code></dt>
+<dt id="Engine.LightingEngine.LightingEngine.MorningTransitionColor"><code class="name">var <span class="ident">MorningTransitionColor</span> : <a title="Engine.Color.Color" href="Color.html#Engine.Color.Color">Color</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="Classes.LightingEngine.LightingEffects.MorningTransitionColor"><code class="name">var <span class="ident">MorningTransitionColor</span> : Definitions.ColorTools.Color</code></dt>
+<dt id="Engine.LightingEngine.LightingEngine.NightTransitionColor"><code class="name">var <span class="ident">NightTransitionColor</span> : <a title="Engine.Color.Color" href="Color.html#Engine.Color.Color">Color</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="Classes.LightingEngine.LightingEffects.NightColorOptions"><code class="name">var <span class="ident">NightColorOptions</span> : list</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="Classes.LightingEngine.LightingEffects.NightTransitionColor"><code class="name">var <span class="ident">NightTransitionColor</span> : Definitions.ColorTools.Color</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="Classes.LightingEngine.LightingEffects.NightTransitionCover"><code class="name">var <span class="ident">NightTransitionCover</span> : float</code></dt>
+<dt id="Engine.LightingEngine.LightingEngine.NightTransitionCover"><code class="name">var <span class="ident">NightTransitionCover</span> : float</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
 </dl>
 <h3>Methods</h3>
 <dl>
-<dt id="Classes.LightingEngine.LightingEffects.AllDayBlend"><code class="name flex">
+<dt id="Engine.LightingEngine.LightingEngine.AllDayBlend"><code class="name flex">
 <span>def <span class="ident">AllDayBlend</span></span>(<span>self, gameClock, screenSize) ‑> None</span>
 </code></dt>
 <dd>
@@ -223,20 +198,20 @@ class LightingEffects:
     morningPercent = Utils.Bind(val=1 - (dayPercent * 2), inRange=(0, 1))
     nightPercent = Utils.Bind(val=((dayPercent - 0.5) * 2), inRange=(0, 1))
     noonPercent = (1 - morningPercent) - nightPercent
-    currentColor = ColorTools.Color(
+    currentColor = Color.Color(
         h=(self.MorningTransitionColor.H * morningPercent)
         + (self.NightTransitionColor.H * nightPercent),
         s=(self.MorningTransitionColor.S * morningPercent)
         + (self.NightTransitionColor.S * nightPercent),
         v=(self.MorningTransitionColor.V * morningPercent)
         + (self.NightTransitionColor.V * nightPercent)
-        + (ColorTools.White.V * noonPercent),
+        + (255 * noonPercent),
     )
     self.DayColorScreen.fill(currentColor.RGB)
     return self.DayColorScreen</code></pre>
 </details>
 </dd>
-<dt id="Classes.LightingEngine.LightingEffects.ChangeNightColor"><code class="name flex">
+<dt id="Engine.LightingEngine.LightingEngine.ChangeNightColor"><code class="name flex">
 <span>def <span class="ident">ChangeNightColor</span></span>(<span>self, rgb) ‑> None</span>
 </code></dt>
 <dd>
@@ -248,11 +223,11 @@ class LightingEffects:
 <pre><code class="python">def ChangeNightColor(self, rgb) -&gt; None:
     if rgb != (-1, -1, -1):
         r, g, b = rgb
-        self.NightTransitionColor = ColorTools.Color(r=r, g=g, b=b)</code></pre>
+        self.NightTransitionColor = Color.Color(r=r, g=g, b=b)</code></pre>
 </details>
 </dd>
-<dt id="Classes.LightingEngine.LightingEffects.LightingEngine"><code class="name flex">
-<span>def <span class="ident">LightingEngine</span></span>(<span>self, activeGame) ‑> None</span>
+<dt id="Engine.LightingEngine.LightingEngine.LightingEngine"><code class="name flex">
+<span>def <span class="ident">LightingEngine</span></span>(<span>self, activeGame, dayTransition=False) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -260,20 +235,21 @@ class LightingEffects:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def LightingEngine(self, activeGame) -&gt; None:
-    lightLayer = self.AllDayBlend(
-        gameClock=activeGame.GameClock, screenSize=activeGame.ScreenSize
-    )
-    lightLayer.blit(
-        self.LightMask,
-        (0, 0),
-        special_flags=(pygame.BLEND_ADD),
-    )
-    activeGame.Screen.blit(
-        lightLayer,
-        (0, 0),
-        special_flags=(pygame.BLEND_MULT),
-    )</code></pre>
+<pre><code class="python">def LightingEngine(self, activeGame, dayTransition=False) -&gt; None:
+    if dayTransition:
+        lightLayer = self.AllDayBlend(
+            gameClock=activeGame.GameClock, screenSize=activeGame.ScreenSize
+        )
+        lightLayer.blit(
+            self.LightMask,
+            (0, 0),
+            special_flags=(pygame.BLEND_ADD),
+        )
+        activeGame.Screen.blit(
+            lightLayer,
+            (0, 0),
+            special_flags=(pygame.BLEND_MULT),
+        )</code></pre>
 </details>
 </dd>
 </dl>
@@ -289,26 +265,24 @@ class LightingEffects:
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="Classes" href="index.html">Classes</a></code></li>
+<li><code><a title="Engine" href="index.html">Engine</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="Classes.LightingEngine.LightingEffects" href="#Classes.LightingEngine.LightingEffects">LightingEffects</a></code></h4>
+<h4><code><a title="Engine.LightingEngine.LightingEngine" href="#Engine.LightingEngine.LightingEngine">LightingEngine</a></code></h4>
 <ul class="">
-<li><code><a title="Classes.LightingEngine.LightingEffects.AllDayBlend" href="#Classes.LightingEngine.LightingEffects.AllDayBlend">AllDayBlend</a></code></li>
-<li><code><a title="Classes.LightingEngine.LightingEffects.ChangeNightColor" href="#Classes.LightingEngine.LightingEffects.ChangeNightColor">ChangeNightColor</a></code></li>
-<li><code><a title="Classes.LightingEngine.LightingEffects.CurrentNightTransitionAlpha" href="#Classes.LightingEngine.LightingEffects.CurrentNightTransitionAlpha">CurrentNightTransitionAlpha</a></code></li>
-<li><code><a title="Classes.LightingEngine.LightingEffects.DayColorScreen" href="#Classes.LightingEngine.LightingEffects.DayColorScreen">DayColorScreen</a></code></li>
-<li><code><a title="Classes.LightingEngine.LightingEffects.LightMask" href="#Classes.LightingEngine.LightingEffects.LightMask">LightMask</a></code></li>
-<li><code><a title="Classes.LightingEngine.LightingEffects.LightingEngine" href="#Classes.LightingEngine.LightingEffects.LightingEngine">LightingEngine</a></code></li>
-<li><code><a title="Classes.LightingEngine.LightingEffects.MaxNightLightAlpha" href="#Classes.LightingEngine.LightingEffects.MaxNightLightAlpha">MaxNightLightAlpha</a></code></li>
-<li><code><a title="Classes.LightingEngine.LightingEffects.MorningColorOptions" href="#Classes.LightingEngine.LightingEffects.MorningColorOptions">MorningColorOptions</a></code></li>
-<li><code><a title="Classes.LightingEngine.LightingEffects.MorningTransitionColor" href="#Classes.LightingEngine.LightingEffects.MorningTransitionColor">MorningTransitionColor</a></code></li>
-<li><code><a title="Classes.LightingEngine.LightingEffects.NightColorOptions" href="#Classes.LightingEngine.LightingEffects.NightColorOptions">NightColorOptions</a></code></li>
-<li><code><a title="Classes.LightingEngine.LightingEffects.NightTransitionColor" href="#Classes.LightingEngine.LightingEffects.NightTransitionColor">NightTransitionColor</a></code></li>
-<li><code><a title="Classes.LightingEngine.LightingEffects.NightTransitionCover" href="#Classes.LightingEngine.LightingEffects.NightTransitionCover">NightTransitionCover</a></code></li>
+<li><code><a title="Engine.LightingEngine.LightingEngine.AllDayBlend" href="#Engine.LightingEngine.LightingEngine.AllDayBlend">AllDayBlend</a></code></li>
+<li><code><a title="Engine.LightingEngine.LightingEngine.ChangeNightColor" href="#Engine.LightingEngine.LightingEngine.ChangeNightColor">ChangeNightColor</a></code></li>
+<li><code><a title="Engine.LightingEngine.LightingEngine.CurrentNightTransitionAlpha" href="#Engine.LightingEngine.LightingEngine.CurrentNightTransitionAlpha">CurrentNightTransitionAlpha</a></code></li>
+<li><code><a title="Engine.LightingEngine.LightingEngine.DayColorScreen" href="#Engine.LightingEngine.LightingEngine.DayColorScreen">DayColorScreen</a></code></li>
+<li><code><a title="Engine.LightingEngine.LightingEngine.LightMask" href="#Engine.LightingEngine.LightingEngine.LightMask">LightMask</a></code></li>
+<li><code><a title="Engine.LightingEngine.LightingEngine.LightingEngine" href="#Engine.LightingEngine.LightingEngine.LightingEngine">LightingEngine</a></code></li>
+<li><code><a title="Engine.LightingEngine.LightingEngine.MaxNightLightAlpha" href="#Engine.LightingEngine.LightingEngine.MaxNightLightAlpha">MaxNightLightAlpha</a></code></li>
+<li><code><a title="Engine.LightingEngine.LightingEngine.MorningTransitionColor" href="#Engine.LightingEngine.LightingEngine.MorningTransitionColor">MorningTransitionColor</a></code></li>
+<li><code><a title="Engine.LightingEngine.LightingEngine.NightTransitionColor" href="#Engine.LightingEngine.LightingEngine.NightTransitionColor">NightTransitionColor</a></code></li>
+<li><code><a title="Engine.LightingEngine.LightingEngine.NightTransitionCover" href="#Engine.LightingEngine.LightingEngine.NightTransitionCover">NightTransitionCover</a></code></li>
 </ul>
 </li>
 </ul>

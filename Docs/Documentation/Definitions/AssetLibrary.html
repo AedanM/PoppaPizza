@@ -90,12 +90,12 @@ LogoPaths = {
 
 
 def PathLookup(imageType) -&gt; str | None:
-    &#34;&#34;&#34;Looks up path for image type
+    &#34;&#34;&#34;Function to look up path for image type
 
-    Args:
+    Args-
         imageType (ImageType): Image Type to Find Path for
 
-    Returns:
+    Returns-
         str: Image Path
     &#34;&#34;&#34;
     for key, value in PathToTypeDict.items():
@@ -139,28 +139,22 @@ TriviaBackground = pygame.image.load(ImagePath.TriviaBackgroundPath)</code></pre
 <span>def <span class="ident">PathLookup</span></span>(<span>imageType) ‑> str | None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Looks up path for image type</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>imageType</code></strong> :&ensp;<code>ImageType</code></dt>
-<dd>Image Type to Find Path for</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>str</code></dt>
-<dd>Image Path</dd>
-</dl></div>
+<div class="desc"><p>Function to look up path for image type</p>
+<p>Args-
+imageType (ImageType): Image Type to Find Path for</p>
+<p>Returns-
+str: Image Path</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def PathLookup(imageType) -&gt; str | None:
-    &#34;&#34;&#34;Looks up path for image type
+    &#34;&#34;&#34;Function to look up path for image type
 
-    Args:
+    Args-
         imageType (ImageType): Image Type to Find Path for
 
-    Returns:
+    Returns-
         str: Image Path
     &#34;&#34;&#34;
     for key, value in PathToTypeDict.items():

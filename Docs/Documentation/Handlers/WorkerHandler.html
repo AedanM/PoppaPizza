@@ -31,15 +31,15 @@
 
 import random
 
-from Classes import Game
+from Classes import GameBase
 from Definitions import AssetLibrary, DefinedLocations, DefinedPaths
-from Utilities import Utils
+from Engine import Utils
 
 
 def DailyReset(sprite) -&gt; None:
     &#34;&#34;&#34;Reset worker to Kitchen
         Unassigns the worker from any task as well
-    Args:
+    Args-
         sprite (Sprite): Worker Sprite
     &#34;&#34;&#34;
     sprite.MvmHandler.Reset()
@@ -60,7 +60,7 @@ def ServeCustomer() -&gt; None:
 def FinishCustomer(workerSprite, job) -&gt; None:
     &#34;&#34;&#34;Finish a customer and get paid
 
-    Args:
+    Args-
         workerSprite (Sprite): Active Worker
         job (Job): Active Job
     &#34;&#34;&#34;
@@ -69,14 +69,14 @@ def FinishCustomer(workerSprite, job) -&gt; None:
     workerSprite.MvmHandler.StartNewListedMotion(
         DefinedPaths.DefinedPaths.BackToKitchen(sprite=workerSprite)
     )
-    Game.MasterGame.UserInventory.GetPaid(amount=job.Price)
-    Game.MasterGame.UserInventory.Statistics.ServeCustomer()
+    GameBase.MasterGame.UserInventory.GetPaid(amount=job.Price)
+    GameBase.MasterGame.UserInventory.Statistics.ServeCustomer()
 
 
 def GetChanged(workerSprite, restaurant) -&gt; None:
     &#34;&#34;&#34;Change the outfit of a worker
 
-    Args:
+    Args-
         workerSprite (Sprite): Active Worker
         restaurant (Restaurant): Restaurant whos apparel to change into
     &#34;&#34;&#34;
@@ -88,7 +88,7 @@ def GetChanged(workerSprite, restaurant) -&gt; None:
     newOutfit = AssetLibrary.PathLookup(random.choice(restaurant.WorkerImageTypes))
     workerSprite.MvmHandler.OnComplete = lambda: (
         workerSprite.ChangeOutfit(newOutfit),
-        Game.MasterGame.UserInventory.Statistics.WorkerChanged(),
+        GameBase.MasterGame.UserInventory.Statistics.WorkerChanged(),
         workerSprite.CreatePersonTimerBar(
             completeTask=lambda: ReturnToKitchen(workerSprite=workerSprite),
             offset=(-30, 150),
@@ -100,7 +100,7 @@ def GetChanged(workerSprite, restaurant) -&gt; None:
 def ReturnToKitchen(workerSprite) -&gt; None:
     &#34;&#34;&#34;Go back to Kitchen
 
-    Args:
+    Args-
         workerSprite (Sprite): Active Worker
     &#34;&#34;&#34;
     workerSprite.MvmHandler.StartNewListedMotion(
@@ -126,12 +126,9 @@ def EnterWork(workerSprite) -&gt; None:
 </code></dt>
 <dd>
 <div class="desc"><p>Reset worker to Kitchen
-Unassigns the worker from any task as well</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>sprite</code></strong> :&ensp;<code>Sprite</code></dt>
-<dd>Worker Sprite</dd>
-</dl></div>
+Unassigns the worker from any task as well
+Args-
+sprite (Sprite): Worker Sprite</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -139,7 +136,7 @@ Unassigns the worker from any task as well</p>
 <pre><code class="python">def DailyReset(sprite) -&gt; None:
     &#34;&#34;&#34;Reset worker to Kitchen
         Unassigns the worker from any task as well
-    Args:
+    Args-
         sprite (Sprite): Worker Sprite
     &#34;&#34;&#34;
     sprite.MvmHandler.Reset()
@@ -172,13 +169,9 @@ Unassigns the worker from any task as well</p>
 </code></dt>
 <dd>
 <div class="desc"><p>Finish a customer and get paid</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>workerSprite</code></strong> :&ensp;<code>Sprite</code></dt>
-<dd>Active Worker</dd>
-<dt><strong><code>job</code></strong> :&ensp;<code>Job</code></dt>
-<dd>Active Job</dd>
-</dl></div>
+<p>Args-
+workerSprite (Sprite): Active Worker
+job (Job): Active Job</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -186,7 +179,7 @@ Unassigns the worker from any task as well</p>
 <pre><code class="python">def FinishCustomer(workerSprite, job) -&gt; None:
     &#34;&#34;&#34;Finish a customer and get paid
 
-    Args:
+    Args-
         workerSprite (Sprite): Active Worker
         job (Job): Active Job
     &#34;&#34;&#34;
@@ -195,8 +188,8 @@ Unassigns the worker from any task as well</p>
     workerSprite.MvmHandler.StartNewListedMotion(
         DefinedPaths.DefinedPaths.BackToKitchen(sprite=workerSprite)
     )
-    Game.MasterGame.UserInventory.GetPaid(amount=job.Price)
-    Game.MasterGame.UserInventory.Statistics.ServeCustomer()</code></pre>
+    GameBase.MasterGame.UserInventory.GetPaid(amount=job.Price)
+    GameBase.MasterGame.UserInventory.Statistics.ServeCustomer()</code></pre>
 </details>
 </dd>
 <dt id="Handlers.WorkerHandler.GetChanged"><code class="name flex">
@@ -204,13 +197,9 @@ Unassigns the worker from any task as well</p>
 </code></dt>
 <dd>
 <div class="desc"><p>Change the outfit of a worker</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>workerSprite</code></strong> :&ensp;<code>Sprite</code></dt>
-<dd>Active Worker</dd>
-<dt><strong><code>restaurant</code></strong> :&ensp;<code>Restaurant</code></dt>
-<dd>Restaurant whos apparel to change into</dd>
-</dl></div>
+<p>Args-
+workerSprite (Sprite): Active Worker
+restaurant (Restaurant): Restaurant whos apparel to change into</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -218,7 +207,7 @@ Unassigns the worker from any task as well</p>
 <pre><code class="python">def GetChanged(workerSprite, restaurant) -&gt; None:
     &#34;&#34;&#34;Change the outfit of a worker
 
-    Args:
+    Args-
         workerSprite (Sprite): Active Worker
         restaurant (Restaurant): Restaurant whos apparel to change into
     &#34;&#34;&#34;
@@ -230,7 +219,7 @@ Unassigns the worker from any task as well</p>
     newOutfit = AssetLibrary.PathLookup(random.choice(restaurant.WorkerImageTypes))
     workerSprite.MvmHandler.OnComplete = lambda: (
         workerSprite.ChangeOutfit(newOutfit),
-        Game.MasterGame.UserInventory.Statistics.WorkerChanged(),
+        GameBase.MasterGame.UserInventory.Statistics.WorkerChanged(),
         workerSprite.CreatePersonTimerBar(
             completeTask=lambda: ReturnToKitchen(workerSprite=workerSprite),
             offset=(-30, 150),
@@ -244,11 +233,8 @@ Unassigns the worker from any task as well</p>
 </code></dt>
 <dd>
 <div class="desc"><p>Go back to Kitchen</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>workerSprite</code></strong> :&ensp;<code>Sprite</code></dt>
-<dd>Active Worker</dd>
-</dl></div>
+<p>Args-
+workerSprite (Sprite): Active Worker</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -256,7 +242,7 @@ Unassigns the worker from any task as well</p>
 <pre><code class="python">def ReturnToKitchen(workerSprite) -&gt; None:
     &#34;&#34;&#34;Go back to Kitchen
 
-    Args:
+    Args-
         workerSprite (Sprite): Active Worker
     &#34;&#34;&#34;
     workerSprite.MvmHandler.StartNewListedMotion(

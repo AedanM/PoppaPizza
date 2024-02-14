@@ -26,7 +26,7 @@ class GameStats:
     def UpdateMoney(self, amount) -> None:
         """Update Current Cash, sorting by spend or earning
 
-        Args:
+        Args-
             amount (int | float): Amount Spent or Earned
         """
         if amount > 0:
@@ -37,7 +37,7 @@ class GameStats:
     def GetDailyCostumeChanges(self) -> int:
         """Return Costume Chages Metric since yesterday
 
-        Returns:
+        Returns-
             int: Costume Chages Metric since yesterday
         """
         return self.WorkerChanges - PrevDay.WorkerChanges
@@ -45,7 +45,7 @@ class GameStats:
     def GetDailyEarnings(self) -> float:
         """Return Earnings Metric since yesterday
 
-        Returns:
+        Returns-
             float: Earnings Metric since yesterday
         """
         return max(self.MoneyEarned + PrevDay.MoneyEarned, 0.0)
@@ -53,7 +53,7 @@ class GameStats:
     def GetDailySpend(self) -> float:
         """Return Spending Metric since yesterday
 
-        Returns:
+        Returns-
             float: Spending Metric since yesterday
         """
         return min(self.MoneySpent - PrevDay.MoneySpent, 0.0)
@@ -61,7 +61,7 @@ class GameStats:
     def GetDailyProfit(self) -> float:
         """Return Profit Metric since yesterday
 
-        Returns:
+        Returns-
             float: Profit Metric since yesterday
         """
         return self.GetDailyEarnings() - abs(self.GetDailySpend())
@@ -69,7 +69,7 @@ class GameStats:
     def GetDailyServedCustomers(self) -> float:
         """Return Number of customers served since yesterday
 
-        Returns:
+        Returns-
             float: Number of customers served since yesterday
         """
         return self.CustomersServed - PrevDay.CustomersServed
@@ -77,7 +77,7 @@ class GameStats:
     def GetDailyTotalCustomers(self) -> float:
         """Return Number of customers that entered the shop since yesterday
 
-        Returns:
+        Returns-
             float: Number of customers that entered the shop since yesterday
         """
         return self.CustomersEntered - PrevDay.CustomersEntered

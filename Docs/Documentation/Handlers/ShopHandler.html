@@ -31,7 +31,7 @@
 
 import pygame
 
-from Classes import Game
+from Classes import GameBase
 from Definitions import CustomEvents, DefinedLocations, Prices, Restaurants
 from Generators import CharSpawner
 
@@ -39,20 +39,20 @@ from Generators import CharSpawner
 def BuyLockerRoom(position) -&gt; None:
     &#34;&#34;&#34;Unlocks and Pays for a Locker Room
 
-    Args:
+    Args-
         position (tuple): Position Tuple
     &#34;&#34;&#34;
     price = Restaurants.UnlockLockerRoom(
-        currentCash=Game.MasterGame.UserInventory.Money,
+        currentCash=GameBase.MasterGame.UserInventory.Money,
         position=position,
     )
-    Game.MasterGame.UserInventory.PayMoney(amount=price)
+    GameBase.MasterGame.UserInventory.PayMoney(amount=price)
 
 
 def BuyTables(selectedRow) -&gt; None:
     &#34;&#34;&#34;Buys a new row or column of tables
 
-    Args:
+    Args-
         selectedRow (bool): is Row selected? else Col is seleceted
     &#34;&#34;&#34;
     if selectedRow:
@@ -62,14 +62,14 @@ def BuyTables(selectedRow) -&gt; None:
         price = Prices.DefaultPrices.Table * DefinedLocations.SeatingPlan.NumRows
         DefinedLocations.SeatingPlan.NumCols += 1
     DefinedLocations.TablePlaces = []
-    Game.MasterGame.UserInventory.PayMoney(amount=price)
+    GameBase.MasterGame.UserInventory.PayMoney(amount=price)
     pygame.event.post(CustomEvents.UpdateBackground)
 
 
 def BuyNumWorkers(num) -&gt; None:
     &#34;&#34;&#34;Buys a number of workers
 
-    Args:
+    Args-
         num (int): Number of Workers
     &#34;&#34;&#34;
     for _ in range(num):
@@ -79,10 +79,10 @@ def BuyNumWorkers(num) -&gt; None:
 def PayUpkeep() -&gt; None:
     &#34;&#34;&#34;Pay Daily Rent Amount and Wages&#34;&#34;&#34;
     workerPay = 0.0
-    for worker in Game.MasterGame.WorkerList:
+    for worker in GameBase.MasterGame.WorkerList:
         workerPay += worker.BasePay * Prices.DefaultPrices.Salary
     rent = Prices.CurrentRent
-    Game.MasterGame.UserInventory.PayMoney(amount=workerPay + rent, update=True)</code></pre>
+    GameBase.MasterGame.UserInventory.PayMoney(amount=workerPay + rent, update=True)</code></pre>
 </details>
 </section>
 <section>
@@ -97,11 +97,8 @@ def PayUpkeep() -&gt; None:
 </code></dt>
 <dd>
 <div class="desc"><p>Unlocks and Pays for a Locker Room</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>position</code></strong> :&ensp;<code>tuple</code></dt>
-<dd>Position Tuple</dd>
-</dl></div>
+<p>Args-
+position (tuple): Position Tuple</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -109,14 +106,14 @@ def PayUpkeep() -&gt; None:
 <pre><code class="python">def BuyLockerRoom(position) -&gt; None:
     &#34;&#34;&#34;Unlocks and Pays for a Locker Room
 
-    Args:
+    Args-
         position (tuple): Position Tuple
     &#34;&#34;&#34;
     price = Restaurants.UnlockLockerRoom(
-        currentCash=Game.MasterGame.UserInventory.Money,
+        currentCash=GameBase.MasterGame.UserInventory.Money,
         position=position,
     )
-    Game.MasterGame.UserInventory.PayMoney(amount=price)</code></pre>
+    GameBase.MasterGame.UserInventory.PayMoney(amount=price)</code></pre>
 </details>
 </dd>
 <dt id="Handlers.ShopHandler.BuyNumWorkers"><code class="name flex">
@@ -124,11 +121,8 @@ def PayUpkeep() -&gt; None:
 </code></dt>
 <dd>
 <div class="desc"><p>Buys a number of workers</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>num</code></strong> :&ensp;<code>int</code></dt>
-<dd>Number of Workers</dd>
-</dl></div>
+<p>Args-
+num (int): Number of Workers</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -136,7 +130,7 @@ def PayUpkeep() -&gt; None:
 <pre><code class="python">def BuyNumWorkers(num) -&gt; None:
     &#34;&#34;&#34;Buys a number of workers
 
-    Args:
+    Args-
         num (int): Number of Workers
     &#34;&#34;&#34;
     for _ in range(num):
@@ -148,11 +142,8 @@ def PayUpkeep() -&gt; None:
 </code></dt>
 <dd>
 <div class="desc"><p>Buys a new row or column of tables</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>selectedRow</code></strong> :&ensp;<code>bool</code></dt>
-<dd>is Row selected? else Col is seleceted</dd>
-</dl></div>
+<p>Args-
+selectedRow (bool): is Row selected? else Col is seleceted</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -160,7 +151,7 @@ def PayUpkeep() -&gt; None:
 <pre><code class="python">def BuyTables(selectedRow) -&gt; None:
     &#34;&#34;&#34;Buys a new row or column of tables
 
-    Args:
+    Args-
         selectedRow (bool): is Row selected? else Col is seleceted
     &#34;&#34;&#34;
     if selectedRow:
@@ -170,7 +161,7 @@ def PayUpkeep() -&gt; None:
         price = Prices.DefaultPrices.Table * DefinedLocations.SeatingPlan.NumRows
         DefinedLocations.SeatingPlan.NumCols += 1
     DefinedLocations.TablePlaces = []
-    Game.MasterGame.UserInventory.PayMoney(amount=price)
+    GameBase.MasterGame.UserInventory.PayMoney(amount=price)
     pygame.event.post(CustomEvents.UpdateBackground)</code></pre>
 </details>
 </dd>
@@ -186,10 +177,10 @@ def PayUpkeep() -&gt; None:
 <pre><code class="python">def PayUpkeep() -&gt; None:
     &#34;&#34;&#34;Pay Daily Rent Amount and Wages&#34;&#34;&#34;
     workerPay = 0.0
-    for worker in Game.MasterGame.WorkerList:
+    for worker in GameBase.MasterGame.WorkerList:
         workerPay += worker.BasePay * Prices.DefaultPrices.Salary
     rent = Prices.CurrentRent
-    Game.MasterGame.UserInventory.PayMoney(amount=workerPay + rent, update=True)</code></pre>
+    GameBase.MasterGame.UserInventory.PayMoney(amount=workerPay + rent, update=True)</code></pre>
 </details>
 </dd>
 </dl>

@@ -35,7 +35,7 @@ class Job:
     def SpawnJob(cls) -> "Job":
         """Create a Job
 
-        Returns:
+        Returns-
             Job: Generated Job
         """
         # pylint: disable=global-statement
@@ -62,11 +62,11 @@ class Job:
     def GetAssignedFromID(jobList, targetID) -> tuple:
         """Find assigned people to job
 
-        Args:
+        Args-
             jobList (list): Master list of jobs
             targetID (_type_): ID of job to lookup
 
-        Returns:
+        Returns-
             tuple: (Assigned Worker, Assigned Customer)
         """
         assignedMems = [
@@ -81,7 +81,7 @@ class Job:
     def Assign(self, target) -> None:
         """Assign Job to Person
             If customer then the job is placed given to them as their desired
-        Args:
+        Args-
             target (Person): Person to assign job to
         """
         if "DesiredJob" in dir(target):

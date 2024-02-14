@@ -3,52 +3,15 @@
 import random
 from dataclasses import dataclass
 
-import names
-
-from Classes import Game, Jobs, Sprite
+from Classes import GameBase, Jobs, Sprite
 from Definitions import AssetLibrary, CustomerDefs, DefinedLocations
-from Utilities import Utils
+from Engine import Person, Utils
 
 IDCOUNT = 1
 
 
 @dataclass
-class Person:
-    """Base class for all People Data Classes"""
-
-    FirstName: str
-    LastName: str
-    IdNum: int
-    Body: None = None
-    IsAssigned: bool = False
-
-    @classmethod
-    def Create(cls) -> "Person":
-        """Creates a person object
-
-        Returns:
-            Person: Base Person Object
-        """
-        fName = names.get_first_name(gender="female")
-        lName = names.get_last_name()
-        selfid = cls.GenerateID()
-        return cls(FirstName=fName, LastName=lName, IdNum=selfid)
-
-    @staticmethod
-    def GenerateID() -> int:
-        """Generates unique ID for person
-
-        Returns:
-            int: Personal ID
-        """
-        # pylint: disable=global-statement
-        global IDCOUNT
-        IDCOUNT += 1
-        return IDCOUNT
-
-
-@dataclass
-class Worker(Person):
+class Worker(Person.Person):
     """Data class for Workers, inherits from Person Class"""
 
     BasePay: float = 1.0
@@ -57,15 +20,15 @@ class Worker(Person):
     def CreateWorker(
         cls,
         startLocation=DefinedLocations.LocationDefs.WorkerSpawn,
-        activeGame=Game.MasterGame,
+        activeGame=GameBase.MasterGame,
     ) -> tuple:
         """Create and Spawn in Worker and Worker Sprite
 
-        Args:
+        Args-
             startLocation (tuple, optional): Spawn Location. Defaults to DefinedLocations.LocationDefs.KitchenLocation.
             activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
 
-        Returns:
+        Returns-
             tuple: (Dataclass, Image Classs)
         """
         worker = cls.Create()
@@ -75,7 +38,6 @@ class Worker(Person):
             ),
             path=AssetLibrary.ImagePath.WorkerSuitPath,
             objID=worker.IdNum,
-            activeGame=activeGame,
         )
         worker.BasePay = random.uniform(0.25, 5.0)
         activeGame.CharSpriteGroup.add(workerSprite)
@@ -84,10 +46,10 @@ class Worker(Person):
 
 
 @dataclass
-class Customer(Person):
+class Customer(Person.Person):
     """Data Class for Customers, inherits from Person Class"""
 
-    DesiredJob: Jobs.Job = None
+    DesiredJob: Jobs.Job = None  # type: ignore
     WorkerAssigned: bool = False
     CurrentState: CustomerDefs.CustomerStates = CustomerDefs.CustomerStates.Null
 
@@ -95,17 +57,17 @@ class Customer(Person):
     def CreateCustomer(
         cls,
         startLocation=DefinedLocations.LocationDefs.CustomerSpawn,
-        activeGame=Game.MasterGame,
+        activeGame=GameBase.MasterGame,
         imageType=AssetLibrary.ImageTypes.CustomerSuit,
     ) -> tuple:
         """Creates a Customer nad Customer Sprite
 
-        Args:
+        Args-
             startLocation (tuple, optional): Spawn Location. Defaults to DefinedLocations.LocationDefs.CustomerEntrance.
             activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
             imageType (AssetLibrary.ImageType, optional): Type of Image to Load onto Customer. Defaults to AssetLibrary.ImageTypes.CustomerSuit.
 
-        Returns:
+        Returns-
             tuple: (Dataclass, Image Class)
         """
         cust = cls.Create()
@@ -119,7 +81,6 @@ class Customer(Person):
             ),
             path=AssetLibrary.PathLookup(imageType),
             objID=cust.IdNum,
-            activeGame=activeGame,
         )
         activeGame.CharSpriteGroup.add(customerSprite)
         activeGame.CustomerList.append(cust)

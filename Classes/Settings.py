@@ -1,6 +1,6 @@
 """Settings Object"""
 
-from Utilities import Utils
+from Engine import Utils
 
 
 class Settings:
@@ -15,7 +15,7 @@ class Settings:
     def ClockSpeed(self) -> int:
         """Find the current multiplier of the clock speed
 
-        Returns:
+        Returns-
             int: Clock Speed Multiplier
         """
         return pow(base=2, exp=self.ClockPow)
@@ -24,7 +24,7 @@ class Settings:
     def ClockDivisor(self) -> int:
         """Clock Divisor for 24hr or 12hr
 
-        Returns:
+        Returns-
             int: Divisor to Determine Clock Range
         """
         return 13 if not self.Clock24 else 25
@@ -32,25 +32,25 @@ class Settings:
     def ChangeClockMul(self, value) -> None:
         """Increment the clock multiplier power
 
-        Args:
+        Args-
             value (int): Increment to Clock Power
         """
-        self.ClockPow = Utils.Bind(
-            val=self.ClockPow + value, inRange=self.ClockPowRange
+        self.ClockPow = int(
+            Utils.Bind(val=self.ClockPow + value, inRange=self.ClockPowRange)
         )
 
     def SetClockMul(self, value) -> None:
         """Force certain speed of clock
 
-        Args:
+        Args-
             value (int): New Speed
         """
-        self.ClockPow = Utils.Bind(val=value, inRange=self.ClockPowRange)
+        self.ClockPow = int(Utils.Bind(val=value, inRange=self.ClockPowRange))
 
     def AMPM(self, hour) -> str:
         """String for if it is AM or PM
 
-        Args:
+        Args-
             hour (int): Current Hour
         """
         tag = " AM" if hour < 12 else " PM"

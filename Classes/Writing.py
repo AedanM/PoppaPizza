@@ -4,8 +4,8 @@ from dataclasses import dataclass
 
 import pygame
 
-from Definitions import AssetLibrary, ColorTools, DefinedLocations
-from Utilities import Utils
+from Definitions import AssetLibrary, ColorDefines, DefinedLocations
+from Engine import Color, Utils
 
 pygame.font.init()
 DefinedFonts = {
@@ -30,10 +30,10 @@ DefinedFonts = {
 
 class TextBox:
     Text: str
-    TopLeft: tuple
-    Center: tuple
-    ForeColor: ColorTools.Color
-    Font: pygame.font
+    TopLeft: tuple | None
+    Center: tuple | None
+    ForeColor: Color.Color
+    Font: pygame.font.Font
     Rect: pygame.Rect
 
     def __init__(
@@ -41,7 +41,7 @@ class TextBox:
         text="",
         topLeft=None,
         center=None,
-        foreColor=ColorTools.White,
+        foreColor=ColorDefines.White,
         font=DefinedFonts["Default"],
     ) -> None:
         self.Text = text
@@ -66,7 +66,7 @@ def CreateTextBox(
 ) -> None:
     """Write a text box to the screen
 
-    Args:
+    Args-
         locationTopLeft (tuple): Top left position of bounding box
         text (str): Text to Write
         foreColor (ColorTools.Color): Text Color
@@ -92,7 +92,7 @@ def CreateTextBox(
 def WriteDateLabel(activeGame) -> None:
     """Write Date and $ into top left bar
 
-    Args:
+    Args-
         activeGame (Game): Current Game
     """
     clockText = f"{activeGame.GameClock.DateTime} ${activeGame.UserInventory.Money:0.2f} FPS:{round(activeGame.GameClock.PygameClock.get_fps(),2)}"
@@ -100,8 +100,8 @@ def WriteDateLabel(activeGame) -> None:
     CreateTextBox(
         locationTopLeft=(0, 0),
         text=clockText,
-        foreColor=ColorTools.White,
-        backColor=ColorTools.Blue,
+        foreColor=ColorDefines.White,
+        backColor=ColorDefines.Blue,
         font=DefinedFonts["Datetime"],
         screen=activeGame.Screen,
     )
@@ -110,7 +110,7 @@ def WriteDateLabel(activeGame) -> None:
 def WriteButtonLabel(activeGame) -> None:
     """Adds a text box label to all active buttons
 
-    Args:
+    Args-
         activeGame (Game): Current Game
     """
     for button in activeGame.ButtonList:
@@ -119,7 +119,7 @@ def WriteButtonLabel(activeGame) -> None:
                 inputTuple=button.position, offset=(-45, -12)
             ),
             text=button.text,
-            foreColor=ColorTools.Black,
+            foreColor=ColorDefines.Black,
             font=DefinedFonts["Buttons"],
             screen=activeGame.Screen,
         )
@@ -147,7 +147,7 @@ def WriteKitchenLabel(activeGame) -> None:
             inputTuple=DefinedLocations.LocationDefs.LockerRoom0, offset=(-100, 0)
         ),
         text=kitchenText,
-        foreColor=ColorTools.White,
+        foreColor=ColorDefines.White,
         font=DefinedFonts["Default"],
         screen=activeGame.Screen,
     )

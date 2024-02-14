@@ -32,21 +32,21 @@
 import copy
 import random
 
-from Classes import Game
+from Classes import GameBase
 from Definitions import AssetLibrary, DefinedLocations
-from Utilities import Utils
+from Engine import Utils
 
 
 def IsSeatTaken(seatLocation) -&gt; bool:
     &#34;&#34;&#34;Checks if Customer Sat in Seat
 
-    Args:
+    Args-
         seatLocation (tuple): Location of Seat
 
-    Returns:
+    Returns-
         bool: Is Seat Free
     &#34;&#34;&#34;
-    for sprite in Game.MasterGame.CharSpriteGroup:
+    for sprite in GameBase.MasterGame.CharSpriteGroup:
         if sprite.ImageType in AssetLibrary.CustomerOutfits:
             xCheck = Utils.InTolerance(
                 num1=sprite.rect.centerx, num2=seatLocation[0], tolerance=15
@@ -68,7 +68,7 @@ def IsSeatTaken(seatLocation) -&gt; bool:
 def GetRandomSeatPosition() -&gt; tuple | None:
     &#34;&#34;&#34;Picks a random seat position or returns None if None free
 
-    Returns:
+    Returns-
         tuple | None: Seat position
     &#34;&#34;&#34;
     seatingPlan = DefinedLocations.SeatingPlan
@@ -87,11 +87,11 @@ class DefinedPaths:
     def KitchenToLockerRoom(sprite, dest) -&gt; list:
         &#34;&#34;&#34;Kitchen to a desired changing room
 
-        Args:
+        Args-
             sprite (Sprite): Worker To Change
             dest (tuple): Destination Position
 
-        Returns:
+        Returns-
             list: List of Points for Path
         &#34;&#34;&#34;
         path = [
@@ -108,7 +108,7 @@ class DefinedPaths:
 
         sprite (Sprite): Active Customer
 
-        Returns:
+        Returns-
             list: List of Points for Path
         &#34;&#34;&#34;
         randomSeatPosition = GetRandomSeatPosition()
@@ -124,11 +124,11 @@ class DefinedPaths:
     def KitchenToCustomer(sprite, dest) -&gt; list:
         &#34;&#34;&#34;Path for kitchen to customer&#39;s seat
 
-        Args:
+        Args-
             sprite (Sprite): Active Worker
             dest (tuple): Customer&#39;s Seat
 
-        Returns:
+        Returns-
             list: List of Points for Path
         &#34;&#34;&#34;
         path = [
@@ -150,11 +150,11 @@ class DefinedPaths:
     def BackToKitchen(sprite, VertFirst=True) -&gt; list:
         &#34;&#34;&#34;From Current Location to Kitchen
 
-        Args:
+        Args-
             sprite (Sprite): Active Worker
             activeGame (Game, optional): Current Game. Defaults to Game.MasterGame
 
-        Returns:
+        Returns-
             list: List of Points for Path
         &#34;&#34;&#34;
         path = [
@@ -179,10 +179,10 @@ class DefinedPaths:
     def CustomerToExit(sprite) -&gt; list:
         &#34;&#34;&#34;Queued Customer to Leave the Restaurant
 
-        Args:
+        Args-
             sprite (Sprite): Active Customer
 
-        Returns:
+        Returns-
             list: List of Points for Path
         &#34;&#34;&#34;
         path = [sprite.rect.center, DefinedLocations.LocationDefs.CustomerExit]
@@ -192,10 +192,10 @@ class DefinedPaths:
     def TableToExit(sprite) -&gt; list:
         &#34;&#34;&#34;Seated Customer to Exit
 
-        Args:
+        Args-
             sprite (Sprite): Active Customer
 
-        Returns:
+        Returns-
             list: List of Points for Path
         &#34;&#34;&#34;
         path = [
@@ -213,10 +213,10 @@ class DefinedPaths:
     def CustomerToEntrance(sprite) -&gt; list:
         &#34;&#34;&#34;Walk In Logic Path
 
-        Args:
+        Args-
             sprite (Sprite): Active Customer
 
-        Returns:
+        Returns-
             list: List of Points for Path
         &#34;&#34;&#34;
         path = [sprite.rect.center, DefinedLocations.LocationDefs.CustomerEntrance]
@@ -235,8 +235,8 @@ class DefinedPaths:
 </code></dt>
 <dd>
 <div class="desc"><p>Picks a random seat position or returns None if None free</p>
-<h2 id="returns">Returns</h2>
-<p>tuple | None: Seat position</p></div>
+<p>Returns-
+tuple | None: Seat position</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -244,7 +244,7 @@ class DefinedPaths:
 <pre><code class="python">def GetRandomSeatPosition() -&gt; tuple | None:
     &#34;&#34;&#34;Picks a random seat position or returns None if None free
 
-    Returns:
+    Returns-
         tuple | None: Seat position
     &#34;&#34;&#34;
     seatingPlan = DefinedLocations.SeatingPlan
@@ -261,16 +261,10 @@ class DefinedPaths:
 </code></dt>
 <dd>
 <div class="desc"><p>Checks if Customer Sat in Seat</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>seatLocation</code></strong> :&ensp;<code>tuple</code></dt>
-<dd>Location of Seat</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>bool</code></dt>
-<dd>Is Seat Free</dd>
-</dl></div>
+<p>Args-
+seatLocation (tuple): Location of Seat</p>
+<p>Returns-
+bool: Is Seat Free</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -278,13 +272,13 @@ class DefinedPaths:
 <pre><code class="python">def IsSeatTaken(seatLocation) -&gt; bool:
     &#34;&#34;&#34;Checks if Customer Sat in Seat
 
-    Args:
+    Args-
         seatLocation (tuple): Location of Seat
 
-    Returns:
+    Returns-
         bool: Is Seat Free
     &#34;&#34;&#34;
-    for sprite in Game.MasterGame.CharSpriteGroup:
+    for sprite in GameBase.MasterGame.CharSpriteGroup:
         if sprite.ImageType in AssetLibrary.CustomerOutfits:
             xCheck = Utils.InTolerance(
                 num1=sprite.rect.centerx, num2=seatLocation[0], tolerance=15
@@ -324,11 +318,11 @@ class DefinedPaths:
     def KitchenToLockerRoom(sprite, dest) -&gt; list:
         &#34;&#34;&#34;Kitchen to a desired changing room
 
-        Args:
+        Args-
             sprite (Sprite): Worker To Change
             dest (tuple): Destination Position
 
-        Returns:
+        Returns-
             list: List of Points for Path
         &#34;&#34;&#34;
         path = [
@@ -345,7 +339,7 @@ class DefinedPaths:
 
         sprite (Sprite): Active Customer
 
-        Returns:
+        Returns-
             list: List of Points for Path
         &#34;&#34;&#34;
         randomSeatPosition = GetRandomSeatPosition()
@@ -361,11 +355,11 @@ class DefinedPaths:
     def KitchenToCustomer(sprite, dest) -&gt; list:
         &#34;&#34;&#34;Path for kitchen to customer&#39;s seat
 
-        Args:
+        Args-
             sprite (Sprite): Active Worker
             dest (tuple): Customer&#39;s Seat
 
-        Returns:
+        Returns-
             list: List of Points for Path
         &#34;&#34;&#34;
         path = [
@@ -387,11 +381,11 @@ class DefinedPaths:
     def BackToKitchen(sprite, VertFirst=True) -&gt; list:
         &#34;&#34;&#34;From Current Location to Kitchen
 
-        Args:
+        Args-
             sprite (Sprite): Active Worker
             activeGame (Game, optional): Current Game. Defaults to Game.MasterGame
 
-        Returns:
+        Returns-
             list: List of Points for Path
         &#34;&#34;&#34;
         path = [
@@ -416,10 +410,10 @@ class DefinedPaths:
     def CustomerToExit(sprite) -&gt; list:
         &#34;&#34;&#34;Queued Customer to Leave the Restaurant
 
-        Args:
+        Args-
             sprite (Sprite): Active Customer
 
-        Returns:
+        Returns-
             list: List of Points for Path
         &#34;&#34;&#34;
         path = [sprite.rect.center, DefinedLocations.LocationDefs.CustomerExit]
@@ -429,10 +423,10 @@ class DefinedPaths:
     def TableToExit(sprite) -&gt; list:
         &#34;&#34;&#34;Seated Customer to Exit
 
-        Args:
+        Args-
             sprite (Sprite): Active Customer
 
-        Returns:
+        Returns-
             list: List of Points for Path
         &#34;&#34;&#34;
         path = [
@@ -450,10 +444,10 @@ class DefinedPaths:
     def CustomerToEntrance(sprite) -&gt; list:
         &#34;&#34;&#34;Walk In Logic Path
 
-        Args:
+        Args-
             sprite (Sprite): Active Customer
 
-        Returns:
+        Returns-
             list: List of Points for Path
         &#34;&#34;&#34;
         path = [sprite.rect.center, DefinedLocations.LocationDefs.CustomerEntrance]
@@ -466,18 +460,11 @@ class DefinedPaths:
 </code></dt>
 <dd>
 <div class="desc"><p>From Current Location to Kitchen</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>sprite</code></strong> :&ensp;<code>Sprite</code></dt>
-<dd>Active Worker</dd>
-<dt><strong><code>activeGame</code></strong> :&ensp;<code>Game</code>, optional</dt>
-<dd>Current Game. Defaults to Game.MasterGame</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>list</code></dt>
-<dd>List of Points for Path</dd>
-</dl></div>
+<p>Args-
+sprite (Sprite): Active Worker
+activeGame (Game, optional): Current Game. Defaults to Game.MasterGame</p>
+<p>Returns-
+list: List of Points for Path</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -486,11 +473,11 @@ class DefinedPaths:
 def BackToKitchen(sprite, VertFirst=True) -&gt; list:
     &#34;&#34;&#34;From Current Location to Kitchen
 
-    Args:
+    Args-
         sprite (Sprite): Active Worker
         activeGame (Game, optional): Current Game. Defaults to Game.MasterGame
 
-    Returns:
+    Returns-
         list: List of Points for Path
     &#34;&#34;&#34;
     path = [
@@ -517,16 +504,10 @@ def BackToKitchen(sprite, VertFirst=True) -&gt; list:
 </code></dt>
 <dd>
 <div class="desc"><p>Walk In Logic Path</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>sprite</code></strong> :&ensp;<code>Sprite</code></dt>
-<dd>Active Customer</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>list</code></dt>
-<dd>List of Points for Path</dd>
-</dl></div>
+<p>Args-
+sprite (Sprite): Active Customer</p>
+<p>Returns-
+list: List of Points for Path</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -535,10 +516,10 @@ def BackToKitchen(sprite, VertFirst=True) -&gt; list:
 def CustomerToEntrance(sprite) -&gt; list:
     &#34;&#34;&#34;Walk In Logic Path
 
-    Args:
+    Args-
         sprite (Sprite): Active Customer
 
-    Returns:
+    Returns-
         list: List of Points for Path
     &#34;&#34;&#34;
     path = [sprite.rect.center, DefinedLocations.LocationDefs.CustomerEntrance]
@@ -550,16 +531,10 @@ def CustomerToEntrance(sprite) -&gt; list:
 </code></dt>
 <dd>
 <div class="desc"><p>Queued Customer to Leave the Restaurant</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>sprite</code></strong> :&ensp;<code>Sprite</code></dt>
-<dd>Active Customer</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>list</code></dt>
-<dd>List of Points for Path</dd>
-</dl></div>
+<p>Args-
+sprite (Sprite): Active Customer</p>
+<p>Returns-
+list: List of Points for Path</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -568,10 +543,10 @@ def CustomerToEntrance(sprite) -&gt; list:
 def CustomerToExit(sprite) -&gt; list:
     &#34;&#34;&#34;Queued Customer to Leave the Restaurant
 
-    Args:
+    Args-
         sprite (Sprite): Active Customer
 
-    Returns:
+    Returns-
         list: List of Points for Path
     &#34;&#34;&#34;
     path = [sprite.rect.center, DefinedLocations.LocationDefs.CustomerExit]
@@ -584,11 +559,8 @@ def CustomerToExit(sprite) -&gt; list:
 <dd>
 <div class="desc"><p>Picks a random seat and generates a path to it</p>
 <p>sprite (Sprite): Active Customer</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>list</code></dt>
-<dd>List of Points for Path</dd>
-</dl></div>
+<p>Returns-
+list: List of Points for Path</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -599,7 +571,7 @@ def CustomerToRandomSeat(sprite) -&gt; list:
 
     sprite (Sprite): Active Customer
 
-    Returns:
+    Returns-
         list: List of Points for Path
     &#34;&#34;&#34;
     randomSeatPosition = GetRandomSeatPosition()
@@ -617,18 +589,11 @@ def CustomerToRandomSeat(sprite) -&gt; list:
 </code></dt>
 <dd>
 <div class="desc"><p>Path for kitchen to customer's seat</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>sprite</code></strong> :&ensp;<code>Sprite</code></dt>
-<dd>Active Worker</dd>
-<dt><strong><code>dest</code></strong> :&ensp;<code>tuple</code></dt>
-<dd>Customer's Seat</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>list</code></dt>
-<dd>List of Points for Path</dd>
-</dl></div>
+<p>Args-
+sprite (Sprite): Active Worker
+dest (tuple): Customer's Seat</p>
+<p>Returns-
+list: List of Points for Path</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -637,11 +602,11 @@ def CustomerToRandomSeat(sprite) -&gt; list:
 def KitchenToCustomer(sprite, dest) -&gt; list:
     &#34;&#34;&#34;Path for kitchen to customer&#39;s seat
 
-    Args:
+    Args-
         sprite (Sprite): Active Worker
         dest (tuple): Customer&#39;s Seat
 
-    Returns:
+    Returns-
         list: List of Points for Path
     &#34;&#34;&#34;
     path = [
@@ -665,18 +630,11 @@ def KitchenToCustomer(sprite, dest) -&gt; list:
 </code></dt>
 <dd>
 <div class="desc"><p>Kitchen to a desired changing room</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>sprite</code></strong> :&ensp;<code>Sprite</code></dt>
-<dd>Worker To Change</dd>
-<dt><strong><code>dest</code></strong> :&ensp;<code>tuple</code></dt>
-<dd>Destination Position</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>list</code></dt>
-<dd>List of Points for Path</dd>
-</dl></div>
+<p>Args-
+sprite (Sprite): Worker To Change
+dest (tuple): Destination Position</p>
+<p>Returns-
+list: List of Points for Path</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -685,11 +643,11 @@ def KitchenToCustomer(sprite, dest) -&gt; list:
 def KitchenToLockerRoom(sprite, dest) -&gt; list:
     &#34;&#34;&#34;Kitchen to a desired changing room
 
-    Args:
+    Args-
         sprite (Sprite): Worker To Change
         dest (tuple): Destination Position
 
-    Returns:
+    Returns-
         list: List of Points for Path
     &#34;&#34;&#34;
     path = [
@@ -706,16 +664,10 @@ def KitchenToLockerRoom(sprite, dest) -&gt; list:
 </code></dt>
 <dd>
 <div class="desc"><p>Seated Customer to Exit</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>sprite</code></strong> :&ensp;<code>Sprite</code></dt>
-<dd>Active Customer</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>list</code></dt>
-<dd>List of Points for Path</dd>
-</dl></div>
+<p>Args-
+sprite (Sprite): Active Customer</p>
+<p>Returns-
+list: List of Points for Path</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -724,10 +676,10 @@ def KitchenToLockerRoom(sprite, dest) -&gt; list:
 def TableToExit(sprite) -&gt; list:
     &#34;&#34;&#34;Seated Customer to Exit
 
-    Args:
+    Args-
         sprite (Sprite): Active Customer
 
-    Returns:
+    Returns-
         list: List of Points for Path
     &#34;&#34;&#34;
     path = [

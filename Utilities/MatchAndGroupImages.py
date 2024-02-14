@@ -28,10 +28,10 @@ class Image:
 def GetAllImages(filePath) -> list:
     """Collects all images in folders into list of Image objects
 
-    Args:
+    Args-
         filePath (str): Path to parent folder
 
-    Returns:
+    Returns-
         list: List of Image Objects
     """
     pathList = glob.glob(root_dir=filePath, pathname="*.jpg")
@@ -49,12 +49,12 @@ def GetAllImages(filePath) -> list:
 def AreSimilar(image1, image2, tolerance=0.75) -> bool:
     """Determines if 2 images are similar
 
-    Args:
+    Args-
         image1 (Image): 1st Image
         image2 (Image): 2nd Image
         tolerance (float, optional): Closeness required for match. Defaults to 0.75.
 
-    Returns:
+    Returns-
         bool: Are They Similar?
     """
     firstGray = cv2.cvtColor(image1.CvObj, cv2.COLOR_BGR2GRAY)
@@ -68,10 +68,10 @@ def AreSimilar(image1, image2, tolerance=0.75) -> bool:
 def MatchImages(fileList) -> list:
     """Creates Parent and Child Relationship for Images
 
-    Args:
+    Args-
         fileList (list[Image]): List of Images
 
-    Returns:
+    Returns-
         list: list of Images with Relationships applied
     """
     unMatched = [x for x in fileList if x.hasParent is False]
@@ -95,7 +95,7 @@ def MatchImages(fileList) -> list:
 def MoveImagesToDest(fileList) -> None:
     """Moves Images to directory of parent image
 
-    Args:
+    Args-
         fileList (list[Image]): List of Images
     """
     numMatched = 0
@@ -114,7 +114,7 @@ def MoveImagesToDest(fileList) -> None:
 def Main(filePath) -> None:
     """Find all images which are similar and place them in a folder togethers
 
-    Args:
+    Args-
         filePath (str): Path to parent dir
     """
     fileList = GetAllImages(filePath=filePath)

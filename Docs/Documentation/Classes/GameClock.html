@@ -29,140 +29,31 @@
 </summary>
 <pre><code class="python">&#34;&#34;&#34;Game Clock Logic&#34;&#34;&#34;
 
-import math
-from dataclasses import dataclass
-
 import pygame
 
 from Classes import Settings
-from Definitions import ColorTools, CustomEvents
-from Utilities import Utils
+from Definitions import CustomEvents
+from Engine import Clock
 
 
-@dataclass
-class Month:
-    &#34;&#34;&#34;Class to define a Month&#34;&#34;&#34;
-
-    Days: int = 31
-    Name: str = &#34;&#34;
-    MonthOrder: int = 0
-    PreceedingDays: int = 0
-
-
-Months = [
-    Month(Name=&#34;January&#34;, MonthOrder=1, PreceedingDays=0),
-    Month(Name=&#34;February&#34;, MonthOrder=2, Days=28, PreceedingDays=31),
-    Month(Name=&#34;March&#34;, MonthOrder=3, PreceedingDays=59),
-    Month(Name=&#34;April&#34;, MonthOrder=4, Days=30, PreceedingDays=90),
-    Month(Name=&#34;May&#34;, MonthOrder=5, PreceedingDays=120),
-    Month(Name=&#34;June&#34;, MonthOrder=6, Days=30, PreceedingDays=151),
-    Month(Name=&#34;July&#34;, MonthOrder=7, PreceedingDays=181),
-    Month(Name=&#34;August&#34;, MonthOrder=8, PreceedingDays=212),
-    Month(Name=&#34;September&#34;, MonthOrder=9, Days=30, PreceedingDays=243),
-    Month(Name=&#34;October&#34;, MonthOrder=10, PreceedingDays=273),
-    Month(Name=&#34;November&#34;, MonthOrder=11, Days=30, PreceedingDays=304),
-    Month(Name=&#34;December&#34;, MonthOrder=0, PreceedingDays=334),
-]
-
-
-# TODO- Weird Flickering between 1:00 and 8:00 in 24hr clock
-class GameClock:
-    &#34;&#34;&#34;Class for a clock with custom speeds&#34;&#34;&#34;
-
-    Day: int = 1
-    CurrMonth: Month = Months[0]
-    Second: int = 1
-    WorkingDayStart: int = 9
-    WorkingDayEnd: int = 17
-    ClockMul = Settings.GameSettings.ClockSpeed
-    Running: bool = False
-
+class GameClock(Clock.Clock):
     def __init__(self, clock) -&gt; None:
-        self.PygameClock = clock
-        self.LastTime = pygame.time.get_ticks()
-        self.Running = True
+        super().__init__(clock=clock)
 
-    def SetRunning(self, state) -&gt; None:
-        &#34;&#34;&#34;Set the clock to running or not
-
-        Args:
-            state (bool): Running or Not
-        &#34;&#34;&#34;
-        if state != self.Running:
-            self.Running = state
-            self.LastTime = pygame.time.get_ticks()
-
-    def UpdateClock(self) -&gt; None:
-        &#34;&#34;&#34;Update the clock and wait for next frame&#34;&#34;&#34;
-        if self.Running:
-            self.Second += math.floor(
-                (pygame.time.get_ticks() - self.LastTime)
-                * Settings.GameSettings.ClockSpeed
-            )
-            self.LastTime = pygame.time.get_ticks()
-            self.CheckWorkingDay()
-            self.ClockMul = Settings.GameSettings.ClockSpeed
-            if self.Hour &gt;= 24:
-                self.DayChange()
-            if self.Day &gt;= self.CurrMonth.Days:
-                self.MonthChange()
-            if Settings.GameSettings.CapFrames:
-                self.PygameClock.tick(60)
-            else:
-                self.PygameClock.tick()
-
-    @property
-    def DayPercentage(self) -&gt; float:
-        return (self.Minute - (self.WorkingDayStart * 60)) / float(
-            (self.WorkingDayEnd - self.WorkingDayStart) * 60
-        )
-
-    def DayChange(self) -&gt; None:
-        &#34;&#34;&#34;Update the day as the previous ends&#34;&#34;&#34;
-        self.Day += 1
-        self.Second = 0
-
-        self.LastTime = pygame.time.get_ticks()
-
-    def MonthChange(self) -&gt; None:
-        &#34;&#34;&#34;Update the month as the previous month&#34;&#34;&#34;
-
-        self.CurrMonth = [
-            x for x in Months if x.MonthOrder == ((self.CurrMonth.MonthOrder + 1) % 12)
-        ][0]
-
-    @property
-    def DayOfMonth(self) -&gt; int:
-        &#34;&#34;&#34;Number Day in Month
-
-        Returns:
-            int: Current Day in the Month
-        &#34;&#34;&#34;
-        return self.Day - self.CurrMonth.PreceedingDays
-
-    @property
-    def Minute(self) -&gt; int:
-        &#34;&#34;&#34;Current Minute in Day
-
-        Returns:
-            int: Minute since midnight
-        &#34;&#34;&#34;
-        return math.floor(self.Second / 60)
-
-    @property
-    def Hour(self) -&gt; int:
-        &#34;&#34;&#34;Current hour in Day
-
-        Returns:
-            int: Hour since midnight
-        &#34;&#34;&#34;
-        return math.floor(self.Minute / 60)
+    def CheckWorkingDay(self) -&gt; None:
+        &#34;&#34;&#34;Checks if working day is over and runs the night cycle event if so&#34;&#34;&#34;
+        if self.Hour &lt; self.WorkingDayStart:
+            self.Second = (self.WorkingDayStart - self.Hour) * 60 * 60
+        elif self.Hour &gt;= self.WorkingDayEnd:
+            pygame.event.post(CustomEvents.NightCycle)
+            self.Day += 1
+            self.Second = self.WorkingDayStart * 60 * 60
 
     @property
     def DisplayHour(self) -&gt; int:
         &#34;&#34;&#34;Formats the hour based on game config
 
-        Returns:
+        Returns-
             int: Hour to display in Clock
         &#34;&#34;&#34;
         returnVal = self.Hour % Settings.GameSettings.ClockDivisor
@@ -174,32 +65,14 @@ class GameClock:
     def DateTime(self) -&gt; str:
         &#34;&#34;&#34;String of Current time and date
 
-        Returns:
+        Returns-
             str: Formatted String
         &#34;&#34;&#34;
         return (
             f&#34;{self.CurrMonth.Name} {self.DayOfMonth} &#34;
             + f&#34;{(self.DisplayHour):02d}:{(self.Minute % 60):02d}&#34;
             + f&#34;{Settings.GameSettings.AMPM(hour=self.Hour)}&#34;
-        )
-
-    @property
-    def UnixTime(self) -&gt; int:
-        &#34;&#34;&#34;Hours since start of game
-
-        Returns:
-            int: Hours since start of game
-        &#34;&#34;&#34;
-        return self.Hour + ((self.Day - 1) * 24)
-
-    def CheckWorkingDay(self) -&gt; None:
-        &#34;&#34;&#34;Checks if working day is over and runs the night cycle event if so&#34;&#34;&#34;
-        if self.Hour &lt; self.WorkingDayStart:
-            self.Second = (self.WorkingDayStart - self.Hour) * 60 * 60
-        elif self.Hour &gt;= self.WorkingDayEnd:
-            pygame.event.post(CustomEvents.NightCycle)
-            self.Day += 1
-            self.Second = self.WorkingDayStart * 60 * 60</code></pre>
+        )</code></pre>
 </details>
 </section>
 <section>
@@ -221,103 +94,24 @@ class GameClock:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class GameClock:
-    &#34;&#34;&#34;Class for a clock with custom speeds&#34;&#34;&#34;
-
-    Day: int = 1
-    CurrMonth: Month = Months[0]
-    Second: int = 1
-    WorkingDayStart: int = 9
-    WorkingDayEnd: int = 17
-    ClockMul = Settings.GameSettings.ClockSpeed
-    Running: bool = False
-
+<pre><code class="python">class GameClock(Clock.Clock):
     def __init__(self, clock) -&gt; None:
-        self.PygameClock = clock
-        self.LastTime = pygame.time.get_ticks()
-        self.Running = True
+        super().__init__(clock=clock)
 
-    def SetRunning(self, state) -&gt; None:
-        &#34;&#34;&#34;Set the clock to running or not
-
-        Args:
-            state (bool): Running or Not
-        &#34;&#34;&#34;
-        if state != self.Running:
-            self.Running = state
-            self.LastTime = pygame.time.get_ticks()
-
-    def UpdateClock(self) -&gt; None:
-        &#34;&#34;&#34;Update the clock and wait for next frame&#34;&#34;&#34;
-        if self.Running:
-            self.Second += math.floor(
-                (pygame.time.get_ticks() - self.LastTime)
-                * Settings.GameSettings.ClockSpeed
-            )
-            self.LastTime = pygame.time.get_ticks()
-            self.CheckWorkingDay()
-            self.ClockMul = Settings.GameSettings.ClockSpeed
-            if self.Hour &gt;= 24:
-                self.DayChange()
-            if self.Day &gt;= self.CurrMonth.Days:
-                self.MonthChange()
-            if Settings.GameSettings.CapFrames:
-                self.PygameClock.tick(60)
-            else:
-                self.PygameClock.tick()
-
-    @property
-    def DayPercentage(self) -&gt; float:
-        return (self.Minute - (self.WorkingDayStart * 60)) / float(
-            (self.WorkingDayEnd - self.WorkingDayStart) * 60
-        )
-
-    def DayChange(self) -&gt; None:
-        &#34;&#34;&#34;Update the day as the previous ends&#34;&#34;&#34;
-        self.Day += 1
-        self.Second = 0
-
-        self.LastTime = pygame.time.get_ticks()
-
-    def MonthChange(self) -&gt; None:
-        &#34;&#34;&#34;Update the month as the previous month&#34;&#34;&#34;
-
-        self.CurrMonth = [
-            x for x in Months if x.MonthOrder == ((self.CurrMonth.MonthOrder + 1) % 12)
-        ][0]
-
-    @property
-    def DayOfMonth(self) -&gt; int:
-        &#34;&#34;&#34;Number Day in Month
-
-        Returns:
-            int: Current Day in the Month
-        &#34;&#34;&#34;
-        return self.Day - self.CurrMonth.PreceedingDays
-
-    @property
-    def Minute(self) -&gt; int:
-        &#34;&#34;&#34;Current Minute in Day
-
-        Returns:
-            int: Minute since midnight
-        &#34;&#34;&#34;
-        return math.floor(self.Second / 60)
-
-    @property
-    def Hour(self) -&gt; int:
-        &#34;&#34;&#34;Current hour in Day
-
-        Returns:
-            int: Hour since midnight
-        &#34;&#34;&#34;
-        return math.floor(self.Minute / 60)
+    def CheckWorkingDay(self) -&gt; None:
+        &#34;&#34;&#34;Checks if working day is over and runs the night cycle event if so&#34;&#34;&#34;
+        if self.Hour &lt; self.WorkingDayStart:
+            self.Second = (self.WorkingDayStart - self.Hour) * 60 * 60
+        elif self.Hour &gt;= self.WorkingDayEnd:
+            pygame.event.post(CustomEvents.NightCycle)
+            self.Day += 1
+            self.Second = self.WorkingDayStart * 60 * 60
 
     @property
     def DisplayHour(self) -&gt; int:
         &#34;&#34;&#34;Formats the hour based on game config
 
-        Returns:
+        Returns-
             int: Hour to display in Clock
         &#34;&#34;&#34;
         returnVal = self.Hour % Settings.GameSettings.ClockDivisor
@@ -329,74 +123,26 @@ class GameClock:
     def DateTime(self) -&gt; str:
         &#34;&#34;&#34;String of Current time and date
 
-        Returns:
+        Returns-
             str: Formatted String
         &#34;&#34;&#34;
         return (
             f&#34;{self.CurrMonth.Name} {self.DayOfMonth} &#34;
             + f&#34;{(self.DisplayHour):02d}:{(self.Minute % 60):02d}&#34;
             + f&#34;{Settings.GameSettings.AMPM(hour=self.Hour)}&#34;
-        )
-
-    @property
-    def UnixTime(self) -&gt; int:
-        &#34;&#34;&#34;Hours since start of game
-
-        Returns:
-            int: Hours since start of game
-        &#34;&#34;&#34;
-        return self.Hour + ((self.Day - 1) * 24)
-
-    def CheckWorkingDay(self) -&gt; None:
-        &#34;&#34;&#34;Checks if working day is over and runs the night cycle event if so&#34;&#34;&#34;
-        if self.Hour &lt; self.WorkingDayStart:
-            self.Second = (self.WorkingDayStart - self.Hour) * 60 * 60
-        elif self.Hour &gt;= self.WorkingDayEnd:
-            pygame.event.post(CustomEvents.NightCycle)
-            self.Day += 1
-            self.Second = self.WorkingDayStart * 60 * 60</code></pre>
+        )</code></pre>
 </details>
-<h3>Class variables</h3>
-<dl>
-<dt id="Classes.GameClock.GameClock.ClockMul"><code class="name">var <span class="ident">ClockMul</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="Classes.GameClock.GameClock.CurrMonth"><code class="name">var <span class="ident">CurrMonth</span> : <a title="Classes.GameClock.Month" href="#Classes.GameClock.Month">Month</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="Classes.GameClock.GameClock.Day"><code class="name">var <span class="ident">Day</span> : int</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="Classes.GameClock.GameClock.Running"><code class="name">var <span class="ident">Running</span> : bool</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="Classes.GameClock.GameClock.Second"><code class="name">var <span class="ident">Second</span> : int</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="Classes.GameClock.GameClock.WorkingDayEnd"><code class="name">var <span class="ident">WorkingDayEnd</span> : int</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="Classes.GameClock.GameClock.WorkingDayStart"><code class="name">var <span class="ident">WorkingDayStart</span> : int</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>Engine.Clock.Clock</li>
+</ul>
 <h3>Instance variables</h3>
 <dl>
 <dt id="Classes.GameClock.GameClock.DateTime"><code class="name">var <span class="ident">DateTime</span> : str</code></dt>
 <dd>
 <div class="desc"><p>String of Current time and date</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>str</code></dt>
-<dd>Formatted String</dd>
-</dl></div>
+<p>Returns-
+str: Formatted String</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -405,7 +151,7 @@ class GameClock:
 def DateTime(self) -&gt; str:
     &#34;&#34;&#34;String of Current time and date
 
-    Returns:
+    Returns-
         str: Formatted String
     &#34;&#34;&#34;
     return (
@@ -415,50 +161,11 @@ def DateTime(self) -&gt; str:
     )</code></pre>
 </details>
 </dd>
-<dt id="Classes.GameClock.GameClock.DayOfMonth"><code class="name">var <span class="ident">DayOfMonth</span> : int</code></dt>
-<dd>
-<div class="desc"><p>Number Day in Month</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>int</code></dt>
-<dd>Current Day in the Month</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@property
-def DayOfMonth(self) -&gt; int:
-    &#34;&#34;&#34;Number Day in Month
-
-    Returns:
-        int: Current Day in the Month
-    &#34;&#34;&#34;
-    return self.Day - self.CurrMonth.PreceedingDays</code></pre>
-</details>
-</dd>
-<dt id="Classes.GameClock.GameClock.DayPercentage"><code class="name">var <span class="ident">DayPercentage</span> : float</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@property
-def DayPercentage(self) -&gt; float:
-    return (self.Minute - (self.WorkingDayStart * 60)) / float(
-        (self.WorkingDayEnd - self.WorkingDayStart) * 60
-    )</code></pre>
-</details>
-</dd>
 <dt id="Classes.GameClock.GameClock.DisplayHour"><code class="name">var <span class="ident">DisplayHour</span> : int</code></dt>
 <dd>
 <div class="desc"><p>Formats the hour based on game config</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>int</code></dt>
-<dd>Hour to display in Clock</dd>
-</dl></div>
+<p>Returns-
+int: Hour to display in Clock</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -467,79 +174,13 @@ def DayPercentage(self) -&gt; float:
 def DisplayHour(self) -&gt; int:
     &#34;&#34;&#34;Formats the hour based on game config
 
-    Returns:
+    Returns-
         int: Hour to display in Clock
     &#34;&#34;&#34;
     returnVal = self.Hour % Settings.GameSettings.ClockDivisor
     if (not Settings.GameSettings.Clock24) and (self.Hour &gt; 12 and returnVal &lt; 12):
         returnVal += 1
     return returnVal</code></pre>
-</details>
-</dd>
-<dt id="Classes.GameClock.GameClock.Hour"><code class="name">var <span class="ident">Hour</span> : int</code></dt>
-<dd>
-<div class="desc"><p>Current hour in Day</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>int</code></dt>
-<dd>Hour since midnight</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@property
-def Hour(self) -&gt; int:
-    &#34;&#34;&#34;Current hour in Day
-
-    Returns:
-        int: Hour since midnight
-    &#34;&#34;&#34;
-    return math.floor(self.Minute / 60)</code></pre>
-</details>
-</dd>
-<dt id="Classes.GameClock.GameClock.Minute"><code class="name">var <span class="ident">Minute</span> : int</code></dt>
-<dd>
-<div class="desc"><p>Current Minute in Day</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>int</code></dt>
-<dd>Minute since midnight</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@property
-def Minute(self) -&gt; int:
-    &#34;&#34;&#34;Current Minute in Day
-
-    Returns:
-        int: Minute since midnight
-    &#34;&#34;&#34;
-    return math.floor(self.Second / 60)</code></pre>
-</details>
-</dd>
-<dt id="Classes.GameClock.GameClock.UnixTime"><code class="name">var <span class="ident">UnixTime</span> : int</code></dt>
-<dd>
-<div class="desc"><p>Hours since start of game</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>int</code></dt>
-<dd>Hours since start of game</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@property
-def UnixTime(self) -&gt; int:
-    &#34;&#34;&#34;Hours since start of game
-
-    Returns:
-        int: Hours since start of game
-    &#34;&#34;&#34;
-    return self.Hour + ((self.Day - 1) * 24)</code></pre>
 </details>
 </dd>
 </dl>
@@ -564,133 +205,6 @@ def UnixTime(self) -&gt; int:
         self.Second = self.WorkingDayStart * 60 * 60</code></pre>
 </details>
 </dd>
-<dt id="Classes.GameClock.GameClock.DayChange"><code class="name flex">
-<span>def <span class="ident">DayChange</span></span>(<span>self) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Update the day as the previous ends</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def DayChange(self) -&gt; None:
-    &#34;&#34;&#34;Update the day as the previous ends&#34;&#34;&#34;
-    self.Day += 1
-    self.Second = 0
-
-    self.LastTime = pygame.time.get_ticks()</code></pre>
-</details>
-</dd>
-<dt id="Classes.GameClock.GameClock.MonthChange"><code class="name flex">
-<span>def <span class="ident">MonthChange</span></span>(<span>self) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Update the month as the previous month</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def MonthChange(self) -&gt; None:
-    &#34;&#34;&#34;Update the month as the previous month&#34;&#34;&#34;
-
-    self.CurrMonth = [
-        x for x in Months if x.MonthOrder == ((self.CurrMonth.MonthOrder + 1) % 12)
-    ][0]</code></pre>
-</details>
-</dd>
-<dt id="Classes.GameClock.GameClock.SetRunning"><code class="name flex">
-<span>def <span class="ident">SetRunning</span></span>(<span>self, state) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Set the clock to running or not</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>state</code></strong> :&ensp;<code>bool</code></dt>
-<dd>Running or Not</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def SetRunning(self, state) -&gt; None:
-    &#34;&#34;&#34;Set the clock to running or not
-
-    Args:
-        state (bool): Running or Not
-    &#34;&#34;&#34;
-    if state != self.Running:
-        self.Running = state
-        self.LastTime = pygame.time.get_ticks()</code></pre>
-</details>
-</dd>
-<dt id="Classes.GameClock.GameClock.UpdateClock"><code class="name flex">
-<span>def <span class="ident">UpdateClock</span></span>(<span>self) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Update the clock and wait for next frame</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def UpdateClock(self) -&gt; None:
-    &#34;&#34;&#34;Update the clock and wait for next frame&#34;&#34;&#34;
-    if self.Running:
-        self.Second += math.floor(
-            (pygame.time.get_ticks() - self.LastTime)
-            * Settings.GameSettings.ClockSpeed
-        )
-        self.LastTime = pygame.time.get_ticks()
-        self.CheckWorkingDay()
-        self.ClockMul = Settings.GameSettings.ClockSpeed
-        if self.Hour &gt;= 24:
-            self.DayChange()
-        if self.Day &gt;= self.CurrMonth.Days:
-            self.MonthChange()
-        if Settings.GameSettings.CapFrames:
-            self.PygameClock.tick(60)
-        else:
-            self.PygameClock.tick()</code></pre>
-</details>
-</dd>
-</dl>
-</dd>
-<dt id="Classes.GameClock.Month"><code class="flex name class">
-<span>class <span class="ident">Month</span></span>
-<span>(</span><span>Days: int = 31, Name: str = '', MonthOrder: int = 0, PreceedingDays: int = 0)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Class to define a Month</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@dataclass
-class Month:
-    &#34;&#34;&#34;Class to define a Month&#34;&#34;&#34;
-
-    Days: int = 31
-    Name: str = &#34;&#34;
-    MonthOrder: int = 0
-    PreceedingDays: int = 0</code></pre>
-</details>
-<h3>Class variables</h3>
-<dl>
-<dt id="Classes.GameClock.Month.Days"><code class="name">var <span class="ident">Days</span> : int</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="Classes.GameClock.Month.MonthOrder"><code class="name">var <span class="ident">MonthOrder</span> : int</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="Classes.GameClock.Month.Name"><code class="name">var <span class="ident">Name</span> : str</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="Classes.GameClock.Month.PreceedingDays"><code class="name">var <span class="ident">PreceedingDays</span> : int</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
 </dl>
 </dd>
 </dl>
@@ -711,35 +225,10 @@ class Month:
 <ul>
 <li>
 <h4><code><a title="Classes.GameClock.GameClock" href="#Classes.GameClock.GameClock">GameClock</a></code></h4>
-<ul class="two-column">
-<li><code><a title="Classes.GameClock.GameClock.CheckWorkingDay" href="#Classes.GameClock.GameClock.CheckWorkingDay">CheckWorkingDay</a></code></li>
-<li><code><a title="Classes.GameClock.GameClock.ClockMul" href="#Classes.GameClock.GameClock.ClockMul">ClockMul</a></code></li>
-<li><code><a title="Classes.GameClock.GameClock.CurrMonth" href="#Classes.GameClock.GameClock.CurrMonth">CurrMonth</a></code></li>
-<li><code><a title="Classes.GameClock.GameClock.DateTime" href="#Classes.GameClock.GameClock.DateTime">DateTime</a></code></li>
-<li><code><a title="Classes.GameClock.GameClock.Day" href="#Classes.GameClock.GameClock.Day">Day</a></code></li>
-<li><code><a title="Classes.GameClock.GameClock.DayChange" href="#Classes.GameClock.GameClock.DayChange">DayChange</a></code></li>
-<li><code><a title="Classes.GameClock.GameClock.DayOfMonth" href="#Classes.GameClock.GameClock.DayOfMonth">DayOfMonth</a></code></li>
-<li><code><a title="Classes.GameClock.GameClock.DayPercentage" href="#Classes.GameClock.GameClock.DayPercentage">DayPercentage</a></code></li>
-<li><code><a title="Classes.GameClock.GameClock.DisplayHour" href="#Classes.GameClock.GameClock.DisplayHour">DisplayHour</a></code></li>
-<li><code><a title="Classes.GameClock.GameClock.Hour" href="#Classes.GameClock.GameClock.Hour">Hour</a></code></li>
-<li><code><a title="Classes.GameClock.GameClock.Minute" href="#Classes.GameClock.GameClock.Minute">Minute</a></code></li>
-<li><code><a title="Classes.GameClock.GameClock.MonthChange" href="#Classes.GameClock.GameClock.MonthChange">MonthChange</a></code></li>
-<li><code><a title="Classes.GameClock.GameClock.Running" href="#Classes.GameClock.GameClock.Running">Running</a></code></li>
-<li><code><a title="Classes.GameClock.GameClock.Second" href="#Classes.GameClock.GameClock.Second">Second</a></code></li>
-<li><code><a title="Classes.GameClock.GameClock.SetRunning" href="#Classes.GameClock.GameClock.SetRunning">SetRunning</a></code></li>
-<li><code><a title="Classes.GameClock.GameClock.UnixTime" href="#Classes.GameClock.GameClock.UnixTime">UnixTime</a></code></li>
-<li><code><a title="Classes.GameClock.GameClock.UpdateClock" href="#Classes.GameClock.GameClock.UpdateClock">UpdateClock</a></code></li>
-<li><code><a title="Classes.GameClock.GameClock.WorkingDayEnd" href="#Classes.GameClock.GameClock.WorkingDayEnd">WorkingDayEnd</a></code></li>
-<li><code><a title="Classes.GameClock.GameClock.WorkingDayStart" href="#Classes.GameClock.GameClock.WorkingDayStart">WorkingDayStart</a></code></li>
-</ul>
-</li>
-<li>
-<h4><code><a title="Classes.GameClock.Month" href="#Classes.GameClock.Month">Month</a></code></h4>
 <ul class="">
-<li><code><a title="Classes.GameClock.Month.Days" href="#Classes.GameClock.Month.Days">Days</a></code></li>
-<li><code><a title="Classes.GameClock.Month.MonthOrder" href="#Classes.GameClock.Month.MonthOrder">MonthOrder</a></code></li>
-<li><code><a title="Classes.GameClock.Month.Name" href="#Classes.GameClock.Month.Name">Name</a></code></li>
-<li><code><a title="Classes.GameClock.Month.PreceedingDays" href="#Classes.GameClock.Month.PreceedingDays">PreceedingDays</a></code></li>
+<li><code><a title="Classes.GameClock.GameClock.CheckWorkingDay" href="#Classes.GameClock.GameClock.CheckWorkingDay">CheckWorkingDay</a></code></li>
+<li><code><a title="Classes.GameClock.GameClock.DateTime" href="#Classes.GameClock.GameClock.DateTime">DateTime</a></code></li>
+<li><code><a title="Classes.GameClock.GameClock.DisplayHour" href="#Classes.GameClock.GameClock.DisplayHour">DisplayHour</a></code></li>
 </ul>
 </li>
 </ul>
