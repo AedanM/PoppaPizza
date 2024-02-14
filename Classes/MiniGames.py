@@ -1,3 +1,4 @@
+import math
 import random
 import threading
 from enum import Enum
@@ -66,9 +67,9 @@ class TriviaGame(RoundBasedGame.RoundBasedGame):
         self.CurrentCash = activeGame.UserInventory.Money
         questionThread.start()
 
-    def UpdateStateMachine(self, buttonChoice) -> None:
-        super().UpdateStateMachine(input=buttonChoice)
-        match buttonChoice:
+    def UpdateStateMachine(self, inputStr) -> None:
+        super().UpdateStateMachine(inputStr=inputStr)
+        match inputStr:
             case "":
                 pass
             case "Loading Questions":
@@ -143,9 +144,9 @@ class TriviaGame(RoundBasedGame.RoundBasedGame):
 
     def PlayOrSkip(self) -> None:
         question = self.QuestionList[self.CurrentRound - 1]
-        self.DisplayedText[
-            "Main Text L1"
-        ].Text = f"This question is ranked {question['Difficulty']}"
+        self.DisplayedText["Main Text L1"].Text = (
+            f"This question is ranked {question['Difficulty']}"
+        )
         self.DisplayedText["Main Text L2"].Text = f"Category is {question['Category']}"
         self.PopulateButtons(
             textList=["Play", "Skip"],
@@ -153,7 +154,7 @@ class TriviaGame(RoundBasedGame.RoundBasedGame):
         self.GameState = GameStates.Wait
 
     # TODO - Fix wordwrap
-    def PresentQuestion(self) -> str:
+    def PresentQuestion(self):
         question = self.QuestionList[self.CurrentRound - 1]
         if len(question["Question"]) < 50:
             self.DisplayedText["Main Text L1"].Text = question["Question"]
@@ -176,19 +177,19 @@ class TriviaGame(RoundBasedGame.RoundBasedGame):
                 scale = 1.25
 
         if self.GameState is GameStates.CorrectAnswer:
-            self.DisplayedText[
-                "Main Text L1"
-            ].Text = f"Correct! You have earned ${((self.CurrentCash * scale) - self.CurrentCash):.2f}"
+            self.DisplayedText["Main Text L1"].Text = (
+                f"Correct! You have earned ${((self.CurrentCash * scale) - self.CurrentCash):.2f}"
+            )
             self.DisplayedText["Main Text L2"].Text = ""
             self.ResultsList.append(True)
             self.CurrentCash *= scale
         else:
-            self.DisplayedText[
-                "Main Text L1"
-            ].Text = f"Incorrect! You have lost ${abs((self.CurrentCash / scale) - self.CurrentCash):.2f}"
-            self.DisplayedText[
-                "Main Text L2"
-            ].Text = f"Correct Answer was {self.QuestionList[self.CurrentRound -1]['Correct Answer']}"
+            self.DisplayedText["Main Text L1"].Text = (
+                f"Incorrect! You have lost ${abs((self.CurrentCash / scale) - self.CurrentCash):.2f}"
+            )
+            self.DisplayedText["Main Text L2"].Text = (
+                f"Correct Answer was {self.QuestionList[self.CurrentRound -1]['Correct Answer']}"
+            )
             self.ResultsList.append(False)
             self.CurrentCash /= scale
 
@@ -196,18 +197,18 @@ class TriviaGame(RoundBasedGame.RoundBasedGame):
         self.GameState = GameStates.Wait
 
     def Summary(self) -> None:
-        self.DisplayedText[
-            "Main Text L1"
-        ].Text = f"You answered {len([x for x in self.ResultsList if x])}/{len(self.ResultsList)} correctly and skipped {self.Rounds - len(self.ResultsList)}"
+        self.DisplayedText["Main Text L1"].Text = (
+            f"You answered {len([x for x in self.ResultsList if x])}/{len(self.ResultsList)} correctly and skipped {self.Rounds - len(self.ResultsList)}"
+        )
         deltaMoney = self.CurrentCash - self.StartingCash
         descriptor = "earnings" if deltaMoney > 0 else "losses"
-        self.DisplayedText[
-            "Main Text L2"
-        ].Text = f"Resulting in total {descriptor} ${abs(deltaMoney):.2f}"
+        self.DisplayedText["Main Text L2"].Text = (
+            f"Resulting in total {descriptor} ${abs(deltaMoney):.2f}"
+        )
         self.PopulateButtons(textList=["Exit"])
         self.GameState = GameStates.Wait
 
-    def StartRound(self, activeGame) -> None:
+    def StartRound(self) -> None:
         super().StartRound()
 
         match self.GameState:
@@ -231,8 +232,8 @@ class TriviaGame(RoundBasedGame.RoundBasedGame):
         for text in self.DisplayedText.values():
             text.Rect = text.WriteToScreen(activeScreen=self.Screen)
 
-    def PlayGame(self, activeGame) -> None:
-        super().PlayGame(activeGame=activeGame)
+    def PlayGame(self) -> None:
+        super().PlayGame()
 
 
 def MakeTriviaGame(activeGame) -> None:
@@ -246,9 +247,9 @@ class DiceGame(RoundBasedGame.RoundBasedGame):
     MaxDice: int = 45
     DiceBounds: tuple = (6, 48)
 
-    def __init__(self, rounds, dice) -> None:
-        super().__init__(rounds=rounds)
-        self.Dice = Utils.Bind(val=dice, inRange=[0, self.MaxDice])
+    def __init__(self, rounds, dice, activeGame) -> None:
+        super().__init__(rounds=rounds, activeGame=activeGame)
+        self.Dice = math.floor(Utils.Bind(val=dice, inRange=[0, self.MaxDice]))
 
     def StartRound(self) -> None:
         super().StartRound()

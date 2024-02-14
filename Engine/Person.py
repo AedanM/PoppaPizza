@@ -16,7 +16,7 @@ class Person:
     IsAssigned: bool = False
 
     @classmethod
-    def Create(cls) -> "Person":
+    def Create(cls):
         """Creates a person object
 
         Returns-

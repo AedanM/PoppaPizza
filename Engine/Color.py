@@ -1,14 +1,12 @@
-from Engine import Utils
-
-
-import numpy as np
-
-
 import colorsys
 from dataclasses import dataclass
 
+import numpy as np
 
-def RGB_to_HSV(red, green, blue) -> None:
+from Engine import Utils
+
+
+def RGB_to_HSV(red, green, blue) -> tuple:
     red_percentage = red / float(255)
     green_percentage = green / float(255)
     blue_percentage = blue / float(255)
@@ -37,9 +35,9 @@ class Color:
         """Creates a color from HSV or RGB input"""
         try:
             if h is not None and s is not None and v is not None:
-                self.H = Utils.Bind(val=h, inRange=(0, 255))
-                self.S = Utils.Bind(val=s, inRange=(0, 255))
-                self.V = Utils.Bind(val=v, inRange=(0, 255))
+                self.H = int(Utils.Bind(val=h, inRange=(0, 255)))
+                self.S = int(Utils.Bind(val=s, inRange=(0, 255)))
+                self.V = int(Utils.Bind(val=v, inRange=(0, 255)))
             elif r is not None and g is not None and b is not None:
                 self.H, self.S, self.V = RGB_to_HSV(red=r, green=g, blue=b)
             elif hexstring is not None:
@@ -54,7 +52,7 @@ class Color:
         except Exception as e:
             raise Exception(f"Invalid Inputs: {e}") from e
 
-    def GetNumPy(self) -> "np.NDArray[np.uint8]":
+    def GetNumPy(self) -> "np.NDArray[np.uint8]":  # type: ignore
         """Numpy Representation"""
         return np.array([self.H, self.S, self.V], dtype=np.uint8)
 

@@ -4,8 +4,8 @@ import random
 
 from Classes import GameBase, People
 from Definitions import AssetLibrary, DefinedLocations, Prices, Restaurants
-from Handlers import CustomerHandler, WorkerHandler
 from Engine import Utils
+from Handlers import CustomerHandler, WorkerHandler
 
 # pylint: disable=C0103
 LastSpawnTime = 0
@@ -72,7 +72,7 @@ def GetRandomCustomerType() -> AssetLibrary.ImageTypes:
         random.choice(
             random.choice(
                 [activeClientTypes] * GameBase.MasterGame.Chances.ActiveRestLuck
-                + [inactiveClientTypes]
+                + [inactiveClientTypes]  # type:ignore
             )
         )
     )

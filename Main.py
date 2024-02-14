@@ -30,7 +30,7 @@ def MainLoop() -> None:
                 GameBase.MasterGame.UpdateLightingEngine()
             case MiniGames.GameMode.TriviaGame:
                 GameBase.MasterGame.DrawBackground(source=AssetLibrary.TriviaBackground)
-                GameBase.MasterGame.MiniGame.PlayGame(activeGame=GameBase.MasterGame)
+                GameBase.MasterGame.MiniGame.PlayGame()
                 EventHandler.TriviaEventHandler(activeGame=GameBase.MasterGame)
 
     if GameBase.MasterGame.ShowScreen:

@@ -49,7 +49,7 @@ class Worker(Person.Person):
 class Customer(Person.Person):
     """Data Class for Customers, inherits from Person Class"""
 
-    DesiredJob: Jobs.Job = None
+    DesiredJob: Jobs.Job = None  # type: ignore
     WorkerAssigned: bool = False
     CurrentState: CustomerDefs.CustomerStates = CustomerDefs.CustomerStates.Null
 

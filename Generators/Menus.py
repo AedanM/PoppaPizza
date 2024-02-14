@@ -1,3 +1,4 @@
+# type: ignore
 """Generator Functions for Menus"""
 
 import pygame

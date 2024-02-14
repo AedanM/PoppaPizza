@@ -27,9 +27,9 @@ class MainGame(Game.Game):
     CustomerList: list = []
     JobList: list = []
     ButtonList: list = []
-    UserInventory: Inventory.Inventory = None
+    UserInventory: Inventory.Inventory = None  # type: ignore
     Mode: MiniGames.GameMode = MiniGames.GameMode.Base
-    MiniGame: RoundBasedGame.RoundBasedGame = None
+    MiniGame: RoundBasedGame.RoundBasedGame = None #type: ignore
 
     def __init__(
         self, activateScreen=True, size=DefinedLocations.LocationDefs.ScreenSize
@@ -82,7 +82,7 @@ class MainGame(Game.Game):
         Writing.WriteKitchenLabel(activeGame=self)
 
     def DrawBackground(
-        self, source: pygame.Surface = None, color: Color.Color = None
+        self, source: pygame.Surface = None, color: Color.Color = None #type: ignore
     ) -> None:
         """Wiping screen with background image"""
         if source:
@@ -93,7 +93,7 @@ class MainGame(Game.Game):
             super().DrawBackground()
 
     def ClearMiniGame(self) -> None:
-        self.MiniGame = None
+        self.MiniGame = None #type: ignore
         self.Mode = MiniGames.GameMode.Base
         self.GameClock.SetRunning(True)
 

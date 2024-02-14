@@ -33,7 +33,7 @@ class GameObject(pygame.sprite.Sprite):
     def Update(self, activeGame) -> None:
         """Update the sprite on screen"""
         if self.Moveable:
-            self.MvmHandler.CalcNewPosition(obj=self, activeGame=activeGame)
+            self.MvmHandler.CalcNewPosition(obj=self, activeGame=activeGame) #type: ignore
 
 
 class RectangleObject(GameObject):
@@ -62,7 +62,7 @@ class RectangleObject(GameObject):
 
 class CharacterSprite(GameObject):
     rect: pygame.rect.Rect = pygame.rect.Rect(0, 0, 0, 0)
-    MvmHandler: MovementHandler.MovementHandler = None
+    MvmHandler: MovementHandler.MovementHandler = None # type: ignore
 
     def __init__(
         self,

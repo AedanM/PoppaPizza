@@ -11,6 +11,10 @@ class GameClock(Clock.Clock):
     def __init__(self, clock) -> None:
         super().__init__(clock=clock)
 
+    def UpdateClock(self, clockSpeed, frameCap) -> None:
+        super().UpdateClock(clockSpeed, frameCap)
+        self.CheckWorkingDay()
+
     def CheckWorkingDay(self) -> None:
         """Checks if working day is over and runs the night cycle event if so"""
         if self.Hour < self.WorkingDayStart:

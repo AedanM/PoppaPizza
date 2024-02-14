@@ -15,7 +15,7 @@ class MovementSpeeds:
 class MovementHandler:
     OnComplete = None
     Dest: tuple = (0, 0)
-    MaxMovementSpeed: MovementSpeeds = MovementSpeeds.Medium
+    MaxMovementSpeed: int = MovementSpeeds.Medium
     MovementTolerance: float = 0.01
     InMotion: bool = False
     DstSet: bool = False

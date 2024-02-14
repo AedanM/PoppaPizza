@@ -39,9 +39,7 @@ def NeedsToQueue(movingSprite) -> bool:
                     )
                 ):
                     return True
-        # pylint: disable=unused-variable
-        case other:
-            return False
+    return False
 
 
 def FirstInLine(movingSprite) -> bool:

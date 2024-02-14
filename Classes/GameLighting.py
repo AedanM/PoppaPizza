@@ -5,11 +5,11 @@ from Engine import Color, LightingEngine
 
 
 class GameLighting(LightingEngine.LightingEngine):
-    MorningColorOptions: list = {
+    MorningColorOptions: dict = {
         "Blue": ColorDefines.Blue,
         "Orange": ColorDefines.OrangeMorning,
     }
-    NightColorOptions: list = {
+    NightColorOptions: dict = {
         "Blue": ColorDefines.Blue,
         "Orange": ColorDefines.OrangeNight,
     }

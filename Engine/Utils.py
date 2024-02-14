@@ -15,7 +15,9 @@ def InRandomVariance(num, percentVariance) -> float:
         float: New Varied Number
     """
     percentVariance = CheckDecimalPercent(percentVariance)
-    varyAmount = random.randint(a=-100, b=100) * percentVariance * 0.01 * num
+    varyAmount = (
+        random.randint(a=-100, b=100) * percentVariance * 0.01 * num  # type:ignore
+    )
     return num + varyAmount
 
 
@@ -55,16 +57,16 @@ def PositionRandomVariance(
     """
     percentVarianceTuple = CheckDecimalPercent(val=percentVarianceTuple)
     varyAmountX = math.ceil(
-        (random.randint(-100, 100) * 0.01 * percentVarianceTuple[0] * screenSize[0])
+        (random.randint(-100, 100) * 0.01 * percentVarianceTuple[0] * screenSize[0])  # type: ignore
         + position[0]
     )
     varyAmountY = math.ceil(
-        (random.randint(-100, 100) * 0.01 * percentVarianceTuple[1] * screenSize[1])
+        (random.randint(-100, 100) * 0.01 * percentVarianceTuple[1] * screenSize[1])  # type: ignore
         + position[1]
     )
     out = (
-        Bind(val=varyAmountX, inRange=(0, screenSize[0])),
-        Bind(val=varyAmountY, inRange=(0, screenSize[1])),
+        int(Bind(val=varyAmountX, inRange=(0, screenSize[0]))),
+        int(Bind(val=varyAmountY, inRange=(0, screenSize[1]))),
     )
     return out
 
@@ -94,14 +96,15 @@ def InPercentTolerance(num1, num2, tolerance) -> bool:
     Returns-
         bool: Status of Tolerance
     """
-    tolerance = CheckDecimalPercent(val=tolerance)
+    tol = CheckDecimalPercent(val=tolerance)
+    tolerance = tol if isinstance(tol, float) else 0.0
     if num1 == 0:
         return False
     seperation = abs((num1 - num2) / num1)
     return seperation <= abs(tolerance)
 
 
-def ProRateValue(value, inRange, outRange) -> int | float | None:
+def ProRateValue(value, inRange, outRange) -> int | float | str:
     """Changes the range of a value
 
     Args-

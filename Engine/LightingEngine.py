@@ -8,14 +8,14 @@ class LightingEngine:
     MaxNightLightAlpha: float = 200
     NightTransitionCover: float = 0.05
     LightMask: pygame.Surface = pygame.Surface((1, 1))
-    DayColorScreen: pygame.Surface = None
+    DayColorScreen: pygame.Surface = pygame.Surface((1, 1))
     NightTransitionColor: Color.Color = Color.Color(hexstring="#FFFFFF")
     MorningTransitionColor: Color.Color = Color.Color(hexstring="#000000")
 
     def __init__(self, screenSize) -> None:
         self.DayColorScreen = pygame.Surface(screenSize)
 
-    def AllDayBlend(self, gameClock, screenSize) -> None:
+    def AllDayBlend(self, gameClock, screenSize) -> pygame.Surface:
         dayPercent = gameClock.DayPercentage
         morningPercent = Utils.Bind(val=1 - (dayPercent * 2), inRange=(0, 1))
         nightPercent = Utils.Bind(val=((dayPercent - 0.5) * 2), inRange=(0, 1))

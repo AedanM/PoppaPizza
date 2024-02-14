@@ -35,8 +35,8 @@ class Settings:
         Args-
             value (int): Increment to Clock Power
         """
-        self.ClockPow = Utils.Bind(
-            val=self.ClockPow + value, inRange=self.ClockPowRange
+        self.ClockPow = int(
+            Utils.Bind(val=self.ClockPow + value, inRange=self.ClockPowRange)
         )
 
     def SetClockMul(self, value) -> None:
@@ -45,7 +45,7 @@ class Settings:
         Args-
             value (int): New Speed
         """
-        self.ClockPow = Utils.Bind(val=value, inRange=self.ClockPowRange)
+        self.ClockPow = int(Utils.Bind(val=value, inRange=self.ClockPowRange))
 
     def AMPM(self, hour) -> str:
         """String for if it is AM or PM

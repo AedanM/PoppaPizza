@@ -30,10 +30,10 @@ DefinedFonts = {
 
 class TextBox:
     Text: str
-    TopLeft: tuple
-    Center: tuple
+    TopLeft: tuple | None
+    Center: tuple | None
     ForeColor: Color.Color
-    Font: pygame.font
+    Font: pygame.font.Font
     Rect: pygame.Rect
 
     def __init__(

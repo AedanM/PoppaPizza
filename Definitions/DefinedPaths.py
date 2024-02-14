@@ -74,7 +74,7 @@ class DefinedPaths:
         return path
 
     @staticmethod
-    def CustomerToRandomSeat(sprite) -> list:
+    def CustomerToRandomSeat(sprite) -> list | None:
         """Picks a random seat and generates a path to it
 
         sprite (Sprite): Active Customer
@@ -90,6 +90,7 @@ class DefinedPaths:
                 (randomSeatPosition[0], randomSeatPosition[1] + 50),
             ]
             return path
+        return None
 
     @staticmethod
     def KitchenToCustomer(sprite, dest) -> list:

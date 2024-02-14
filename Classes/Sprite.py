@@ -1,5 +1,7 @@
 """Class for visibile sprites"""
 
+from typing import Any
+
 import pygame
 
 from Classes import GameBase, Matching
@@ -14,7 +16,7 @@ class CharImageSprite(SpriteObjects.CharacterSprite):
     # pylint: disable=invalid-name
     CorrespondingID: int = 0
     ImageType: AssetLibrary.ImageTypes = AssetLibrary.ImageTypes.Null
-    PersonalTimer: TimerBar.TimerBar = None
+    PersonalTimer: TimerBar.TimerBar = None  # type: ignore
 
     def __init__(
         self,
@@ -41,7 +43,7 @@ class CharImageSprite(SpriteObjects.CharacterSprite):
         self.MvmHandler = CharacterMovementHandler.CharacterMovementHandler()
 
     @property
-    def DataObject(self):
+    def DataObject(self) -> Any | None:
         """Numerical Data Object Associated with Image
 
         Returns-
@@ -51,24 +53,25 @@ class CharImageSprite(SpriteObjects.CharacterSprite):
         objDict = Matching.MatchIdToPerson(
             activeGame=activeGame, inputId=self.CorrespondingID
         )
-        objDict.pop("sprite")
-        obj = list(objDict.values())[0]
-        return obj
+        if objDict is not None:
+            objDict.pop("sprite")
+            obj = list(objDict.values())[0]
+            return obj
 
-    def CheckSpawnCollision(self) -> None:
+    def CheckSpawnCollision(self, activeGame) -> None:
         """Changes spawn location until new sprite is not colliding
 
         Args-
             activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
         """
         currentCenter = self.rect.center
-        for group in self.ActiveGame.SpriteGroups:
+        for group in activeGame.SpriteGroups:
             for sprite in group:
                 while sprite.rect.colliderect(self.rect) and sprite is not self:
                     self.rect.center = Utils.PositionRandomVariance(
                         position=currentCenter,
                         percentVarianceTuple=(0.1, 1),
-                        screenSize=self.ActiveGame.ScreenSize,
+                        screenSize=activeGame.ScreenSize,
                     )
 
     def ChangeOutfit(self, newOutfitPath) -> None:
@@ -92,7 +95,7 @@ class CharImageSprite(SpriteObjects.CharacterSprite):
         """Update sprite for each frame"""
         if self.PersonalTimer is not None:
             self.UpdateTimerAndDraw(activeGame=activeGame)
-            self.PersonalTimer.Rect = self.rect.topleft
+            self.PersonalTimer.Rect = self.rect.topleft #type: ignore
         super().UpdateSprite(activeGame=activeGame)
 
     def UpdateTimerAndDraw(self, activeGame) -> None:
@@ -112,7 +115,7 @@ class CharImageSprite(SpriteObjects.CharacterSprite):
                 and timerBar.AssocId != 0
                 and (
                     customerObj is None
-                    or customerObj.CurrentState.value != timerBar.StartingState
+                    or customerObj.CurrentState.value != timerBar.StartingState #type: ignore
                 )
             ):
                 timerBar.Running = False
@@ -259,7 +262,7 @@ class ButtonObject(SpriteObjects.GameObject):
             backColor=backColor,
             text=text,
             size=[125, 50],
-            enabled=enabled,
+            enabled=enabled, #type:ignore
         )
 
         activeGame.ForegroundSpriteGroup.add(buttonObj)

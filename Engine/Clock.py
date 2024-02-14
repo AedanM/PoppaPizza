@@ -65,7 +65,6 @@ class Clock:
                 (pygame.time.get_ticks() - self.LastTime) * self.ClockMul
             )
             self.LastTime = pygame.time.get_ticks()
-            self.CheckWorkingDay()
 
             if self.Hour >= 24:
                 self.DayChange()

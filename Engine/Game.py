@@ -10,7 +10,7 @@ class Game:
     ShowScreen: bool = True
     Running: bool = True
     BackgroundColor: Color.Color = Color.Color(hexstring="#000000")
-    Lighting: LightingEngine.LightingEngine = None
+    Lighting: LightingEngine.LightingEngine = None  # type: ignore
 
     def __init__(self, size, name, activateScreen=True) -> None:
         pygame.init()

@@ -23,14 +23,14 @@ class Restaurant:
     """Restaurant Class"""
 
     Name: str
-    Logo: AssetLibrary.ImageTypes
+    Logo: AssetLibrary.ImageTypes | None
     CustomerImageTypes: list[AssetLibrary.ImageTypes]
     WorkerImageTypes: list[AssetLibrary.ImageTypes]
     LockerRoom: LockerRoom
     Size: tuple = (180, 150)
 
     @property
-    def LogoPath(self) -> str:
+    def LogoPath(self) -> str | None:
         return AssetLibrary.LogoPaths[self.Logo] if self.Logo else None
 
 

@@ -1,10 +1,11 @@
 """Matching Functions for Person Objects"""
 
-from Definitions import AssetLibrary
-from Definitions.Restaurants import Restaurant, RestaurantList
+from typing import Any
+
+from Definitions import AssetLibrary, Restaurants
 
 
-def MatchIdToPerson(activeGame, inputId, targetOutput="all") -> dict:
+def MatchIdToPerson(activeGame, inputId, targetOutput="all") -> dict[str, Any] | None:
     """Match an id to corresponding people and sprites
 
     Args-
@@ -40,7 +41,9 @@ def RemoveObjFromSprite(activeGame, targetSprite) -> None:
     responseDict = MatchIdToPerson(
         activeGame=activeGame, inputId=targetSprite.CorrespondingID
     )
-    if "customer" in responseDict:
+    if responseDict is None:
+        pass
+    elif "customer" in responseDict:
         activeGame.CustomerList.remove(responseDict["customer"])
     elif "worker" in responseDict:
         activeGame.WorkerList.remove(responseDict["worker"])
@@ -59,7 +62,7 @@ def RemoveButtonFromLocation(activeGame, location) -> None:
         activeGame.ButtonList.remove(button)
 
 
-def FindRestaurant(imageType) -> Restaurant | None:
+def FindRestaurant(imageType) -> Restaurants.Restaurant | None:
     """Matches image type to Restaurant
 
     Args-
@@ -70,9 +73,13 @@ def FindRestaurant(imageType) -> Restaurant | None:
     """
     potentialList = [None]
     if imageType in AssetLibrary.WorkerOutfits:
-        potentialList = [x for x in RestaurantList if imageType in x.WorkerImageTypes]
+        potentialList = [
+            x for x in Restaurants.RestaurantList if imageType in x.WorkerImageTypes
+        ]
     elif imageType in AssetLibrary.CustomerOutfits:
-        potentialList = [x for x in RestaurantList if imageType in x.CustomerImageTypes]
+        potentialList = [
+            x for x in Restaurants.RestaurantList if imageType in x.CustomerImageTypes
+        ]
     return potentialList[0]
 
 
@@ -88,6 +95,6 @@ def CostumeMatch(workerSprite, customerSprite) -> bool:
     """
     if workerSprite is not None:
         desiredRest = FindRestaurant(imageType=customerSprite.ImageType)
-        return workerSprite.ImageType in desiredRest.WorkerImageTypes
+        return workerSprite.ImageType in desiredRest.WorkerImageTypes  # type: ignore
 
     return False
