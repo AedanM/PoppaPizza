@@ -71,12 +71,12 @@ def Main(debugFlag, profileFlag, safetyFlag) -> None:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("-d", "--debugFlag", default=True)
-    parser.add_argument("-f", "--profilerFlag", default=True)
-    parser.add_argument("-s", "--safetyFlag", default=False)
+    parser.add_argument("-d", "--debugFlag", default="True")
+    parser.add_argument("-p", "--profilerFlag", default="True")
+    parser.add_argument("-s", "--safetyFlag", default="False")
     args = parser.parse_args()
     Main(
-        debugFlag=args.debugFlag,
-        profileFlag=args.profilerFlag,
-        safetyFlag=args.safetyFlag,
+        debugFlag=args.debugFlag.capitalize() == "True",
+        profileFlag=args.profilerFlag.capitalize() == "True",
+        safetyFlag=args.safetyFlag.capitalize() == "True",
     )
