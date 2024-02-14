@@ -28,12 +28,12 @@ class GameObject(pygame.sprite.Sprite):
 
     def UpdateSprite(self, activeGame) -> None:
         """Virtual method for inherited classes to update"""
-        self.Update()
+        self.Update(activeGame=activeGame)
 
-    def Update(self) -> None:
+    def Update(self, activeGame) -> None:
         """Update the sprite on screen"""
-        if self.Moveable and "MvmHandler" in dir(self):
-            self.MvmHandler.CalcNewPosition(self)
+        if self.Moveable:
+            self.MvmHandler.CalcNewPosition(obj=self, activeGame=activeGame)
 
 
 class RectangleObject(GameObject):
@@ -96,6 +96,6 @@ class CharacterSprite(GameObject):
             self.rect.center = center
         self.MvmHandler = MovementHandler.MovementHandler()
 
-    def UpdateSprite(self) -> None:
+    def UpdateSprite(self, activeGame) -> None:
         """Update sprite for each frame"""
-        self.Update()
+        self.Update(activeGame=activeGame)

@@ -3,9 +3,9 @@
 import pygame
 
 from Classes import GameBase, Matching
-from Definitions import AssetLibrary, ColorDefines, CustomerDefs, DefinedLocations
-from Engine import MovementHandler, SpriteObjects, TimerBar, Utils
-from Handlers import QueueHandler
+from Definitions import AssetLibrary, ColorDefines, DefinedLocations
+from Engine import SpriteObjects, TimerBar, Utils
+from Handlers import CharacterMovementHandler
 
 
 class CharImageSprite(SpriteObjects.CharacterSprite):
@@ -19,7 +19,6 @@ class CharImageSprite(SpriteObjects.CharacterSprite):
     def __init__(
         self,
         path,
-        activeGame,
         objID,
         position=None,
         center=None,
@@ -39,7 +38,7 @@ class CharImageSprite(SpriteObjects.CharacterSprite):
         self.ImageType = AssetLibrary.PathToTypeDict[path]
         # self.CheckSpawnCollision()
         self.CorrespondingID = objID
-        self.MvmHandler = CharacterMovementHandler()
+        self.MvmHandler = CharacterMovementHandler.CharacterMovementHandler()
 
     @property
     def DataObject(self):
@@ -94,7 +93,7 @@ class CharImageSprite(SpriteObjects.CharacterSprite):
         if self.PersonalTimer is not None:
             self.UpdateTimerAndDraw(activeGame=activeGame)
             self.PersonalTimer.Rect = self.rect.topleft
-        super().UpdateSprite()
+        super().UpdateSprite(activeGame=activeGame)
 
     def UpdateTimerAndDraw(self, activeGame) -> None:
         """Update Timer Dimensions and Redraw if active
@@ -266,30 +265,3 @@ class ButtonObject(SpriteObjects.GameObject):
         activeGame.ForegroundSpriteGroup.add(buttonObj)
         if not [x for x in activeGame.ButtonList if x.position == location]:
             activeGame.ButtonList.append(buttonObj)
-
-
-class CharacterMovementHandler(MovementHandler.MovementHandler):
-    """Character Movement Handler
-
-        Handles all Motion Features for a Sprite
-
-    Returns-
-        CharacterMovementHandler:
-    """
-
-    def CalcNewPosition(self, obj) -> None:
-        """Logic for Moving Characters and Queuing
-
-        Args-
-            obj (Sprite): Moving Sprite
-        """
-        if GameBase.MasterGame.GameClock.Running:
-            if (
-                obj.ImageType in AssetLibrary.CustomerOutfits
-                and QueueHandler.NeedsToQueue(movingSprite=obj)
-            ):
-                obj.DataObject.CurrentState = CustomerDefs.CustomerStates.Queuing
-            else:
-                super().CalcNewPosition(
-                    obj=obj, gameSpeed=GameBase.MasterGame.GameClock.ClockMul
-                )

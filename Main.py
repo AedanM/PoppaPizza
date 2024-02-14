@@ -12,54 +12,71 @@ import time
 import pygame
 
 from Classes import GameBase, MiniGames
-from Definitions import AssetLibrary, ColorDefines, CustomEvents
+from Definitions import AssetLibrary, CustomEvents
 from Handlers import EventHandler
 
+GAME_START_TIME = 0
 
-def Main() -> None:
+
+def MainLoop() -> None:
     """Main Loop of Game"""
-    debugFlag = True
-    profileFlag = True
+    if GameBase.MasterGame.Running:
+        match GameBase.MasterGame.Mode:
+            case MiniGames.GameMode.Base:
+                EventHandler.MainEventHandler(activeGame=GameBase.MasterGame)
+                GameBase.MasterGame.DrawBackground(source=AssetLibrary.Background)
+                GameBase.MasterGame.UpdateSprites()
+                GameBase.MasterGame.WriteAllText()
+                GameBase.MasterGame.UpdateLightingEngine()
+            case MiniGames.GameMode.TriviaGame:
+                GameBase.MasterGame.DrawBackground(source=AssetLibrary.TriviaBackground)
+                GameBase.MasterGame.MiniGame.PlayGame(activeGame=GameBase.MasterGame)
+                EventHandler.TriviaEventHandler(activeGame=GameBase.MasterGame)
+
+    if GameBase.MasterGame.ShowScreen:
+        pygame.display.update()
+
+    # Control the frame rate
+    GameBase.MasterGame.GameClock.UpdateClock(
+        clockSpeed=GameBase.MasterGame.Settings.ClockSpeed,
+        frameCap=GameBase.MasterGame.Settings.CapFrames,
+    )
+
+
+def Setup(debugFlag=True, profileFlag=False) -> None:
     GameBase.MasterGame = GameBase.MainGame()
     pygame.event.post(CustomEvents.UpdateBackground)
     # Enables a series of functions to run automatically
     if profileFlag:
-        startTime = time.time()
+        global GAME_START_TIME
+        GAME_START_TIME = time.time()
         GameBase.MasterGame.Settings.CapFrames = False
     if debugFlag:
         EventHandler.DebugSetup()
+
+
+def Main(debugFlag, profileFlag, safetyFlag) -> None:
+    Setup(debugFlag=debugFlag, profileFlag=profileFlag)
     while True:
-        # try:
-        if GameBase.MasterGame.Running:
-            match GameBase.MasterGame.Mode:
-                case MiniGames.GameMode.Base:
-                    EventHandler.MainEventHandler(activeGame=GameBase.MasterGame)
-                    GameBase.MasterGame.DrawBackground(source=AssetLibrary.Background)
-                    GameBase.MasterGame.UpdateSprites()
-                    GameBase.MasterGame.WriteAllText()
-                    GameBase.MasterGame.UpdateLightingEngine()
-                case MiniGames.GameMode.TriviaGame:
-                    GameBase.MasterGame.DrawBackground(
-                        source=AssetLibrary.TriviaBackground
-                    )
-                    GameBase.MasterGame.MiniGame.PlayGame(
-                        activeGame=GameBase.MasterGame
-                    )
-                    EventHandler.TriviaEventHandler(activeGame=GameBase.MasterGame)
-
-        if GameBase.MasterGame.ShowScreen:
-            pygame.display.update()
-
-        # Control the frame rate
-        GameBase.MasterGame.GameClock.UpdateClock(
-            clockSpeed=GameBase.MasterGame.Settings.ClockSpeed,
-            frameCap=GameBase.MasterGame.Settings.CapFrames,
-        )
-        if profileFlag and (time.time() - startTime > 30):
+        if safetyFlag:
+            try:
+                MainLoop()
+            except Exception as e:
+                print(f"{e} Occured")
+        else:
+            MainLoop()
+        if profileFlag and time.time() - GAME_START_TIME > 30:
             break
-    # except Exception as e:
-    # print(f"{e} Occured")
 
 
 if __name__ == "__main__":
-    Main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-d", "--debugFlag", default=True)
+    parser.add_argument("-f", "--profilerFlag", default=True)
+    parser.add_argument("-s", "--safetyFlag", default=False)
+    args = parser.parse_args()
+    Main(
+        debugFlag=args.debugFlag,
+        profileFlag=args.profilerFlag,
+        safetyFlag=args.safetyFlag,
+    )

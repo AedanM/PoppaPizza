@@ -57,12 +57,12 @@ class GameObject(pygame.sprite.Sprite):
 
     def UpdateSprite(self, activeGame) -&gt; None:
         &#34;&#34;&#34;Virtual method for inherited classes to update&#34;&#34;&#34;
-        self.Update()
+        self.Update(activeGame=activeGame)
 
-    def Update(self) -&gt; None:
+    def Update(self, activeGame) -&gt; None:
         &#34;&#34;&#34;Update the sprite on screen&#34;&#34;&#34;
-        if self.Moveable and &#34;MvmHandler&#34; in dir(self):
-            self.MvmHandler.CalcNewPosition(self)
+        if self.Moveable:
+            self.MvmHandler.CalcNewPosition(obj=self, activeGame=activeGame)
 
 
 class RectangleObject(GameObject):
@@ -125,9 +125,9 @@ class CharacterSprite(GameObject):
             self.rect.center = center
         self.MvmHandler = MovementHandler.MovementHandler()
 
-    def UpdateSprite(self) -&gt; None:
+    def UpdateSprite(self, activeGame) -&gt; None:
         &#34;&#34;&#34;Update sprite for each frame&#34;&#34;&#34;
-        self.Update()</code></pre>
+        self.Update(activeGame=activeGame)</code></pre>
 </details>
 </section>
 <section>
@@ -190,9 +190,9 @@ collisionFlag (bool): Can the object collide</p></div>
             self.rect.center = center
         self.MvmHandler = MovementHandler.MovementHandler()
 
-    def UpdateSprite(self) -&gt; None:
+    def UpdateSprite(self, activeGame) -&gt; None:
         &#34;&#34;&#34;Update sprite for each frame&#34;&#34;&#34;
-        self.Update()</code></pre>
+        self.Update(activeGame=activeGame)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -213,7 +213,7 @@ collisionFlag (bool): Can the object collide</p></div>
 <h3>Methods</h3>
 <dl>
 <dt id="Engine.SpriteObjects.CharacterSprite.UpdateSprite"><code class="name flex">
-<span>def <span class="ident">UpdateSprite</span></span>(<span>self) ‑> None</span>
+<span>def <span class="ident">UpdateSprite</span></span>(<span>self, activeGame) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Update sprite for each frame</p></div>
@@ -221,9 +221,9 @@ collisionFlag (bool): Can the object collide</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def UpdateSprite(self) -&gt; None:
+<pre><code class="python">def UpdateSprite(self, activeGame) -&gt; None:
     &#34;&#34;&#34;Update sprite for each frame&#34;&#34;&#34;
-    self.Update()</code></pre>
+    self.Update(activeGame=activeGame)</code></pre>
 </details>
 </dd>
 </dl>
@@ -274,12 +274,12 @@ collisionFlag (bool): Can the object collide</p></div>
 
     def UpdateSprite(self, activeGame) -&gt; None:
         &#34;&#34;&#34;Virtual method for inherited classes to update&#34;&#34;&#34;
-        self.Update()
+        self.Update(activeGame=activeGame)
 
-    def Update(self) -&gt; None:
+    def Update(self, activeGame) -&gt; None:
         &#34;&#34;&#34;Update the sprite on screen&#34;&#34;&#34;
-        if self.Moveable and &#34;MvmHandler&#34; in dir(self):
-            self.MvmHandler.CalcNewPosition(self)</code></pre>
+        if self.Moveable:
+            self.MvmHandler.CalcNewPosition(obj=self, activeGame=activeGame)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -312,7 +312,7 @@ collisionFlag (bool): Can the object collide</p></div>
 <h3>Methods</h3>
 <dl>
 <dt id="Engine.SpriteObjects.GameObject.Update"><code class="name flex">
-<span>def <span class="ident">Update</span></span>(<span>self) ‑> None</span>
+<span>def <span class="ident">Update</span></span>(<span>self, activeGame) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Update the sprite on screen</p></div>
@@ -320,10 +320,10 @@ collisionFlag (bool): Can the object collide</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def Update(self) -&gt; None:
+<pre><code class="python">def Update(self, activeGame) -&gt; None:
     &#34;&#34;&#34;Update the sprite on screen&#34;&#34;&#34;
-    if self.Moveable and &#34;MvmHandler&#34; in dir(self):
-        self.MvmHandler.CalcNewPosition(self)</code></pre>
+    if self.Moveable:
+        self.MvmHandler.CalcNewPosition(obj=self, activeGame=activeGame)</code></pre>
 </details>
 </dd>
 <dt id="Engine.SpriteObjects.GameObject.UpdateSprite"><code class="name flex">
@@ -337,7 +337,7 @@ collisionFlag (bool): Can the object collide</p></div>
 </summary>
 <pre><code class="python">def UpdateSprite(self, activeGame) -&gt; None:
     &#34;&#34;&#34;Virtual method for inherited classes to update&#34;&#34;&#34;
-    self.Update()</code></pre>
+    self.Update(activeGame=activeGame)</code></pre>
 </details>
 </dd>
 </dl>
