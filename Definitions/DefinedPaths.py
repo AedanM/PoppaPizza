@@ -8,6 +8,7 @@ from Definitions import AssetLibrary, DefinedLocations
 from Engine import Utils
 
 
+# TODO- CheckOnTheWay and Make work
 def IsSeatTaken(seatLocation) -> bool:
     """Checks if Customer Sat in Seat
 

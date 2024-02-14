@@ -79,7 +79,7 @@ def CustomerClickRoutine(target, leftClick) -> None:
         leftClick (bool): Left or Right Mouse Button, True is Left
     """
     global GlobalClickState
-    # TODO - Stop customers being served in queue
+    # BUG - Stop customers being served in queue
     if GlobalClickState is ClickState.Neutral:
         match target.DataObject.CurrentState:
             case CustomerDefs.CustomerStates.FirstInLine:

@@ -3,7 +3,7 @@
 from enum import Enum
 
 
-# TODO - Use this to reshape CustomerHandler
+# HACK - Use this to reshape CustomerHandler
 class CustomerStates(Enum):
     """Enum of Customer States"""
 

@@ -153,7 +153,7 @@ class TriviaGame(RoundBasedGame.RoundBasedGame):
         )
         self.GameState = GameStates.Wait
 
-    # TODO - Fix wordwrap
+    # HACK - Fix wordwrap, pip install textwrap?
     def PresentQuestion(self):
         question = self.QuestionList[self.CurrentRound - 1]
         if len(question["Question"]) < 50:

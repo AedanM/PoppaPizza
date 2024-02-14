@@ -2,19 +2,9 @@
 
 import pygame
 
-from Classes import (
-    GameBase,
-    GameClock,
-    GameLighting,
-    Inventory,
-    MiniGames,
-    Settings,
-    Writing,
-)
+from Classes import GameClock, GameLighting, Inventory, MiniGames, Settings, Writing
 from Definitions import AssetLibrary, Chances, DefinedLocations
 from Engine import Color, Game, RoundBasedGame
-
-# TODO - extract a parent class for a general framework
 
 
 class MainGame(Game.Game):
@@ -29,7 +19,7 @@ class MainGame(Game.Game):
     ButtonList: list = []
     UserInventory: Inventory.Inventory = None  # type: ignore
     Mode: MiniGames.GameMode = MiniGames.GameMode.Base
-    MiniGame: RoundBasedGame.RoundBasedGame = None #type: ignore
+    MiniGame: RoundBasedGame.RoundBasedGame = None  # type: ignore
 
     def __init__(
         self, activateScreen=True, size=DefinedLocations.LocationDefs.ScreenSize
@@ -82,7 +72,7 @@ class MainGame(Game.Game):
         Writing.WriteKitchenLabel(activeGame=self)
 
     def DrawBackground(
-        self, source: pygame.Surface = None, color: Color.Color = None #type: ignore
+        self, source: pygame.Surface = None, color: Color.Color = None  # type: ignore
     ) -> None:
         """Wiping screen with background image"""
         if source:
@@ -93,7 +83,7 @@ class MainGame(Game.Game):
             super().DrawBackground()
 
     def ClearMiniGame(self) -> None:
-        self.MiniGame = None #type: ignore
+        self.MiniGame = None  # type: ignore
         self.Mode = MiniGames.GameMode.Base
         self.GameClock.SetRunning(True)
 

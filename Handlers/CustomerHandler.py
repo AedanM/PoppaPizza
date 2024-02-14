@@ -8,7 +8,6 @@ from Definitions import DefinedPaths as DL
 from Handlers import WorkerHandler as WH
 
 
-# TODO - Make actual state machine and stop using lamda members
 # TODO - Examine this with Queueing
 def SetFirstInLine(target) -> None:
     """Function for setting Queuing
@@ -59,8 +58,7 @@ def FindAvailableWorker(customerSprite, activeGame=GameBase.MasterGame) -> tuple
     return None, None
 
 
-# TODO - Stop the workers going on strike
-# TODO - Stop 2 workers on 1 job
+# BUG - Stop the workers going on strike
 def AssignWorker(target) -> None:
     """Finds an availbale worker for a job and assigns them
 

@@ -1,4 +1,4 @@
-# TODO- Weird Flickering between 1:00 and 8:00 in 24hr clock
+# BUG- Weird Flickering between 1:00 and 8:00 in 24hr clock
 import math
 from dataclasses import dataclass
 
