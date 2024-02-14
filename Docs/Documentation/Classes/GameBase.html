@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>Classes.Game API documentation</title>
+<title>Classes.GameBase API documentation</title>
 <meta name="description" content="Class for Game" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,7 +19,7 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>Classes.Game</code></h1>
+<h1 class="title">Module <code>Classes.GameBase</code></h1>
 </header>
 <section id="section-intro">
 <p>Class for Game</p>
@@ -32,68 +32,62 @@
 import pygame
 
 from Classes import (
-    Game,
+    GameBase,
     GameClock,
+    GameLighting,
     Inventory,
-    LightingEngine,
     MiniGames,
     Settings,
     Writing,
 )
-from Definitions import AssetLibrary, Chances, ColorTools, DefinedLocations
+from Definitions import AssetLibrary, Chances, DefinedLocations
+from Engine import Color, Game, RoundBasedGame
+
+# TODO - extract a parent class for a general framework
 
 
-class Game:
+class MainGame(Game.Game):
     &#34;&#34;&#34;Master class for all elements in Game&#34;&#34;&#34;
 
     CharSpriteGroup: pygame.sprite.Group = pygame.sprite.Group()
     BackgroundSpriteGroup: pygame.sprite.Group = pygame.sprite.Group()
     ForegroundSpriteGroup: pygame.sprite.Group = pygame.sprite.Group()
-    SpriteGroups: list = [BackgroundSpriteGroup, CharSpriteGroup, ForegroundSpriteGroup]
     WorkerList: list = []
     CustomerList: list = []
     JobList: list = []
     ButtonList: list = []
     UserInventory: Inventory.Inventory = None
-    GameClock = GameClock.GameClock(clock=pygame.time.Clock())
-    Lighting: LightingEngine.LightingEffects = None
-    Running: bool = True
-    ShowScreen: bool = True
     Mode: MiniGames.GameMode = MiniGames.GameMode.Base
-    MiniGame: MiniGames.RoundBasedGame = None
+    MiniGame: RoundBasedGame.RoundBasedGame = None
 
     def __init__(
         self, activateScreen=True, size=DefinedLocations.LocationDefs.ScreenSize
     ) -&gt; None:
         &#34;&#34;&#34;Init for Game
 
-        Args:
+        Args-
             activateScreen (bool, optional): Is the screen turned on. Defaults to True.
             size (tuple, optional): Dimensions of Screeen. Defaults to DefinedLocations.LocationDefs.ScreenSize.
         &#34;&#34;&#34;
-        pygame.init()
+        super().__init__(
+            name=&#34;Poppa Pizza&#34;,
+            activateScreen=activateScreen,
+            size=size,
+        )
+        self.SpriteGroups = [
+            self.BackgroundSpriteGroup,
+            self.CharSpriteGroup,
+            self.ForegroundSpriteGroup,
+        ]
+        self.GameClock = GameClock.GameClock(clock=pygame.time.Clock())
         self.Settings = Settings.GameSettings
         self.Chances = Chances.LuckChances()
-        self.StartTime = pygame.time.get_ticks()
-        self.ShowScreen = activateScreen
         self.UserInventory = Inventory.Inventory()
-        self.Lighting = LightingEngine.LightingEffects(screenSize=size)
-        if self.ShowScreen:
-            self.StartScreen(size=size)
+        self.Lighting = GameLighting.GameLighting(screenSize=size)
+
         self.ConvertPreRendered()
 
-    def ConvertPreRendered(self) -&gt; None:
-        &#34;&#34;&#34;Speeds up blitting by converting colorspaces&#34;&#34;&#34;
-        AssetLibrary.Background = AssetLibrary.Background.convert()
-        AssetLibrary.TriviaBackground = AssetLibrary.TriviaBackground.convert()
-        self.Lighting.LightMask = self.Lighting.LightMask.convert()
-
     def StartScreen(self, size) -&gt; None:
-        &#34;&#34;&#34;Begins the screen and sets size
-
-        Args:
-            size (str | tuple): Either member of StandardDimensions or custom tuple
-        &#34;&#34;&#34;
         if isinstance(size, str):
             DefinedLocations.LocationDefs.ScreenSize = (
                 DefinedLocations.StandardDimensions[size]
@@ -102,11 +96,13 @@ class Game:
         else:
             width, height = size
             DefinedLocations.LocationDefs.ScreenSize = (width, height)
-        self.Screen = pygame.display.set_mode(
-            size=(width, height), flags=pygame.DOUBLEBUF
-        )
-        self.Screen.set_alpha(None)
-        pygame.display.set_caption(&#34;Poppa Pizza Clone&#34;)
+        super().StartScreen(size=size)
+
+    def ConvertPreRendered(self) -&gt; None:
+        &#34;&#34;&#34;Speeds up blitting by converting colorspaces&#34;&#34;&#34;
+        AssetLibrary.Background = AssetLibrary.Background.convert()
+        AssetLibrary.TriviaBackground = AssetLibrary.TriviaBackground.convert()
+        self.Lighting.LightMask = self.Lighting.LightMask.convert()
 
     def WriteAllText(self) -&gt; None:
         &#34;&#34;&#34;Write all text visible in game&#34;&#34;&#34;
@@ -115,41 +111,26 @@ class Game:
         Writing.WriteKitchenLabel(activeGame=self)
 
     def DrawBackground(
-        self, source: pygame.Surface = None, color: ColorTools.Color = None
+        self, source: pygame.Surface = None, color: Color.Color = None
     ) -&gt; None:
         &#34;&#34;&#34;Wiping screen with background image&#34;&#34;&#34;
         if source:
             self.Screen.blit(source=source, dest=(0, 0))
         elif color:
             self.Screen.fill(color.RGB)
-
-    def UpdateSprites(self) -&gt; None:
-        &#34;&#34;&#34;Update each sprite each frame&#34;&#34;&#34;
-        for group in self.SpriteGroups:
-            group.update()
-            for sprite in group:
-                sprite.UpdateSprite()
-            group.draw(self.Screen)
-
-    def UpdateLightingEngine(self) -&gt; None:
-        self.Lighting.LightingEngine(activeGame=self)
-
-    @property
-    def ScreenSize(self) -&gt; tuple[int, int]:
-        &#34;&#34;&#34;Current size of screen
-
-        Returns:
-            tuple: tuple of current Size
-        &#34;&#34;&#34;
-        return (self.Screen.get_width(), self.Screen.get_height())
+        else:
+            super().DrawBackground()
 
     def ClearMiniGame(self) -&gt; None:
         self.MiniGame = None
         self.Mode = MiniGames.GameMode.Base
         self.GameClock.SetRunning(True)
 
+    def UpdateLightingEngine(self) -&gt; None:
+        self.Lighting.LightingEngine(activeGame=self, dayTransition=True)
 
-MasterGame = Game()</code></pre>
+
+MasterGame = MainGame()</code></pre>
 </details>
 </section>
 <section>
@@ -161,75 +142,62 @@ MasterGame = Game()</code></pre>
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="Classes.Game.Game"><code class="flex name class">
-<span>class <span class="ident">Game</span></span>
+<dt id="Classes.GameBase.MainGame"><code class="flex name class">
+<span>class <span class="ident">MainGame</span></span>
 <span>(</span><span>activateScreen=True, size=(1200, 800))</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Master class for all elements in Game</p>
 <p>Init for Game</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>activateScreen</code></strong> :&ensp;<code>bool</code>, optional</dt>
-<dd>Is the screen turned on. Defaults to True.</dd>
-<dt><strong><code>size</code></strong> :&ensp;<code>tuple</code>, optional</dt>
-<dd>Dimensions of Screeen. Defaults to DefinedLocations.LocationDefs.ScreenSize.</dd>
-</dl></div>
+<p>Args-
+activateScreen (bool, optional): Is the screen turned on. Defaults to True.
+size (tuple, optional): Dimensions of Screeen. Defaults to DefinedLocations.LocationDefs.ScreenSize.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class Game:
+<pre><code class="python">class MainGame(Game.Game):
     &#34;&#34;&#34;Master class for all elements in Game&#34;&#34;&#34;
 
     CharSpriteGroup: pygame.sprite.Group = pygame.sprite.Group()
     BackgroundSpriteGroup: pygame.sprite.Group = pygame.sprite.Group()
     ForegroundSpriteGroup: pygame.sprite.Group = pygame.sprite.Group()
-    SpriteGroups: list = [BackgroundSpriteGroup, CharSpriteGroup, ForegroundSpriteGroup]
     WorkerList: list = []
     CustomerList: list = []
     JobList: list = []
     ButtonList: list = []
     UserInventory: Inventory.Inventory = None
-    GameClock = GameClock.GameClock(clock=pygame.time.Clock())
-    Lighting: LightingEngine.LightingEffects = None
-    Running: bool = True
-    ShowScreen: bool = True
     Mode: MiniGames.GameMode = MiniGames.GameMode.Base
-    MiniGame: MiniGames.RoundBasedGame = None
+    MiniGame: RoundBasedGame.RoundBasedGame = None
 
     def __init__(
         self, activateScreen=True, size=DefinedLocations.LocationDefs.ScreenSize
     ) -&gt; None:
         &#34;&#34;&#34;Init for Game
 
-        Args:
+        Args-
             activateScreen (bool, optional): Is the screen turned on. Defaults to True.
             size (tuple, optional): Dimensions of Screeen. Defaults to DefinedLocations.LocationDefs.ScreenSize.
         &#34;&#34;&#34;
-        pygame.init()
+        super().__init__(
+            name=&#34;Poppa Pizza&#34;,
+            activateScreen=activateScreen,
+            size=size,
+        )
+        self.SpriteGroups = [
+            self.BackgroundSpriteGroup,
+            self.CharSpriteGroup,
+            self.ForegroundSpriteGroup,
+        ]
+        self.GameClock = GameClock.GameClock(clock=pygame.time.Clock())
         self.Settings = Settings.GameSettings
         self.Chances = Chances.LuckChances()
-        self.StartTime = pygame.time.get_ticks()
-        self.ShowScreen = activateScreen
         self.UserInventory = Inventory.Inventory()
-        self.Lighting = LightingEngine.LightingEffects(screenSize=size)
-        if self.ShowScreen:
-            self.StartScreen(size=size)
+        self.Lighting = GameLighting.GameLighting(screenSize=size)
+
         self.ConvertPreRendered()
 
-    def ConvertPreRendered(self) -&gt; None:
-        &#34;&#34;&#34;Speeds up blitting by converting colorspaces&#34;&#34;&#34;
-        AssetLibrary.Background = AssetLibrary.Background.convert()
-        AssetLibrary.TriviaBackground = AssetLibrary.TriviaBackground.convert()
-        self.Lighting.LightMask = self.Lighting.LightMask.convert()
-
     def StartScreen(self, size) -&gt; None:
-        &#34;&#34;&#34;Begins the screen and sets size
-
-        Args:
-            size (str | tuple): Either member of StandardDimensions or custom tuple
-        &#34;&#34;&#34;
         if isinstance(size, str):
             DefinedLocations.LocationDefs.ScreenSize = (
                 DefinedLocations.StandardDimensions[size]
@@ -238,11 +206,13 @@ MasterGame = Game()</code></pre>
         else:
             width, height = size
             DefinedLocations.LocationDefs.ScreenSize = (width, height)
-        self.Screen = pygame.display.set_mode(
-            size=(width, height), flags=pygame.DOUBLEBUF
-        )
-        self.Screen.set_alpha(None)
-        pygame.display.set_caption(&#34;Poppa Pizza Clone&#34;)
+        super().StartScreen(size=size)
+
+    def ConvertPreRendered(self) -&gt; None:
+        &#34;&#34;&#34;Speeds up blitting by converting colorspaces&#34;&#34;&#34;
+        AssetLibrary.Background = AssetLibrary.Background.convert()
+        AssetLibrary.TriviaBackground = AssetLibrary.TriviaBackground.convert()
+        self.Lighting.LightMask = self.Lighting.LightMask.convert()
 
     def WriteAllText(self) -&gt; None:
         &#34;&#34;&#34;Write all text visible in game&#34;&#34;&#34;
@@ -251,130 +221,74 @@ MasterGame = Game()</code></pre>
         Writing.WriteKitchenLabel(activeGame=self)
 
     def DrawBackground(
-        self, source: pygame.Surface = None, color: ColorTools.Color = None
+        self, source: pygame.Surface = None, color: Color.Color = None
     ) -&gt; None:
         &#34;&#34;&#34;Wiping screen with background image&#34;&#34;&#34;
         if source:
             self.Screen.blit(source=source, dest=(0, 0))
         elif color:
             self.Screen.fill(color.RGB)
-
-    def UpdateSprites(self) -&gt; None:
-        &#34;&#34;&#34;Update each sprite each frame&#34;&#34;&#34;
-        for group in self.SpriteGroups:
-            group.update()
-            for sprite in group:
-                sprite.UpdateSprite()
-            group.draw(self.Screen)
-
-    def UpdateLightingEngine(self) -&gt; None:
-        self.Lighting.LightingEngine(activeGame=self)
-
-    @property
-    def ScreenSize(self) -&gt; tuple[int, int]:
-        &#34;&#34;&#34;Current size of screen
-
-        Returns:
-            tuple: tuple of current Size
-        &#34;&#34;&#34;
-        return (self.Screen.get_width(), self.Screen.get_height())
+        else:
+            super().DrawBackground()
 
     def ClearMiniGame(self) -&gt; None:
         self.MiniGame = None
         self.Mode = MiniGames.GameMode.Base
-        self.GameClock.SetRunning(True)</code></pre>
+        self.GameClock.SetRunning(True)
+
+    def UpdateLightingEngine(self) -&gt; None:
+        self.Lighting.LightingEngine(activeGame=self, dayTransition=True)</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>Engine.Game.Game</li>
+</ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="Classes.Game.Game.BackgroundSpriteGroup"><code class="name">var <span class="ident">BackgroundSpriteGroup</span> : pygame.sprite.Group</code></dt>
+<dt id="Classes.GameBase.MainGame.BackgroundSpriteGroup"><code class="name">var <span class="ident">BackgroundSpriteGroup</span> : pygame.sprite.Group</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="Classes.Game.Game.ButtonList"><code class="name">var <span class="ident">ButtonList</span> : list</code></dt>
+<dt id="Classes.GameBase.MainGame.ButtonList"><code class="name">var <span class="ident">ButtonList</span> : list</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="Classes.Game.Game.CharSpriteGroup"><code class="name">var <span class="ident">CharSpriteGroup</span> : pygame.sprite.Group</code></dt>
+<dt id="Classes.GameBase.MainGame.CharSpriteGroup"><code class="name">var <span class="ident">CharSpriteGroup</span> : pygame.sprite.Group</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="Classes.Game.Game.CustomerList"><code class="name">var <span class="ident">CustomerList</span> : list</code></dt>
+<dt id="Classes.GameBase.MainGame.CustomerList"><code class="name">var <span class="ident">CustomerList</span> : list</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="Classes.Game.Game.ForegroundSpriteGroup"><code class="name">var <span class="ident">ForegroundSpriteGroup</span> : pygame.sprite.Group</code></dt>
+<dt id="Classes.GameBase.MainGame.ForegroundSpriteGroup"><code class="name">var <span class="ident">ForegroundSpriteGroup</span> : pygame.sprite.Group</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="Classes.Game.Game.GameClock"><code class="name">var <span class="ident">GameClock</span></code></dt>
+<dt id="Classes.GameBase.MainGame.JobList"><code class="name">var <span class="ident">JobList</span> : list</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="Classes.Game.Game.JobList"><code class="name">var <span class="ident">JobList</span> : list</code></dt>
+<dt id="Classes.GameBase.MainGame.MiniGame"><code class="name">var <span class="ident">MiniGame</span> : Engine.RoundBasedGame.RoundBasedGame</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="Classes.Game.Game.Lighting"><code class="name">var <span class="ident">Lighting</span> : <a title="Classes.LightingEngine.LightingEffects" href="LightingEngine.html#Classes.LightingEngine.LightingEffects">LightingEffects</a></code></dt>
+<dt id="Classes.GameBase.MainGame.Mode"><code class="name">var <span class="ident">Mode</span> : <a title="Classes.MiniGames.GameMode" href="MiniGames.html#Classes.MiniGames.GameMode">GameMode</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="Classes.Game.Game.MiniGame"><code class="name">var <span class="ident">MiniGame</span> : <a title="Classes.MiniGames.RoundBasedGame" href="MiniGames.html#Classes.MiniGames.RoundBasedGame">RoundBasedGame</a></code></dt>
+<dt id="Classes.GameBase.MainGame.UserInventory"><code class="name">var <span class="ident">UserInventory</span> : <a title="Classes.Inventory.Inventory" href="Inventory.html#Classes.Inventory.Inventory">Inventory</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="Classes.Game.Game.Mode"><code class="name">var <span class="ident">Mode</span> : <a title="Classes.MiniGames.GameMode" href="MiniGames.html#Classes.MiniGames.GameMode">GameMode</a></code></dt>
+<dt id="Classes.GameBase.MainGame.WorkerList"><code class="name">var <span class="ident">WorkerList</span> : list</code></dt>
 <dd>
 <div class="desc"></div>
-</dd>
-<dt id="Classes.Game.Game.Running"><code class="name">var <span class="ident">Running</span> : bool</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="Classes.Game.Game.ShowScreen"><code class="name">var <span class="ident">ShowScreen</span> : bool</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="Classes.Game.Game.SpriteGroups"><code class="name">var <span class="ident">SpriteGroups</span> : list</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="Classes.Game.Game.UserInventory"><code class="name">var <span class="ident">UserInventory</span> : <a title="Classes.Inventory.Inventory" href="Inventory.html#Classes.Inventory.Inventory">Inventory</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="Classes.Game.Game.WorkerList"><code class="name">var <span class="ident">WorkerList</span> : list</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
-<h3>Instance variables</h3>
-<dl>
-<dt id="Classes.Game.Game.ScreenSize"><code class="name">var <span class="ident">ScreenSize</span> : tuple[int, int]</code></dt>
-<dd>
-<div class="desc"><p>Current size of screen</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>tuple</code></dt>
-<dd>tuple of current Size</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@property
-def ScreenSize(self) -&gt; tuple[int, int]:
-    &#34;&#34;&#34;Current size of screen
-
-    Returns:
-        tuple: tuple of current Size
-    &#34;&#34;&#34;
-    return (self.Screen.get_width(), self.Screen.get_height())</code></pre>
-</details>
 </dd>
 </dl>
 <h3>Methods</h3>
 <dl>
-<dt id="Classes.Game.Game.ClearMiniGame"><code class="name flex">
+<dt id="Classes.GameBase.MainGame.ClearMiniGame"><code class="name flex">
 <span>def <span class="ident">ClearMiniGame</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
@@ -389,7 +303,7 @@ def ScreenSize(self) -&gt; tuple[int, int]:
     self.GameClock.SetRunning(True)</code></pre>
 </details>
 </dd>
-<dt id="Classes.Game.Game.ConvertPreRendered"><code class="name flex">
+<dt id="Classes.GameBase.MainGame.ConvertPreRendered"><code class="name flex">
 <span>def <span class="ident">ConvertPreRendered</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
@@ -405,8 +319,8 @@ def ScreenSize(self) -&gt; tuple[int, int]:
     self.Lighting.LightMask = self.Lighting.LightMask.convert()</code></pre>
 </details>
 </dd>
-<dt id="Classes.Game.Game.DrawBackground"><code class="name flex">
-<span>def <span class="ident">DrawBackground</span></span>(<span>self, source: pygame.surface.Surface = None, color: Definitions.ColorTools.Color = None) ‑> None</span>
+<dt id="Classes.GameBase.MainGame.DrawBackground"><code class="name flex">
+<span>def <span class="ident">DrawBackground</span></span>(<span>self, source: pygame.surface.Surface = None, color: Engine.Color.Color = None) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Wiping screen with background image</p></div>
@@ -415,32 +329,29 @@ def ScreenSize(self) -&gt; tuple[int, int]:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def DrawBackground(
-    self, source: pygame.Surface = None, color: ColorTools.Color = None
+    self, source: pygame.Surface = None, color: Color.Color = None
 ) -&gt; None:
     &#34;&#34;&#34;Wiping screen with background image&#34;&#34;&#34;
     if source:
         self.Screen.blit(source=source, dest=(0, 0))
     elif color:
-        self.Screen.fill(color.RGB)</code></pre>
+        self.Screen.fill(color.RGB)
+    else:
+        super().DrawBackground()</code></pre>
 </details>
 </dd>
-<dt id="Classes.Game.Game.StartScreen"><code class="name flex">
+<dt id="Classes.GameBase.MainGame.StartScreen"><code class="name flex">
 <span>def <span class="ident">StartScreen</span></span>(<span>self, size) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Begins the screen and sets size</p>
-<h2 id="args">Args</h2>
-<p>size (str | tuple): Either member of StandardDimensions or custom tuple</p></div>
+<p>Args-
+size (str | tuple): Either member of StandardDimensions or custom tuple</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def StartScreen(self, size) -&gt; None:
-    &#34;&#34;&#34;Begins the screen and sets size
-
-    Args:
-        size (str | tuple): Either member of StandardDimensions or custom tuple
-    &#34;&#34;&#34;
     if isinstance(size, str):
         DefinedLocations.LocationDefs.ScreenSize = (
             DefinedLocations.StandardDimensions[size]
@@ -449,14 +360,10 @@ def ScreenSize(self) -&gt; tuple[int, int]:
     else:
         width, height = size
         DefinedLocations.LocationDefs.ScreenSize = (width, height)
-    self.Screen = pygame.display.set_mode(
-        size=(width, height), flags=pygame.DOUBLEBUF
-    )
-    self.Screen.set_alpha(None)
-    pygame.display.set_caption(&#34;Poppa Pizza Clone&#34;)</code></pre>
+    super().StartScreen(size=size)</code></pre>
 </details>
 </dd>
-<dt id="Classes.Game.Game.UpdateLightingEngine"><code class="name flex">
+<dt id="Classes.GameBase.MainGame.UpdateLightingEngine"><code class="name flex">
 <span>def <span class="ident">UpdateLightingEngine</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
@@ -466,28 +373,10 @@ def ScreenSize(self) -&gt; tuple[int, int]:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def UpdateLightingEngine(self) -&gt; None:
-    self.Lighting.LightingEngine(activeGame=self)</code></pre>
+    self.Lighting.LightingEngine(activeGame=self, dayTransition=True)</code></pre>
 </details>
 </dd>
-<dt id="Classes.Game.Game.UpdateSprites"><code class="name flex">
-<span>def <span class="ident">UpdateSprites</span></span>(<span>self) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Update each sprite each frame</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def UpdateSprites(self) -&gt; None:
-    &#34;&#34;&#34;Update each sprite each frame&#34;&#34;&#34;
-    for group in self.SpriteGroups:
-        group.update()
-        for sprite in group:
-            sprite.UpdateSprite()
-        group.draw(self.Screen)</code></pre>
-</details>
-</dd>
-<dt id="Classes.Game.Game.WriteAllText"><code class="name flex">
+<dt id="Classes.GameBase.MainGame.WriteAllText"><code class="name flex">
 <span>def <span class="ident">WriteAllText</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
@@ -522,31 +411,24 @@ def ScreenSize(self) -&gt; tuple[int, int]:
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="Classes.Game.Game" href="#Classes.Game.Game">Game</a></code></h4>
+<h4><code><a title="Classes.GameBase.MainGame" href="#Classes.GameBase.MainGame">MainGame</a></code></h4>
 <ul class="">
-<li><code><a title="Classes.Game.Game.BackgroundSpriteGroup" href="#Classes.Game.Game.BackgroundSpriteGroup">BackgroundSpriteGroup</a></code></li>
-<li><code><a title="Classes.Game.Game.ButtonList" href="#Classes.Game.Game.ButtonList">ButtonList</a></code></li>
-<li><code><a title="Classes.Game.Game.CharSpriteGroup" href="#Classes.Game.Game.CharSpriteGroup">CharSpriteGroup</a></code></li>
-<li><code><a title="Classes.Game.Game.ClearMiniGame" href="#Classes.Game.Game.ClearMiniGame">ClearMiniGame</a></code></li>
-<li><code><a title="Classes.Game.Game.ConvertPreRendered" href="#Classes.Game.Game.ConvertPreRendered">ConvertPreRendered</a></code></li>
-<li><code><a title="Classes.Game.Game.CustomerList" href="#Classes.Game.Game.CustomerList">CustomerList</a></code></li>
-<li><code><a title="Classes.Game.Game.DrawBackground" href="#Classes.Game.Game.DrawBackground">DrawBackground</a></code></li>
-<li><code><a title="Classes.Game.Game.ForegroundSpriteGroup" href="#Classes.Game.Game.ForegroundSpriteGroup">ForegroundSpriteGroup</a></code></li>
-<li><code><a title="Classes.Game.Game.GameClock" href="#Classes.Game.Game.GameClock">GameClock</a></code></li>
-<li><code><a title="Classes.Game.Game.JobList" href="#Classes.Game.Game.JobList">JobList</a></code></li>
-<li><code><a title="Classes.Game.Game.Lighting" href="#Classes.Game.Game.Lighting">Lighting</a></code></li>
-<li><code><a title="Classes.Game.Game.MiniGame" href="#Classes.Game.Game.MiniGame">MiniGame</a></code></li>
-<li><code><a title="Classes.Game.Game.Mode" href="#Classes.Game.Game.Mode">Mode</a></code></li>
-<li><code><a title="Classes.Game.Game.Running" href="#Classes.Game.Game.Running">Running</a></code></li>
-<li><code><a title="Classes.Game.Game.ScreenSize" href="#Classes.Game.Game.ScreenSize">ScreenSize</a></code></li>
-<li><code><a title="Classes.Game.Game.ShowScreen" href="#Classes.Game.Game.ShowScreen">ShowScreen</a></code></li>
-<li><code><a title="Classes.Game.Game.SpriteGroups" href="#Classes.Game.Game.SpriteGroups">SpriteGroups</a></code></li>
-<li><code><a title="Classes.Game.Game.StartScreen" href="#Classes.Game.Game.StartScreen">StartScreen</a></code></li>
-<li><code><a title="Classes.Game.Game.UpdateLightingEngine" href="#Classes.Game.Game.UpdateLightingEngine">UpdateLightingEngine</a></code></li>
-<li><code><a title="Classes.Game.Game.UpdateSprites" href="#Classes.Game.Game.UpdateSprites">UpdateSprites</a></code></li>
-<li><code><a title="Classes.Game.Game.UserInventory" href="#Classes.Game.Game.UserInventory">UserInventory</a></code></li>
-<li><code><a title="Classes.Game.Game.WorkerList" href="#Classes.Game.Game.WorkerList">WorkerList</a></code></li>
-<li><code><a title="Classes.Game.Game.WriteAllText" href="#Classes.Game.Game.WriteAllText">WriteAllText</a></code></li>
+<li><code><a title="Classes.GameBase.MainGame.BackgroundSpriteGroup" href="#Classes.GameBase.MainGame.BackgroundSpriteGroup">BackgroundSpriteGroup</a></code></li>
+<li><code><a title="Classes.GameBase.MainGame.ButtonList" href="#Classes.GameBase.MainGame.ButtonList">ButtonList</a></code></li>
+<li><code><a title="Classes.GameBase.MainGame.CharSpriteGroup" href="#Classes.GameBase.MainGame.CharSpriteGroup">CharSpriteGroup</a></code></li>
+<li><code><a title="Classes.GameBase.MainGame.ClearMiniGame" href="#Classes.GameBase.MainGame.ClearMiniGame">ClearMiniGame</a></code></li>
+<li><code><a title="Classes.GameBase.MainGame.ConvertPreRendered" href="#Classes.GameBase.MainGame.ConvertPreRendered">ConvertPreRendered</a></code></li>
+<li><code><a title="Classes.GameBase.MainGame.CustomerList" href="#Classes.GameBase.MainGame.CustomerList">CustomerList</a></code></li>
+<li><code><a title="Classes.GameBase.MainGame.DrawBackground" href="#Classes.GameBase.MainGame.DrawBackground">DrawBackground</a></code></li>
+<li><code><a title="Classes.GameBase.MainGame.ForegroundSpriteGroup" href="#Classes.GameBase.MainGame.ForegroundSpriteGroup">ForegroundSpriteGroup</a></code></li>
+<li><code><a title="Classes.GameBase.MainGame.JobList" href="#Classes.GameBase.MainGame.JobList">JobList</a></code></li>
+<li><code><a title="Classes.GameBase.MainGame.MiniGame" href="#Classes.GameBase.MainGame.MiniGame">MiniGame</a></code></li>
+<li><code><a title="Classes.GameBase.MainGame.Mode" href="#Classes.GameBase.MainGame.Mode">Mode</a></code></li>
+<li><code><a title="Classes.GameBase.MainGame.StartScreen" href="#Classes.GameBase.MainGame.StartScreen">StartScreen</a></code></li>
+<li><code><a title="Classes.GameBase.MainGame.UpdateLightingEngine" href="#Classes.GameBase.MainGame.UpdateLightingEngine">UpdateLightingEngine</a></code></li>
+<li><code><a title="Classes.GameBase.MainGame.UserInventory" href="#Classes.GameBase.MainGame.UserInventory">UserInventory</a></code></li>
+<li><code><a title="Classes.GameBase.MainGame.WorkerList" href="#Classes.GameBase.MainGame.WorkerList">WorkerList</a></code></li>
+<li><code><a title="Classes.GameBase.MainGame.WriteAllText" href="#Classes.GameBase.MainGame.WriteAllText">WriteAllText</a></code></li>
 </ul>
 </li>
 </ul>

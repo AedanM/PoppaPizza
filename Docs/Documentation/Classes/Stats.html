@@ -55,7 +55,7 @@ class GameStats:
     def UpdateMoney(self, amount) -&gt; None:
         &#34;&#34;&#34;Update Current Cash, sorting by spend or earning
 
-        Args:
+        Args-
             amount (int | float): Amount Spent or Earned
         &#34;&#34;&#34;
         if amount &gt; 0:
@@ -66,7 +66,7 @@ class GameStats:
     def GetDailyCostumeChanges(self) -&gt; int:
         &#34;&#34;&#34;Return Costume Chages Metric since yesterday
 
-        Returns:
+        Returns-
             int: Costume Chages Metric since yesterday
         &#34;&#34;&#34;
         return self.WorkerChanges - PrevDay.WorkerChanges
@@ -74,7 +74,7 @@ class GameStats:
     def GetDailyEarnings(self) -&gt; float:
         &#34;&#34;&#34;Return Earnings Metric since yesterday
 
-        Returns:
+        Returns-
             float: Earnings Metric since yesterday
         &#34;&#34;&#34;
         return max(self.MoneyEarned + PrevDay.MoneyEarned, 0.0)
@@ -82,7 +82,7 @@ class GameStats:
     def GetDailySpend(self) -&gt; float:
         &#34;&#34;&#34;Return Spending Metric since yesterday
 
-        Returns:
+        Returns-
             float: Spending Metric since yesterday
         &#34;&#34;&#34;
         return min(self.MoneySpent - PrevDay.MoneySpent, 0.0)
@@ -90,7 +90,7 @@ class GameStats:
     def GetDailyProfit(self) -&gt; float:
         &#34;&#34;&#34;Return Profit Metric since yesterday
 
-        Returns:
+        Returns-
             float: Profit Metric since yesterday
         &#34;&#34;&#34;
         return self.GetDailyEarnings() - abs(self.GetDailySpend())
@@ -98,7 +98,7 @@ class GameStats:
     def GetDailyServedCustomers(self) -&gt; float:
         &#34;&#34;&#34;Return Number of customers served since yesterday
 
-        Returns:
+        Returns-
             float: Number of customers served since yesterday
         &#34;&#34;&#34;
         return self.CustomersServed - PrevDay.CustomersServed
@@ -106,7 +106,7 @@ class GameStats:
     def GetDailyTotalCustomers(self) -&gt; float:
         &#34;&#34;&#34;Return Number of customers that entered the shop since yesterday
 
-        Returns:
+        Returns-
             float: Number of customers that entered the shop since yesterday
         &#34;&#34;&#34;
         return self.CustomersEntered - PrevDay.CustomersEntered
@@ -155,7 +155,7 @@ class GameStats:
     def UpdateMoney(self, amount) -&gt; None:
         &#34;&#34;&#34;Update Current Cash, sorting by spend or earning
 
-        Args:
+        Args-
             amount (int | float): Amount Spent or Earned
         &#34;&#34;&#34;
         if amount &gt; 0:
@@ -166,7 +166,7 @@ class GameStats:
     def GetDailyCostumeChanges(self) -&gt; int:
         &#34;&#34;&#34;Return Costume Chages Metric since yesterday
 
-        Returns:
+        Returns-
             int: Costume Chages Metric since yesterday
         &#34;&#34;&#34;
         return self.WorkerChanges - PrevDay.WorkerChanges
@@ -174,7 +174,7 @@ class GameStats:
     def GetDailyEarnings(self) -&gt; float:
         &#34;&#34;&#34;Return Earnings Metric since yesterday
 
-        Returns:
+        Returns-
             float: Earnings Metric since yesterday
         &#34;&#34;&#34;
         return max(self.MoneyEarned + PrevDay.MoneyEarned, 0.0)
@@ -182,7 +182,7 @@ class GameStats:
     def GetDailySpend(self) -&gt; float:
         &#34;&#34;&#34;Return Spending Metric since yesterday
 
-        Returns:
+        Returns-
             float: Spending Metric since yesterday
         &#34;&#34;&#34;
         return min(self.MoneySpent - PrevDay.MoneySpent, 0.0)
@@ -190,7 +190,7 @@ class GameStats:
     def GetDailyProfit(self) -&gt; float:
         &#34;&#34;&#34;Return Profit Metric since yesterday
 
-        Returns:
+        Returns-
             float: Profit Metric since yesterday
         &#34;&#34;&#34;
         return self.GetDailyEarnings() - abs(self.GetDailySpend())
@@ -198,7 +198,7 @@ class GameStats:
     def GetDailyServedCustomers(self) -&gt; float:
         &#34;&#34;&#34;Return Number of customers served since yesterday
 
-        Returns:
+        Returns-
             float: Number of customers served since yesterday
         &#34;&#34;&#34;
         return self.CustomersServed - PrevDay.CustomersServed
@@ -206,7 +206,7 @@ class GameStats:
     def GetDailyTotalCustomers(self) -&gt; float:
         &#34;&#34;&#34;Return Number of customers that entered the shop since yesterday
 
-        Returns:
+        Returns-
             float: Number of customers that entered the shop since yesterday
         &#34;&#34;&#34;
         return self.CustomersEntered - PrevDay.CustomersEntered</code></pre>
@@ -241,11 +241,8 @@ class GameStats:
 </code></dt>
 <dd>
 <div class="desc"><p>Return Costume Chages Metric since yesterday</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>int</code></dt>
-<dd>Costume Chages Metric since yesterday</dd>
-</dl></div>
+<p>Returns-
+int: Costume Chages Metric since yesterday</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -253,7 +250,7 @@ class GameStats:
 <pre><code class="python">def GetDailyCostumeChanges(self) -&gt; int:
     &#34;&#34;&#34;Return Costume Chages Metric since yesterday
 
-    Returns:
+    Returns-
         int: Costume Chages Metric since yesterday
     &#34;&#34;&#34;
     return self.WorkerChanges - PrevDay.WorkerChanges</code></pre>
@@ -264,11 +261,8 @@ class GameStats:
 </code></dt>
 <dd>
 <div class="desc"><p>Return Earnings Metric since yesterday</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>float</code></dt>
-<dd>Earnings Metric since yesterday</dd>
-</dl></div>
+<p>Returns-
+float: Earnings Metric since yesterday</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -276,7 +270,7 @@ class GameStats:
 <pre><code class="python">def GetDailyEarnings(self) -&gt; float:
     &#34;&#34;&#34;Return Earnings Metric since yesterday
 
-    Returns:
+    Returns-
         float: Earnings Metric since yesterday
     &#34;&#34;&#34;
     return max(self.MoneyEarned + PrevDay.MoneyEarned, 0.0)</code></pre>
@@ -287,11 +281,8 @@ class GameStats:
 </code></dt>
 <dd>
 <div class="desc"><p>Return Profit Metric since yesterday</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>float</code></dt>
-<dd>Profit Metric since yesterday</dd>
-</dl></div>
+<p>Returns-
+float: Profit Metric since yesterday</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -299,7 +290,7 @@ class GameStats:
 <pre><code class="python">def GetDailyProfit(self) -&gt; float:
     &#34;&#34;&#34;Return Profit Metric since yesterday
 
-    Returns:
+    Returns-
         float: Profit Metric since yesterday
     &#34;&#34;&#34;
     return self.GetDailyEarnings() - abs(self.GetDailySpend())</code></pre>
@@ -310,11 +301,8 @@ class GameStats:
 </code></dt>
 <dd>
 <div class="desc"><p>Return Number of customers served since yesterday</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>float</code></dt>
-<dd>Number of customers served since yesterday</dd>
-</dl></div>
+<p>Returns-
+float: Number of customers served since yesterday</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -322,7 +310,7 @@ class GameStats:
 <pre><code class="python">def GetDailyServedCustomers(self) -&gt; float:
     &#34;&#34;&#34;Return Number of customers served since yesterday
 
-    Returns:
+    Returns-
         float: Number of customers served since yesterday
     &#34;&#34;&#34;
     return self.CustomersServed - PrevDay.CustomersServed</code></pre>
@@ -333,11 +321,8 @@ class GameStats:
 </code></dt>
 <dd>
 <div class="desc"><p>Return Spending Metric since yesterday</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>float</code></dt>
-<dd>Spending Metric since yesterday</dd>
-</dl></div>
+<p>Returns-
+float: Spending Metric since yesterday</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -345,7 +330,7 @@ class GameStats:
 <pre><code class="python">def GetDailySpend(self) -&gt; float:
     &#34;&#34;&#34;Return Spending Metric since yesterday
 
-    Returns:
+    Returns-
         float: Spending Metric since yesterday
     &#34;&#34;&#34;
     return min(self.MoneySpent - PrevDay.MoneySpent, 0.0)</code></pre>
@@ -356,11 +341,8 @@ class GameStats:
 </code></dt>
 <dd>
 <div class="desc"><p>Return Number of customers that entered the shop since yesterday</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>float</code></dt>
-<dd>Number of customers that entered the shop since yesterday</dd>
-</dl></div>
+<p>Returns-
+float: Number of customers that entered the shop since yesterday</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -368,7 +350,7 @@ class GameStats:
 <pre><code class="python">def GetDailyTotalCustomers(self) -&gt; float:
     &#34;&#34;&#34;Return Number of customers that entered the shop since yesterday
 
-    Returns:
+    Returns-
         float: Number of customers that entered the shop since yesterday
     &#34;&#34;&#34;
     return self.CustomersEntered - PrevDay.CustomersEntered</code></pre>
@@ -393,8 +375,8 @@ class GameStats:
 </code></dt>
 <dd>
 <div class="desc"><p>Update Current Cash, sorting by spend or earning</p>
-<h2 id="args">Args</h2>
-<p>amount (int | float): Amount Spent or Earned</p></div>
+<p>Args-
+amount (int | float): Amount Spent or Earned</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -402,7 +384,7 @@ class GameStats:
 <pre><code class="python">def UpdateMoney(self, amount) -&gt; None:
     &#34;&#34;&#34;Update Current Cash, sorting by spend or earning
 
-    Args:
+    Args-
         amount (int | float): Amount Spent or Earned
     &#34;&#34;&#34;
     if amount &gt; 0:

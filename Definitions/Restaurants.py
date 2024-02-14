@@ -4,7 +4,8 @@ from dataclasses import dataclass
 
 import pygame
 
-from Definitions import AssetLibrary, ColorTools, CustomEvents, DefinedLocations
+from Definitions import AssetLibrary, ColorDefines, CustomEvents, DefinedLocations
+from Engine import Color
 
 
 @dataclass
@@ -12,7 +13,7 @@ class LockerRoom:
     """Locker Room Parameters"""
 
     Location: tuple
-    Color: ColorTools.Color
+    Color: Color.Color
     Unlocked: bool = False
     Price: float = 10000.0
 
@@ -41,7 +42,7 @@ RestaurantList = [
         Logo=None,
         LockerRoom=LockerRoom(
             Location=DefinedLocations.LocationDefs.LockerRoom0,
-            Color=ColorTools.DarkRed,
+            Color=ColorDefines.DarkRed,
             Price=0,
             Unlocked=True,
         ),
@@ -54,7 +55,7 @@ RestaurantList = [
         Logo=AssetLibrary.ImageTypes.LogoSuit,
         LockerRoom=LockerRoom(
             Location=DefinedLocations.LocationDefs.LockerRoom1,
-            Color=ColorTools.Blue,
+            Color=ColorDefines.Blue,
             Price=0,
             Unlocked=True,
         ),
@@ -66,7 +67,7 @@ RestaurantList = [
         Logo=AssetLibrary.ImageTypes.LogoCoffee,
         LockerRoom=LockerRoom(
             Location=DefinedLocations.LocationDefs.LockerRoom2,
-            Color=ColorTools.Yellow,
+            Color=ColorDefines.Yellow,
             Price=2500,
         ),
     ),
@@ -77,7 +78,7 @@ RestaurantList = [
         Logo=AssetLibrary.ImageTypes.LogoLuau,
         LockerRoom=LockerRoom(
             Location=DefinedLocations.LocationDefs.LockerRoom3,
-            Color=ColorTools.Pink,
+            Color=ColorDefines.Pink,
             Price=5000,
         ),
     ),
@@ -88,7 +89,7 @@ RestaurantList = [
         Logo=AssetLibrary.ImageTypes.LogoCowboy,
         LockerRoom=LockerRoom(
             Location=DefinedLocations.LocationDefs.LockerRoom4,
-            Color=ColorTools.Brown,
+            Color=ColorDefines.Brown,
             Price=7500,
         ),
     ),
@@ -99,7 +100,7 @@ RestaurantList = [
         Logo=AssetLibrary.ImageTypes.LogoSafari,
         LockerRoom=LockerRoom(
             Location=DefinedLocations.LocationDefs.LockerRoom5,
-            Color=ColorTools.Green,
+            Color=ColorDefines.Green,
             Price=10000,
         ),
     ),
@@ -109,11 +110,11 @@ RestaurantList = [
 def UnlockLockerRoom(currentCash, position) -> float:
     """Unlocks a locker room from position
         Returns 0 if too expensive
-    Args:
+    Args-
         currentCash (float): Current Money Reserves
         position (int): Locker Room Position
 
-    Returns:
+    Returns-
         float: Price Paid for Locker Room
     """
     restaurant = [x for x in RestaurantList if position == x.LockerRoom.Location]

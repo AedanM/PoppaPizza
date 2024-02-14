@@ -1,18 +1,18 @@
 """Test Module for Game Functions"""
 
 # pylint: disable=invalid-name
-from Classes import Game, Matching, People
 import Definitions.DefinedLocations
+from Classes import GameBase, Matching, People
 
 
 def test_ScreenSize() -> None:
     for _, size in Definitions.DefinedLocations.StandardDimensions.items():
-        currentGame = Game.Game(activateScreen=True, size=size)
+        currentGame = GameBase.MainGame(activateScreen=True, size=size)
         assert currentGame.ScreenSize == size
 
 
 def test_Matching() -> None:
-    currentGame = Game.Game()
+    currentGame = GameBase.MainGame()
     for _ in range(15):
         worker, workerSprite = People.Worker.CreateWorker(activeGame=currentGame)
         customer, customerSprite = People.Customer.CreateCustomer(

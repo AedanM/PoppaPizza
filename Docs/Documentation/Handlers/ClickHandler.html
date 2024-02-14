@@ -31,10 +31,10 @@
 
 from enum import Enum
 
-from Classes import Game, MiniGames
+from Classes import GameBase, MiniGames
 from Definitions import AssetLibrary, CustomerDefs, Restaurants
+from Engine import Utils
 from Handlers import CustomerHandler, ShopHandler, WorkerHandler
-from Utilities import Utils
 
 
 class ClickState(Enum):
@@ -49,22 +49,23 @@ GlobalTarget = None
 
 
 def TriviaMouseHandler(mousePos) -&gt; None:
-    for button in Game.MasterGame.MiniGame.MasterSpriteGroup:
+    clickedText = &#34;&#34;
+    for button in GameBase.MasterGame.MiniGame.MasterSpriteGroup:
         if button.rect.collidepoint(mousePos[0], mousePos[1]):
             clickedText = (
                 [
                     x.Text
-                    for x in Game.MasterGame.MiniGame.DisplayedText.values()
+                    for x in GameBase.MasterGame.MiniGame.DisplayedText.values()
                     if x.Center == button.rect.center
                 ]
             )[0]
-    Game.MasterGame.MiniGame.UpdateStateMachine(buttonChoice=clickedText)
+    GameBase.MasterGame.MiniGame.UpdateStateMachine(buttonChoice=clickedText)
 
 
 def MainMouseHandler(mousePos, lClick) -&gt; None:
     &#34;&#34;&#34;Handler for mouse clicks
 
-    Args:
+    Args-
         mousePos (tuple): Position of Mouse Click
         lClick (bool): Left or Right Mouse Button, True is Left
     &#34;&#34;&#34;
@@ -85,11 +86,11 @@ def MainMouseHandler(mousePos, lClick) -&gt; None:
                 )
         GlobalClickState = ClickState.Neutral
     elif GlobalClickState is ClickState.Neutral:
-        for button in Game.MasterGame.ButtonList:
+        for button in GameBase.MasterGame.ButtonList:
             if button.rect.collidepoint(mousePos[0], mousePos[1]):
                 ShopHandler.BuyLockerRoom(position=button.position)
                 return
-        for sprite in Game.MasterGame.CharSpriteGroup:
+        for sprite in GameBase.MasterGame.CharSpriteGroup:
             if sprite.rect.collidepoint(mousePos[0], mousePos[1]):
                 if sprite.ImageType in AssetLibrary.CustomerOutfits:
                     CustomerClickRoutine(target=sprite, leftClick=lClick)
@@ -102,7 +103,7 @@ def MainMouseHandler(mousePos, lClick) -&gt; None:
 def CustomerClickRoutine(target, leftClick) -&gt; None:
     &#34;&#34;&#34;Handler for Customer Clicks
 
-    Args:
+    Args-
         target (CharImageSprite): Clicked Sprite
         leftClick (bool): Left or Right Mouse Button, True is Left
     &#34;&#34;&#34;
@@ -124,7 +125,7 @@ def CustomerClickRoutine(target, leftClick) -&gt; None:
 def WorkerClickRoutine(target) -&gt; None:
     &#34;&#34;&#34;Handler for Worker Clicks
 
-    Args:
+    Args-
         target (CharImageSprite): Sprite Clicked
     &#34;&#34;&#34;
     global GlobalClickState, GlobalTarget
@@ -146,13 +147,9 @@ def WorkerClickRoutine(target) -&gt; None:
 </code></dt>
 <dd>
 <div class="desc"><p>Handler for Customer Clicks</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>target</code></strong> :&ensp;<code>CharImageSprite</code></dt>
-<dd>Clicked Sprite</dd>
-<dt><strong><code>leftClick</code></strong> :&ensp;<code>bool</code></dt>
-<dd>Left or Right Mouse Button, True is Left</dd>
-</dl></div>
+<p>Args-
+target (CharImageSprite): Clicked Sprite
+leftClick (bool): Left or Right Mouse Button, True is Left</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -160,7 +157,7 @@ def WorkerClickRoutine(target) -&gt; None:
 <pre><code class="python">def CustomerClickRoutine(target, leftClick) -&gt; None:
     &#34;&#34;&#34;Handler for Customer Clicks
 
-    Args:
+    Args-
         target (CharImageSprite): Clicked Sprite
         leftClick (bool): Left or Right Mouse Button, True is Left
     &#34;&#34;&#34;
@@ -184,13 +181,9 @@ def WorkerClickRoutine(target) -&gt; None:
 </code></dt>
 <dd>
 <div class="desc"><p>Handler for mouse clicks</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>mousePos</code></strong> :&ensp;<code>tuple</code></dt>
-<dd>Position of Mouse Click</dd>
-<dt><strong><code>lClick</code></strong> :&ensp;<code>bool</code></dt>
-<dd>Left or Right Mouse Button, True is Left</dd>
-</dl></div>
+<p>Args-
+mousePos (tuple): Position of Mouse Click
+lClick (bool): Left or Right Mouse Button, True is Left</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -198,7 +191,7 @@ def WorkerClickRoutine(target) -&gt; None:
 <pre><code class="python">def MainMouseHandler(mousePos, lClick) -&gt; None:
     &#34;&#34;&#34;Handler for mouse clicks
 
-    Args:
+    Args-
         mousePos (tuple): Position of Mouse Click
         lClick (bool): Left or Right Mouse Button, True is Left
     &#34;&#34;&#34;
@@ -219,11 +212,11 @@ def WorkerClickRoutine(target) -&gt; None:
                 )
         GlobalClickState = ClickState.Neutral
     elif GlobalClickState is ClickState.Neutral:
-        for button in Game.MasterGame.ButtonList:
+        for button in GameBase.MasterGame.ButtonList:
             if button.rect.collidepoint(mousePos[0], mousePos[1]):
                 ShopHandler.BuyLockerRoom(position=button.position)
                 return
-        for sprite in Game.MasterGame.CharSpriteGroup:
+        for sprite in GameBase.MasterGame.CharSpriteGroup:
             if sprite.rect.collidepoint(mousePos[0], mousePos[1]):
                 if sprite.ImageType in AssetLibrary.CustomerOutfits:
                     CustomerClickRoutine(target=sprite, leftClick=lClick)
@@ -243,16 +236,17 @@ def WorkerClickRoutine(target) -&gt; None:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def TriviaMouseHandler(mousePos) -&gt; None:
-    for button in Game.MasterGame.MiniGame.MasterSpriteGroup:
+    clickedText = &#34;&#34;
+    for button in GameBase.MasterGame.MiniGame.MasterSpriteGroup:
         if button.rect.collidepoint(mousePos[0], mousePos[1]):
             clickedText = (
                 [
                     x.Text
-                    for x in Game.MasterGame.MiniGame.DisplayedText.values()
+                    for x in GameBase.MasterGame.MiniGame.DisplayedText.values()
                     if x.Center == button.rect.center
                 ]
             )[0]
-    Game.MasterGame.MiniGame.UpdateStateMachine(buttonChoice=clickedText)</code></pre>
+    GameBase.MasterGame.MiniGame.UpdateStateMachine(buttonChoice=clickedText)</code></pre>
 </details>
 </dd>
 <dt id="Handlers.ClickHandler.WorkerClickRoutine"><code class="name flex">
@@ -260,11 +254,8 @@ def WorkerClickRoutine(target) -&gt; None:
 </code></dt>
 <dd>
 <div class="desc"><p>Handler for Worker Clicks</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>target</code></strong> :&ensp;<code>CharImageSprite</code></dt>
-<dd>Sprite Clicked</dd>
-</dl></div>
+<p>Args-
+target (CharImageSprite): Sprite Clicked</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -272,7 +263,7 @@ def WorkerClickRoutine(target) -&gt; None:
 <pre><code class="python">def WorkerClickRoutine(target) -&gt; None:
     &#34;&#34;&#34;Handler for Worker Clicks
 
-    Args:
+    Args-
         target (CharImageSprite): Sprite Clicked
     &#34;&#34;&#34;
     global GlobalClickState, GlobalTarget

@@ -31,19 +31,20 @@
 
 import random
 
-from Classes import Game, Matching
-from Definitions import ColorTools, CustomerDefs
+from Classes import GameBase, Matching
+from Definitions import ColorDefines, CustomerDefs
 from Definitions import DefinedPaths as DL
 from Handlers import WorkerHandler as WH
 
 
+# TODO - Make actual state machine and stop using lamda members
 # TODO - Examine this with Queueing
 def SetFirstInLine(target) -&gt; None:
     &#34;&#34;&#34;Function for setting Queuing
 
         After Motion, the customer is set first if
 
-    Args:
+    Args-
         target (_type_): _description_
     &#34;&#34;&#34;
     if target.MvmHandler.IsFinished(target):
@@ -53,7 +54,7 @@ def SetFirstInLine(target) -&gt; None:
 def WalkIn(target) -&gt; None:
     &#34;&#34;&#34;Initial Operations of a Customer
 
-    Args:
+    Args-
         target (Sprite): Target Customer
     &#34;&#34;&#34;
     target.MvmHandler.StartNewListedMotion(
@@ -63,14 +64,14 @@ def WalkIn(target) -&gt; None:
     target.MvmHandler.OnComplete = lambda: (SetFirstInLine(target=target))
 
 
-def FindAvailableWorker(customerSprite, activeGame=Game.MasterGame) -&gt; tuple:
+def FindAvailableWorker(customerSprite, activeGame=GameBase.MasterGame) -&gt; tuple:
     &#34;&#34;&#34;Check if there are available workers and returns None if not
 
-    Args:
+    Args-
         customerSprite (CharImageSprite): Customer Sprite requesting Job
         activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
 
-    Returns:
+    Returns-
         tuple: (Worker, Sprite Object of Worker)
     &#34;&#34;&#34;
     availWorkers = [x for x in activeGame.WorkerList if x.IsAssigned is False]
@@ -94,7 +95,7 @@ def AssignWorker(target) -&gt; None:
 
         Starts the Worker Handler flow
 
-    Args:
+    Args-
         target (CharImageSprite): Customer Sprite requesting Job
     &#34;&#34;&#34;
     worker, workerSprite = FindAvailableWorker(customerSprite=target)
@@ -114,6 +115,7 @@ def AssignWorker(target) -&gt; None:
             ),
         )
         workerSprite.MvmHandler.OnComplete = lambda: workerSprite.CreatePersonTimerBar(
+            activeGame=GameBase.MasterGame,
             completeTask=returnHome,
             length=target.DataObject.DesiredJob.Length,
         )
@@ -122,7 +124,7 @@ def AssignWorker(target) -&gt; None:
 def SitAtTable(target) -&gt; None:
     &#34;&#34;&#34;Logic for a Queuing Customer to sit down
 
-    Args:
+    Args-
         target (CharImageSprite): Sprite of Target Customer
     &#34;&#34;&#34;
     target.DataObject.CurrentState = CustomerDefs.CustomerStates.Seated
@@ -138,35 +140,38 @@ def SitAtTable(target) -&gt; None:
 def BeginWait(target) -&gt; None:
     &#34;&#34;&#34;Starts the timer for a customer waiting for service
 
-    Args:
+    Args-
         target (CharImageSprite): Sprite of Target Customer
     &#34;&#34;&#34;
     target.DataObject.CurrentState = CustomerDefs.CustomerStates.WaitingForService
     taskComplete = lambda: GetUpAndGo(spriteImg=target)
     target.CreatePersonTimerBar(
+        activeGame=GameBase.MasterGame,
         completeTask=taskComplete,
         length=(target.DataObject.DesiredJob.Urgency.value * 30.0),
         assocId=target.DataObject.IdNum,
         startingState=target.DataObject.CurrentState.value,
-        fillColor=ColorTools.DarkRed,
+        fillColor=ColorDefines.DarkRed,
     )
 
 
 def AllWorkersBusy(target) -&gt; None:
     &#34;&#34;&#34;Routine for when all workers are busy
 
-    Args:
+    Args-
         target (CharImageSprite): Sprite of Target Customer
     &#34;&#34;&#34;
     taskComplete = lambda: GetUpAndGo(spriteImg=target)
     target.DataObject.CurrentState = CustomerDefs.CustomerStates.WaitingForService
-    target.CreatePersonTimerBar(completeTask=taskComplete, length=10)
+    target.CreatePersonTimerBar(
+        activeGame=GameBase.MasterGame, completeTask=taskComplete, length=10
+    )
 
 
-def GetUpAndGo(spriteImg, activeGame=Game.MasterGame) -&gt; None:
+def GetUpAndGo(spriteImg, activeGame=GameBase.MasterGame) -&gt; None:
     &#34;&#34;&#34;Logic for a Customer to leave the restaurant
 
-    Args:
+    Args-
         spriteImg (CharImageSprite): Sprite of Target Customer
         activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
     &#34;&#34;&#34;
@@ -197,11 +202,8 @@ def GetUpAndGo(spriteImg, activeGame=Game.MasterGame) -&gt; None:
 </code></dt>
 <dd>
 <div class="desc"><p>Routine for when all workers are busy</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>target</code></strong> :&ensp;<code>CharImageSprite</code></dt>
-<dd>Sprite of Target Customer</dd>
-</dl></div>
+<p>Args-
+target (CharImageSprite): Sprite of Target Customer</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -209,12 +211,14 @@ def GetUpAndGo(spriteImg, activeGame=Game.MasterGame) -&gt; None:
 <pre><code class="python">def AllWorkersBusy(target) -&gt; None:
     &#34;&#34;&#34;Routine for when all workers are busy
 
-    Args:
+    Args-
         target (CharImageSprite): Sprite of Target Customer
     &#34;&#34;&#34;
     taskComplete = lambda: GetUpAndGo(spriteImg=target)
     target.DataObject.CurrentState = CustomerDefs.CustomerStates.WaitingForService
-    target.CreatePersonTimerBar(completeTask=taskComplete, length=10)</code></pre>
+    target.CreatePersonTimerBar(
+        activeGame=GameBase.MasterGame, completeTask=taskComplete, length=10
+    )</code></pre>
 </details>
 </dd>
 <dt id="Handlers.CustomerHandler.AssignWorker"><code class="name flex">
@@ -224,11 +228,8 @@ def GetUpAndGo(spriteImg, activeGame=Game.MasterGame) -&gt; None:
 <div class="desc"><p>Finds an availbale worker for a job and assigns them</p>
 <pre><code>Starts the Worker Handler flow
 </code></pre>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>target</code></strong> :&ensp;<code>CharImageSprite</code></dt>
-<dd>Customer Sprite requesting Job</dd>
-</dl></div>
+<p>Args-
+target (CharImageSprite): Customer Sprite requesting Job</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -238,7 +239,7 @@ def GetUpAndGo(spriteImg, activeGame=Game.MasterGame) -&gt; None:
 
         Starts the Worker Handler flow
 
-    Args:
+    Args-
         target (CharImageSprite): Customer Sprite requesting Job
     &#34;&#34;&#34;
     worker, workerSprite = FindAvailableWorker(customerSprite=target)
@@ -258,6 +259,7 @@ def GetUpAndGo(spriteImg, activeGame=Game.MasterGame) -&gt; None:
             ),
         )
         workerSprite.MvmHandler.OnComplete = lambda: workerSprite.CreatePersonTimerBar(
+            activeGame=GameBase.MasterGame,
             completeTask=returnHome,
             length=target.DataObject.DesiredJob.Length,
         )</code></pre>
@@ -268,11 +270,8 @@ def GetUpAndGo(spriteImg, activeGame=Game.MasterGame) -&gt; None:
 </code></dt>
 <dd>
 <div class="desc"><p>Starts the timer for a customer waiting for service</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>target</code></strong> :&ensp;<code>CharImageSprite</code></dt>
-<dd>Sprite of Target Customer</dd>
-</dl></div>
+<p>Args-
+target (CharImageSprite): Sprite of Target Customer</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -280,49 +279,43 @@ def GetUpAndGo(spriteImg, activeGame=Game.MasterGame) -&gt; None:
 <pre><code class="python">def BeginWait(target) -&gt; None:
     &#34;&#34;&#34;Starts the timer for a customer waiting for service
 
-    Args:
+    Args-
         target (CharImageSprite): Sprite of Target Customer
     &#34;&#34;&#34;
     target.DataObject.CurrentState = CustomerDefs.CustomerStates.WaitingForService
     taskComplete = lambda: GetUpAndGo(spriteImg=target)
     target.CreatePersonTimerBar(
+        activeGame=GameBase.MasterGame,
         completeTask=taskComplete,
         length=(target.DataObject.DesiredJob.Urgency.value * 30.0),
         assocId=target.DataObject.IdNum,
         startingState=target.DataObject.CurrentState.value,
-        fillColor=ColorTools.DarkRed,
+        fillColor=ColorDefines.DarkRed,
     )</code></pre>
 </details>
 </dd>
 <dt id="Handlers.CustomerHandler.FindAvailableWorker"><code class="name flex">
-<span>def <span class="ident">FindAvailableWorker</span></span>(<span>customerSprite, activeGame=&lt;Classes.Game.Game object&gt;) ‑> tuple</span>
+<span>def <span class="ident">FindAvailableWorker</span></span>(<span>customerSprite, activeGame=&lt;Classes.GameBase.MainGame object&gt;) ‑> tuple</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Check if there are available workers and returns None if not</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>customerSprite</code></strong> :&ensp;<code>CharImageSprite</code></dt>
-<dd>Customer Sprite requesting Job</dd>
-<dt><strong><code>activeGame</code></strong> :&ensp;<code>Game</code>, optional</dt>
-<dd>Current Game. Defaults to Game.MasterGame.</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>tuple</code></dt>
-<dd>(Worker, Sprite Object of Worker)</dd>
-</dl></div>
+<p>Args-
+customerSprite (CharImageSprite): Customer Sprite requesting Job
+activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.</p>
+<p>Returns-
+tuple: (Worker, Sprite Object of Worker)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def FindAvailableWorker(customerSprite, activeGame=Game.MasterGame) -&gt; tuple:
+<pre><code class="python">def FindAvailableWorker(customerSprite, activeGame=GameBase.MasterGame) -&gt; tuple:
     &#34;&#34;&#34;Check if there are available workers and returns None if not
 
-    Args:
+    Args-
         customerSprite (CharImageSprite): Customer Sprite requesting Job
         activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
 
-    Returns:
+    Returns-
         tuple: (Worker, Sprite Object of Worker)
     &#34;&#34;&#34;
     availWorkers = [x for x in activeGame.WorkerList if x.IsAssigned is False]
@@ -340,25 +333,21 @@ def GetUpAndGo(spriteImg, activeGame=Game.MasterGame) -&gt; None:
 </details>
 </dd>
 <dt id="Handlers.CustomerHandler.GetUpAndGo"><code class="name flex">
-<span>def <span class="ident">GetUpAndGo</span></span>(<span>spriteImg, activeGame=&lt;Classes.Game.Game object&gt;) ‑> None</span>
+<span>def <span class="ident">GetUpAndGo</span></span>(<span>spriteImg, activeGame=&lt;Classes.GameBase.MainGame object&gt;) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Logic for a Customer to leave the restaurant</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>spriteImg</code></strong> :&ensp;<code>CharImageSprite</code></dt>
-<dd>Sprite of Target Customer</dd>
-<dt><strong><code>activeGame</code></strong> :&ensp;<code>Game</code>, optional</dt>
-<dd>Current Game. Defaults to Game.MasterGame.</dd>
-</dl></div>
+<p>Args-
+spriteImg (CharImageSprite): Sprite of Target Customer
+activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def GetUpAndGo(spriteImg, activeGame=Game.MasterGame) -&gt; None:
+<pre><code class="python">def GetUpAndGo(spriteImg, activeGame=GameBase.MasterGame) -&gt; None:
     &#34;&#34;&#34;Logic for a Customer to leave the restaurant
 
-    Args:
+    Args-
         spriteImg (CharImageSprite): Sprite of Target Customer
         activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
     &#34;&#34;&#34;
@@ -384,11 +373,8 @@ def GetUpAndGo(spriteImg, activeGame=Game.MasterGame) -&gt; None:
 <div class="desc"><p>Function for setting Queuing</p>
 <pre><code>After Motion, the customer is set first if
 </code></pre>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>target</code></strong> :&ensp;<code>_type_</code></dt>
-<dd><em>description</em></dd>
-</dl></div>
+<p>Args-
+target (<em>type</em>): <em>description</em></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -398,7 +384,7 @@ def GetUpAndGo(spriteImg, activeGame=Game.MasterGame) -&gt; None:
 
         After Motion, the customer is set first if
 
-    Args:
+    Args-
         target (_type_): _description_
     &#34;&#34;&#34;
     if target.MvmHandler.IsFinished(target):
@@ -410,11 +396,8 @@ def GetUpAndGo(spriteImg, activeGame=Game.MasterGame) -&gt; None:
 </code></dt>
 <dd>
 <div class="desc"><p>Logic for a Queuing Customer to sit down</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>target</code></strong> :&ensp;<code>CharImageSprite</code></dt>
-<dd>Sprite of Target Customer</dd>
-</dl></div>
+<p>Args-
+target (CharImageSprite): Sprite of Target Customer</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -422,7 +405,7 @@ def GetUpAndGo(spriteImg, activeGame=Game.MasterGame) -&gt; None:
 <pre><code class="python">def SitAtTable(target) -&gt; None:
     &#34;&#34;&#34;Logic for a Queuing Customer to sit down
 
-    Args:
+    Args-
         target (CharImageSprite): Sprite of Target Customer
     &#34;&#34;&#34;
     target.DataObject.CurrentState = CustomerDefs.CustomerStates.Seated
@@ -440,11 +423,8 @@ def GetUpAndGo(spriteImg, activeGame=Game.MasterGame) -&gt; None:
 </code></dt>
 <dd>
 <div class="desc"><p>Initial Operations of a Customer</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>target</code></strong> :&ensp;<code>Sprite</code></dt>
-<dd>Target Customer</dd>
-</dl></div>
+<p>Args-
+target (Sprite): Target Customer</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -452,7 +432,7 @@ def GetUpAndGo(spriteImg, activeGame=Game.MasterGame) -&gt; None:
 <pre><code class="python">def WalkIn(target) -&gt; None:
     &#34;&#34;&#34;Initial Operations of a Customer
 
-    Args:
+    Args-
         target (Sprite): Target Customer
     &#34;&#34;&#34;
     target.MvmHandler.StartNewListedMotion(

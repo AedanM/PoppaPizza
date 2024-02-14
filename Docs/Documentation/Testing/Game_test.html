@@ -30,18 +30,18 @@
 <pre><code class="python">&#34;&#34;&#34;Test Module for Game Functions&#34;&#34;&#34;
 
 # pylint: disable=invalid-name
-from Classes import Game, Matching, People
 import Definitions.DefinedLocations
+from Classes import GameBase, Matching, People
 
 
 def test_ScreenSize() -&gt; None:
     for _, size in Definitions.DefinedLocations.StandardDimensions.items():
-        currentGame = Game.Game(activateScreen=True, size=size)
+        currentGame = GameBase.MainGame(activateScreen=True, size=size)
         assert currentGame.ScreenSize == size
 
 
 def test_Matching() -&gt; None:
-    currentGame = Game.Game()
+    currentGame = GameBase.MainGame()
     for _ in range(15):
         worker, workerSprite = People.Worker.CreateWorker(activeGame=currentGame)
         customer, customerSprite = People.Customer.CreateCustomer(
@@ -88,7 +88,7 @@ def test_Matching() -&gt; None:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def test_Matching() -&gt; None:
-    currentGame = Game.Game()
+    currentGame = GameBase.MainGame()
     for _ in range(15):
         worker, workerSprite = People.Worker.CreateWorker(activeGame=currentGame)
         customer, customerSprite = People.Customer.CreateCustomer(
@@ -129,7 +129,7 @@ def test_Matching() -&gt; None:
 </summary>
 <pre><code class="python">def test_ScreenSize() -&gt; None:
     for _, size in Definitions.DefinedLocations.StandardDimensions.items():
-        currentGame = Game.Game(activateScreen=True, size=size)
+        currentGame = GameBase.MainGame(activateScreen=True, size=size)
         assert currentGame.ScreenSize == size</code></pre>
 </details>
 </dd>

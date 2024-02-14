@@ -2,7 +2,7 @@
 
 import math
 
-from Utilities import Utils
+from Engine import Utils
 
 StandardDimensions = {"Medium": (1200, 800), "Small": (600, 400), "Large": (2400, 1600)}
 
@@ -16,7 +16,7 @@ class DefinedLocations:
     def LockerRoom0(self) -> tuple:
         """Location of First Locker Room
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         """
         location = (125, 65)
@@ -26,7 +26,7 @@ class DefinedLocations:
     def LockerRoom1(self) -> tuple:
         """Location of First Locker Room
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         """
         location = (350, 65)
@@ -36,7 +36,7 @@ class DefinedLocations:
     def LockerRoom2(self) -> tuple:
         """Location of Second Locker Room
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         """
         location = (530, 65)
@@ -46,7 +46,7 @@ class DefinedLocations:
     def LockerRoom3(self) -> tuple:
         """Location of Third Locker Room
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         """
         location = (710, 65)
@@ -56,7 +56,7 @@ class DefinedLocations:
     def LockerRoom4(self) -> tuple:
         """Location of Fourth Locker Room
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         """
         location = (890, 65)
@@ -66,7 +66,7 @@ class DefinedLocations:
     def LockerRoom5(self) -> tuple:
         """Location of Fifth Locker Room
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         """
         location = (1070, 65)
@@ -76,7 +76,7 @@ class DefinedLocations:
     def KitchenEntrance(self) -> tuple:
         """Location of Kitchen Entrance
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         """
         location = (125, 225)
@@ -86,7 +86,7 @@ class DefinedLocations:
     def KitchenLocation(self) -> tuple:
         """Location of Kitchen Entrance
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         """
         location = (125, 50)
@@ -96,7 +96,7 @@ class DefinedLocations:
     def CustomerExit(self) -> tuple:
         """Location of Customer Exit Location
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         """
         location = (1200, 1000)
@@ -106,7 +106,7 @@ class DefinedLocations:
     def CustomerEntrance(self) -> tuple:
         """Location of Start of Customer Queue
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         """
         location = (1150, 325)
@@ -116,7 +116,7 @@ class DefinedLocations:
     def EndOfLine(self) -> tuple:
         """Location of End of Queue
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         """
         location = (1100, 700)
@@ -126,7 +126,7 @@ class DefinedLocations:
     def CustomerSpawn(self) -> tuple:
         """Location of Customer Spawn in
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         """
         location = (1150, 1000)
@@ -136,7 +136,7 @@ class DefinedLocations:
     def WorkerSpawn(self) -> tuple:
         """Location of Customer Spawn in
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         """
         location = (125, 1600)
@@ -146,7 +146,7 @@ class DefinedLocations:
     def TriviaTitleText(self) -> tuple:
         """Location of Main Trivia Game Text
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         """
         location = (600, 100)
@@ -156,7 +156,7 @@ class DefinedLocations:
     def TriviaMainText(self) -> tuple:
         """Location of Main Trivia Title Text
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         """
         location = (600, 250)
@@ -166,7 +166,7 @@ class DefinedLocations:
     def TriviaMinorText(self) -> tuple:
         """Location of Secondary Trivia Game Text
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         """
         location = (600, 600)
@@ -176,7 +176,7 @@ class DefinedLocations:
     def TriviaRoundText(self) -> tuple:
         """Location of Round Label for Trivia Game
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         """
         location = (100, 100)
@@ -185,7 +185,7 @@ class DefinedLocations:
     def Answers(self, num) -> list:
         """Location of Round Label for Trivia Game
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         """
         location = []
@@ -221,7 +221,7 @@ class SeatingPlanClass:
     def TableXSpacing(self) -> int:
         """Calculates the Horz Spacing between tables
 
-        Returns:
+        Returns-
             int: Horz Spacing
         """
         return math.floor(
@@ -235,7 +235,7 @@ class SeatingPlanClass:
     def TableYSpacing(self) -> int:
         """Calculates the Vertical Spacing between tables
 
-        Returns:
+        Returns-
             int: Vertical Spacing
         """
         return math.floor(
@@ -249,7 +249,7 @@ class SeatingPlanClass:
     def TableXStart(self) -> int:
         """Calcs the 1st tables X position
 
-        Returns:
+        Returns-
             int: 1st tables X position
         """
         return max(math.floor((self.MaxX - self.MinX) / (self.NumRows)), self.MinX)
@@ -258,7 +258,7 @@ class SeatingPlanClass:
     def TableYStart(self) -> int:
         """Calcs the 1st tables Y position
 
-        Returns:
+        Returns-
             int: 1st tables Y position
         """
         return max(math.floor((self.MaxY - self.MinY) / (self.NumCols)), self.MinY)
@@ -266,7 +266,7 @@ class SeatingPlanClass:
     def TableRows(self) -> list[int]:
         """Calculates the current table row locations
 
-        Returns:
+        Returns-
             list[int]: List of Row Locations
         """
         lastTableRow = (self.NumRows * self.TableXSpacing) + self.TableXStart
@@ -275,7 +275,7 @@ class SeatingPlanClass:
     def TableCols(self) -> list[int]:
         """Calculates the current table column locations
 
-        Returns:
+        Returns-
             list[int]: List of Column Locations
         """
         lastTableCol = (self.NumCols * self.TableYSpacing) + self.TableYStart
@@ -284,7 +284,7 @@ class SeatingPlanClass:
     def GenerateTablePlaces(self) -> list:
         """Generates list of table position tuples
 
-        Returns:
+        Returns-
             list: Array of Tuple Positions
         """
         locationArray = []

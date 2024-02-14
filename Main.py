@@ -11,8 +11,8 @@ import time
 
 import pygame
 
-from Classes import Game, MiniGames
-from Definitions import AssetLibrary, ColorTools, CustomEvents
+from Classes import GameBase, MiniGames
+from Definitions import AssetLibrary, ColorDefines, CustomEvents
 from Handlers import EventHandler
 
 
@@ -20,34 +20,41 @@ def Main() -> None:
     """Main Loop of Game"""
     debugFlag = True
     profileFlag = True
-    Game.MasterGame = Game.Game()
+    GameBase.MasterGame = GameBase.MainGame()
     pygame.event.post(CustomEvents.UpdateBackground)
     # Enables a series of functions to run automatically
     if profileFlag:
         startTime = time.time()
-        Game.MasterGame.Settings.CapFrames = False
+        GameBase.MasterGame.Settings.CapFrames = False
     if debugFlag:
         EventHandler.DebugSetup()
     while True:
         # try:
-        if Game.MasterGame.Running:
-            match Game.MasterGame.Mode:
+        if GameBase.MasterGame.Running:
+            match GameBase.MasterGame.Mode:
                 case MiniGames.GameMode.Base:
-                    EventHandler.MainEventHandler()
-                    Game.MasterGame.DrawBackground(source=AssetLibrary.Background)
-                    Game.MasterGame.UpdateSprites()
-                    Game.MasterGame.WriteAllText()
-                    Game.MasterGame.UpdateLightingEngine()
+                    EventHandler.MainEventHandler(activeGame=GameBase.MasterGame)
+                    GameBase.MasterGame.DrawBackground(source=AssetLibrary.Background)
+                    GameBase.MasterGame.UpdateSprites()
+                    GameBase.MasterGame.WriteAllText()
+                    GameBase.MasterGame.UpdateLightingEngine()
                 case MiniGames.GameMode.TriviaGame:
-                    Game.MasterGame.DrawBackground(source=AssetLibrary.TriviaBackground)
-                    Game.MasterGame.MiniGame.PlayGame(activeGame=Game.MasterGame)
-                    EventHandler.TriviaEventHandler(activeGame=Game.MasterGame)
+                    GameBase.MasterGame.DrawBackground(
+                        source=AssetLibrary.TriviaBackground
+                    )
+                    GameBase.MasterGame.MiniGame.PlayGame(
+                        activeGame=GameBase.MasterGame
+                    )
+                    EventHandler.TriviaEventHandler(activeGame=GameBase.MasterGame)
 
-        if Game.MasterGame.ShowScreen:
+        if GameBase.MasterGame.ShowScreen:
             pygame.display.update()
 
         # Control the frame rate
-        Game.MasterGame.GameClock.UpdateClock()
+        GameBase.MasterGame.GameClock.UpdateClock(
+            clockSpeed=GameBase.MasterGame.Settings.ClockSpeed,
+            frameCap=GameBase.MasterGame.Settings.CapFrames,
+        )
         if profileFlag and (time.time() - startTime > 30):
             break
     # except Exception as e:

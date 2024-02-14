@@ -3,7 +3,7 @@
 # pylint: disable=invalid-name
 
 from Testing import TestClass as TC
-from Utilities import Utils
+from Engine import Utils
 
 
 def test_checkDecimalPercent() -> None:

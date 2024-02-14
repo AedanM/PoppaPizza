@@ -61,12 +61,12 @@ LogoPaths = {
 
 
 def PathLookup(imageType) -> str | None:
-    """Looks up path for image type
+    """Function to look up path for image type
 
-    Args:
+    Args-
         imageType (ImageType): Image Type to Find Path for
 
-    Returns:
+    Returns-
         str: Image Path
     """
     for key, value in PathToTypeDict.items():

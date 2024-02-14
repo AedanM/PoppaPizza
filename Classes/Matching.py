@@ -7,12 +7,12 @@ from Definitions.Restaurants import Restaurant, RestaurantList
 def MatchIdToPerson(activeGame, inputId, targetOutput="all") -> dict:
     """Match an id to corresponding people and sprites
 
-    Args:
+    Args-
         activeGame (Game): Current Game
         inputId (int): ID of object to find
         targetOutput (str, optional): Defines what the requested reponse is. Defaults to "all".
 
-    Returns:
+    Returns-
         dict: _description_
     """
     output = {}
@@ -33,7 +33,7 @@ def MatchIdToPerson(activeGame, inputId, targetOutput="all") -> dict:
 def RemoveObjFromSprite(activeGame, targetSprite) -> None:
     """Delete data class and kill sprite
 
-    Args:
+    Args-
         activeGame (Game): Current Game
         targetSprite (CharImageSprite): Sprite to delete
     """
@@ -50,7 +50,7 @@ def RemoveObjFromSprite(activeGame, targetSprite) -> None:
 def RemoveButtonFromLocation(activeGame, location) -> None:
     """Remove a given button
 
-    Args:
+    Args-
         activeGame (Game): Current Game
         location (tuple): Location of button to be destroyed
     """
@@ -62,10 +62,10 @@ def RemoveButtonFromLocation(activeGame, location) -> None:
 def FindRestaurant(imageType) -> Restaurant | None:
     """Matches image type to Restaurant
 
-    Args:
+    Args-
         imageType (Image Type): Input Type
 
-    Returns:
+    Returns-
         Restaurant | None: Matched Restaurant Object
     """
     potentialList = [None]
@@ -79,11 +79,11 @@ def FindRestaurant(imageType) -> Restaurant | None:
 def CostumeMatch(workerSprite, customerSprite) -> bool:
     """Checks if customer and worker match outfits
 
-    Args:
+    Args-
         workerSprite (CharImageSprite): Active Worker
         customerSprite (CharImageSprite): Active Customer
 
-    Returns:
+    Returns-
         bool: Do they belong to same Restaurants
     """
     if workerSprite is not None:

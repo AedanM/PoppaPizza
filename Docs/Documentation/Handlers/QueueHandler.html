@@ -29,9 +29,9 @@
 </summary>
 <pre><code class="python">&#34;&#34;&#34;Handler for Queueing Actions&#34;&#34;&#34;
 
-from Classes import Game
+from Classes import GameBase
 from Definitions import AssetLibrary, CustomerDefs
-from Utilities import Utils
+from Engine import Utils
 
 QUEUEDISTANCE = 75
 
@@ -39,10 +39,10 @@ QUEUEDISTANCE = 75
 def NeedsToQueue(movingSprite) -&gt; bool:
     &#34;&#34;&#34;Checks if the Customer needs to Queue
 
-    Args:
+    Args-
         movingSprite (Sprite): Customer
 
-    Returns:
+    Returns-
         bool: Does the customer have to queue
     &#34;&#34;&#34;
     dataObject = movingSprite.DataObject
@@ -56,7 +56,7 @@ def NeedsToQueue(movingSprite) -&gt; bool:
             return NeedsToQueue(movingSprite=movingSprite)
 
         case CustomerDefs.CustomerStates.WalkingIn:
-            for sprite in Game.MasterGame.CharSpriteGroup:
+            for sprite in GameBase.MasterGame.CharSpriteGroup:
                 if (
                     sprite is not movingSprite
                     and sprite.ImageType in AssetLibrary.CustomerOutfits
@@ -76,13 +76,13 @@ def NeedsToQueue(movingSprite) -&gt; bool:
 def FirstInLine(movingSprite) -&gt; bool:
     &#34;&#34;&#34;Checks if the customer is first in Queue
 
-    Args:
+    Args-
         movingSprite (Sprite): Customer Sprite
 
-    Returns:
+    Returns-
         bool: Is the Customer the first in the line
     &#34;&#34;&#34;
-    for sprite in Game.MasterGame.CharSpriteGroup:
+    for sprite in GameBase.MasterGame.CharSpriteGroup:
         if (
             sprite is not movingSprite
             and sprite.rect.centerx == movingSprite.rect.centerx
@@ -109,16 +109,10 @@ def FirstInLine(movingSprite) -&gt; bool:
 </code></dt>
 <dd>
 <div class="desc"><p>Checks if the customer is first in Queue</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>movingSprite</code></strong> :&ensp;<code>Sprite</code></dt>
-<dd>Customer Sprite</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>bool</code></dt>
-<dd>Is the Customer the first in the line</dd>
-</dl></div>
+<p>Args-
+movingSprite (Sprite): Customer Sprite</p>
+<p>Returns-
+bool: Is the Customer the first in the line</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -126,13 +120,13 @@ def FirstInLine(movingSprite) -&gt; bool:
 <pre><code class="python">def FirstInLine(movingSprite) -&gt; bool:
     &#34;&#34;&#34;Checks if the customer is first in Queue
 
-    Args:
+    Args-
         movingSprite (Sprite): Customer Sprite
 
-    Returns:
+    Returns-
         bool: Is the Customer the first in the line
     &#34;&#34;&#34;
-    for sprite in Game.MasterGame.CharSpriteGroup:
+    for sprite in GameBase.MasterGame.CharSpriteGroup:
         if (
             sprite is not movingSprite
             and sprite.rect.centerx == movingSprite.rect.centerx
@@ -152,16 +146,10 @@ def FirstInLine(movingSprite) -&gt; bool:
 </code></dt>
 <dd>
 <div class="desc"><p>Checks if the Customer needs to Queue</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>movingSprite</code></strong> :&ensp;<code>Sprite</code></dt>
-<dd>Customer</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>bool</code></dt>
-<dd>Does the customer have to queue</dd>
-</dl></div>
+<p>Args-
+movingSprite (Sprite): Customer</p>
+<p>Returns-
+bool: Does the customer have to queue</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -169,10 +157,10 @@ def FirstInLine(movingSprite) -&gt; bool:
 <pre><code class="python">def NeedsToQueue(movingSprite) -&gt; bool:
     &#34;&#34;&#34;Checks if the Customer needs to Queue
 
-    Args:
+    Args-
         movingSprite (Sprite): Customer
 
-    Returns:
+    Returns-
         bool: Does the customer have to queue
     &#34;&#34;&#34;
     dataObject = movingSprite.DataObject
@@ -186,7 +174,7 @@ def FirstInLine(movingSprite) -&gt; bool:
             return NeedsToQueue(movingSprite=movingSprite)
 
         case CustomerDefs.CustomerStates.WalkingIn:
-            for sprite in Game.MasterGame.CharSpriteGroup:
+            for sprite in GameBase.MasterGame.CharSpriteGroup:
                 if (
                     sprite is not movingSprite
                     and sprite.ImageType in AssetLibrary.CustomerOutfits

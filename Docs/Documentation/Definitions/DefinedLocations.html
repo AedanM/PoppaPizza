@@ -31,7 +31,7 @@
 
 import math
 
-from Utilities import Utils
+from Engine import Utils
 
 StandardDimensions = {&#34;Medium&#34;: (1200, 800), &#34;Small&#34;: (600, 400), &#34;Large&#34;: (2400, 1600)}
 
@@ -45,7 +45,7 @@ class DefinedLocations:
     def LockerRoom0(self) -&gt; tuple:
         &#34;&#34;&#34;Location of First Locker Room
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         &#34;&#34;&#34;
         location = (125, 65)
@@ -55,7 +55,7 @@ class DefinedLocations:
     def LockerRoom1(self) -&gt; tuple:
         &#34;&#34;&#34;Location of First Locker Room
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         &#34;&#34;&#34;
         location = (350, 65)
@@ -65,7 +65,7 @@ class DefinedLocations:
     def LockerRoom2(self) -&gt; tuple:
         &#34;&#34;&#34;Location of Second Locker Room
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         &#34;&#34;&#34;
         location = (530, 65)
@@ -75,7 +75,7 @@ class DefinedLocations:
     def LockerRoom3(self) -&gt; tuple:
         &#34;&#34;&#34;Location of Third Locker Room
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         &#34;&#34;&#34;
         location = (710, 65)
@@ -85,7 +85,7 @@ class DefinedLocations:
     def LockerRoom4(self) -&gt; tuple:
         &#34;&#34;&#34;Location of Fourth Locker Room
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         &#34;&#34;&#34;
         location = (890, 65)
@@ -95,7 +95,7 @@ class DefinedLocations:
     def LockerRoom5(self) -&gt; tuple:
         &#34;&#34;&#34;Location of Fifth Locker Room
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         &#34;&#34;&#34;
         location = (1070, 65)
@@ -105,7 +105,7 @@ class DefinedLocations:
     def KitchenEntrance(self) -&gt; tuple:
         &#34;&#34;&#34;Location of Kitchen Entrance
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         &#34;&#34;&#34;
         location = (125, 225)
@@ -115,7 +115,7 @@ class DefinedLocations:
     def KitchenLocation(self) -&gt; tuple:
         &#34;&#34;&#34;Location of Kitchen Entrance
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         &#34;&#34;&#34;
         location = (125, 50)
@@ -125,7 +125,7 @@ class DefinedLocations:
     def CustomerExit(self) -&gt; tuple:
         &#34;&#34;&#34;Location of Customer Exit Location
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         &#34;&#34;&#34;
         location = (1200, 1000)
@@ -135,7 +135,7 @@ class DefinedLocations:
     def CustomerEntrance(self) -&gt; tuple:
         &#34;&#34;&#34;Location of Start of Customer Queue
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         &#34;&#34;&#34;
         location = (1150, 325)
@@ -145,7 +145,7 @@ class DefinedLocations:
     def EndOfLine(self) -&gt; tuple:
         &#34;&#34;&#34;Location of End of Queue
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         &#34;&#34;&#34;
         location = (1100, 700)
@@ -155,7 +155,7 @@ class DefinedLocations:
     def CustomerSpawn(self) -&gt; tuple:
         &#34;&#34;&#34;Location of Customer Spawn in
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         &#34;&#34;&#34;
         location = (1150, 1000)
@@ -165,7 +165,7 @@ class DefinedLocations:
     def WorkerSpawn(self) -&gt; tuple:
         &#34;&#34;&#34;Location of Customer Spawn in
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         &#34;&#34;&#34;
         location = (125, 1600)
@@ -175,7 +175,7 @@ class DefinedLocations:
     def TriviaTitleText(self) -&gt; tuple:
         &#34;&#34;&#34;Location of Main Trivia Game Text
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         &#34;&#34;&#34;
         location = (600, 100)
@@ -185,7 +185,7 @@ class DefinedLocations:
     def TriviaMainText(self) -&gt; tuple:
         &#34;&#34;&#34;Location of Main Trivia Title Text
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         &#34;&#34;&#34;
         location = (600, 250)
@@ -195,7 +195,7 @@ class DefinedLocations:
     def TriviaMinorText(self) -&gt; tuple:
         &#34;&#34;&#34;Location of Secondary Trivia Game Text
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         &#34;&#34;&#34;
         location = (600, 600)
@@ -205,7 +205,7 @@ class DefinedLocations:
     def TriviaRoundText(self) -&gt; tuple:
         &#34;&#34;&#34;Location of Round Label for Trivia Game
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         &#34;&#34;&#34;
         location = (100, 100)
@@ -214,7 +214,7 @@ class DefinedLocations:
     def Answers(self, num) -&gt; list:
         &#34;&#34;&#34;Location of Round Label for Trivia Game
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         &#34;&#34;&#34;
         location = []
@@ -250,7 +250,7 @@ class SeatingPlanClass:
     def TableXSpacing(self) -&gt; int:
         &#34;&#34;&#34;Calculates the Horz Spacing between tables
 
-        Returns:
+        Returns-
             int: Horz Spacing
         &#34;&#34;&#34;
         return math.floor(
@@ -264,7 +264,7 @@ class SeatingPlanClass:
     def TableYSpacing(self) -&gt; int:
         &#34;&#34;&#34;Calculates the Vertical Spacing between tables
 
-        Returns:
+        Returns-
             int: Vertical Spacing
         &#34;&#34;&#34;
         return math.floor(
@@ -278,7 +278,7 @@ class SeatingPlanClass:
     def TableXStart(self) -&gt; int:
         &#34;&#34;&#34;Calcs the 1st tables X position
 
-        Returns:
+        Returns-
             int: 1st tables X position
         &#34;&#34;&#34;
         return max(math.floor((self.MaxX - self.MinX) / (self.NumRows)), self.MinX)
@@ -287,7 +287,7 @@ class SeatingPlanClass:
     def TableYStart(self) -&gt; int:
         &#34;&#34;&#34;Calcs the 1st tables Y position
 
-        Returns:
+        Returns-
             int: 1st tables Y position
         &#34;&#34;&#34;
         return max(math.floor((self.MaxY - self.MinY) / (self.NumCols)), self.MinY)
@@ -295,7 +295,7 @@ class SeatingPlanClass:
     def TableRows(self) -&gt; list[int]:
         &#34;&#34;&#34;Calculates the current table row locations
 
-        Returns:
+        Returns-
             list[int]: List of Row Locations
         &#34;&#34;&#34;
         lastTableRow = (self.NumRows * self.TableXSpacing) + self.TableXStart
@@ -304,7 +304,7 @@ class SeatingPlanClass:
     def TableCols(self) -&gt; list[int]:
         &#34;&#34;&#34;Calculates the current table column locations
 
-        Returns:
+        Returns-
             list[int]: List of Column Locations
         &#34;&#34;&#34;
         lastTableCol = (self.NumCols * self.TableYSpacing) + self.TableYStart
@@ -313,7 +313,7 @@ class SeatingPlanClass:
     def GenerateTablePlaces(self) -&gt; list:
         &#34;&#34;&#34;Generates list of table position tuples
 
-        Returns:
+        Returns-
             list: Array of Tuple Positions
         &#34;&#34;&#34;
         locationArray = []
@@ -353,7 +353,7 @@ SeatingPlan = SeatingPlanClass()</code></pre>
     def LockerRoom0(self) -&gt; tuple:
         &#34;&#34;&#34;Location of First Locker Room
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         &#34;&#34;&#34;
         location = (125, 65)
@@ -363,7 +363,7 @@ SeatingPlan = SeatingPlanClass()</code></pre>
     def LockerRoom1(self) -&gt; tuple:
         &#34;&#34;&#34;Location of First Locker Room
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         &#34;&#34;&#34;
         location = (350, 65)
@@ -373,7 +373,7 @@ SeatingPlan = SeatingPlanClass()</code></pre>
     def LockerRoom2(self) -&gt; tuple:
         &#34;&#34;&#34;Location of Second Locker Room
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         &#34;&#34;&#34;
         location = (530, 65)
@@ -383,7 +383,7 @@ SeatingPlan = SeatingPlanClass()</code></pre>
     def LockerRoom3(self) -&gt; tuple:
         &#34;&#34;&#34;Location of Third Locker Room
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         &#34;&#34;&#34;
         location = (710, 65)
@@ -393,7 +393,7 @@ SeatingPlan = SeatingPlanClass()</code></pre>
     def LockerRoom4(self) -&gt; tuple:
         &#34;&#34;&#34;Location of Fourth Locker Room
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         &#34;&#34;&#34;
         location = (890, 65)
@@ -403,7 +403,7 @@ SeatingPlan = SeatingPlanClass()</code></pre>
     def LockerRoom5(self) -&gt; tuple:
         &#34;&#34;&#34;Location of Fifth Locker Room
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         &#34;&#34;&#34;
         location = (1070, 65)
@@ -413,7 +413,7 @@ SeatingPlan = SeatingPlanClass()</code></pre>
     def KitchenEntrance(self) -&gt; tuple:
         &#34;&#34;&#34;Location of Kitchen Entrance
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         &#34;&#34;&#34;
         location = (125, 225)
@@ -423,7 +423,7 @@ SeatingPlan = SeatingPlanClass()</code></pre>
     def KitchenLocation(self) -&gt; tuple:
         &#34;&#34;&#34;Location of Kitchen Entrance
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         &#34;&#34;&#34;
         location = (125, 50)
@@ -433,7 +433,7 @@ SeatingPlan = SeatingPlanClass()</code></pre>
     def CustomerExit(self) -&gt; tuple:
         &#34;&#34;&#34;Location of Customer Exit Location
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         &#34;&#34;&#34;
         location = (1200, 1000)
@@ -443,7 +443,7 @@ SeatingPlan = SeatingPlanClass()</code></pre>
     def CustomerEntrance(self) -&gt; tuple:
         &#34;&#34;&#34;Location of Start of Customer Queue
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         &#34;&#34;&#34;
         location = (1150, 325)
@@ -453,7 +453,7 @@ SeatingPlan = SeatingPlanClass()</code></pre>
     def EndOfLine(self) -&gt; tuple:
         &#34;&#34;&#34;Location of End of Queue
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         &#34;&#34;&#34;
         location = (1100, 700)
@@ -463,7 +463,7 @@ SeatingPlan = SeatingPlanClass()</code></pre>
     def CustomerSpawn(self) -&gt; tuple:
         &#34;&#34;&#34;Location of Customer Spawn in
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         &#34;&#34;&#34;
         location = (1150, 1000)
@@ -473,7 +473,7 @@ SeatingPlan = SeatingPlanClass()</code></pre>
     def WorkerSpawn(self) -&gt; tuple:
         &#34;&#34;&#34;Location of Customer Spawn in
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         &#34;&#34;&#34;
         location = (125, 1600)
@@ -483,7 +483,7 @@ SeatingPlan = SeatingPlanClass()</code></pre>
     def TriviaTitleText(self) -&gt; tuple:
         &#34;&#34;&#34;Location of Main Trivia Game Text
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         &#34;&#34;&#34;
         location = (600, 100)
@@ -493,7 +493,7 @@ SeatingPlan = SeatingPlanClass()</code></pre>
     def TriviaMainText(self) -&gt; tuple:
         &#34;&#34;&#34;Location of Main Trivia Title Text
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         &#34;&#34;&#34;
         location = (600, 250)
@@ -503,7 +503,7 @@ SeatingPlan = SeatingPlanClass()</code></pre>
     def TriviaMinorText(self) -&gt; tuple:
         &#34;&#34;&#34;Location of Secondary Trivia Game Text
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         &#34;&#34;&#34;
         location = (600, 600)
@@ -513,7 +513,7 @@ SeatingPlan = SeatingPlanClass()</code></pre>
     def TriviaRoundText(self) -&gt; tuple:
         &#34;&#34;&#34;Location of Round Label for Trivia Game
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         &#34;&#34;&#34;
         location = (100, 100)
@@ -522,7 +522,7 @@ SeatingPlan = SeatingPlanClass()</code></pre>
     def Answers(self, num) -&gt; list:
         &#34;&#34;&#34;Location of Round Label for Trivia Game
 
-        Returns:
+        Returns-
             tuple: Scaled Location
         &#34;&#34;&#34;
         location = []
@@ -547,11 +547,8 @@ SeatingPlan = SeatingPlanClass()</code></pre>
 <dt id="Definitions.DefinedLocations.DefinedLocations.CustomerEntrance"><code class="name">var <span class="ident">CustomerEntrance</span> : tuple</code></dt>
 <dd>
 <div class="desc"><p>Location of Start of Customer Queue</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>tuple</code></dt>
-<dd>Scaled Location</dd>
-</dl></div>
+<p>Returns-
+tuple: Scaled Location</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -560,7 +557,7 @@ SeatingPlan = SeatingPlanClass()</code></pre>
 def CustomerEntrance(self) -&gt; tuple:
     &#34;&#34;&#34;Location of Start of Customer Queue
 
-    Returns:
+    Returns-
         tuple: Scaled Location
     &#34;&#34;&#34;
     location = (1150, 325)
@@ -570,11 +567,8 @@ def CustomerEntrance(self) -&gt; tuple:
 <dt id="Definitions.DefinedLocations.DefinedLocations.CustomerExit"><code class="name">var <span class="ident">CustomerExit</span> : tuple</code></dt>
 <dd>
 <div class="desc"><p>Location of Customer Exit Location</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>tuple</code></dt>
-<dd>Scaled Location</dd>
-</dl></div>
+<p>Returns-
+tuple: Scaled Location</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -583,7 +577,7 @@ def CustomerEntrance(self) -&gt; tuple:
 def CustomerExit(self) -&gt; tuple:
     &#34;&#34;&#34;Location of Customer Exit Location
 
-    Returns:
+    Returns-
         tuple: Scaled Location
     &#34;&#34;&#34;
     location = (1200, 1000)
@@ -593,11 +587,8 @@ def CustomerExit(self) -&gt; tuple:
 <dt id="Definitions.DefinedLocations.DefinedLocations.CustomerSpawn"><code class="name">var <span class="ident">CustomerSpawn</span> : tuple</code></dt>
 <dd>
 <div class="desc"><p>Location of Customer Spawn in</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>tuple</code></dt>
-<dd>Scaled Location</dd>
-</dl></div>
+<p>Returns-
+tuple: Scaled Location</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -606,7 +597,7 @@ def CustomerExit(self) -&gt; tuple:
 def CustomerSpawn(self) -&gt; tuple:
     &#34;&#34;&#34;Location of Customer Spawn in
 
-    Returns:
+    Returns-
         tuple: Scaled Location
     &#34;&#34;&#34;
     location = (1150, 1000)
@@ -616,11 +607,8 @@ def CustomerSpawn(self) -&gt; tuple:
 <dt id="Definitions.DefinedLocations.DefinedLocations.EndOfLine"><code class="name">var <span class="ident">EndOfLine</span> : tuple</code></dt>
 <dd>
 <div class="desc"><p>Location of End of Queue</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>tuple</code></dt>
-<dd>Scaled Location</dd>
-</dl></div>
+<p>Returns-
+tuple: Scaled Location</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -629,7 +617,7 @@ def CustomerSpawn(self) -&gt; tuple:
 def EndOfLine(self) -&gt; tuple:
     &#34;&#34;&#34;Location of End of Queue
 
-    Returns:
+    Returns-
         tuple: Scaled Location
     &#34;&#34;&#34;
     location = (1100, 700)
@@ -639,11 +627,8 @@ def EndOfLine(self) -&gt; tuple:
 <dt id="Definitions.DefinedLocations.DefinedLocations.KitchenEntrance"><code class="name">var <span class="ident">KitchenEntrance</span> : tuple</code></dt>
 <dd>
 <div class="desc"><p>Location of Kitchen Entrance</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>tuple</code></dt>
-<dd>Scaled Location</dd>
-</dl></div>
+<p>Returns-
+tuple: Scaled Location</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -652,7 +637,7 @@ def EndOfLine(self) -&gt; tuple:
 def KitchenEntrance(self) -&gt; tuple:
     &#34;&#34;&#34;Location of Kitchen Entrance
 
-    Returns:
+    Returns-
         tuple: Scaled Location
     &#34;&#34;&#34;
     location = (125, 225)
@@ -662,11 +647,8 @@ def KitchenEntrance(self) -&gt; tuple:
 <dt id="Definitions.DefinedLocations.DefinedLocations.KitchenLocation"><code class="name">var <span class="ident">KitchenLocation</span> : tuple</code></dt>
 <dd>
 <div class="desc"><p>Location of Kitchen Entrance</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>tuple</code></dt>
-<dd>Scaled Location</dd>
-</dl></div>
+<p>Returns-
+tuple: Scaled Location</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -675,7 +657,7 @@ def KitchenEntrance(self) -&gt; tuple:
 def KitchenLocation(self) -&gt; tuple:
     &#34;&#34;&#34;Location of Kitchen Entrance
 
-    Returns:
+    Returns-
         tuple: Scaled Location
     &#34;&#34;&#34;
     location = (125, 50)
@@ -685,11 +667,8 @@ def KitchenLocation(self) -&gt; tuple:
 <dt id="Definitions.DefinedLocations.DefinedLocations.LockerRoom0"><code class="name">var <span class="ident">LockerRoom0</span> : tuple</code></dt>
 <dd>
 <div class="desc"><p>Location of First Locker Room</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>tuple</code></dt>
-<dd>Scaled Location</dd>
-</dl></div>
+<p>Returns-
+tuple: Scaled Location</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -698,7 +677,7 @@ def KitchenLocation(self) -&gt; tuple:
 def LockerRoom0(self) -&gt; tuple:
     &#34;&#34;&#34;Location of First Locker Room
 
-    Returns:
+    Returns-
         tuple: Scaled Location
     &#34;&#34;&#34;
     location = (125, 65)
@@ -708,11 +687,8 @@ def LockerRoom0(self) -&gt; tuple:
 <dt id="Definitions.DefinedLocations.DefinedLocations.LockerRoom1"><code class="name">var <span class="ident">LockerRoom1</span> : tuple</code></dt>
 <dd>
 <div class="desc"><p>Location of First Locker Room</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>tuple</code></dt>
-<dd>Scaled Location</dd>
-</dl></div>
+<p>Returns-
+tuple: Scaled Location</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -721,7 +697,7 @@ def LockerRoom0(self) -&gt; tuple:
 def LockerRoom1(self) -&gt; tuple:
     &#34;&#34;&#34;Location of First Locker Room
 
-    Returns:
+    Returns-
         tuple: Scaled Location
     &#34;&#34;&#34;
     location = (350, 65)
@@ -731,11 +707,8 @@ def LockerRoom1(self) -&gt; tuple:
 <dt id="Definitions.DefinedLocations.DefinedLocations.LockerRoom2"><code class="name">var <span class="ident">LockerRoom2</span> : tuple</code></dt>
 <dd>
 <div class="desc"><p>Location of Second Locker Room</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>tuple</code></dt>
-<dd>Scaled Location</dd>
-</dl></div>
+<p>Returns-
+tuple: Scaled Location</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -744,7 +717,7 @@ def LockerRoom1(self) -&gt; tuple:
 def LockerRoom2(self) -&gt; tuple:
     &#34;&#34;&#34;Location of Second Locker Room
 
-    Returns:
+    Returns-
         tuple: Scaled Location
     &#34;&#34;&#34;
     location = (530, 65)
@@ -754,11 +727,8 @@ def LockerRoom2(self) -&gt; tuple:
 <dt id="Definitions.DefinedLocations.DefinedLocations.LockerRoom3"><code class="name">var <span class="ident">LockerRoom3</span> : tuple</code></dt>
 <dd>
 <div class="desc"><p>Location of Third Locker Room</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>tuple</code></dt>
-<dd>Scaled Location</dd>
-</dl></div>
+<p>Returns-
+tuple: Scaled Location</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -767,7 +737,7 @@ def LockerRoom2(self) -&gt; tuple:
 def LockerRoom3(self) -&gt; tuple:
     &#34;&#34;&#34;Location of Third Locker Room
 
-    Returns:
+    Returns-
         tuple: Scaled Location
     &#34;&#34;&#34;
     location = (710, 65)
@@ -777,11 +747,8 @@ def LockerRoom3(self) -&gt; tuple:
 <dt id="Definitions.DefinedLocations.DefinedLocations.LockerRoom4"><code class="name">var <span class="ident">LockerRoom4</span> : tuple</code></dt>
 <dd>
 <div class="desc"><p>Location of Fourth Locker Room</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>tuple</code></dt>
-<dd>Scaled Location</dd>
-</dl></div>
+<p>Returns-
+tuple: Scaled Location</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -790,7 +757,7 @@ def LockerRoom3(self) -&gt; tuple:
 def LockerRoom4(self) -&gt; tuple:
     &#34;&#34;&#34;Location of Fourth Locker Room
 
-    Returns:
+    Returns-
         tuple: Scaled Location
     &#34;&#34;&#34;
     location = (890, 65)
@@ -800,11 +767,8 @@ def LockerRoom4(self) -&gt; tuple:
 <dt id="Definitions.DefinedLocations.DefinedLocations.LockerRoom5"><code class="name">var <span class="ident">LockerRoom5</span> : tuple</code></dt>
 <dd>
 <div class="desc"><p>Location of Fifth Locker Room</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>tuple</code></dt>
-<dd>Scaled Location</dd>
-</dl></div>
+<p>Returns-
+tuple: Scaled Location</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -813,7 +777,7 @@ def LockerRoom4(self) -&gt; tuple:
 def LockerRoom5(self) -&gt; tuple:
     &#34;&#34;&#34;Location of Fifth Locker Room
 
-    Returns:
+    Returns-
         tuple: Scaled Location
     &#34;&#34;&#34;
     location = (1070, 65)
@@ -823,11 +787,8 @@ def LockerRoom5(self) -&gt; tuple:
 <dt id="Definitions.DefinedLocations.DefinedLocations.TriviaMainText"><code class="name">var <span class="ident">TriviaMainText</span> : tuple</code></dt>
 <dd>
 <div class="desc"><p>Location of Main Trivia Title Text</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>tuple</code></dt>
-<dd>Scaled Location</dd>
-</dl></div>
+<p>Returns-
+tuple: Scaled Location</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -836,7 +797,7 @@ def LockerRoom5(self) -&gt; tuple:
 def TriviaMainText(self) -&gt; tuple:
     &#34;&#34;&#34;Location of Main Trivia Title Text
 
-    Returns:
+    Returns-
         tuple: Scaled Location
     &#34;&#34;&#34;
     location = (600, 250)
@@ -846,11 +807,8 @@ def TriviaMainText(self) -&gt; tuple:
 <dt id="Definitions.DefinedLocations.DefinedLocations.TriviaMinorText"><code class="name">var <span class="ident">TriviaMinorText</span> : tuple</code></dt>
 <dd>
 <div class="desc"><p>Location of Secondary Trivia Game Text</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>tuple</code></dt>
-<dd>Scaled Location</dd>
-</dl></div>
+<p>Returns-
+tuple: Scaled Location</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -859,7 +817,7 @@ def TriviaMainText(self) -&gt; tuple:
 def TriviaMinorText(self) -&gt; tuple:
     &#34;&#34;&#34;Location of Secondary Trivia Game Text
 
-    Returns:
+    Returns-
         tuple: Scaled Location
     &#34;&#34;&#34;
     location = (600, 600)
@@ -869,11 +827,8 @@ def TriviaMinorText(self) -&gt; tuple:
 <dt id="Definitions.DefinedLocations.DefinedLocations.TriviaRoundText"><code class="name">var <span class="ident">TriviaRoundText</span> : tuple</code></dt>
 <dd>
 <div class="desc"><p>Location of Round Label for Trivia Game</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>tuple</code></dt>
-<dd>Scaled Location</dd>
-</dl></div>
+<p>Returns-
+tuple: Scaled Location</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -882,7 +837,7 @@ def TriviaMinorText(self) -&gt; tuple:
 def TriviaRoundText(self) -&gt; tuple:
     &#34;&#34;&#34;Location of Round Label for Trivia Game
 
-    Returns:
+    Returns-
         tuple: Scaled Location
     &#34;&#34;&#34;
     location = (100, 100)
@@ -892,11 +847,8 @@ def TriviaRoundText(self) -&gt; tuple:
 <dt id="Definitions.DefinedLocations.DefinedLocations.TriviaTitleText"><code class="name">var <span class="ident">TriviaTitleText</span> : tuple</code></dt>
 <dd>
 <div class="desc"><p>Location of Main Trivia Game Text</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>tuple</code></dt>
-<dd>Scaled Location</dd>
-</dl></div>
+<p>Returns-
+tuple: Scaled Location</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -905,7 +857,7 @@ def TriviaRoundText(self) -&gt; tuple:
 def TriviaTitleText(self) -&gt; tuple:
     &#34;&#34;&#34;Location of Main Trivia Game Text
 
-    Returns:
+    Returns-
         tuple: Scaled Location
     &#34;&#34;&#34;
     location = (600, 100)
@@ -915,11 +867,8 @@ def TriviaTitleText(self) -&gt; tuple:
 <dt id="Definitions.DefinedLocations.DefinedLocations.WorkerSpawn"><code class="name">var <span class="ident">WorkerSpawn</span> : tuple</code></dt>
 <dd>
 <div class="desc"><p>Location of Customer Spawn in</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>tuple</code></dt>
-<dd>Scaled Location</dd>
-</dl></div>
+<p>Returns-
+tuple: Scaled Location</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -928,7 +877,7 @@ def TriviaTitleText(self) -&gt; tuple:
 def WorkerSpawn(self) -&gt; tuple:
     &#34;&#34;&#34;Location of Customer Spawn in
 
-    Returns:
+    Returns-
         tuple: Scaled Location
     &#34;&#34;&#34;
     location = (125, 1600)
@@ -943,11 +892,8 @@ def WorkerSpawn(self) -&gt; tuple:
 </code></dt>
 <dd>
 <div class="desc"><p>Location of Round Label for Trivia Game</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>tuple</code></dt>
-<dd>Scaled Location</dd>
-</dl></div>
+<p>Returns-
+tuple: Scaled Location</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -955,7 +901,7 @@ def WorkerSpawn(self) -&gt; tuple:
 <pre><code class="python">def Answers(self, num) -&gt; list:
     &#34;&#34;&#34;Location of Round Label for Trivia Game
 
-    Returns:
+    Returns-
         tuple: Scaled Location
     &#34;&#34;&#34;
     location = []
@@ -998,7 +944,7 @@ def WorkerSpawn(self) -&gt; tuple:
     def TableXSpacing(self) -&gt; int:
         &#34;&#34;&#34;Calculates the Horz Spacing between tables
 
-        Returns:
+        Returns-
             int: Horz Spacing
         &#34;&#34;&#34;
         return math.floor(
@@ -1012,7 +958,7 @@ def WorkerSpawn(self) -&gt; tuple:
     def TableYSpacing(self) -&gt; int:
         &#34;&#34;&#34;Calculates the Vertical Spacing between tables
 
-        Returns:
+        Returns-
             int: Vertical Spacing
         &#34;&#34;&#34;
         return math.floor(
@@ -1026,7 +972,7 @@ def WorkerSpawn(self) -&gt; tuple:
     def TableXStart(self) -&gt; int:
         &#34;&#34;&#34;Calcs the 1st tables X position
 
-        Returns:
+        Returns-
             int: 1st tables X position
         &#34;&#34;&#34;
         return max(math.floor((self.MaxX - self.MinX) / (self.NumRows)), self.MinX)
@@ -1035,7 +981,7 @@ def WorkerSpawn(self) -&gt; tuple:
     def TableYStart(self) -&gt; int:
         &#34;&#34;&#34;Calcs the 1st tables Y position
 
-        Returns:
+        Returns-
             int: 1st tables Y position
         &#34;&#34;&#34;
         return max(math.floor((self.MaxY - self.MinY) / (self.NumCols)), self.MinY)
@@ -1043,7 +989,7 @@ def WorkerSpawn(self) -&gt; tuple:
     def TableRows(self) -&gt; list[int]:
         &#34;&#34;&#34;Calculates the current table row locations
 
-        Returns:
+        Returns-
             list[int]: List of Row Locations
         &#34;&#34;&#34;
         lastTableRow = (self.NumRows * self.TableXSpacing) + self.TableXStart
@@ -1052,7 +998,7 @@ def WorkerSpawn(self) -&gt; tuple:
     def TableCols(self) -&gt; list[int]:
         &#34;&#34;&#34;Calculates the current table column locations
 
-        Returns:
+        Returns-
             list[int]: List of Column Locations
         &#34;&#34;&#34;
         lastTableCol = (self.NumCols * self.TableYSpacing) + self.TableYStart
@@ -1061,7 +1007,7 @@ def WorkerSpawn(self) -&gt; tuple:
     def GenerateTablePlaces(self) -&gt; list:
         &#34;&#34;&#34;Generates list of table position tuples
 
-        Returns:
+        Returns-
             list: Array of Tuple Positions
         &#34;&#34;&#34;
         locationArray = []
@@ -1118,11 +1064,8 @@ def WorkerSpawn(self) -&gt; tuple:
 <dt id="Definitions.DefinedLocations.SeatingPlanClass.TableXSpacing"><code class="name">var <span class="ident">TableXSpacing</span> : int</code></dt>
 <dd>
 <div class="desc"><p>Calculates the Horz Spacing between tables</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>int</code></dt>
-<dd>Horz Spacing</dd>
-</dl></div>
+<p>Returns-
+int: Horz Spacing</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1131,7 +1074,7 @@ def WorkerSpawn(self) -&gt; tuple:
 def TableXSpacing(self) -&gt; int:
     &#34;&#34;&#34;Calculates the Horz Spacing between tables
 
-    Returns:
+    Returns-
         int: Horz Spacing
     &#34;&#34;&#34;
     return math.floor(
@@ -1145,11 +1088,8 @@ def TableXSpacing(self) -&gt; int:
 <dt id="Definitions.DefinedLocations.SeatingPlanClass.TableXStart"><code class="name">var <span class="ident">TableXStart</span> : int</code></dt>
 <dd>
 <div class="desc"><p>Calcs the 1st tables X position</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>int</code></dt>
-<dd>1st tables X position</dd>
-</dl></div>
+<p>Returns-
+int: 1st tables X position</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1158,7 +1098,7 @@ def TableXSpacing(self) -&gt; int:
 def TableXStart(self) -&gt; int:
     &#34;&#34;&#34;Calcs the 1st tables X position
 
-    Returns:
+    Returns-
         int: 1st tables X position
     &#34;&#34;&#34;
     return max(math.floor((self.MaxX - self.MinX) / (self.NumRows)), self.MinX)</code></pre>
@@ -1167,11 +1107,8 @@ def TableXStart(self) -&gt; int:
 <dt id="Definitions.DefinedLocations.SeatingPlanClass.TableYSpacing"><code class="name">var <span class="ident">TableYSpacing</span> : int</code></dt>
 <dd>
 <div class="desc"><p>Calculates the Vertical Spacing between tables</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>int</code></dt>
-<dd>Vertical Spacing</dd>
-</dl></div>
+<p>Returns-
+int: Vertical Spacing</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1180,7 +1117,7 @@ def TableXStart(self) -&gt; int:
 def TableYSpacing(self) -&gt; int:
     &#34;&#34;&#34;Calculates the Vertical Spacing between tables
 
-    Returns:
+    Returns-
         int: Vertical Spacing
     &#34;&#34;&#34;
     return math.floor(
@@ -1194,11 +1131,8 @@ def TableYSpacing(self) -&gt; int:
 <dt id="Definitions.DefinedLocations.SeatingPlanClass.TableYStart"><code class="name">var <span class="ident">TableYStart</span> : int</code></dt>
 <dd>
 <div class="desc"><p>Calcs the 1st tables Y position</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>int</code></dt>
-<dd>1st tables Y position</dd>
-</dl></div>
+<p>Returns-
+int: 1st tables Y position</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1207,7 +1141,7 @@ def TableYSpacing(self) -&gt; int:
 def TableYStart(self) -&gt; int:
     &#34;&#34;&#34;Calcs the 1st tables Y position
 
-    Returns:
+    Returns-
         int: 1st tables Y position
     &#34;&#34;&#34;
     return max(math.floor((self.MaxY - self.MinY) / (self.NumCols)), self.MinY)</code></pre>
@@ -1221,11 +1155,8 @@ def TableYStart(self) -&gt; int:
 </code></dt>
 <dd>
 <div class="desc"><p>Generates list of table position tuples</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>list</code></dt>
-<dd>Array of Tuple Positions</dd>
-</dl></div>
+<p>Returns-
+list: Array of Tuple Positions</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1233,7 +1164,7 @@ def TableYStart(self) -&gt; int:
 <pre><code class="python">def GenerateTablePlaces(self) -&gt; list:
     &#34;&#34;&#34;Generates list of table position tuples
 
-    Returns:
+    Returns-
         list: Array of Tuple Positions
     &#34;&#34;&#34;
     locationArray = []
@@ -1248,11 +1179,8 @@ def TableYStart(self) -&gt; int:
 </code></dt>
 <dd>
 <div class="desc"><p>Calculates the current table column locations</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>list[int]</code></dt>
-<dd>List of Column Locations</dd>
-</dl></div>
+<p>Returns-
+list[int]: List of Column Locations</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1260,7 +1188,7 @@ def TableYStart(self) -&gt; int:
 <pre><code class="python">def TableCols(self) -&gt; list[int]:
     &#34;&#34;&#34;Calculates the current table column locations
 
-    Returns:
+    Returns-
         list[int]: List of Column Locations
     &#34;&#34;&#34;
     lastTableCol = (self.NumCols * self.TableYSpacing) + self.TableYStart
@@ -1272,11 +1200,8 @@ def TableYStart(self) -&gt; int:
 </code></dt>
 <dd>
 <div class="desc"><p>Calculates the current table row locations</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>list[int]</code></dt>
-<dd>List of Row Locations</dd>
-</dl></div>
+<p>Returns-
+list[int]: List of Row Locations</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1284,7 +1209,7 @@ def TableYStart(self) -&gt; int:
 <pre><code class="python">def TableRows(self) -&gt; list[int]:
     &#34;&#34;&#34;Calculates the current table row locations
 
-    Returns:
+    Returns-
         list[int]: List of Row Locations
     &#34;&#34;&#34;
     lastTableRow = (self.NumRows * self.TableXSpacing) + self.TableXStart

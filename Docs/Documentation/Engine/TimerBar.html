@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>Classes.TimerBar API documentation</title>
+<title>Engine.TimerBar API documentation</title>
 <meta name="description" content="Class for Timer Bars" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,7 +19,7 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>Classes.TimerBar</code></h1>
+<h1 class="title">Module <code>Engine.TimerBar</code></h1>
 </header>
 <section id="section-intro">
 <p>Class for Timer Bars</p>
@@ -33,8 +33,7 @@ import math
 
 import pygame
 
-from Classes import Matching
-from Definitions import ColorTools
+from Engine import Color
 
 
 class TimerBar:
@@ -43,9 +42,9 @@ class TimerBar:
     Width: int = 0
     MaxWidth: int = 50
     Height: int = 25
-    Color: ColorTools.Color = ColorTools.LimeGreen
-    MaxColor: ColorTools.Color = ColorTools.Grey
-    FillColor: ColorTools.Color = ColorTools.LimeGreen
+    TimerColor: Color.Color = Color.Color(hexstring=&#34;#7eff37&#34;)
+    MaxColor: Color.Color = Color.Color(hexstring=&#34;#c8c8c8&#34;)
+    FillColor: Color.Color = Color.Color(hexstring=&#34;#7eff37&#34;)
     StartTime: int = 0
     AssocId: int = 0
     StartingState: int = 0
@@ -56,13 +55,13 @@ class TimerBar:
         self,
         duration: float,
         position: tuple,
-        activeGame,
+        startTime,
         assocId=0,
         offset=(0, 0),
     ) -&gt; None:
         &#34;&#34;&#34;Init for Timer Bar
 
-        Args:
+        Args-
             duration (float): Length of timer in game minutes
             position (tuple): Poisiton of top left of timer bar
             assocId (int, optional): Character to Bind the Timer to. Defaults to 0, meaning no character.
@@ -80,7 +79,7 @@ class TimerBar:
         self.MaxTimerRect = pygame.Rect(
             position[0] + offset[0], position[1] + offset[1], self.MaxWidth, self.Height
         )
-        self.StartTime = activeGame.GameClock.Minute
+        self.StartTime = startTime
         self.CompletionPercentage = 0.0
         self.Duration = duration
         self.Running = True
@@ -91,14 +90,14 @@ class TimerBar:
     ) -&gt; tuple:
         &#34;&#34;&#34;Generates the gradient transistion between start and end colors
 
-        Returns:
+        Returns-
             Color.RGB: RGB representation of color
         &#34;&#34;&#34;
-        color1 = self.Color.HSV
+        color1 = self.TimerColor.HSV
         color2 = self.FillColor.HSV
         color1Scale = 1.0 - (self.CompletionPercentage)
         color2Scale = self.CompletionPercentage
-        color3 = ColorTools.Color(
+        color3 = Color.Color(
             h=math.floor(color1[0] * color1Scale + color2[0] * color2Scale),
             s=math.floor(color1[1] * color1Scale + color2[1] * color2Scale),
             v=math.floor(color1[2] * color1Scale + color2[2] * color2Scale),
@@ -108,7 +107,7 @@ class TimerBar:
     def SetMaxSize(self, size) -&gt; None:
         &#34;&#34;&#34;Update the maximum size of the timer bar
 
-        Args:
+        Args-
             size (int | float): Max Width of Timer Bar
         &#34;&#34;&#34;
         self.MaxWidth = size
@@ -120,24 +119,24 @@ class TimerBar:
             self.Height,
         )
 
-    def StartTimer(self, activeGame) -&gt; None:
+    def StartTimer(self, currentTime) -&gt; None:
         &#34;&#34;&#34;Begins the timer and sets the reference start time
 
-        Args:
+        Args-
             activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
         &#34;&#34;&#34;
-        self.StartTime = activeGame.GameClock.Minute
+        self.StartTime = currentTime
         self.Running = True
 
-    def AgeTimer(self, activeGame) -&gt; None:
+    def AgeTimer(self, timeInMinutes) -&gt; None:
         &#34;&#34;&#34;Increments timer based on the game clock
 
-        Args:
+        Args-
             activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
         &#34;&#34;&#34;
         if self.Running:
             self.CompletionPercentage = (
-                (activeGame.GameClock.Minute - self.StartTime)
+                (timeInMinutes - self.StartTime)
             ) / self.Duration
             self.Width = int(
                 math.floor(
@@ -149,39 +148,7 @@ class TimerBar:
             if self.CompletionPercentage &gt;= 1:
                 self.OnComplete()
                 self.Running = False
-                self.AssocId = 0
-
-    def UpdateAndDraw(self, activeGame) -&gt; None:
-        &#34;&#34;&#34;Update Timer Dimensions and Redraw if active
-
-        Args:
-            activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
-        &#34;&#34;&#34;
-        if self.Running:
-            self.AgeTimer(activeGame=activeGame)
-            customerObj = Matching.MatchIdToPerson(
-                activeGame=activeGame, inputId=self.AssocId, targetOutput=&#34;customer&#34;
-            )
-            if (
-                self.StartingState != 0
-                and self.AssocId != 0
-                and (
-                    customerObj is None
-                    or customerObj.CurrentState.value != self.StartingState
-                )
-            ):
-                self.Running = False
-            else:
-                pygame.draw.rect(
-                    activeGame.Screen,
-                    self.MaxColor.RGB,
-                    self.MaxTimerRect,
-                )
-                pygame.draw.rect(
-                    activeGame.Screen,
-                    self.DynamicColor,
-                    self.TimerRect,
-                )</code></pre>
+                self.AssocId = 0</code></pre>
 </details>
 </section>
 <section>
@@ -193,26 +160,19 @@ class TimerBar:
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="Classes.TimerBar.TimerBar"><code class="flex name class">
+<dt id="Engine.TimerBar.TimerBar"><code class="flex name class">
 <span>class <span class="ident">TimerBar</span></span>
-<span>(</span><span>duration: float, position: tuple, activeGame, assocId=0, offset=(0, 0))</span>
+<span>(</span><span>duration: float, position: tuple, startTime, assocId=0, offset=(0, 0))</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Class for Progress Bars with a Running Timer</p>
 <p>Init for Timer Bar</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>duration</code></strong> :&ensp;<code>float</code></dt>
-<dd>Length of timer in game minutes</dd>
-<dt><strong><code>position</code></strong> :&ensp;<code>tuple</code></dt>
-<dd>Poisiton of top left of timer bar</dd>
-<dt><strong><code>assocId</code></strong> :&ensp;<code>int</code>, optional</dt>
-<dd>Character to Bind the Timer to. Defaults to 0, meaning no character.</dd>
-<dt><strong><code>activeGame</code></strong> :&ensp;<code>Game</code>, optional</dt>
-<dd>Current Game. Defaults to Game.MasterGame.</dd>
-<dt><strong><code>offset</code></strong> :&ensp;<code>tuple</code>, optional</dt>
-<dd>Offset for the timer bar from position. Defaults to (0, 0).</dd>
-</dl></div>
+<p>Args-
+duration (float): Length of timer in game minutes
+position (tuple): Poisiton of top left of timer bar
+assocId (int, optional): Character to Bind the Timer to. Defaults to 0, meaning no character.
+activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
+offset (tuple, optional): Offset for the timer bar from position. Defaults to (0, 0).</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -223,9 +183,9 @@ class TimerBar:
     Width: int = 0
     MaxWidth: int = 50
     Height: int = 25
-    Color: ColorTools.Color = ColorTools.LimeGreen
-    MaxColor: ColorTools.Color = ColorTools.Grey
-    FillColor: ColorTools.Color = ColorTools.LimeGreen
+    TimerColor: Color.Color = Color.Color(hexstring=&#34;#7eff37&#34;)
+    MaxColor: Color.Color = Color.Color(hexstring=&#34;#c8c8c8&#34;)
+    FillColor: Color.Color = Color.Color(hexstring=&#34;#7eff37&#34;)
     StartTime: int = 0
     AssocId: int = 0
     StartingState: int = 0
@@ -236,13 +196,13 @@ class TimerBar:
         self,
         duration: float,
         position: tuple,
-        activeGame,
+        startTime,
         assocId=0,
         offset=(0, 0),
     ) -&gt; None:
         &#34;&#34;&#34;Init for Timer Bar
 
-        Args:
+        Args-
             duration (float): Length of timer in game minutes
             position (tuple): Poisiton of top left of timer bar
             assocId (int, optional): Character to Bind the Timer to. Defaults to 0, meaning no character.
@@ -260,7 +220,7 @@ class TimerBar:
         self.MaxTimerRect = pygame.Rect(
             position[0] + offset[0], position[1] + offset[1], self.MaxWidth, self.Height
         )
-        self.StartTime = activeGame.GameClock.Minute
+        self.StartTime = startTime
         self.CompletionPercentage = 0.0
         self.Duration = duration
         self.Running = True
@@ -271,14 +231,14 @@ class TimerBar:
     ) -&gt; tuple:
         &#34;&#34;&#34;Generates the gradient transistion between start and end colors
 
-        Returns:
+        Returns-
             Color.RGB: RGB representation of color
         &#34;&#34;&#34;
-        color1 = self.Color.HSV
+        color1 = self.TimerColor.HSV
         color2 = self.FillColor.HSV
         color1Scale = 1.0 - (self.CompletionPercentage)
         color2Scale = self.CompletionPercentage
-        color3 = ColorTools.Color(
+        color3 = Color.Color(
             h=math.floor(color1[0] * color1Scale + color2[0] * color2Scale),
             s=math.floor(color1[1] * color1Scale + color2[1] * color2Scale),
             v=math.floor(color1[2] * color1Scale + color2[2] * color2Scale),
@@ -288,7 +248,7 @@ class TimerBar:
     def SetMaxSize(self, size) -&gt; None:
         &#34;&#34;&#34;Update the maximum size of the timer bar
 
-        Args:
+        Args-
             size (int | float): Max Width of Timer Bar
         &#34;&#34;&#34;
         self.MaxWidth = size
@@ -300,24 +260,24 @@ class TimerBar:
             self.Height,
         )
 
-    def StartTimer(self, activeGame) -&gt; None:
+    def StartTimer(self, currentTime) -&gt; None:
         &#34;&#34;&#34;Begins the timer and sets the reference start time
 
-        Args:
+        Args-
             activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
         &#34;&#34;&#34;
-        self.StartTime = activeGame.GameClock.Minute
+        self.StartTime = currentTime
         self.Running = True
 
-    def AgeTimer(self, activeGame) -&gt; None:
+    def AgeTimer(self, timeInMinutes) -&gt; None:
         &#34;&#34;&#34;Increments timer based on the game clock
 
-        Args:
+        Args-
             activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
         &#34;&#34;&#34;
         if self.Running:
             self.CompletionPercentage = (
-                (activeGame.GameClock.Minute - self.StartTime)
+                (timeInMinutes - self.StartTime)
             ) / self.Duration
             self.Width = int(
                 math.floor(
@@ -329,97 +289,62 @@ class TimerBar:
             if self.CompletionPercentage &gt;= 1:
                 self.OnComplete()
                 self.Running = False
-                self.AssocId = 0
-
-    def UpdateAndDraw(self, activeGame) -&gt; None:
-        &#34;&#34;&#34;Update Timer Dimensions and Redraw if active
-
-        Args:
-            activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
-        &#34;&#34;&#34;
-        if self.Running:
-            self.AgeTimer(activeGame=activeGame)
-            customerObj = Matching.MatchIdToPerson(
-                activeGame=activeGame, inputId=self.AssocId, targetOutput=&#34;customer&#34;
-            )
-            if (
-                self.StartingState != 0
-                and self.AssocId != 0
-                and (
-                    customerObj is None
-                    or customerObj.CurrentState.value != self.StartingState
-                )
-            ):
-                self.Running = False
-            else:
-                pygame.draw.rect(
-                    activeGame.Screen,
-                    self.MaxColor.RGB,
-                    self.MaxTimerRect,
-                )
-                pygame.draw.rect(
-                    activeGame.Screen,
-                    self.DynamicColor,
-                    self.TimerRect,
-                )</code></pre>
+                self.AssocId = 0</code></pre>
 </details>
 <h3>Class variables</h3>
 <dl>
-<dt id="Classes.TimerBar.TimerBar.AssocId"><code class="name">var <span class="ident">AssocId</span> : int</code></dt>
+<dt id="Engine.TimerBar.TimerBar.AssocId"><code class="name">var <span class="ident">AssocId</span> : int</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="Classes.TimerBar.TimerBar.Color"><code class="name">var <span class="ident">Color</span> : Definitions.ColorTools.Color</code></dt>
+<dt id="Engine.TimerBar.TimerBar.CompletionPercentage"><code class="name">var <span class="ident">CompletionPercentage</span> : float</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="Classes.TimerBar.TimerBar.CompletionPercentage"><code class="name">var <span class="ident">CompletionPercentage</span> : float</code></dt>
+<dt id="Engine.TimerBar.TimerBar.FillColor"><code class="name">var <span class="ident">FillColor</span> : <a title="Engine.Color.Color" href="Color.html#Engine.Color.Color">Color</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="Classes.TimerBar.TimerBar.FillColor"><code class="name">var <span class="ident">FillColor</span> : Definitions.ColorTools.Color</code></dt>
+<dt id="Engine.TimerBar.TimerBar.Height"><code class="name">var <span class="ident">Height</span> : int</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="Classes.TimerBar.TimerBar.Height"><code class="name">var <span class="ident">Height</span> : int</code></dt>
+<dt id="Engine.TimerBar.TimerBar.MaxColor"><code class="name">var <span class="ident">MaxColor</span> : <a title="Engine.Color.Color" href="Color.html#Engine.Color.Color">Color</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="Classes.TimerBar.TimerBar.MaxColor"><code class="name">var <span class="ident">MaxColor</span> : Definitions.ColorTools.Color</code></dt>
+<dt id="Engine.TimerBar.TimerBar.MaxWidth"><code class="name">var <span class="ident">MaxWidth</span> : int</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="Classes.TimerBar.TimerBar.MaxWidth"><code class="name">var <span class="ident">MaxWidth</span> : int</code></dt>
+<dt id="Engine.TimerBar.TimerBar.Running"><code class="name">var <span class="ident">Running</span> : bool</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="Classes.TimerBar.TimerBar.Running"><code class="name">var <span class="ident">Running</span> : bool</code></dt>
+<dt id="Engine.TimerBar.TimerBar.StartTime"><code class="name">var <span class="ident">StartTime</span> : int</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="Classes.TimerBar.TimerBar.StartTime"><code class="name">var <span class="ident">StartTime</span> : int</code></dt>
+<dt id="Engine.TimerBar.TimerBar.StartingState"><code class="name">var <span class="ident">StartingState</span> : int</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="Classes.TimerBar.TimerBar.StartingState"><code class="name">var <span class="ident">StartingState</span> : int</code></dt>
+<dt id="Engine.TimerBar.TimerBar.TimerColor"><code class="name">var <span class="ident">TimerColor</span> : <a title="Engine.Color.Color" href="Color.html#Engine.Color.Color">Color</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="Classes.TimerBar.TimerBar.Width"><code class="name">var <span class="ident">Width</span> : int</code></dt>
+<dt id="Engine.TimerBar.TimerBar.Width"><code class="name">var <span class="ident">Width</span> : int</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
 </dl>
 <h3>Instance variables</h3>
 <dl>
-<dt id="Classes.TimerBar.TimerBar.DynamicColor"><code class="name">var <span class="ident">DynamicColor</span> : tuple</code></dt>
+<dt id="Engine.TimerBar.TimerBar.DynamicColor"><code class="name">var <span class="ident">DynamicColor</span> : tuple</code></dt>
 <dd>
 <div class="desc"><p>Generates the gradient transistion between start and end colors</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>Color.RGB</code></dt>
-<dd>RGB representation of color</dd>
-</dl></div>
+<p>Returns-
+Color.RGB: RGB representation of color</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -430,14 +355,14 @@ def DynamicColor(
 ) -&gt; tuple:
     &#34;&#34;&#34;Generates the gradient transistion between start and end colors
 
-    Returns:
+    Returns-
         Color.RGB: RGB representation of color
     &#34;&#34;&#34;
-    color1 = self.Color.HSV
+    color1 = self.TimerColor.HSV
     color2 = self.FillColor.HSV
     color1Scale = 1.0 - (self.CompletionPercentage)
     color2Scale = self.CompletionPercentage
-    color3 = ColorTools.Color(
+    color3 = Color.Color(
         h=math.floor(color1[0] * color1Scale + color2[0] * color2Scale),
         s=math.floor(color1[1] * color1Scale + color2[1] * color2Scale),
         v=math.floor(color1[2] * color1Scale + color2[2] * color2Scale),
@@ -448,29 +373,26 @@ def DynamicColor(
 </dl>
 <h3>Methods</h3>
 <dl>
-<dt id="Classes.TimerBar.TimerBar.AgeTimer"><code class="name flex">
-<span>def <span class="ident">AgeTimer</span></span>(<span>self, activeGame) ‑> None</span>
+<dt id="Engine.TimerBar.TimerBar.AgeTimer"><code class="name flex">
+<span>def <span class="ident">AgeTimer</span></span>(<span>self, timeInMinutes) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Increments timer based on the game clock</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>activeGame</code></strong> :&ensp;<code>Game</code>, optional</dt>
-<dd>Current Game. Defaults to Game.MasterGame.</dd>
-</dl></div>
+<p>Args-
+activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def AgeTimer(self, activeGame) -&gt; None:
+<pre><code class="python">def AgeTimer(self, timeInMinutes) -&gt; None:
     &#34;&#34;&#34;Increments timer based on the game clock
 
-    Args:
+    Args-
         activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
     &#34;&#34;&#34;
     if self.Running:
         self.CompletionPercentage = (
-            (activeGame.GameClock.Minute - self.StartTime)
+            (timeInMinutes - self.StartTime)
         ) / self.Duration
         self.Width = int(
             math.floor(
@@ -485,13 +407,13 @@ def DynamicColor(
             self.AssocId = 0</code></pre>
 </details>
 </dd>
-<dt id="Classes.TimerBar.TimerBar.SetMaxSize"><code class="name flex">
+<dt id="Engine.TimerBar.TimerBar.SetMaxSize"><code class="name flex">
 <span>def <span class="ident">SetMaxSize</span></span>(<span>self, size) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Update the maximum size of the timer bar</p>
-<h2 id="args">Args</h2>
-<p>size (int | float): Max Width of Timer Bar</p></div>
+<p>Args-
+size (int | float): Max Width of Timer Bar</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -499,7 +421,7 @@ def DynamicColor(
 <pre><code class="python">def SetMaxSize(self, size) -&gt; None:
     &#34;&#34;&#34;Update the maximum size of the timer bar
 
-    Args:
+    Args-
         size (int | float): Max Width of Timer Bar
     &#34;&#34;&#34;
     self.MaxWidth = size
@@ -512,75 +434,25 @@ def DynamicColor(
     )</code></pre>
 </details>
 </dd>
-<dt id="Classes.TimerBar.TimerBar.StartTimer"><code class="name flex">
-<span>def <span class="ident">StartTimer</span></span>(<span>self, activeGame) ‑> None</span>
+<dt id="Engine.TimerBar.TimerBar.StartTimer"><code class="name flex">
+<span>def <span class="ident">StartTimer</span></span>(<span>self, currentTime) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Begins the timer and sets the reference start time</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>activeGame</code></strong> :&ensp;<code>Game</code>, optional</dt>
-<dd>Current Game. Defaults to Game.MasterGame.</dd>
-</dl></div>
+<p>Args-
+activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def StartTimer(self, activeGame) -&gt; None:
+<pre><code class="python">def StartTimer(self, currentTime) -&gt; None:
     &#34;&#34;&#34;Begins the timer and sets the reference start time
 
-    Args:
+    Args-
         activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
     &#34;&#34;&#34;
-    self.StartTime = activeGame.GameClock.Minute
+    self.StartTime = currentTime
     self.Running = True</code></pre>
-</details>
-</dd>
-<dt id="Classes.TimerBar.TimerBar.UpdateAndDraw"><code class="name flex">
-<span>def <span class="ident">UpdateAndDraw</span></span>(<span>self, activeGame) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Update Timer Dimensions and Redraw if active</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>activeGame</code></strong> :&ensp;<code>Game</code>, optional</dt>
-<dd>Current Game. Defaults to Game.MasterGame.</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def UpdateAndDraw(self, activeGame) -&gt; None:
-    &#34;&#34;&#34;Update Timer Dimensions and Redraw if active
-
-    Args:
-        activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
-    &#34;&#34;&#34;
-    if self.Running:
-        self.AgeTimer(activeGame=activeGame)
-        customerObj = Matching.MatchIdToPerson(
-            activeGame=activeGame, inputId=self.AssocId, targetOutput=&#34;customer&#34;
-        )
-        if (
-            self.StartingState != 0
-            and self.AssocId != 0
-            and (
-                customerObj is None
-                or customerObj.CurrentState.value != self.StartingState
-            )
-        ):
-            self.Running = False
-        else:
-            pygame.draw.rect(
-                activeGame.Screen,
-                self.MaxColor.RGB,
-                self.MaxTimerRect,
-            )
-            pygame.draw.rect(
-                activeGame.Screen,
-                self.DynamicColor,
-                self.TimerRect,
-            )</code></pre>
 </details>
 </dd>
 </dl>
@@ -596,30 +468,29 @@ def DynamicColor(
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="Classes" href="index.html">Classes</a></code></li>
+<li><code><a title="Engine" href="index.html">Engine</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="Classes.TimerBar.TimerBar" href="#Classes.TimerBar.TimerBar">TimerBar</a></code></h4>
+<h4><code><a title="Engine.TimerBar.TimerBar" href="#Engine.TimerBar.TimerBar">TimerBar</a></code></h4>
 <ul class="">
-<li><code><a title="Classes.TimerBar.TimerBar.AgeTimer" href="#Classes.TimerBar.TimerBar.AgeTimer">AgeTimer</a></code></li>
-<li><code><a title="Classes.TimerBar.TimerBar.AssocId" href="#Classes.TimerBar.TimerBar.AssocId">AssocId</a></code></li>
-<li><code><a title="Classes.TimerBar.TimerBar.Color" href="#Classes.TimerBar.TimerBar.Color">Color</a></code></li>
-<li><code><a title="Classes.TimerBar.TimerBar.CompletionPercentage" href="#Classes.TimerBar.TimerBar.CompletionPercentage">CompletionPercentage</a></code></li>
-<li><code><a title="Classes.TimerBar.TimerBar.DynamicColor" href="#Classes.TimerBar.TimerBar.DynamicColor">DynamicColor</a></code></li>
-<li><code><a title="Classes.TimerBar.TimerBar.FillColor" href="#Classes.TimerBar.TimerBar.FillColor">FillColor</a></code></li>
-<li><code><a title="Classes.TimerBar.TimerBar.Height" href="#Classes.TimerBar.TimerBar.Height">Height</a></code></li>
-<li><code><a title="Classes.TimerBar.TimerBar.MaxColor" href="#Classes.TimerBar.TimerBar.MaxColor">MaxColor</a></code></li>
-<li><code><a title="Classes.TimerBar.TimerBar.MaxWidth" href="#Classes.TimerBar.TimerBar.MaxWidth">MaxWidth</a></code></li>
-<li><code><a title="Classes.TimerBar.TimerBar.Running" href="#Classes.TimerBar.TimerBar.Running">Running</a></code></li>
-<li><code><a title="Classes.TimerBar.TimerBar.SetMaxSize" href="#Classes.TimerBar.TimerBar.SetMaxSize">SetMaxSize</a></code></li>
-<li><code><a title="Classes.TimerBar.TimerBar.StartTime" href="#Classes.TimerBar.TimerBar.StartTime">StartTime</a></code></li>
-<li><code><a title="Classes.TimerBar.TimerBar.StartTimer" href="#Classes.TimerBar.TimerBar.StartTimer">StartTimer</a></code></li>
-<li><code><a title="Classes.TimerBar.TimerBar.StartingState" href="#Classes.TimerBar.TimerBar.StartingState">StartingState</a></code></li>
-<li><code><a title="Classes.TimerBar.TimerBar.UpdateAndDraw" href="#Classes.TimerBar.TimerBar.UpdateAndDraw">UpdateAndDraw</a></code></li>
-<li><code><a title="Classes.TimerBar.TimerBar.Width" href="#Classes.TimerBar.TimerBar.Width">Width</a></code></li>
+<li><code><a title="Engine.TimerBar.TimerBar.AgeTimer" href="#Engine.TimerBar.TimerBar.AgeTimer">AgeTimer</a></code></li>
+<li><code><a title="Engine.TimerBar.TimerBar.AssocId" href="#Engine.TimerBar.TimerBar.AssocId">AssocId</a></code></li>
+<li><code><a title="Engine.TimerBar.TimerBar.CompletionPercentage" href="#Engine.TimerBar.TimerBar.CompletionPercentage">CompletionPercentage</a></code></li>
+<li><code><a title="Engine.TimerBar.TimerBar.DynamicColor" href="#Engine.TimerBar.TimerBar.DynamicColor">DynamicColor</a></code></li>
+<li><code><a title="Engine.TimerBar.TimerBar.FillColor" href="#Engine.TimerBar.TimerBar.FillColor">FillColor</a></code></li>
+<li><code><a title="Engine.TimerBar.TimerBar.Height" href="#Engine.TimerBar.TimerBar.Height">Height</a></code></li>
+<li><code><a title="Engine.TimerBar.TimerBar.MaxColor" href="#Engine.TimerBar.TimerBar.MaxColor">MaxColor</a></code></li>
+<li><code><a title="Engine.TimerBar.TimerBar.MaxWidth" href="#Engine.TimerBar.TimerBar.MaxWidth">MaxWidth</a></code></li>
+<li><code><a title="Engine.TimerBar.TimerBar.Running" href="#Engine.TimerBar.TimerBar.Running">Running</a></code></li>
+<li><code><a title="Engine.TimerBar.TimerBar.SetMaxSize" href="#Engine.TimerBar.TimerBar.SetMaxSize">SetMaxSize</a></code></li>
+<li><code><a title="Engine.TimerBar.TimerBar.StartTime" href="#Engine.TimerBar.TimerBar.StartTime">StartTime</a></code></li>
+<li><code><a title="Engine.TimerBar.TimerBar.StartTimer" href="#Engine.TimerBar.TimerBar.StartTimer">StartTimer</a></code></li>
+<li><code><a title="Engine.TimerBar.TimerBar.StartingState" href="#Engine.TimerBar.TimerBar.StartingState">StartingState</a></code></li>
+<li><code><a title="Engine.TimerBar.TimerBar.TimerColor" href="#Engine.TimerBar.TimerBar.TimerColor">TimerColor</a></code></li>
+<li><code><a title="Engine.TimerBar.TimerBar.Width" href="#Engine.TimerBar.TimerBar.Width">Width</a></code></li>
 </ul>
 </li>
 </ul>

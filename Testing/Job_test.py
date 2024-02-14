@@ -2,7 +2,7 @@
 
 # pylint: disable=invalid-name
 
-from Classes import Game, Jobs, People
+from Classes import GameBase, Jobs, People
 
 
 def test_Job() -> None:
@@ -11,7 +11,7 @@ def test_Job() -> None:
 
 
 def test_AssignJob() -> None:
-    currentGame = Game.Game()
+    currentGame = GameBase.MainGame()
     worker, _ = People.Worker.CreateWorker(activeGame=currentGame)
     customer, _ = People.Customer.CreateCustomer(activeGame=currentGame)
     customer.DesiredJob.Assign(target=worker)

@@ -2,20 +2,18 @@
 
 import pygame
 
-from Classes import Game, GameObject, Matching, TimerBar
-from Definitions import AssetLibrary, ColorTools, DefinedLocations
-from Handlers import MovementHandler
-from Utilities import Utils as utils
+from Classes import GameBase, Matching
+from Definitions import AssetLibrary, ColorDefines, CustomerDefs, DefinedLocations
+from Engine import MovementHandler, SpriteObjects, TimerBar, Utils
+from Handlers import QueueHandler
 
 
-class CharImageSprite(GameObject.GameObject):
+class CharImageSprite(SpriteObjects.CharacterSprite):
     """Class for Sprites of Characters"""
 
     # pylint: disable=invalid-name
     CorrespondingID: int = 0
     ImageType: AssetLibrary.ImageTypes = AssetLibrary.ImageTypes.Null
-    rect: pygame.rect.Rect = pygame.rect.Rect(0, 0, 0, 0)
-    MvmHandler: MovementHandler.CharacterMovementHandler = None
     PersonalTimer: TimerBar.TimerBar = None
 
     def __init__(
@@ -25,41 +23,34 @@ class CharImageSprite(GameObject.GameObject):
         objID,
         position=None,
         center=None,
-        maxSize=utils.ScaleToSize(
+        maxSize=Utils.ScaleToSize(
             value=100, newSize=DefinedLocations.LocationDefs.ScreenSize
         ),
     ) -> None:
-        super().__init__(backgroundFlag=False, moveFlag=True, collisionFlag=True)
-        self.image = pygame.image.load(path).convert_alpha()
-        self.rect = self.image.get_rect()
-        newSize = utils.ResizeMaxLength(
-            dim=(self.rect.width, self.rect.height), maxSide=maxSize
+        super().__init__(
+            backgroundFlag=False,
+            moveFlag=True,
+            collisionFlag=True,
+            maxSize=maxSize,
+            position=position,
+            center=center,
+            path=path,
         )
-        self.image = pygame.transform.scale(
-            surface=self.image,
-            size=newSize,
-        )
-        self.rect = self.image.get_rect()
-        if position:
-            self.rect.x = position[0]
-            self.rect.y = position[1]
-        elif center:
-            self.rect.center = center
-        self.MvmHandler = MovementHandler.CharacterMovementHandler()
         self.ImageType = AssetLibrary.PathToTypeDict[path]
         # self.CheckSpawnCollision()
-        self.ActiveGame = activeGame
         self.CorrespondingID = objID
+        self.MvmHandler = CharacterMovementHandler()
 
     @property
     def DataObject(self):
         """Numerical Data Object Associated with Image
 
-        Returns:
+        Returns-
             Customer | Worker: Data Object Assoc with Sprite
         """
+        activeGame = GameBase.MasterGame
         objDict = Matching.MatchIdToPerson(
-            activeGame=self.ActiveGame, inputId=self.CorrespondingID
+            activeGame=activeGame, inputId=self.CorrespondingID
         )
         objDict.pop("sprite")
         obj = list(objDict.values())[0]
@@ -68,14 +59,14 @@ class CharImageSprite(GameObject.GameObject):
     def CheckSpawnCollision(self) -> None:
         """Changes spawn location until new sprite is not colliding
 
-        Args:
+        Args-
             activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
         """
         currentCenter = self.rect.center
         for group in self.ActiveGame.SpriteGroups:
             for sprite in group:
                 while sprite.rect.colliderect(self.rect) and sprite is not self:
-                    self.rect.center = utils.PositionRandomVariance(
+                    self.rect.center = Utils.PositionRandomVariance(
                         position=currentCenter,
                         percentVarianceTuple=(0.1, 1),
                         screenSize=self.ActiveGame.ScreenSize,
@@ -84,12 +75,12 @@ class CharImageSprite(GameObject.GameObject):
     def ChangeOutfit(self, newOutfitPath) -> None:
         """Update Sprite Image and resize to fit
 
-        Args:
+        Args-
             newOutfitPath (str): Path to New Outfit
         """
         newImage = pygame.image.load(newOutfitPath).convert_alpha()
         newImageRect = newImage.get_rect()
-        dim = utils.ResizeMaxLength(
+        dim = Utils.ResizeMaxLength(
             dim=(newImageRect.width, newImageRect.height),
             maxSide=max(self.rect.width, self.rect.height),
         )
@@ -98,26 +89,60 @@ class CharImageSprite(GameObject.GameObject):
         self.image = newImage
         self.ImageType = AssetLibrary.PathToTypeDict[newOutfitPath]
 
-    def UpdateSprite(self) -> None:
+    def UpdateSprite(self, activeGame) -> None:
         """Update sprite for each frame"""
         if self.PersonalTimer is not None:
-            self.PersonalTimer.UpdateAndDraw(activeGame=self.ActiveGame)
+            self.UpdateTimerAndDraw(activeGame=activeGame)
             self.PersonalTimer.Rect = self.rect.topleft
-        self.Update()
+        super().UpdateSprite()
+
+    def UpdateTimerAndDraw(self, activeGame) -> None:
+        """Update Timer Dimensions and Redraw if active
+
+        Args-
+            activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
+        """
+        timerBar = self.PersonalTimer
+        if timerBar.Running:
+            timerBar.AgeTimer(timeInMinutes=activeGame.GameClock.Minute)
+            customerObj = Matching.MatchIdToPerson(
+                activeGame=activeGame, inputId=timerBar.AssocId, targetOutput="customer"
+            )
+            if (
+                timerBar.StartingState != 0
+                and timerBar.AssocId != 0
+                and (
+                    customerObj is None
+                    or customerObj.CurrentState.value != timerBar.StartingState
+                )
+            ):
+                timerBar.Running = False
+            else:
+                pygame.draw.rect(
+                    activeGame.Screen,
+                    timerBar.MaxColor.RGB,
+                    timerBar.MaxTimerRect,
+                )
+                pygame.draw.rect(
+                    activeGame.Screen,
+                    timerBar.DynamicColor,
+                    timerBar.TimerRect,
+                )
 
     def CreatePersonTimerBar(
         self,
         completeTask,
+        activeGame,
         assocId=0,
         length=29.0,
         startingState=0,
         offset=(0, 0),
         width=0,
-        fillColor=ColorTools.LimeGreen,
+        fillColor=ColorDefines.LimeGreen,
     ) -> None:
         """Create a timer bar bound to this objcet
 
-        Args:
+        Args-
             completeTask (Task): Function to exec on completion of timer
             assocId (int, optional): Id of Associated Job. Defaults to 0.
             length (float, optional): Length of Timer in game minutes. Defaults to 29.0.
@@ -131,21 +156,21 @@ class CharImageSprite(GameObject.GameObject):
             position=(self.rect.topleft),
             assocId=assocId,
             offset=offset,
-            activeGame=self.ActiveGame,
+            startTime=activeGame.GameClock.Minute,
         )
         self.PersonalTimer.StartingState = startingState
         self.PersonalTimer.OnComplete = completeTask
         self.PersonalTimer.TimerRect.y -= 25
         self.PersonalTimer.SetMaxSize(size=self.rect.width if width == 0 else width)
         self.PersonalTimer.FillColor = fillColor
-        self.PersonalTimer.StartTimer(activeGame=self.ActiveGame)
+        self.PersonalTimer.StartTimer(currentTime=activeGame.GameClock.Minute)
 
     def __repr__(self) -> str:
         """String Rep of Object"""
         return str(self.CorrespondingID) + " " + str(self.ImageType)
 
 
-class BackgroundElementSprite(GameObject.GameObject):
+class BackgroundElementSprite(SpriteObjects.GameObject):
     """Class for background sprites"""
 
     ImageType: AssetLibrary.ImageTypes = AssetLibrary.ImageTypes.Null
@@ -154,7 +179,7 @@ class BackgroundElementSprite(GameObject.GameObject):
     def __init__(self, position, path, maxSize=60, offset=(0, 0)) -> None:
         """Init for background elements
 
-        Args:
+        Args-
             position (tuple): Top left corner of sprite
             path (str): Path to image
             maxSize (int, optional): Max size of element. Defaults to 60.
@@ -165,7 +190,7 @@ class BackgroundElementSprite(GameObject.GameObject):
             path
         ).convert_alpha()  # Replace with the actual sprite image file
         self.rect = self.image.get_rect()
-        dim = utils.ResizeMaxLength(
+        dim = Utils.ResizeMaxLength(
             dim=(self.rect.width, self.rect.height), maxSide=maxSize
         )
         self.image = pygame.transform.scale(self.image, dim)
@@ -175,31 +200,7 @@ class BackgroundElementSprite(GameObject.GameObject):
         self.ImageType = AssetLibrary.PathToTypeDict[path]
 
 
-class RectangleObject(GameObject.GameObject):
-    """Base Rectange Object Class"""
-
-    # pylint: disable=invalid-name
-    def __init__(
-        self,
-        position,
-        color=(0, 0, 0),
-        size=(100, 100),
-    ) -> None:
-        """Init for rectange objects
-
-        Args:
-            position (tuple): Center position
-            color (tuple, optional): Color of Rectange. Defaults to (0, 0, 0).
-            size (tuple, optional): Dimensions of Rectangle. Defaults to (100, 100).
-        """
-        super().__init__(backgroundFlag=True, moveFlag=False, collisionFlag=False)
-        self.image = pygame.Surface(size=size)
-        self.image.fill(color.RGB)
-        self.rect = self.image.get_rect()
-        self.rect.center = position
-
-
-class ButtonObject(GameObject.GameObject):
+class ButtonObject(SpriteObjects.GameObject):
     """Defined Button Shape"""
 
     # pylint: disable=invalid-name
@@ -207,14 +208,14 @@ class ButtonObject(GameObject.GameObject):
         self,
         position,
         text="Blank",
-        color=ColorTools.White,
-        backColor=ColorTools.Black,
+        color=ColorDefines.White,
+        backColor=ColorDefines.Black,
         size=(100, 100),
         enabled=True,
     ) -> None:
         """Init for Button
 
-        Args:
+        Args-
             position (tuple): Center of button
             text (str, optional): String for Button to Show. Defaults to "Blank".
             color (Color, optional): Base Color. Defaults to ColorTools.White.
@@ -224,7 +225,7 @@ class ButtonObject(GameObject.GameObject):
         """
         super().__init__(backgroundFlag=True, moveFlag=False, collisionFlag=False)
         self.image = pygame.Surface(size=size)
-        self.image.fill(backColor.RGB if enabled else ColorTools.Grey.RGB)
+        self.image.fill(backColor.RGB if enabled else ColorDefines.Grey.RGB)
         self.image.set_alpha(240 if enabled else 128)
         self.text = text
         self.position = position
@@ -245,7 +246,7 @@ class ButtonObject(GameObject.GameObject):
     def AddButton(cls, location, text, color, backColor, enabled, activeGame) -> None:
         """Generates a Button on a specified location
 
-        Args:
+        Args-
             location (tuple): tuple position of button center
             text (str): Button Label
             color (Color): Main Color
@@ -265,3 +266,30 @@ class ButtonObject(GameObject.GameObject):
         activeGame.ForegroundSpriteGroup.add(buttonObj)
         if not [x for x in activeGame.ButtonList if x.position == location]:
             activeGame.ButtonList.append(buttonObj)
+
+
+class CharacterMovementHandler(MovementHandler.MovementHandler):
+    """Character Movement Handler
+
+        Handles all Motion Features for a Sprite
+
+    Returns-
+        CharacterMovementHandler:
+    """
+
+    def CalcNewPosition(self, obj) -> None:
+        """Logic for Moving Characters and Queuing
+
+        Args-
+            obj (Sprite): Moving Sprite
+        """
+        if GameBase.MasterGame.GameClock.Running:
+            if (
+                obj.ImageType in AssetLibrary.CustomerOutfits
+                and QueueHandler.NeedsToQueue(movingSprite=obj)
+            ):
+                obj.DataObject.CurrentState = CustomerDefs.CustomerStates.Queuing
+            else:
+                super().CalcNewPosition(
+                    obj=obj, gameSpeed=GameBase.MasterGame.GameClock.ClockMul
+                )

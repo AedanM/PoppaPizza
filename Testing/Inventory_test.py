@@ -2,7 +2,7 @@
 
 # pylint: disable=invalid-name
 
-from Classes import Game, Inventory
+from Classes import GameBase, Inventory
 from Definitions import Prices
 
 
@@ -20,7 +20,7 @@ def test_GetPaid() -> None:
 
 
 def test_Rent() -> None:
-    currentGame = Game.MasterGame
+    currentGame = GameBase.MasterGame
     i = currentGame.UserInventory
     i.GetPaid(amount=2000.00)
     i.PayMoney(amount=Prices.CurrentRent)

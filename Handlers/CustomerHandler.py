@@ -2,19 +2,20 @@
 
 import random
 
-from Classes import Game, Matching
-from Definitions import ColorTools, CustomerDefs
+from Classes import GameBase, Matching
+from Definitions import ColorDefines, CustomerDefs
 from Definitions import DefinedPaths as DL
 from Handlers import WorkerHandler as WH
 
 
+# TODO - Make actual state machine and stop using lamda members
 # TODO - Examine this with Queueing
 def SetFirstInLine(target) -> None:
     """Function for setting Queuing
 
         After Motion, the customer is set first if
 
-    Args:
+    Args-
         target (_type_): _description_
     """
     if target.MvmHandler.IsFinished(target):
@@ -24,7 +25,7 @@ def SetFirstInLine(target) -> None:
 def WalkIn(target) -> None:
     """Initial Operations of a Customer
 
-    Args:
+    Args-
         target (Sprite): Target Customer
     """
     target.MvmHandler.StartNewListedMotion(
@@ -34,14 +35,14 @@ def WalkIn(target) -> None:
     target.MvmHandler.OnComplete = lambda: (SetFirstInLine(target=target))
 
 
-def FindAvailableWorker(customerSprite, activeGame=Game.MasterGame) -> tuple:
+def FindAvailableWorker(customerSprite, activeGame=GameBase.MasterGame) -> tuple:
     """Check if there are available workers and returns None if not
 
-    Args:
+    Args-
         customerSprite (CharImageSprite): Customer Sprite requesting Job
         activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
 
-    Returns:
+    Returns-
         tuple: (Worker, Sprite Object of Worker)
     """
     availWorkers = [x for x in activeGame.WorkerList if x.IsAssigned is False]
@@ -65,7 +66,7 @@ def AssignWorker(target) -> None:
 
         Starts the Worker Handler flow
 
-    Args:
+    Args-
         target (CharImageSprite): Customer Sprite requesting Job
     """
     worker, workerSprite = FindAvailableWorker(customerSprite=target)
@@ -85,6 +86,7 @@ def AssignWorker(target) -> None:
             ),
         )
         workerSprite.MvmHandler.OnComplete = lambda: workerSprite.CreatePersonTimerBar(
+            activeGame=GameBase.MasterGame,
             completeTask=returnHome,
             length=target.DataObject.DesiredJob.Length,
         )
@@ -93,7 +95,7 @@ def AssignWorker(target) -> None:
 def SitAtTable(target) -> None:
     """Logic for a Queuing Customer to sit down
 
-    Args:
+    Args-
         target (CharImageSprite): Sprite of Target Customer
     """
     target.DataObject.CurrentState = CustomerDefs.CustomerStates.Seated
@@ -109,35 +111,38 @@ def SitAtTable(target) -> None:
 def BeginWait(target) -> None:
     """Starts the timer for a customer waiting for service
 
-    Args:
+    Args-
         target (CharImageSprite): Sprite of Target Customer
     """
     target.DataObject.CurrentState = CustomerDefs.CustomerStates.WaitingForService
     taskComplete = lambda: GetUpAndGo(spriteImg=target)
     target.CreatePersonTimerBar(
+        activeGame=GameBase.MasterGame,
         completeTask=taskComplete,
         length=(target.DataObject.DesiredJob.Urgency.value * 30.0),
         assocId=target.DataObject.IdNum,
         startingState=target.DataObject.CurrentState.value,
-        fillColor=ColorTools.DarkRed,
+        fillColor=ColorDefines.DarkRed,
     )
 
 
 def AllWorkersBusy(target) -> None:
     """Routine for when all workers are busy
 
-    Args:
+    Args-
         target (CharImageSprite): Sprite of Target Customer
     """
     taskComplete = lambda: GetUpAndGo(spriteImg=target)
     target.DataObject.CurrentState = CustomerDefs.CustomerStates.WaitingForService
-    target.CreatePersonTimerBar(completeTask=taskComplete, length=10)
+    target.CreatePersonTimerBar(
+        activeGame=GameBase.MasterGame, completeTask=taskComplete, length=10
+    )
 
 
-def GetUpAndGo(spriteImg, activeGame=Game.MasterGame) -> None:
+def GetUpAndGo(spriteImg, activeGame=GameBase.MasterGame) -> None:
     """Logic for a Customer to leave the restaurant
 
-    Args:
+    Args-
         spriteImg (CharImageSprite): Sprite of Target Customer
         activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
     """

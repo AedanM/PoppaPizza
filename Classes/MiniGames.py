@@ -2,13 +2,11 @@ import random
 import threading
 from enum import Enum
 
-import pygame
-from fuzzywuzzy import fuzz
 from pytrivia import Trivia
 
-from Classes import Game, Sprite, Writing
-from Definitions import ColorTools, DefinedLocations
-from Utilities import Utils
+from Classes import GameBase, Sprite, Writing
+from Definitions import ColorDefines, DefinedLocations
+from Engine import RoundBasedGame, Utils
 
 
 class GameMode(Enum):
@@ -30,19 +28,10 @@ class GameStates(Enum):
     ) = range(10)
 
 
-class RoundBasedGame:
-    Rounds: int
-    Screen = pygame.Surface
-    GameState = GameStates = GameStates.Loading
-    ResultsList: list = []
-    MaxRounds: int = 10
-    CurrentRound: int = 1
-    OnRoundWin: callable = lambda self: None
-    OnRoundLoss: callable = lambda self: None
-    RoundResult: bool = False
-    MasterSpriteGroup: pygame.sprite.Group = pygame.sprite.Group()
-    BackgroundColor: ColorTools.Color = ColorTools.Black
-    DisplayedText: dict = {
+class TriviaGame(RoundBasedGame.RoundBasedGame):
+    TriviaAPI = Trivia(True)
+    QuestionList: list = []
+    DisplayedText = {
         "Round Text": Writing.TextBox(
             center=DefinedLocations.LocationDefs.TriviaRoundText,
             font=Writing.DefinedFonts["Datetime"],
@@ -58,7 +47,8 @@ class RoundBasedGame:
         ),
         "Main Text L2": Writing.TextBox(
             center=Utils.OffsetTuple(
-                inputTuple=DefinedLocations.LocationDefs.TriviaMainText, offset=(0, 48)
+                inputTuple=DefinedLocations.LocationDefs.TriviaMainText,
+                offset=(0, 48),
             ),
             font=Writing.DefinedFonts["Trivia Game"],
         ),
@@ -68,33 +58,9 @@ class RoundBasedGame:
     }
 
     def __init__(self, rounds, activeGame) -> None:
-        self.Rounds = Utils.Bind(val=rounds, inRange=[0, self.MaxRounds])
-        self.Screen = activeGame.Screen
-
-    def StartRound(self) -> None:
-        self.DisplayedText[
-            "Round Text"
-        ].Text = f"Round {self.CurrentRound}/{self.Rounds}"
-        self.MasterSpriteGroup.update()
-        self.MasterSpriteGroup.draw(self.Screen)
-        for text in self.DisplayedText.values():
-            text.Rect = text.WriteToScreen(activeScreen=self.Screen)
-            pass
-
-    def UpdateStateMachine(self, input) -> None:
-        pass
-
-    def PlayGame(self, activeGame) -> None:
-        self.StartRound(activeGame=activeGame)
-
-
-class TriviaGame(RoundBasedGame):
-    TriviaAPI = Trivia(True)
-    QuestionList: list = []
-
-    def __init__(self, rounds, activeGame) -> None:
         super().__init__(rounds=rounds, activeGame=activeGame)
-        self.BackgroundColor = ColorTools.TriviaBlue
+        self.GameState = GameStates.Loading
+        self.BackgroundColor = ColorDefines.TriviaBlue
         questionThread = threading.Thread(target=self.GetQuestions)
         self.StartingCash = activeGame.UserInventory.Money
         self.CurrentCash = activeGame.UserInventory.Money
@@ -103,6 +69,8 @@ class TriviaGame(RoundBasedGame):
     def UpdateStateMachine(self, buttonChoice) -> None:
         super().UpdateStateMachine(input=buttonChoice)
         match buttonChoice:
+            case "":
+                pass
             case "Loading Questions":
                 self.GameState = GameStates.Start
             case "Begin":
@@ -162,7 +130,7 @@ class TriviaGame(RoundBasedGame):
             self.MasterSpriteGroup.add(
                 Sprite.ButtonObject(
                     position=answerLocations[idx],
-                    backColor=ColorTools.TriviaBlue,
+                    backColor=ColorDefines.TriviaBlue,
                     size=(400, 150) if self.QuestionList else (600, 150),
                 )
             )
@@ -241,6 +209,7 @@ class TriviaGame(RoundBasedGame):
 
     def StartRound(self, activeGame) -> None:
         super().StartRound()
+
         match self.GameState:
             case GameStates.Loading | GameStates.Start:
                 self.StartGame()
@@ -255,9 +224,12 @@ class TriviaGame(RoundBasedGame):
             case GameStates.End:
                 self.Summary()
             case GameStates.Exit:
-                Game.MasterGame.ClearMiniGame()
+                GameBase.MasterGame.ClearMiniGame()
             case other:
                 pass
+
+        for text in self.DisplayedText.values():
+            text.Rect = text.WriteToScreen(activeScreen=self.Screen)
 
     def PlayGame(self, activeGame) -> None:
         super().PlayGame(activeGame=activeGame)
@@ -269,7 +241,7 @@ def MakeTriviaGame(activeGame) -> None:
     activeGame.Mode = GameMode.TriviaGame
 
 
-class DiceGame(RoundBasedGame):
+class DiceGame(RoundBasedGame.RoundBasedGame):
     Dice: int
     MaxDice: int = 45
     DiceBounds: tuple = (6, 48)

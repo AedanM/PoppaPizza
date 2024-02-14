@@ -1,23 +1,21 @@
 """Handler for Sprite Movement Tasks"""
 
-from Classes import Game
-from Definitions import AssetLibrary, CustomerDefs
-from Handlers import QueueHandler
-from Utilities import Utils as utils
+from Engine import Utils
 
 
-class CharacterMovementHandler:
-    """Character Movement Handler
+class MovementSpeeds:
+    """Defined Speeds for Motion"""
 
-        Handles all Motion Features for a Sprite
+    Slow: int = 1
+    Medium: int = 10
+    Fast: int = 100
+    Instant: int = 1000
 
-    Returns:
-        CharacterMovementHandler:
-    """
 
+class MovementHandler:
     OnComplete = None
     Dest: tuple = (0, 0)
-    MaxMovementSpeed: CustomerDefs.MovementSpeeds = CustomerDefs.MovementSpeeds.Medium
+    MaxMovementSpeed: MovementSpeeds = MovementSpeeds.Medium
     MovementTolerance: float = 0.01
     InMotion: bool = False
     DstSet: bool = False
@@ -40,14 +38,12 @@ class CharacterMovementHandler:
         """X Coord of Destination"""
         return self.Dest[0]
 
-    def StartNewListedMotion(
-        self, pointList, speed=CustomerDefs.MovementSpeeds.Medium
-    ) -> None:
+    def StartNewListedMotion(self, pointList, speed=10) -> None:
         """Start point for Motion
 
             Takes a list of positions and begins the animation of a sprite between them
 
-        Args:
+        Args-
             pointList (list[tuple]): List of Tuple Positions
             speed (CustomerDefs.MovementSpeeds, optional): Speed of Motion. Defaults to CustomerDefs.MovementSpeeds.Medium.
         """
@@ -58,52 +54,29 @@ class CharacterMovementHandler:
             self.DstSet = True
             self.InMotion: bool = True
             self.MaxMovementSpeed = speed
-            self.StartTime = Game.MasterGame.GameClock.UnixTime
 
-    def CalcNewPosition(self, obj) -> None:
-        """Logic for Moving Characters and Queuing
-
-        Args:
-            obj (Sprite): Moving Sprite
-        """
-        if self.DstSet and Game.MasterGame.GameClock.Running:
-            if (
-                obj.ImageType in AssetLibrary.CustomerOutfits
-                and QueueHandler.NeedsToQueue(movingSprite=obj)
-            ):
-                obj.DataObject.CurrentState = CustomerDefs.CustomerStates.Queuing
-            else:
-                self.MoveChar(obj=obj)
-
-            if self.IsFinished(obj=obj):
-                if self.Dest == self.PointsList[len(self.PointsList) - 1]:
-                    self.FinishMovement()
-                else:
-                    self.CurrentPointIdx += 1
-                    self.Dest = self.PointsList[self.CurrentPointIdx]
-
-    def MoveChar(self, obj) -> None:
+    def MoveChar(self, obj, gameSpeed) -> None:
         """Update Location of Character
 
-        Args:
+        Args-
             obj (Sprite): Moving Sprite
         """
-        xDir = utils.Sign(num=self.DestX - obj.rect.centerx)
-        yDir = utils.Sign(num=self.DestY - obj.rect.centery)
+        xDir = Utils.Sign(num=self.DestX - obj.rect.centerx)
+        yDir = Utils.Sign(num=self.DestY - obj.rect.centery)
 
-        xMotion = utils.Bind(
+        xMotion = Utils.Bind(
             val=abs(self.DestX - obj.rect.centerx),
             inRange=(
                 1,
-                self.MaxMovementSpeed * Game.MasterGame.GameClock.ClockMul,
+                self.MaxMovementSpeed * gameSpeed,
             ),
         )
 
-        yMotion = utils.Bind(
+        yMotion = Utils.Bind(
             val=abs(self.DestY - obj.rect.centery),
             inRange=(
                 1,
-                self.MaxMovementSpeed * Game.MasterGame.GameClock.ClockMul,
+                self.MaxMovementSpeed * gameSpeed,
             ),
         )
 
@@ -113,15 +86,15 @@ class CharacterMovementHandler:
     def IsFinished(self, obj) -> bool:
         """Checks if final destination reached within a tolerance
 
-        Args:
+        Args-
             obj (Sprite): Moving Sprite
 
-        Returns:
+        Returns-
             bool: Is Motion Finished
         """
-        return utils.InPercentTolerance(
+        return Utils.InPercentTolerance(
             num1=obj.rect.centerx, num2=self.DestX, tolerance=self.MovementTolerance
-        ) and utils.InPercentTolerance(
+        ) and Utils.InPercentTolerance(
             num1=obj.rect.centery, num2=self.DestY, tolerance=self.MovementTolerance
         )
 
@@ -133,3 +106,13 @@ class CharacterMovementHandler:
         self.CurrentPointIdx = 0
         if self.OnComplete is not None:
             self.OnComplete()
+
+    def CalcNewPosition(self, obj, gameSpeed) -> None:
+        if self.DstSet:
+            self.MoveChar(obj=obj, gameSpeed=gameSpeed)
+            if self.IsFinished(obj=obj):
+                if self.Dest == self.PointsList[len(self.PointsList) - 1]:
+                    self.FinishMovement()
+                else:
+                    self.CurrentPointIdx += 1
+                    self.Dest = self.PointsList[self.CurrentPointIdx]

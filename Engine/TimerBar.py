@@ -4,8 +4,7 @@ import math
 
 import pygame
 
-from Classes import Matching
-from Definitions import ColorTools
+from Engine import Color
 
 
 class TimerBar:
@@ -14,9 +13,9 @@ class TimerBar:
     Width: int = 0
     MaxWidth: int = 50
     Height: int = 25
-    Color: ColorTools.Color = ColorTools.LimeGreen
-    MaxColor: ColorTools.Color = ColorTools.Grey
-    FillColor: ColorTools.Color = ColorTools.LimeGreen
+    TimerColor: Color.Color = Color.Color(hexstring="#7eff37")
+    MaxColor: Color.Color = Color.Color(hexstring="#c8c8c8")
+    FillColor: Color.Color = Color.Color(hexstring="#7eff37")
     StartTime: int = 0
     AssocId: int = 0
     StartingState: int = 0
@@ -27,13 +26,13 @@ class TimerBar:
         self,
         duration: float,
         position: tuple,
-        activeGame,
+        startTime,
         assocId=0,
         offset=(0, 0),
     ) -> None:
         """Init for Timer Bar
 
-        Args:
+        Args-
             duration (float): Length of timer in game minutes
             position (tuple): Poisiton of top left of timer bar
             assocId (int, optional): Character to Bind the Timer to. Defaults to 0, meaning no character.
@@ -51,7 +50,7 @@ class TimerBar:
         self.MaxTimerRect = pygame.Rect(
             position[0] + offset[0], position[1] + offset[1], self.MaxWidth, self.Height
         )
-        self.StartTime = activeGame.GameClock.Minute
+        self.StartTime = startTime
         self.CompletionPercentage = 0.0
         self.Duration = duration
         self.Running = True
@@ -62,14 +61,14 @@ class TimerBar:
     ) -> tuple:
         """Generates the gradient transistion between start and end colors
 
-        Returns:
+        Returns-
             Color.RGB: RGB representation of color
         """
-        color1 = self.Color.HSV
+        color1 = self.TimerColor.HSV
         color2 = self.FillColor.HSV
         color1Scale = 1.0 - (self.CompletionPercentage)
         color2Scale = self.CompletionPercentage
-        color3 = ColorTools.Color(
+        color3 = Color.Color(
             h=math.floor(color1[0] * color1Scale + color2[0] * color2Scale),
             s=math.floor(color1[1] * color1Scale + color2[1] * color2Scale),
             v=math.floor(color1[2] * color1Scale + color2[2] * color2Scale),
@@ -79,7 +78,7 @@ class TimerBar:
     def SetMaxSize(self, size) -> None:
         """Update the maximum size of the timer bar
 
-        Args:
+        Args-
             size (int | float): Max Width of Timer Bar
         """
         self.MaxWidth = size
@@ -91,24 +90,24 @@ class TimerBar:
             self.Height,
         )
 
-    def StartTimer(self, activeGame) -> None:
+    def StartTimer(self, currentTime) -> None:
         """Begins the timer and sets the reference start time
 
-        Args:
+        Args-
             activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
         """
-        self.StartTime = activeGame.GameClock.Minute
+        self.StartTime = currentTime
         self.Running = True
 
-    def AgeTimer(self, activeGame) -> None:
+    def AgeTimer(self, timeInMinutes) -> None:
         """Increments timer based on the game clock
 
-        Args:
+        Args-
             activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
         """
         if self.Running:
             self.CompletionPercentage = (
-                (activeGame.GameClock.Minute - self.StartTime)
+                (timeInMinutes - self.StartTime)
             ) / self.Duration
             self.Width = int(
                 math.floor(
@@ -121,35 +120,3 @@ class TimerBar:
                 self.OnComplete()
                 self.Running = False
                 self.AssocId = 0
-
-    def UpdateAndDraw(self, activeGame) -> None:
-        """Update Timer Dimensions and Redraw if active
-
-        Args:
-            activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
-        """
-        if self.Running:
-            self.AgeTimer(activeGame=activeGame)
-            customerObj = Matching.MatchIdToPerson(
-                activeGame=activeGame, inputId=self.AssocId, targetOutput="customer"
-            )
-            if (
-                self.StartingState != 0
-                and self.AssocId != 0
-                and (
-                    customerObj is None
-                    or customerObj.CurrentState.value != self.StartingState
-                )
-            ):
-                self.Running = False
-            else:
-                pygame.draw.rect(
-                    activeGame.Screen,
-                    self.MaxColor.RGB,
-                    self.MaxTimerRect,
-                )
-                pygame.draw.rect(
-                    activeGame.Screen,
-                    self.DynamicColor,
-                    self.TimerRect,
-                )

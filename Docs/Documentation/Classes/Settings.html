@@ -29,7 +29,7 @@
 </summary>
 <pre><code class="python">&#34;&#34;&#34;Settings Object&#34;&#34;&#34;
 
-from Utilities import Utils
+from Engine import Utils
 
 
 class Settings:
@@ -44,7 +44,7 @@ class Settings:
     def ClockSpeed(self) -&gt; int:
         &#34;&#34;&#34;Find the current multiplier of the clock speed
 
-        Returns:
+        Returns-
             int: Clock Speed Multiplier
         &#34;&#34;&#34;
         return pow(base=2, exp=self.ClockPow)
@@ -53,7 +53,7 @@ class Settings:
     def ClockDivisor(self) -&gt; int:
         &#34;&#34;&#34;Clock Divisor for 24hr or 12hr
 
-        Returns:
+        Returns-
             int: Divisor to Determine Clock Range
         &#34;&#34;&#34;
         return 13 if not self.Clock24 else 25
@@ -61,7 +61,7 @@ class Settings:
     def ChangeClockMul(self, value) -&gt; None:
         &#34;&#34;&#34;Increment the clock multiplier power
 
-        Args:
+        Args-
             value (int): Increment to Clock Power
         &#34;&#34;&#34;
         self.ClockPow = Utils.Bind(
@@ -71,7 +71,7 @@ class Settings:
     def SetClockMul(self, value) -&gt; None:
         &#34;&#34;&#34;Force certain speed of clock
 
-        Args:
+        Args-
             value (int): New Speed
         &#34;&#34;&#34;
         self.ClockPow = Utils.Bind(val=value, inRange=self.ClockPowRange)
@@ -79,7 +79,7 @@ class Settings:
     def AMPM(self, hour) -&gt; str:
         &#34;&#34;&#34;String for if it is AM or PM
 
-        Args:
+        Args-
             hour (int): Current Hour
         &#34;&#34;&#34;
         tag = &#34; AM&#34; if hour &lt; 12 else &#34; PM&#34;
@@ -127,7 +127,7 @@ GameSettings = Settings()</code></pre>
     def ClockSpeed(self) -&gt; int:
         &#34;&#34;&#34;Find the current multiplier of the clock speed
 
-        Returns:
+        Returns-
             int: Clock Speed Multiplier
         &#34;&#34;&#34;
         return pow(base=2, exp=self.ClockPow)
@@ -136,7 +136,7 @@ GameSettings = Settings()</code></pre>
     def ClockDivisor(self) -&gt; int:
         &#34;&#34;&#34;Clock Divisor for 24hr or 12hr
 
-        Returns:
+        Returns-
             int: Divisor to Determine Clock Range
         &#34;&#34;&#34;
         return 13 if not self.Clock24 else 25
@@ -144,7 +144,7 @@ GameSettings = Settings()</code></pre>
     def ChangeClockMul(self, value) -&gt; None:
         &#34;&#34;&#34;Increment the clock multiplier power
 
-        Args:
+        Args-
             value (int): Increment to Clock Power
         &#34;&#34;&#34;
         self.ClockPow = Utils.Bind(
@@ -154,7 +154,7 @@ GameSettings = Settings()</code></pre>
     def SetClockMul(self, value) -&gt; None:
         &#34;&#34;&#34;Force certain speed of clock
 
-        Args:
+        Args-
             value (int): New Speed
         &#34;&#34;&#34;
         self.ClockPow = Utils.Bind(val=value, inRange=self.ClockPowRange)
@@ -162,7 +162,7 @@ GameSettings = Settings()</code></pre>
     def AMPM(self, hour) -&gt; str:
         &#34;&#34;&#34;String for if it is AM or PM
 
-        Args:
+        Args-
             hour (int): Current Hour
         &#34;&#34;&#34;
         tag = &#34; AM&#34; if hour &lt; 12 else &#34; PM&#34;
@@ -200,11 +200,8 @@ GameSettings = Settings()</code></pre>
 <dt id="Classes.Settings.Settings.ClockDivisor"><code class="name">var <span class="ident">ClockDivisor</span> : int</code></dt>
 <dd>
 <div class="desc"><p>Clock Divisor for 24hr or 12hr</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>int</code></dt>
-<dd>Divisor to Determine Clock Range</dd>
-</dl></div>
+<p>Returns-
+int: Divisor to Determine Clock Range</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -213,7 +210,7 @@ GameSettings = Settings()</code></pre>
 def ClockDivisor(self) -&gt; int:
     &#34;&#34;&#34;Clock Divisor for 24hr or 12hr
 
-    Returns:
+    Returns-
         int: Divisor to Determine Clock Range
     &#34;&#34;&#34;
     return 13 if not self.Clock24 else 25</code></pre>
@@ -222,11 +219,8 @@ def ClockDivisor(self) -&gt; int:
 <dt id="Classes.Settings.Settings.ClockSpeed"><code class="name">var <span class="ident">ClockSpeed</span> : int</code></dt>
 <dd>
 <div class="desc"><p>Find the current multiplier of the clock speed</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>int</code></dt>
-<dd>Clock Speed Multiplier</dd>
-</dl></div>
+<p>Returns-
+int: Clock Speed Multiplier</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -235,7 +229,7 @@ def ClockDivisor(self) -&gt; int:
 def ClockSpeed(self) -&gt; int:
     &#34;&#34;&#34;Find the current multiplier of the clock speed
 
-    Returns:
+    Returns-
         int: Clock Speed Multiplier
     &#34;&#34;&#34;
     return pow(base=2, exp=self.ClockPow)</code></pre>
@@ -249,11 +243,8 @@ def ClockSpeed(self) -&gt; int:
 </code></dt>
 <dd>
 <div class="desc"><p>String for if it is AM or PM</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>hour</code></strong> :&ensp;<code>int</code></dt>
-<dd>Current Hour</dd>
-</dl></div>
+<p>Args-
+hour (int): Current Hour</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -261,7 +252,7 @@ def ClockSpeed(self) -&gt; int:
 <pre><code class="python">def AMPM(self, hour) -&gt; str:
     &#34;&#34;&#34;String for if it is AM or PM
 
-    Args:
+    Args-
         hour (int): Current Hour
     &#34;&#34;&#34;
     tag = &#34; AM&#34; if hour &lt; 12 else &#34; PM&#34;
@@ -273,11 +264,8 @@ def ClockSpeed(self) -&gt; int:
 </code></dt>
 <dd>
 <div class="desc"><p>Increment the clock multiplier power</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>value</code></strong> :&ensp;<code>int</code></dt>
-<dd>Increment to Clock Power</dd>
-</dl></div>
+<p>Args-
+value (int): Increment to Clock Power</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -285,7 +273,7 @@ def ClockSpeed(self) -&gt; int:
 <pre><code class="python">def ChangeClockMul(self, value) -&gt; None:
     &#34;&#34;&#34;Increment the clock multiplier power
 
-    Args:
+    Args-
         value (int): Increment to Clock Power
     &#34;&#34;&#34;
     self.ClockPow = Utils.Bind(
@@ -312,11 +300,8 @@ def ClockSpeed(self) -&gt; int:
 </code></dt>
 <dd>
 <div class="desc"><p>Force certain speed of clock</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>value</code></strong> :&ensp;<code>int</code></dt>
-<dd>New Speed</dd>
-</dl></div>
+<p>Args-
+value (int): New Speed</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -324,7 +309,7 @@ def ClockSpeed(self) -&gt; int:
 <pre><code class="python">def SetClockMul(self, value) -&gt; None:
     &#34;&#34;&#34;Force certain speed of clock
 
-    Args:
+    Args-
         value (int): New Speed
     &#34;&#34;&#34;
     self.ClockPow = Utils.Bind(val=value, inRange=self.ClockPowRange)</code></pre>

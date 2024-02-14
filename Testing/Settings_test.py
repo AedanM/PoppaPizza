@@ -1,8 +1,8 @@
 """Test Module for Settings"""
 # pylint: disable=invalid-name
 
-from Classes import Game
+from Classes import GameBase
 
 
 def test_ClockSpeed() -> None:
-    assert Game.MasterGame.Settings is not None
+    assert GameBase.MasterGame.Settings is not None

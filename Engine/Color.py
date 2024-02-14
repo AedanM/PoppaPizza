@@ -1,11 +1,11 @@
-"""Class for Altering Colors"""
+from Engine import Utils
 
-import colorsys
-from dataclasses import dataclass
 
 import numpy as np
 
-from Utilities import Utils
+
+import colorsys
+from dataclasses import dataclass
 
 
 def RGB_to_HSV(red, green, blue) -> None:
@@ -52,7 +52,7 @@ class Color:
             else:
                 raise Exception("Invalid Inputs")
         except Exception as e:
-            raise Exception(f"Invalid Inputs: {e}")
+            raise Exception(f"Invalid Inputs: {e}") from e
 
     def GetNumPy(self) -> "np.NDArray[np.uint8]":
         """Numpy Representation"""
@@ -89,21 +89,3 @@ class Color:
         """Returns the hex string representation"""
         R, G, B = self.RGB
         return f"#{R:2x}{G:2x}{B:2x}"
-
-
-White = Color(h=0, s=0, v=255)
-Blue = Color(h=150, s=200, v=128)
-Green = Color(h=70, s=200, v=128)
-LimeGreen = Color(h=70, s=200, v=255)
-DarkRed = Color(h=0, s=255, v=140)
-Grey = Color(h=0, s=0, v=200)
-Pink = Color(h=220, s=200, v=128)
-Yellow = Color(h=25, s=200, v=180)
-CautionTapeYellow = Color(h=37, s=255, v=255)
-Brown = Color(h=29, s=230, v=100)
-Black = Color(h=0, s=0, v=0)
-OrangeMorning = Color(h=15, s=50, v=255)
-OrangeNight = Color(h=15, s=130, v=200)
-BlueMorning = Color(h=200, s=50, v=255)
-BlueNight = Color(h=200, s=130, v=200)
-TriviaBlue = Color(h=167, s=170, v=200)

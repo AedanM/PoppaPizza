@@ -5,16 +5,16 @@ import sys
 
 import pygame
 
-from Classes import Game, Matching, MiniGames, Stats
+from Classes import GameBase, Matching, MiniGames, Stats
 from Definitions import AssetLibrary, CustomEvents
 from Generators import BackgroundPopulator, CharSpawner, Menus
 from Handlers import ClickHandler, ShopHandler, WorkerHandler
 
 
-def MainEventHandler(activeGame=Game.MasterGame) -> None:
+def MainEventHandler(activeGame) -> None:
     """Giant Case Handler for Events
 
-    Args:
+    Args-
         activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
     """
     RandomSpawnHandler()
@@ -25,7 +25,7 @@ def MainEventHandler(activeGame=Game.MasterGame) -> None:
         if event.type == pygame.USEREVENT:
             match (event):
                 case CustomEvents.UpdateBackground:
-                    BackgroundPopulator.SetupBackground(Game.MasterGame)
+                    BackgroundPopulator.SetupBackground(GameBase.MasterGame)
                 case CustomEvents.NightCycle:
                     DayNightEvent()
                 case CustomEvents.GameOver:
@@ -37,10 +37,10 @@ def MainEventHandler(activeGame=Game.MasterGame) -> None:
         elif event.type == pygame.KEYDOWN:
             match (event.key):
                 case pygame.K_a:
-                    Game.MasterGame.Mode = MiniGames.GameMode.TriviaGame
-                    MiniGames.MakeTriviaGame(activeGame=Game.MasterGame)
+                    GameBase.MasterGame.Mode = MiniGames.GameMode.TriviaGame
+                    MiniGames.MakeTriviaGame(activeGame=GameBase.MasterGame)
                 case pygame.K_m:
-                    Game.MasterGame.UserInventory.GetPaid(amount=1000.0)
+                    GameBase.MasterGame.UserInventory.GetPaid(amount=1000.0)
                 case pygame.K_t:
                     activeGame.Settings.ChangeClockMul(value=-1)
                 case pygame.K_y:
@@ -85,15 +85,15 @@ def DayNightEvent() -> None:
 
     """
     ShopHandler.PayUpkeep()
-    if Game.MasterGame.UserInventory.Money > 0:
+    if GameBase.MasterGame.UserInventory.Money > 0:
         Menus.DayTransistion()
     else:
         GameOver()
-    ResetSprites(activeGame=Game.MasterGame)
-    Stats.AllStats[f"Day {Game.MasterGame.GameClock.Day}"] = copy.deepcopy(
-        Game.MasterGame.UserInventory.Statistics
+    ResetSprites(activeGame=GameBase.MasterGame)
+    Stats.AllStats[f"Day {GameBase.MasterGame.GameClock.Day}"] = copy.deepcopy(
+        GameBase.MasterGame.UserInventory.Statistics
     )
-    Stats.PrevDay = copy.deepcopy(Game.MasterGame.UserInventory.Statistics)
+    Stats.PrevDay = copy.deepcopy(GameBase.MasterGame.UserInventory.Statistics)
     BackgroundPopulator.SetupBackground()
 
 
@@ -103,7 +103,7 @@ def ResetSprites(activeGame) -> None:
         Kill Customer Sprites
         Reset Workers to Kitchen
 
-    Args:
+    Args-
         activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
     """
     for sprite in activeGame.CharSpriteGroup:
@@ -115,7 +115,7 @@ def ResetSprites(activeGame) -> None:
 
 def GameOver() -> None:
     """Logic for End of Game"""
-    Game.MasterGame.Running = False
+    GameBase.MasterGame.Running = False
     Menus.GameOverMenu()
 
 

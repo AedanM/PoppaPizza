@@ -33,7 +33,8 @@ from dataclasses import dataclass
 
 import pygame
 
-from Definitions import AssetLibrary, ColorTools, CustomEvents, DefinedLocations
+from Definitions import AssetLibrary, ColorDefines, CustomEvents, DefinedLocations
+from Engine import Color
 
 
 @dataclass
@@ -41,7 +42,7 @@ class LockerRoom:
     &#34;&#34;&#34;Locker Room Parameters&#34;&#34;&#34;
 
     Location: tuple
-    Color: ColorTools.Color
+    Color: Color.Color
     Unlocked: bool = False
     Price: float = 10000.0
 
@@ -70,7 +71,7 @@ RestaurantList = [
         Logo=None,
         LockerRoom=LockerRoom(
             Location=DefinedLocations.LocationDefs.LockerRoom0,
-            Color=ColorTools.DarkRed,
+            Color=ColorDefines.DarkRed,
             Price=0,
             Unlocked=True,
         ),
@@ -83,7 +84,7 @@ RestaurantList = [
         Logo=AssetLibrary.ImageTypes.LogoSuit,
         LockerRoom=LockerRoom(
             Location=DefinedLocations.LocationDefs.LockerRoom1,
-            Color=ColorTools.Blue,
+            Color=ColorDefines.Blue,
             Price=0,
             Unlocked=True,
         ),
@@ -95,7 +96,7 @@ RestaurantList = [
         Logo=AssetLibrary.ImageTypes.LogoCoffee,
         LockerRoom=LockerRoom(
             Location=DefinedLocations.LocationDefs.LockerRoom2,
-            Color=ColorTools.Yellow,
+            Color=ColorDefines.Yellow,
             Price=2500,
         ),
     ),
@@ -106,7 +107,7 @@ RestaurantList = [
         Logo=AssetLibrary.ImageTypes.LogoLuau,
         LockerRoom=LockerRoom(
             Location=DefinedLocations.LocationDefs.LockerRoom3,
-            Color=ColorTools.Pink,
+            Color=ColorDefines.Pink,
             Price=5000,
         ),
     ),
@@ -117,7 +118,7 @@ RestaurantList = [
         Logo=AssetLibrary.ImageTypes.LogoCowboy,
         LockerRoom=LockerRoom(
             Location=DefinedLocations.LocationDefs.LockerRoom4,
-            Color=ColorTools.Brown,
+            Color=ColorDefines.Brown,
             Price=7500,
         ),
     ),
@@ -128,7 +129,7 @@ RestaurantList = [
         Logo=AssetLibrary.ImageTypes.LogoSafari,
         LockerRoom=LockerRoom(
             Location=DefinedLocations.LocationDefs.LockerRoom5,
-            Color=ColorTools.Green,
+            Color=ColorDefines.Green,
             Price=10000,
         ),
     ),
@@ -138,11 +139,11 @@ RestaurantList = [
 def UnlockLockerRoom(currentCash, position) -&gt; float:
     &#34;&#34;&#34;Unlocks a locker room from position
         Returns 0 if too expensive
-    Args:
+    Args-
         currentCash (float): Current Money Reserves
         position (int): Locker Room Position
 
-    Returns:
+    Returns-
         float: Price Paid for Locker Room
     &#34;&#34;&#34;
     restaurant = [x for x in RestaurantList if position == x.LockerRoom.Location]
@@ -166,19 +167,12 @@ def UnlockLockerRoom(currentCash, position) -&gt; float:
 </code></dt>
 <dd>
 <div class="desc"><p>Unlocks a locker room from position
-Returns 0 if too expensive</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>currentCash</code></strong> :&ensp;<code>float</code></dt>
-<dd>Current Money Reserves</dd>
-<dt><strong><code>position</code></strong> :&ensp;<code>int</code></dt>
-<dd>Locker Room Position</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>float</code></dt>
-<dd>Price Paid for Locker Room</dd>
-</dl></div>
+Returns 0 if too expensive
+Args-
+currentCash (float): Current Money Reserves
+position (int): Locker Room Position</p>
+<p>Returns-
+float: Price Paid for Locker Room</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -186,11 +180,11 @@ Returns 0 if too expensive</p>
 <pre><code class="python">def UnlockLockerRoom(currentCash, position) -&gt; float:
     &#34;&#34;&#34;Unlocks a locker room from position
         Returns 0 if too expensive
-    Args:
+    Args-
         currentCash (float): Current Money Reserves
         position (int): Locker Room Position
 
-    Returns:
+    Returns-
         float: Price Paid for Locker Room
     &#34;&#34;&#34;
     restaurant = [x for x in RestaurantList if position == x.LockerRoom.Location]
@@ -209,7 +203,7 @@ Returns 0 if too expensive</p>
 <dl>
 <dt id="Definitions.Restaurants.LockerRoom"><code class="flex name class">
 <span>class <span class="ident">LockerRoom</span></span>
-<span>(</span><span>Location: tuple, Color: <a title="Definitions.ColorTools.Color" href="ColorTools.html#Definitions.ColorTools.Color">Color</a>, Unlocked: bool = False, Price: float = 10000.0)</span>
+<span>(</span><span>Location: tuple, Color: Engine.Color.Color, Unlocked: bool = False, Price: float = 10000.0)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Locker Room Parameters</p></div>
@@ -222,13 +216,13 @@ class LockerRoom:
     &#34;&#34;&#34;Locker Room Parameters&#34;&#34;&#34;
 
     Location: tuple
-    Color: ColorTools.Color
+    Color: Color.Color
     Unlocked: bool = False
     Price: float = 10000.0</code></pre>
 </details>
 <h3>Class variables</h3>
 <dl>
-<dt id="Definitions.Restaurants.LockerRoom.Color"><code class="name">var <span class="ident">Color</span> : <a title="Definitions.ColorTools.Color" href="ColorTools.html#Definitions.ColorTools.Color">Color</a></code></dt>
+<dt id="Definitions.Restaurants.LockerRoom.Color"><code class="name">var <span class="ident">Color</span> : Engine.Color.Color</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>

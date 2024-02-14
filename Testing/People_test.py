@@ -2,11 +2,11 @@
 
 # pylint: disable=invalid-name
 
-from Classes import Game, Matching, People
+from Classes import GameBase, Matching, People
 
 
 def test_PeopleIdTest() -> None:
-    Game.MasterGame = Game.Game(activateScreen=True)
+    GameBase.MasterGame = GameBase.MainGame(activateScreen=True)
     worker1 = People.Worker.CreateWorker()[0]
     worker2 = People.Worker.CreateWorker()[0]
     customer1 = People.Customer.CreateCustomer()[0]
@@ -20,7 +20,7 @@ def test_PeopleIdTest() -> None:
 
 
 def test_PeopleNames() -> None:
-    currentGame = Game.Game(activateScreen=True)
+    currentGame = GameBase.MainGame(activateScreen=True)
     currentGame.CustomerList = []
     currentGame.WorkerList = []
     for _ in range(10):

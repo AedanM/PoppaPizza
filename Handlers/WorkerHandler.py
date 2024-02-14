@@ -2,15 +2,15 @@
 
 import random
 
-from Classes import Game
+from Classes import GameBase
 from Definitions import AssetLibrary, DefinedLocations, DefinedPaths
-from Utilities import Utils
+from Engine import Utils
 
 
 def DailyReset(sprite) -> None:
     """Reset worker to Kitchen
         Unassigns the worker from any task as well
-    Args:
+    Args-
         sprite (Sprite): Worker Sprite
     """
     sprite.MvmHandler.Reset()
@@ -31,7 +31,7 @@ def ServeCustomer() -> None:
 def FinishCustomer(workerSprite, job) -> None:
     """Finish a customer and get paid
 
-    Args:
+    Args-
         workerSprite (Sprite): Active Worker
         job (Job): Active Job
     """
@@ -40,14 +40,14 @@ def FinishCustomer(workerSprite, job) -> None:
     workerSprite.MvmHandler.StartNewListedMotion(
         DefinedPaths.DefinedPaths.BackToKitchen(sprite=workerSprite)
     )
-    Game.MasterGame.UserInventory.GetPaid(amount=job.Price)
-    Game.MasterGame.UserInventory.Statistics.ServeCustomer()
+    GameBase.MasterGame.UserInventory.GetPaid(amount=job.Price)
+    GameBase.MasterGame.UserInventory.Statistics.ServeCustomer()
 
 
 def GetChanged(workerSprite, restaurant) -> None:
     """Change the outfit of a worker
 
-    Args:
+    Args-
         workerSprite (Sprite): Active Worker
         restaurant (Restaurant): Restaurant whos apparel to change into
     """
@@ -59,7 +59,7 @@ def GetChanged(workerSprite, restaurant) -> None:
     newOutfit = AssetLibrary.PathLookup(random.choice(restaurant.WorkerImageTypes))
     workerSprite.MvmHandler.OnComplete = lambda: (
         workerSprite.ChangeOutfit(newOutfit),
-        Game.MasterGame.UserInventory.Statistics.WorkerChanged(),
+        GameBase.MasterGame.UserInventory.Statistics.WorkerChanged(),
         workerSprite.CreatePersonTimerBar(
             completeTask=lambda: ReturnToKitchen(workerSprite=workerSprite),
             offset=(-30, 150),
@@ -71,7 +71,7 @@ def GetChanged(workerSprite, restaurant) -> None:
 def ReturnToKitchen(workerSprite) -> None:
     """Go back to Kitchen
 
-    Args:
+    Args-
         workerSprite (Sprite): Active Worker
     """
     workerSprite.MvmHandler.StartNewListedMotion(

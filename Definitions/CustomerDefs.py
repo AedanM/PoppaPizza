@@ -3,6 +3,7 @@
 from enum import Enum
 
 
+# TODO - Use this to reshape CustomerHandler
 class CustomerStates(Enum):
     """Enum of Customer States"""
 
@@ -26,12 +27,3 @@ QueueStates = [
     CustomerStates.Queuing,
     CustomerStates.FirstInLine,
 ]
-
-
-class MovementSpeeds:
-    """Defined Speeds for Motion"""
-
-    Slow: int = 1
-    Medium: int = 10
-    Fast: int = 100
-    Instant: int = 1000

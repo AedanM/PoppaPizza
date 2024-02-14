@@ -29,17 +29,17 @@
 </summary>
 <pre><code class="python">&#34;&#34;&#34;Populate Background with Elements&#34;&#34;&#34;
 
-from Classes import Game, Matching, Sprite
-from Definitions import AssetLibrary, ColorTools, DefinedLocations, Restaurants
-from Utilities import Utils
+from Classes import GameBase, Matching, Sprite
+from Definitions import AssetLibrary, ColorDefines, DefinedLocations, Restaurants
+from Engine import SpriteObjects, Utils
 
 # TODO - Stop Recalcing Tables
 
 
-def AddTables(activeGame=Game.MasterGame) -&gt; None:
+def AddTables(activeGame=GameBase.MasterGame) -&gt; None:
     &#34;&#34;&#34;Places tables as they are unlocked
 
-    Args:
+    Args-
         activeGame (Game, optional): Current Game being used. Defaults to Game.MasterGame.
     &#34;&#34;&#34;
     for location in DefinedLocations.SeatingPlan.GenerateTablePlaces():
@@ -53,10 +53,10 @@ def AddTables(activeGame=Game.MasterGame) -&gt; None:
         activeGame.BackgroundSpriteGroup.add(table)
 
 
-def AddLockerRooms(activeGame=Game.MasterGame) -&gt; None:
+def AddLockerRooms(activeGame=GameBase.MasterGame) -&gt; None:
     &#34;&#34;&#34;Generate and Add Locker Rooms based on locked status
 
-    Args:
+    Args-
         activeGame (Game, optional): Current Game Class being used. Defaults to Game.MasterGame.
     &#34;&#34;&#34;
     for restaurant in Restaurants.RestaurantList:
@@ -73,7 +73,7 @@ def AddLockerRooms(activeGame=Game.MasterGame) -&gt; None:
             )
         else:
             path = AssetLibrary.ImagePath.LogoLockedPath
-            color = ColorTools.Grey
+            color = ColorDefines.Grey
             maxSize = 180
             offset = Utils.ScaleToSize(
                 value=(-90, -50), newSize=DefinedLocations.LocationDefs.ScreenSize
@@ -87,7 +87,7 @@ def AddLockerRooms(activeGame=Game.MasterGame) -&gt; None:
                 offset=offset,
             )
 
-        rectObj = Sprite.RectangleObject(
+        rectObj = SpriteObjects.RectangleObject(
             position=lockerRoom.Location, color=color, size=restaurant.Size
         )
         activeGame.ForegroundSpriteGroup.add(rectObj)
@@ -97,17 +97,17 @@ def AddLockerRooms(activeGame=Game.MasterGame) -&gt; None:
             Sprite.ButtonObject.AddButton(
                 location=lockerRoom.Location,
                 text=&#34;Buy Me&#34;,
-                backColor=ColorTools.CautionTapeYellow,
-                color=ColorTools.Black,
+                backColor=ColorDefines.CautionTapeYellow,
+                color=ColorDefines.Black,
                 enabled=lockerRoom.Price &lt; activeGame.UserInventory.Money,
-                activeGame=Game.MasterGame,
+                activeGame=GameBase.MasterGame,
             )
 
 
 def UnlockLockerRooms(activeGame) -&gt; None:
     &#34;&#34;&#34;Updates the locker rooms to unlock the purchased rooms
 
-    Args:
+    Args-
         activeGame (Game): Current Game Class being used
     &#34;&#34;&#34;
     for button in activeGame.ButtonList:
@@ -120,10 +120,10 @@ def UnlockLockerRooms(activeGame) -&gt; None:
             activeGame.ButtonList.remove(button)
 
 
-def SetupBackground(activeGame=Game.MasterGame) -&gt; None:
+def SetupBackground(activeGame=GameBase.MasterGame) -&gt; None:
     &#34;&#34;&#34;Regenerates the Background Elements
 
-    Args:
+    Args-
         activeGame (Game, optional): Current Game Class being used. Defaults to Game.MasterGame.
     &#34;&#34;&#34;
     activeGame.BackgroundSpriteGroup.empty()
@@ -140,23 +140,20 @@ def SetupBackground(activeGame=Game.MasterGame) -&gt; None:
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="Generators.BackgroundPopulator.AddLockerRooms"><code class="name flex">
-<span>def <span class="ident">AddLockerRooms</span></span>(<span>activeGame=&lt;Classes.Game.Game object&gt;) ‑> None</span>
+<span>def <span class="ident">AddLockerRooms</span></span>(<span>activeGame=&lt;Classes.GameBase.MainGame object&gt;) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Generate and Add Locker Rooms based on locked status</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>activeGame</code></strong> :&ensp;<code>Game</code>, optional</dt>
-<dd>Current Game Class being used. Defaults to Game.MasterGame.</dd>
-</dl></div>
+<p>Args-
+activeGame (Game, optional): Current Game Class being used. Defaults to Game.MasterGame.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def AddLockerRooms(activeGame=Game.MasterGame) -&gt; None:
+<pre><code class="python">def AddLockerRooms(activeGame=GameBase.MasterGame) -&gt; None:
     &#34;&#34;&#34;Generate and Add Locker Rooms based on locked status
 
-    Args:
+    Args-
         activeGame (Game, optional): Current Game Class being used. Defaults to Game.MasterGame.
     &#34;&#34;&#34;
     for restaurant in Restaurants.RestaurantList:
@@ -173,7 +170,7 @@ def SetupBackground(activeGame=Game.MasterGame) -&gt; None:
             )
         else:
             path = AssetLibrary.ImagePath.LogoLockedPath
-            color = ColorTools.Grey
+            color = ColorDefines.Grey
             maxSize = 180
             offset = Utils.ScaleToSize(
                 value=(-90, -50), newSize=DefinedLocations.LocationDefs.ScreenSize
@@ -187,7 +184,7 @@ def SetupBackground(activeGame=Game.MasterGame) -&gt; None:
                 offset=offset,
             )
 
-        rectObj = Sprite.RectangleObject(
+        rectObj = SpriteObjects.RectangleObject(
             position=lockerRoom.Location, color=color, size=restaurant.Size
         )
         activeGame.ForegroundSpriteGroup.add(rectObj)
@@ -197,31 +194,28 @@ def SetupBackground(activeGame=Game.MasterGame) -&gt; None:
             Sprite.ButtonObject.AddButton(
                 location=lockerRoom.Location,
                 text=&#34;Buy Me&#34;,
-                backColor=ColorTools.CautionTapeYellow,
-                color=ColorTools.Black,
+                backColor=ColorDefines.CautionTapeYellow,
+                color=ColorDefines.Black,
                 enabled=lockerRoom.Price &lt; activeGame.UserInventory.Money,
-                activeGame=Game.MasterGame,
+                activeGame=GameBase.MasterGame,
             )</code></pre>
 </details>
 </dd>
 <dt id="Generators.BackgroundPopulator.AddTables"><code class="name flex">
-<span>def <span class="ident">AddTables</span></span>(<span>activeGame=&lt;Classes.Game.Game object&gt;) ‑> None</span>
+<span>def <span class="ident">AddTables</span></span>(<span>activeGame=&lt;Classes.GameBase.MainGame object&gt;) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Places tables as they are unlocked</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>activeGame</code></strong> :&ensp;<code>Game</code>, optional</dt>
-<dd>Current Game being used. Defaults to Game.MasterGame.</dd>
-</dl></div>
+<p>Args-
+activeGame (Game, optional): Current Game being used. Defaults to Game.MasterGame.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def AddTables(activeGame=Game.MasterGame) -&gt; None:
+<pre><code class="python">def AddTables(activeGame=GameBase.MasterGame) -&gt; None:
     &#34;&#34;&#34;Places tables as they are unlocked
 
-    Args:
+    Args-
         activeGame (Game, optional): Current Game being used. Defaults to Game.MasterGame.
     &#34;&#34;&#34;
     for location in DefinedLocations.SeatingPlan.GenerateTablePlaces():
@@ -236,23 +230,20 @@ def SetupBackground(activeGame=Game.MasterGame) -&gt; None:
 </details>
 </dd>
 <dt id="Generators.BackgroundPopulator.SetupBackground"><code class="name flex">
-<span>def <span class="ident">SetupBackground</span></span>(<span>activeGame=&lt;Classes.Game.Game object&gt;) ‑> None</span>
+<span>def <span class="ident">SetupBackground</span></span>(<span>activeGame=&lt;Classes.GameBase.MainGame object&gt;) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Regenerates the Background Elements</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>activeGame</code></strong> :&ensp;<code>Game</code>, optional</dt>
-<dd>Current Game Class being used. Defaults to Game.MasterGame.</dd>
-</dl></div>
+<p>Args-
+activeGame (Game, optional): Current Game Class being used. Defaults to Game.MasterGame.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def SetupBackground(activeGame=Game.MasterGame) -&gt; None:
+<pre><code class="python">def SetupBackground(activeGame=GameBase.MasterGame) -&gt; None:
     &#34;&#34;&#34;Regenerates the Background Elements
 
-    Args:
+    Args-
         activeGame (Game, optional): Current Game Class being used. Defaults to Game.MasterGame.
     &#34;&#34;&#34;
     activeGame.BackgroundSpriteGroup.empty()
@@ -266,11 +257,8 @@ def SetupBackground(activeGame=Game.MasterGame) -&gt; None:
 </code></dt>
 <dd>
 <div class="desc"><p>Updates the locker rooms to unlock the purchased rooms</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>activeGame</code></strong> :&ensp;<code>Game</code></dt>
-<dd>Current Game Class being used</dd>
-</dl></div>
+<p>Args-
+activeGame (Game): Current Game Class being used</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -278,7 +266,7 @@ def SetupBackground(activeGame=Game.MasterGame) -&gt; None:
 <pre><code class="python">def UnlockLockerRooms(activeGame) -&gt; None:
     &#34;&#34;&#34;Updates the locker rooms to unlock the purchased rooms
 
-    Args:
+    Args-
         activeGame (Game): Current Game Class being used
     &#34;&#34;&#34;
     for button in activeGame.ButtonList:
