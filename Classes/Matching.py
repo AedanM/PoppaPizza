@@ -3,6 +3,7 @@
 from typing import Any
 
 from Definitions import AssetLibrary, Restaurants
+from Engine import Person
 
 
 def MatchIdToPerson(activeGame, inputId, targetOutput="all") -> dict[str, Any] | None:
@@ -38,15 +39,19 @@ def RemoveObjFromSprite(activeGame, targetSprite) -> None:
         activeGame (Game): Current Game
         targetSprite (CharImageSprite): Sprite to delete
     """
-    responseDict = MatchIdToPerson(
-        activeGame=activeGame, inputId=targetSprite.CorrespondingID
-    )
+    responseDict = MatchIdToPerson(activeGame=activeGame, inputId=targetSprite.CorrespondingID)
+
     if responseDict is None:
         pass
-    elif "customer" in responseDict:
-        activeGame.CustomerList.remove(responseDict["customer"])
-    elif "worker" in responseDict:
-        activeGame.WorkerList.remove(responseDict["worker"])
+    else:
+        responseDict.pop("sprite")
+        personObj = list(responseDict.values())[0]
+        Person.FIRSTNAMES.discard(personObj.FirstName)
+        Person.LASTNAMES.discard(personObj.LastName)
+        if "customer" in responseDict:
+            activeGame.CustomerList.remove(responseDict["customer"])
+        elif "worker" in responseDict:
+            activeGame.WorkerList.remove(responseDict["worker"])
     targetSprite.kill()
 
 
@@ -73,13 +78,9 @@ def FindRestaurant(imageType) -> Restaurants.Restaurant | None:
     """
     potentialList = [None]
     if imageType in AssetLibrary.WorkerOutfits:
-        potentialList = [
-            x for x in Restaurants.RestaurantList if imageType in x.WorkerImageTypes
-        ]
+        potentialList = [x for x in Restaurants.RestaurantList if imageType in x.WorkerImageTypes]
     elif imageType in AssetLibrary.CustomerOutfits:
-        potentialList = [
-            x for x in Restaurants.RestaurantList if imageType in x.CustomerImageTypes
-        ]
+        potentialList = [x for x in Restaurants.RestaurantList if imageType in x.CustomerImageTypes]
     return potentialList[0]
 
 

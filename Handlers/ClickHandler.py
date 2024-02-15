@@ -2,9 +2,8 @@
 
 from enum import Enum
 
-from Classes import GameBase, MiniGames
-from Definitions import AssetLibrary, CustomerDefs, Restaurants
-from Engine import Utils
+from Definitions import AssetLibrary, Restaurants
+from Definitions.CustomerDefs import CustomerStates
 from Handlers import CustomerHandler, ShopHandler, WorkerHandler
 
 
@@ -19,21 +18,21 @@ GlobalClickState = ClickState.Neutral
 GlobalTarget = None
 
 
-def TriviaMouseHandler(mousePos) -> None:
+def TriviaMouseHandler(mousePos, activeGame) -> None:
     clickedText = ""
-    for button in GameBase.MasterGame.MiniGame.MasterSpriteGroup:
+    for button in activeGame.MiniGame.MasterSpriteGroup:
         if button.rect.collidepoint(mousePos[0], mousePos[1]):
             clickedText = (
                 [
                     x.Text
-                    for x in GameBase.MasterGame.MiniGame.DisplayedText.values()
+                    for x in activeGame.MiniGame.DisplayedText.values()
                     if x.Center == button.rect.center
                 ]
             )[0]
-    GameBase.MasterGame.MiniGame.UpdateStateMachine(inputStr=clickedText)
+    activeGame.MiniGame.UpdateStateMachine(inputStr=clickedText)
 
 
-def MainMouseHandler(mousePos, lClick) -> None:
+def MainMouseHandler(mousePos, isLeftClick, activeGame) -> None:
     """Handler for mouse clicks
 
     Args-
@@ -41,37 +40,35 @@ def MainMouseHandler(mousePos, lClick) -> None:
         lClick (bool): Left or Right Mouse Button, True is Left
     """
     global GlobalClickState, GlobalTarget
-    if GlobalClickState is ClickState.ClickedWorker:
-        for restaurant in Restaurants.RestaurantList:
-            lockerRoom = restaurant.LockerRoom
-            if (
-                Utils.PositionInTolerance(
-                    pos1=mousePos, pos2=lockerRoom.Location, tolerance=75
-                )
-                and lockerRoom.Unlocked
-                and GlobalTarget.ImageType not in restaurant.WorkerImageTypes #type: ignore
-                and restaurant.WorkerImageTypes
-            ):
-                WorkerHandler.GetChanged(
-                    workerSprite=GlobalTarget, restaurant=restaurant
-                )
-        GlobalClickState = ClickState.Neutral
-    elif GlobalClickState is ClickState.Neutral:
-        for button in GameBase.MasterGame.ButtonList:
-            if button.rect.collidepoint(mousePos[0], mousePos[1]):
-                ShopHandler.BuyLockerRoom(position=button.position)
-                return
-        for sprite in GameBase.MasterGame.CharSpriteGroup:
-            if sprite.rect.collidepoint(mousePos[0], mousePos[1]):
-                if sprite.ImageType in AssetLibrary.CustomerOutfits:
-                    CustomerClickRoutine(target=sprite, leftClick=lClick)
-                elif sprite.ImageType in AssetLibrary.WorkerOutfits:
-                    WorkerClickRoutine(target=sprite)
-    else:
+    entryState = GlobalClickState
+    match GlobalClickState:
+        case ClickState.ClickedWorker:
+            for restaurant in Restaurants.RestaurantList:
+                if restaurant.RequiresChange(mousePos=mousePos, target=GlobalTarget):
+                    WorkerHandler.GetChanged(
+                        workerSprite=GlobalTarget, restaurant=restaurant, activeGame=activeGame
+                    )
+        case ClickState.Neutral:
+            for button in activeGame.ButtonList:
+                if button.rect.collidepoint(mousePos[0], mousePos[1]) and isLeftClick:
+                    ShopHandler.BuyLockerRoom(position=button.position, activeGame=activeGame)
+                    return
+            for sprite in activeGame.CharSpriteGroup:
+                if sprite.rect.collidepoint(mousePos[0], mousePos[1]):
+                    if sprite.ImageType in AssetLibrary.CustomerOutfits:
+                        CustomerClickRoutine(
+                            target=sprite, leftClick=isLeftClick, activeGame=activeGame
+                        )
+                    elif sprite.ImageType in AssetLibrary.WorkerOutfits and isLeftClick:
+                        WorkerClickRoutine(target=sprite)
+
+        case other:
+            pass
+    if entryState is GlobalClickState:
         GlobalClickState = ClickState.Neutral
 
 
-def CustomerClickRoutine(target, leftClick) -> None:
+def CustomerClickRoutine(target, leftClick, activeGame) -> None:
     """Handler for Customer Clicks
 
     Args-
@@ -82,14 +79,14 @@ def CustomerClickRoutine(target, leftClick) -> None:
     # BUG - Stop customers being served in queue
     if GlobalClickState is ClickState.Neutral:
         match target.DataObject.CurrentState:
-            case CustomerDefs.CustomerStates.FirstInLine:
+            case CustomerStates.FirstInLine:
                 if leftClick:
-                    CustomerHandler.SitAtTable(target=target)
+                    CustomerHandler.SitAtTable(target=target, activeGame=activeGame)
                 else:
-                    CustomerHandler.GetUpAndGo(spriteImg=target)
-            case CustomerDefs.CustomerStates.WaitingForService:
-                CustomerHandler.AssignWorker(target=target)
-            case CustomerDefs.CustomerStates.Queuing:
+                    CustomerHandler.GetUpAndGo(spriteImg=target, activeGame=activeGame)
+            case CustomerStates.WaitingForService:
+                CustomerHandler.AssignWorker(target=target, activeGame=activeGame)
+            case CustomerStates.Queuing:
                 pass
 
 

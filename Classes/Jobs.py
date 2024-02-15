@@ -70,9 +70,7 @@ class Job:
             tuple: (Assigned Worker, Assigned Customer)
         """
         assignedMems = [
-            (job.AssignedWorker, job.JobCustomer)
-            for job in jobList
-            if job.JobId == targetID
+            (job.AssignedWorker, job.JobCustomer) for job in jobList if job.JobId == targetID
         ]
         if assignedMems:
             return assignedMems[0]

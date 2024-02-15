@@ -21,9 +21,7 @@ class MainGame(Game.Game):
     Mode: MiniGames.GameMode = MiniGames.GameMode.Base
     MiniGame: RoundBasedGame.RoundBasedGame = None  # type: ignore
 
-    def __init__(
-        self, activateScreen=True, size=DefinedLocations.LocationDefs.ScreenSize
-    ) -> None:
+    def __init__(self, activateScreen=True, size=DefinedLocations.LocationDefs.ScreenSize) -> None:
         """Init for Game
 
         Args-
@@ -50,9 +48,7 @@ class MainGame(Game.Game):
 
     def StartScreen(self, size) -> None:
         if isinstance(size, str):
-            DefinedLocations.LocationDefs.ScreenSize = (
-                DefinedLocations.StandardDimensions[size]
-            )
+            DefinedLocations.LocationDefs.ScreenSize = DefinedLocations.StandardDimensions[size]
             width, height = DefinedLocations.LocationDefs.ScreenSize
         else:
             width, height = size

@@ -4,7 +4,7 @@ import math
 import random
 
 
-def InRandomVariance(num, percentVariance) -> float:
+def InRandomVariance(num: int | float, percentVariance: float) -> float:
     """Returns random num in % variance
 
     Args-
@@ -15,13 +15,11 @@ def InRandomVariance(num, percentVariance) -> float:
         float: New Varied Number
     """
     percentVariance = CheckDecimalPercent(percentVariance)
-    varyAmount = (
-        random.randint(a=-100, b=100) * percentVariance * 0.01 * num  # type:ignore
-    )
+    varyAmount = random.randint(a=-100, b=100) * percentVariance * 0.01 * num  # type:ignore
     return num + varyAmount
 
 
-def CheckDecimalPercent(val) -> float | tuple:
+def CheckDecimalPercent(val: float) -> float:
     """Normalizes Percentages from 0-100 to 0-1
 
     Args-
@@ -30,20 +28,27 @@ def CheckDecimalPercent(val) -> float | tuple:
     Returns-
         float | tuple: Normalized Output
     """
-    returnVal = None
-    if isinstance(val, tuple):
-        holdList = []
-        percentMod = True if (abs(val[0]) < 1) else False
-        for i in val:
-            holdList.append(float(i) if percentMod else float(i) / 100)
-        returnVal = tuple(holdList)
-    else:
-        returnVal = float(val) if abs(val) <= 1 else float(val) / 100
-    return returnVal
+    return float(val) if abs(val) <= 1 else float(val) / 100
+
+
+def CheckDecimalPercentTuple(val: tuple[float, float]) -> tuple:
+    """Normalizes Tuple Percentages from 0-100 to 0-1
+
+    Args-
+        val (tuple | int | float): input value
+
+    Returns-
+        float | tuple: Normalized Output
+    """
+    holdList = []
+    percentMod = True if (abs(val[0]) < 1) else False
+    for i in val:
+        holdList.append(float(i) if percentMod else float(i) / 100)
+    return tuple(holdList)
 
 
 def PositionRandomVariance(
-    position, percentVarianceTuple, screenSize
+    position: tuple[int, int], percentVariance: tuple[float, float], screenSize: tuple[int, int]
 ) -> tuple[int, int]:
     """Generates a position in random variance of input
 
@@ -55,13 +60,13 @@ def PositionRandomVariance(
     Returns-
         tuple[int, int]: Random Position
     """
-    percentVarianceTuple = CheckDecimalPercent(val=percentVarianceTuple)
+    percentVariance = CheckDecimalPercentTuple(val=percentVariance)
     varyAmountX = math.ceil(
-        (random.randint(-100, 100) * 0.01 * percentVarianceTuple[0] * screenSize[0])  # type: ignore
+        (random.randint(-100, 100) * 0.01 * percentVariance[0] * screenSize[0])  # type: ignore
         + position[0]
     )
     varyAmountY = math.ceil(
-        (random.randint(-100, 100) * 0.01 * percentVarianceTuple[1] * screenSize[1])  # type: ignore
+        (random.randint(-100, 100) * 0.01 * percentVariance[1] * screenSize[1])  # type: ignore
         + position[1]
     )
     out = (
@@ -71,7 +76,7 @@ def PositionRandomVariance(
     return out
 
 
-def InTolerance(num1, num2, tolerance) -> bool:
+def InTolerance(num1: int | float, num2: int | float, tolerance: int | float) -> bool:
     """Returns if numbers are wthin a numeric tolerance
 
     Args-
@@ -85,7 +90,7 @@ def InTolerance(num1, num2, tolerance) -> bool:
     return abs(num1 - num2) <= abs(tolerance)
 
 
-def InPercentTolerance(num1, num2, tolerance) -> bool:
+def InPercentTolerance(num1: int | float, num2: int | float, tolerance: int | float) -> bool:
     """Returns if numbers are wthin a percentage tolerance
 
     Args-
@@ -96,15 +101,16 @@ def InPercentTolerance(num1, num2, tolerance) -> bool:
     Returns-
         bool: Status of Tolerance
     """
-    tol = CheckDecimalPercent(val=tolerance)
-    tolerance = tol if isinstance(tol, float) else 0.0
-    if num1 == 0:
-        return False
+    tolerance = CheckDecimalPercent(val=tolerance)
     seperation = abs((num1 - num2) / num1)
     return seperation <= abs(tolerance)
 
 
-def ProRateValue(value, inRange, outRange) -> int | float | str:
+def ProRateValue(
+    value: int | float,
+    inRange: tuple[int | float, int | float],
+    outRange: tuple[int | float, int | float],
+) -> int | float | None:
     """Changes the range of a value
 
     Args-
@@ -118,11 +124,11 @@ def ProRateValue(value, inRange, outRange) -> int | float | str:
     return (
         float(value) * (outRange[1] - outRange[0]) / (inRange[1] - inRange[0])
         if (inRange[1] - inRange[0]) != 0 and (outRange[1] - outRange[0]) != 0
-        else "Error"
+        else None
     )
 
 
-def Bind(val, inRange) -> int | float:
+def Bind(val: int | float, inRange: tuple[int | float, int | float]) -> int | float:
     """Binds a value into a range
 
     Args-
@@ -136,7 +142,7 @@ def Bind(val, inRange) -> int | float:
 
 
 # TODO - Add Test
-def ResizeMaxLength(dim, maxSide) -> tuple:
+def ResizeMaxLength(dim: tuple[int, int], maxSide: int) -> tuple:
     """Resize a set of dimensions to a maximum
 
     Args-
@@ -152,7 +158,7 @@ def ResizeMaxLength(dim, maxSide) -> tuple:
 
 
 # TODO - Add Test
-def PositionInTolerance(pos1, pos2, tolerance) -> bool:
+def PositionInTolerance(pos1: tuple[int, int], pos2: tuple[int, int], tolerance: int) -> bool:
     """Checks if 2 positions are within a numeric tolerance
 
     Args-
@@ -169,7 +175,7 @@ def PositionInTolerance(pos1, pos2, tolerance) -> bool:
 
 
 # TODO - Add Test
-def OffsetTuple(inputTuple, offset) -> tuple:
+def OffsetTuple(inputTuple: tuple[int, int], offset: tuple[int, int]) -> tuple[int, int]:
     """Tuple Addition Funciton
 
     Args-
@@ -196,12 +202,11 @@ def Sign(num: int | float) -> int:
     return int(num / abs(num)) if num != 0 else 0
 
 
-# TODO - Actually Implement
 def ScaleToSize(
-    value,
-    newSize,
-    origSize=(1200, 800),
-) -> tuple:
+    value: tuple[int | float, int | float],
+    newSize: tuple[int | float, int | float],
+    origSize: tuple[int | float, int | float] = (1200, 800),
+) -> tuple[int | float, int | float]:
     """Scale a set of dimensions to a new screen size
 
     Args-
@@ -212,15 +217,24 @@ def ScaleToSize(
     Returns-
         tuple: New Dimensions
     """
-    return value
-    scaleX = newSize[0] / origSize[0]
-    scaleY = newSize[1] / origSize[1]
-    if isinstance(value, tuple):
-        return (value[0] * scaleX, value[1] * scaleY)
-    return value * scaleX
+    return (
+        ScaleValToSize(val=value[0], newSize=newSize, oldSize=origSize),
+        ScaleValToSize(val=value[1], newSize=newSize, oldSize=origSize),
+    )
 
 
-def ScaleTuple(tupleArg, scale) -> tuple:
+# TODO - Actually Implement
+def ScaleValToSize(
+    val: int | float,
+    newSize: tuple[int | float, int | float],
+    oldSize: tuple[int | float, int | float] = (1200, 800),
+) -> int | float:
+    return val
+
+
+def ScaleTuple(
+    tupleArg: tuple[int | float, int | float], scale: int | float
+) -> tuple[int | float, int | float]:
     """Mutiply scalar by tuple
 
     Args-

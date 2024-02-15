@@ -38,7 +38,7 @@ class MovementHandler:
         """X Coord of Destination"""
         return self.Dest[0]
 
-    def StartNewListedMotion(self, pointList, speed=10) -> None:
+    def StartNewListedMotion(self, pointList: list[tuple[int, int]], speed=10) -> None:
         """Start point for Motion
 
             Takes a list of positions and begins the animation of a sprite between them
@@ -55,7 +55,7 @@ class MovementHandler:
             self.InMotion: bool = True
             self.MaxMovementSpeed = speed
 
-    def MoveChar(self, obj, gameSpeed) -> None:
+    def MoveChar(self, obj, gameSpeed: int) -> None:
         """Update Location of Character
 
         Args-
@@ -107,7 +107,7 @@ class MovementHandler:
         if self.OnComplete is not None:
             self.OnComplete()
 
-    def CalcNewPosition(self, obj, gameSpeed) -> None:
+    def CalcNewPosition(self, obj, gameSpeed: int) -> None:
         if self.DstSet:
             self.MoveChar(obj=obj, gameSpeed=gameSpeed)
             if self.IsFinished(obj=obj):

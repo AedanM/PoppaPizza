@@ -4,8 +4,9 @@ from dataclasses import dataclass
 
 import pygame
 
-from Definitions import AssetLibrary, ColorDefines, CustomEvents, DefinedLocations
-from Engine import Color
+from Definitions import AssetLibrary, ColorDefines, CustomEvents
+from Definitions.DefinedLocations import LocationDefs
+from Engine import Color, Utils
 
 
 @dataclass
@@ -33,6 +34,14 @@ class Restaurant:
     def LogoPath(self) -> str | None:
         return AssetLibrary.LogoPaths[self.Logo] if self.Logo else None
 
+    def RequiresChange(self, mousePos, target) -> bool:
+        return (
+            Utils.PositionInTolerance(pos1=mousePos, pos2=self.LockerRoom.Location, tolerance=75)
+            and self.LockerRoom.Unlocked
+            and target not in restaurant.WorkerImageTypes  # type: ignore
+            and self.WorkerImageTypes
+        )
+
 
 RestaurantList = [
     Restaurant(
@@ -41,7 +50,7 @@ RestaurantList = [
         WorkerImageTypes=[],
         Logo=None,
         LockerRoom=LockerRoom(
-            Location=DefinedLocations.LocationDefs.LockerRoom0,
+            Location=LocationDefs.LockerRoom0,
             Color=ColorDefines.DarkRed,
             Price=0,
             Unlocked=True,
@@ -54,7 +63,7 @@ RestaurantList = [
         WorkerImageTypes=[AssetLibrary.ImageTypes.WorkerSuit],
         Logo=AssetLibrary.ImageTypes.LogoSuit,
         LockerRoom=LockerRoom(
-            Location=DefinedLocations.LocationDefs.LockerRoom1,
+            Location=LocationDefs.LockerRoom1,
             Color=ColorDefines.Blue,
             Price=0,
             Unlocked=True,
@@ -66,7 +75,7 @@ RestaurantList = [
         WorkerImageTypes=[AssetLibrary.ImageTypes.WorkerCoffee],
         Logo=AssetLibrary.ImageTypes.LogoCoffee,
         LockerRoom=LockerRoom(
-            Location=DefinedLocations.LocationDefs.LockerRoom2,
+            Location=LocationDefs.LockerRoom2,
             Color=ColorDefines.Yellow,
             Price=2500,
         ),
@@ -77,7 +86,7 @@ RestaurantList = [
         WorkerImageTypes=[AssetLibrary.ImageTypes.WorkerLuau],
         Logo=AssetLibrary.ImageTypes.LogoLuau,
         LockerRoom=LockerRoom(
-            Location=DefinedLocations.LocationDefs.LockerRoom3,
+            Location=LocationDefs.LockerRoom3,
             Color=ColorDefines.Pink,
             Price=5000,
         ),
@@ -88,7 +97,7 @@ RestaurantList = [
         WorkerImageTypes=[AssetLibrary.ImageTypes.WorkerCowboy],
         Logo=AssetLibrary.ImageTypes.LogoCowboy,
         LockerRoom=LockerRoom(
-            Location=DefinedLocations.LocationDefs.LockerRoom4,
+            Location=LocationDefs.LockerRoom4,
             Color=ColorDefines.Brown,
             Price=7500,
         ),
@@ -99,7 +108,7 @@ RestaurantList = [
         WorkerImageTypes=[AssetLibrary.ImageTypes.WorkerSafari],
         Logo=AssetLibrary.ImageTypes.LogoSafari,
         LockerRoom=LockerRoom(
-            Location=DefinedLocations.LocationDefs.LockerRoom5,
+            Location=LocationDefs.LockerRoom5,
             Color=ColorDefines.Green,
             Price=10000,
         ),

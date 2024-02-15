@@ -1,9 +1,7 @@
 @ECHO OFF
-black ..\..\PoppaPizza
 ECHO ~~~~~~~~~~~~
 >Cleanup.txt (
 vulture ..\..\PoppaPizza --min-confidence 40 
-prospector --profile .\Utilities\prospector.yaml
 )
 ECHO ~~~~~~~~~~~~
 code2flow -q --o .\Structure\UtilsCallGraph.png .
@@ -29,9 +27,13 @@ dot -Tpng packages.dot -o busyPackages.png -y
 dot -Tpng classes.dot -o busyClasses.png -y
 python ParseDot.py
 dot -Tpng packages.dot -o packages.png -y
+dot -Tpng enginePackages.dot -o enginePackages.png -x -y
+
 dot -Tpng classes.dot -o inheritanceStructure.png -x -y
 dot -Tpng classesAndMembers.dot -o classes.png -x -y
 
+
+del enginePackages.dot
 del packages.dot
 del classes.dot
 del classesAndMembers.dot

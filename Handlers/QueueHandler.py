@@ -1,13 +1,13 @@
 """Handler for Queueing Actions"""
 
-from Classes import GameBase
-from Definitions import AssetLibrary, CustomerDefs
+from Definitions import AssetLibrary
+from Definitions.CustomerDefs import CustomerStates, QueueStates
 from Engine import Utils
 
 QUEUEDISTANCE = 75
 
 
-def NeedsToQueue(movingSprite) -> bool:
+def NeedsToQueue(movingSprite, activeGame) -> bool:
     """Checks if the Customer needs to Queue
 
     Args-
@@ -18,20 +18,20 @@ def NeedsToQueue(movingSprite) -> bool:
     """
     dataObject = movingSprite.DataObject
     match dataObject.CurrentState:
-        case CustomerDefs.CustomerStates.Queuing:
-            if FirstInLine(movingSprite=movingSprite):
-                dataObject.CurrentState = CustomerDefs.CustomerStates.FirstInLine
+        case CustomerStates.Queuing:
+            if FirstInLine(movingSprite=movingSprite, activeGame=activeGame):
+                dataObject.CurrentState = CustomerStates.FirstInLine
                 return False
 
-            dataObject.CurrentState = CustomerDefs.CustomerStates.WalkingIn
-            return NeedsToQueue(movingSprite=movingSprite)
+            dataObject.CurrentState = CustomerStates.WalkingIn
+            return NeedsToQueue(movingSprite=movingSprite, activeGame=activeGame)
 
-        case CustomerDefs.CustomerStates.WalkingIn:
-            for sprite in GameBase.MasterGame.CharSpriteGroup:
+        case CustomerStates.WalkingIn:
+            for sprite in activeGame.CharSpriteGroup:
                 if (
                     sprite is not movingSprite
                     and sprite.ImageType in AssetLibrary.CustomerOutfits
-                    and sprite.DataObject.CurrentState in CustomerDefs.QueueStates
+                    and sprite.DataObject.CurrentState in QueueStates
                     and Utils.PositionInTolerance(
                         pos1=sprite.rect.center,
                         pos2=movingSprite.rect.center,
@@ -42,7 +42,7 @@ def NeedsToQueue(movingSprite) -> bool:
     return False
 
 
-def FirstInLine(movingSprite) -> bool:
+def FirstInLine(movingSprite, activeGame) -> bool:
     """Checks if the customer is first in Queue
 
     Args-
@@ -51,7 +51,7 @@ def FirstInLine(movingSprite) -> bool:
     Returns-
         bool: Is the Customer the first in the line
     """
-    for sprite in GameBase.MasterGame.CharSpriteGroup:
+    for sprite in activeGame.CharSpriteGroup:
         if (
             sprite is not movingSprite
             and sprite.rect.centerx == movingSprite.rect.centerx

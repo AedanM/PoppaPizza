@@ -5,7 +5,7 @@ import sys
 
 import pygame
 
-from Classes import GameBase, Matching, MiniGames, Stats
+from Classes import Matching, MiniGames, Stats
 from Definitions import AssetLibrary, CustomEvents
 from Generators import BackgroundPopulator, CharSpawner, Menus
 from Handlers import ClickHandler, ShopHandler, WorkerHandler
@@ -17,7 +17,7 @@ def MainEventHandler(activeGame) -> None:
     Args-
         activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
     """
-    RandomSpawnHandler()
+    RandomSpawnHandler(activeGame=activeGame)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -25,56 +25,56 @@ def MainEventHandler(activeGame) -> None:
         if event.type == pygame.USEREVENT:
             match (event):
                 case CustomEvents.UpdateBackground:
-                    BackgroundPopulator.SetupBackground(GameBase.MasterGame)
+                    BackgroundPopulator.SetupBackground(activeGame=activeGame)
                 case CustomEvents.NightCycle:
-                    DayNightEvent()
+                    DayNightEvent(activeGame=activeGame)
                 case CustomEvents.GameOver:
-                    GameOver()
+                    GameOver(activeGame=activeGame)
         elif event.type == pygame.MOUSEBUTTONDOWN:
             ClickHandler.MainMouseHandler(
-                mousePos=event.pos, lClick=(event.button == 1)
+                mousePos=event.pos, isLeftClick=(event.button == 1), activeGame=activeGame
             )
         elif event.type == pygame.KEYDOWN:
             match (event.key):
                 case pygame.K_a:
-                    GameBase.MasterGame.Mode = MiniGames.GameMode.TriviaGame
-                    MiniGames.MakeTriviaGame(activeGame=GameBase.MasterGame)
+                    activeGame.Mode = MiniGames.GameMode.TriviaGame
+                    MiniGames.MakeTriviaGame(activeGame=activeGame)
                 case pygame.K_m:
-                    GameBase.MasterGame.UserInventory.GetPaid(amount=1000.0)
+                    activeGame.UserInventory.GetPaid(amount=1000.0)
                 case pygame.K_t:
                     activeGame.Settings.ChangeClockMul(value=-1)
                 case pygame.K_y:
                     activeGame.Settings.ChangeClockMul(value=1)
                 case pygame.K_w:
-                    CharSpawner.BuyWorker()
+                    CharSpawner.BuyWorker(activeGame=activeGame)
                 case pygame.K_c:
-                    CharSpawner.CustomerSpawner(force=True)
+                    CharSpawner.CustomerSpawner(activeGame=activeGame, force=True)
                 case pygame.K_2:
                     activeGame.Settings.ToggleClock24()
                 case pygame.K_p:
                     activeGame.GameClock.SetRunning(not activeGame.GameClock.Running)
                 case pygame.K_ESCAPE:
-                    Menus.OptionsMenu()
+                    Menus.OptionsMenu(activeGame=activeGame)
                 case pygame.K_s:
-                    Menus.ShopMenu()
+                    Menus.ShopMenu(activeGame=activeGame)
                 case pygame.K_b:
-                    ShopHandler.BuyTables(selectedRow=True)
+                    ShopHandler.BuyTables(selectedRow=True, activeGame=activeGame)
                 case pygame.K_v:
-                    ShopHandler.BuyTables(selectedRow=False)
+                    ShopHandler.BuyTables(selectedRow=False, activeGame=activeGame)
 
 
-def DebugSetup() -> None:
+def DebugSetup(activeGame) -> None:
     """Sets up game in Debug Mode"""
-    CharSpawner.BuyWorker(free=True)
-    CharSpawner.BuyWorker(free=True)
+    CharSpawner.BuyWorker(free=True, activeGame=activeGame)
+    CharSpawner.BuyWorker(free=True, activeGame=activeGame)
 
 
-def RandomSpawnHandler() -> None:
+def RandomSpawnHandler(activeGame) -> None:
     """Handles Randomly Spawning Elements"""
-    CharSpawner.CustomerSpawner()
+    CharSpawner.CustomerSpawner(activeGame=activeGame)
 
 
-def DayNightEvent() -> None:
+def DayNightEvent(activeGame) -> None:
     """Logic behind a day transition
 
     Pays Rent
@@ -84,17 +84,17 @@ def DayNightEvent() -> None:
     Resets Background
 
     """
-    ShopHandler.PayUpkeep()
-    if GameBase.MasterGame.UserInventory.Money > 0:
-        Menus.DayTransistion()
+    ShopHandler.PayUpkeep(activeGame=activeGame)
+    if activeGame.UserInventory.Money > 0:
+        Menus.DayTransistion(activeGame=activeGame)
     else:
-        GameOver()
-    ResetSprites(activeGame=GameBase.MasterGame)
-    Stats.AllStats[f"Day {GameBase.MasterGame.GameClock.Day}"] = copy.deepcopy(
-        GameBase.MasterGame.UserInventory.Statistics
+        GameOver(activeGame=activeGame)
+    ResetSprites(activeGame=activeGame)
+    Stats.AllStats[f"Day {activeGame.GameClock.Day}"] = copy.deepcopy(
+        activeGame.UserInventory.Statistics
     )
-    Stats.PrevDay = copy.deepcopy(GameBase.MasterGame.UserInventory.Statistics)
-    BackgroundPopulator.SetupBackground()
+    Stats.PrevDay = copy.deepcopy(activeGame.UserInventory.Statistics)
+    BackgroundPopulator.SetupBackground(activeGame=activeGame)
 
 
 def ResetSprites(activeGame) -> None:
@@ -113,10 +113,10 @@ def ResetSprites(activeGame) -> None:
             WorkerHandler.DailyReset(sprite=sprite)
 
 
-def GameOver() -> None:
+def GameOver(activeGame) -> None:
     """Logic for End of Game"""
-    GameBase.MasterGame.Running = False
-    Menus.GameOverMenu()
+    activeGame.Running = False
+    Menus.GameOverMenu(activeGame=activeGame)
 
 
 def TriviaEventHandler(activeGame) -> None:
@@ -125,7 +125,7 @@ def TriviaEventHandler(activeGame) -> None:
             pygame.quit()
             sys.exit()
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            ClickHandler.TriviaMouseHandler(mousePos=event.pos)
+            ClickHandler.TriviaMouseHandler(mousePos=event.pos, activeGame=activeGame)
         elif event.type == pygame.KEYDOWN:
             match (event.key):
                 case pygame.K_a:

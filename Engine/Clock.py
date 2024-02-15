@@ -61,9 +61,7 @@ class Clock:
         """Update the clock and wait for next frame"""
         if self.Running:
             self.ClockMul = clockSpeed
-            self.Second += math.floor(
-                (pygame.time.get_ticks() - self.LastTime) * self.ClockMul
-            )
+            self.Second += math.floor((pygame.time.get_ticks() - self.LastTime) * self.ClockMul)
             self.LastTime = pygame.time.get_ticks()
 
             if self.Hour >= 24:

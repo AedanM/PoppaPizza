@@ -1,19 +1,20 @@
 """Populate Background with Elements"""
 
-from Classes import GameBase, Matching, Sprite
-from Definitions import AssetLibrary, ColorDefines, DefinedLocations, Restaurants
+from Classes import Matching, Sprite
+from Definitions import AssetLibrary, ColorDefines, Restaurants
+from Definitions.DefinedLocations import LocationDefs, SeatingPlan
 from Engine import SpriteObjects, Utils
 
 # TODO - Stop Recalcing Tables
 
 
-def AddTables(activeGame=GameBase.MasterGame) -> None:
+def AddTables(activeGame) -> None:
     """Places tables as they are unlocked
 
     Args-
         activeGame (Game, optional): Current Game being used. Defaults to Game.MasterGame.
     """
-    for location in DefinedLocations.SeatingPlan.GenerateTablePlaces():
+    for location in SeatingPlan.GenerateTablePlaces():
         table = Sprite.BackgroundElementSprite(
             position=location,
             path=AssetLibrary.ImagePath.TablePath,
@@ -24,7 +25,7 @@ def AddTables(activeGame=GameBase.MasterGame) -> None:
         activeGame.BackgroundSpriteGroup.add(table)
 
 
-def AddLockerRooms(activeGame=GameBase.MasterGame) -> None:
+def AddLockerRooms(activeGame) -> None:
     """Generate and Add Locker Rooms based on locked status
 
     Args-
@@ -32,23 +33,19 @@ def AddLockerRooms(activeGame=GameBase.MasterGame) -> None:
     """
     for restaurant in Restaurants.RestaurantList:
         lockerRoom = restaurant.LockerRoom
-        Matching.RemoveButtonFromLocation(
-            activeGame=activeGame, location=lockerRoom.Location
-        )
+
+        Matching.RemoveButtonFromLocation(activeGame=activeGame, location=lockerRoom.Location)
+
         if lockerRoom.Unlocked:
             color = lockerRoom.Color
             path = restaurant.LogoPath
             maxSize = 100
-            offset = Utils.ScaleToSize(
-                value=(-50, -50), newSize=DefinedLocations.LocationDefs.ScreenSize
-            )
+            offset = Utils.ScaleToSize(value=(-50, -50), newSize=LocationDefs.ScreenSize)
         else:
             path = AssetLibrary.ImagePath.LogoLockedPath
             color = ColorDefines.Grey
             maxSize = 180
-            offset = Utils.ScaleToSize(
-                value=(-90, -50), newSize=DefinedLocations.LocationDefs.ScreenSize
-            )
+            offset = Utils.ScaleToSize(value=(-90, -50), newSize=LocationDefs.ScreenSize)
         logo = None
         if restaurant.LogoPath:
             logo = Sprite.BackgroundElementSprite(
@@ -71,7 +68,7 @@ def AddLockerRooms(activeGame=GameBase.MasterGame) -> None:
                 backColor=ColorDefines.CautionTapeYellow,
                 color=ColorDefines.Black,
                 enabled=lockerRoom.Price < activeGame.UserInventory.Money,
-                activeGame=GameBase.MasterGame,
+                activeGame=activeGame,
             )
 
 
@@ -83,15 +80,13 @@ def UnlockLockerRooms(activeGame) -> None:
     """
     for button in activeGame.ButtonList:
         matchingRestaurant = [
-            x
-            for x in Restaurants.RestaurantList
-            if x.LockerRoom.Location == button.position
+            x for x in Restaurants.RestaurantList if x.LockerRoom.Location == button.position
         ][0]
         if matchingRestaurant.LockerRoom.Unlocked:
             activeGame.ButtonList.remove(button)
 
 
-def SetupBackground(activeGame=GameBase.MasterGame) -> None:
+def SetupBackground(activeGame) -> None:
     """Regenerates the Background Elements
 
     Args-

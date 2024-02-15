@@ -53,9 +53,7 @@ class TriviaGame(RoundBasedGame.RoundBasedGame):
             ),
             font=Writing.DefinedFonts["Trivia Game"],
         ),
-        "Minor Text": Writing.TextBox(
-            center=DefinedLocations.LocationDefs.TriviaMinorText
-        ),
+        "Minor Text": Writing.TextBox(center=DefinedLocations.LocationDefs.TriviaMinorText),
     }
 
     def __init__(self, rounds, activeGame) -> None:
@@ -63,8 +61,8 @@ class TriviaGame(RoundBasedGame.RoundBasedGame):
         self.GameState = GameStates.Loading
         self.BackgroundColor = ColorDefines.TriviaBlue
         questionThread = threading.Thread(target=self.GetQuestions)
-        self.StartingCash = activeGame.UserInventory.Money
-        self.CurrentCash = activeGame.UserInventory.Money
+        self.StartingCash = activeGame.UserInventory.Money  # type:ignore
+        self.CurrentCash = activeGame.UserInventory.Money  # type:ignore
         questionThread.start()
 
     def UpdateStateMachine(self, inputStr) -> None:
@@ -88,9 +86,7 @@ class TriviaGame(RoundBasedGame.RoundBasedGame):
             case other:
                 answer = self.QuestionList[self.CurrentRound - 1]["Correct Answer"]
                 self.GameState = (
-                    GameStates.CorrectAnswer
-                    if other == answer
-                    else GameStates.IncorrectAnswer
+                    GameStates.CorrectAnswer if other == answer else GameStates.IncorrectAnswer
                 )
         if self.CurrentRound > self.Rounds and self.GameState != GameStates.Exit:
             self.GameState = GameStates.End
@@ -107,18 +103,14 @@ class TriviaGame(RoundBasedGame.RoundBasedGame):
             questionDict["Question"] = question["question"]
             questionDict["Difficulty"] = question["difficulty"]
             questionDict["Category"] = question["category"]
-            questionDict["Answers"] = question["incorrect_answers"] + [
-                question["correct_answer"]
-            ]
+            questionDict["Answers"] = question["incorrect_answers"] + [question["correct_answer"]]
             random.shuffle(questionDict["Answers"])
             questionDict["Correct Answer"] = question["correct_answer"]
             self.QuestionList.append(questionDict)
 
     def PopulateButtons(self, textList) -> None:
         self.MasterSpriteGroup.empty()
-        for textBox in [
-            value for key, value in self.DisplayedText.items() if "Button" in key
-        ]:
+        for textBox in [value for key, value in self.DisplayedText.items() if "Button" in key]:
             textBox.Text = ""
         answerLocations = DefinedLocations.LocationDefs.Answers(num=len(textList))
         for idx, text in enumerate(textList):
@@ -138,9 +130,7 @@ class TriviaGame(RoundBasedGame.RoundBasedGame):
 
     def StartGame(self) -> None:
         self.DisplayedText["Main Text L1"].Text = "Press to Begin"
-        self.PopulateButtons(
-            textList=["Begin" if self.QuestionList else "Loading Questions"]
-        )
+        self.PopulateButtons(textList=["Begin" if self.QuestionList else "Loading Questions"])
 
     def PlayOrSkip(self) -> None:
         question = self.QuestionList[self.CurrentRound - 1]
@@ -208,8 +198,8 @@ class TriviaGame(RoundBasedGame.RoundBasedGame):
         self.PopulateButtons(textList=["Exit"])
         self.GameState = GameStates.Wait
 
-    def StartRound(self) -> None:
-        super().StartRound()
+    def StartRound(self, activeGame) -> None:
+        super().StartRound(activeGame=activeGame)
 
         match self.GameState:
             case GameStates.Loading | GameStates.Start:
@@ -225,15 +215,15 @@ class TriviaGame(RoundBasedGame.RoundBasedGame):
             case GameStates.End:
                 self.Summary()
             case GameStates.Exit:
-                GameBase.MasterGame.ClearMiniGame()
+                activeGame.ClearMiniGame()
             case other:
                 pass
 
         for text in self.DisplayedText.values():
             text.Rect = text.WriteToScreen(activeScreen=self.Screen)
 
-    def PlayGame(self) -> None:
-        super().PlayGame()
+    def PlayGame(self,activeGame) -> None:
+        super().PlayGame(activeGame=activeGame)
 
 
 def MakeTriviaGame(activeGame) -> None:
@@ -249,10 +239,10 @@ class DiceGame(RoundBasedGame.RoundBasedGame):
 
     def __init__(self, rounds, dice, activeGame) -> None:
         super().__init__(rounds=rounds, activeGame=activeGame)
-        self.Dice = math.floor(Utils.Bind(val=dice, inRange=[0, self.MaxDice]))
+        self.Dice = math.floor(Utils.Bind(val=dice, inRange=(0, self.MaxDice)))
 
-    def StartRound(self) -> None:
-        super().StartRound()
+    def StartRound(self,activeGame) -> None:
+        super().StartRound(activeGame=activeGame)
 
         markToBeat = random.randint(self.DiceBounds[0], self.DiceBounds[1])
         self.DisplayedText["Main Text"].Text = f"Mark to Beat is {markToBeat}"
@@ -262,9 +252,7 @@ class DiceGame(RoundBasedGame.RoundBasedGame):
         diceSum = self.MakeDiceRoll(numDice=numDice)
 
     def GetDiceCount(self) -> int:
-        numDice = input(
-            f"How many dice would you like to use? ({self.Dice} remaining) "
-        )
+        numDice = input(f"How many dice would you like to use? ({self.Dice} remaining) ")
         while not numDice.isnumeric() or int(numDice) > self.Dice:
             numDice = input(f"Invalid Choice: ")
         return int(numDice)
@@ -276,8 +264,6 @@ class DiceGame(RoundBasedGame.RoundBasedGame):
             diceTotal += diceRoll
             print(f"Die {i} rolled {diceRoll}")
         print(
-            f"Total for round is {diceTotal}"
-            if diceTotal != 0
-            else "Round is forfeit without dice"
+            f"Total for round is {diceTotal}" if diceTotal != 0 else "Round is forfeit without dice"
         )
         return diceTotal

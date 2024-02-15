@@ -4,7 +4,8 @@ from dataclasses import dataclass
 
 import pygame
 
-from Definitions import AssetLibrary, ColorDefines, DefinedLocations
+from Definitions import AssetLibrary, ColorDefines
+from Definitions.DefinedLocations import LocationDefs
 from Engine import Color, Utils
 
 pygame.font.init()
@@ -13,15 +14,9 @@ DefinedFonts = {
     "Trivia Game": pygame.font.Font(
         filename=pygame.font.match_font("century schoolbook", True), size=36
     ),
-    "Datetime": pygame.font.Font(
-        filename=pygame.font.match_font("book antiqua"), size=24
-    ),
-    "Buttons": pygame.font.Font(
-        filename=pygame.font.match_font("gill sans", True), size=24
-    ),
-    "Default": pygame.font.Font(
-        filename=pygame.font.match_font("century schoolbook"), size=24
-    ),
+    "Datetime": pygame.font.Font(filename=pygame.font.match_font("book antiqua"), size=24),
+    "Buttons": pygame.font.Font(filename=pygame.font.match_font("gill sans", True), size=24),
+    "Default": pygame.font.Font(filename=pygame.font.match_font("century schoolbook"), size=24),
     "Trivia Answers": pygame.font.Font(
         filename=pygame.font.match_font("century schoolbook"), size=48
     ),
@@ -115,9 +110,7 @@ def WriteButtonLabel(activeGame) -> None:
     """
     for button in activeGame.ButtonList:
         CreateTextBox(
-            locationTopLeft=Utils.OffsetTuple(
-                inputTuple=button.position, offset=(-45, -12)
-            ),
+            locationTopLeft=Utils.OffsetTuple(inputTuple=button.position, offset=(-45, -12)),
             text=button.text,
             foreColor=ColorDefines.Black,
             font=DefinedFonts["Buttons"],
@@ -127,9 +120,7 @@ def WriteButtonLabel(activeGame) -> None:
 
 def WriteKitchenLabel(activeGame) -> None:
     kitchenRect = [
-        x
-        for x in activeGame.ForegroundSpriteGroup
-        if x.rect.center == DefinedLocations.LocationDefs.LockerRoom0
+        x for x in activeGame.ForegroundSpriteGroup if x.rect.center == LocationDefs.LockerRoom0
     ][0].rect
     numWorkers = len(
         [
@@ -143,9 +134,7 @@ def WriteKitchenLabel(activeGame) -> None:
     kitchenText = f"{numWorkers} Worker{'s' if numWorkers != 1 else ''} inside"
 
     CreateTextBox(
-        locationTopLeft=Utils.OffsetTuple(
-            inputTuple=DefinedLocations.LocationDefs.LockerRoom0, offset=(-100, 0)
-        ),
+        locationTopLeft=Utils.OffsetTuple(inputTuple=LocationDefs.LockerRoom0, offset=(-100, 0)),
         text=kitchenText,
         foreColor=ColorDefines.White,
         font=DefinedFonts["Default"],

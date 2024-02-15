@@ -1,4 +1,5 @@
-from Definitions import AssetLibrary, CustomerDefs
+from Definitions import AssetLibrary
+from Definitions.CustomerDefs import CustomerStates
 from Engine import MovementHandler
 from Handlers import QueueHandler
 
@@ -19,12 +20,9 @@ class CharacterMovementHandler(MovementHandler.MovementHandler):
             obj (Sprite): Moving Sprite
         """
         if activeGame.GameClock.Running:
-            if (
-                obj.ImageType in AssetLibrary.CustomerOutfits
-                and QueueHandler.NeedsToQueue(movingSprite=obj)
+            if obj.ImageType in AssetLibrary.CustomerOutfits and QueueHandler.NeedsToQueue(
+                movingSprite=obj, activeGame=activeGame
             ):
-                obj.DataObject.CurrentState = CustomerDefs.CustomerStates.Queuing
+                obj.DataObject.CurrentState = CustomerStates.Queuing
             else:
-                super().CalcNewPosition(
-                    obj=obj, gameSpeed=activeGame.GameClock.ClockMul
-                )
+                super().CalcNewPosition(obj=obj, gameSpeed=activeGame.GameClock.ClockMul)

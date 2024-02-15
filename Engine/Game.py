@@ -11,8 +11,9 @@ class Game:
     Running: bool = True
     BackgroundColor: Color.Color = Color.Color(hexstring="#000000")
     Lighting: LightingEngine.LightingEngine = None  # type: ignore
+    Screen: pygame.Surface = None  # type: ignore
 
-    def __init__(self, size, name, activateScreen=True) -> None:
+    def __init__(self, size: tuple[int, int], name: str, activateScreen=True) -> None:
         pygame.init()
         self.StartTime = pygame.time.get_ticks()
         self.ShowScreen = activateScreen
@@ -20,7 +21,7 @@ class Game:
         if self.ShowScreen:
             self.StartScreen(size=size)
 
-    def StartScreen(self, size) -> None:
+    def StartScreen(self, size: tuple[int, int]) -> None:
         """Begins the screen and sets size
 
         Args-

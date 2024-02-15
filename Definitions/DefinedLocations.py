@@ -200,7 +200,6 @@ class DefinedLocations:
 
 
 LocationDefs = DefinedLocations()
-TablePlaces = []
 
 
 class SeatingPlanClass:

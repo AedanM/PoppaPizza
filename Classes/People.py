@@ -3,8 +3,9 @@
 import random
 from dataclasses import dataclass
 
-from Classes import GameBase, Jobs, Sprite
-from Definitions import AssetLibrary, CustomerDefs, DefinedLocations
+from Classes import Jobs, Sprite
+from Definitions import AssetLibrary, CustomerDefs
+from Definitions.DefinedLocations import LocationDefs
 from Engine import Person, Utils
 
 IDCOUNT = 1
@@ -19,8 +20,8 @@ class Worker(Person.Person):
     @classmethod
     def CreateWorker(
         cls,
-        startLocation=DefinedLocations.LocationDefs.WorkerSpawn,
-        activeGame=GameBase.MasterGame,
+        activeGame,
+        startLocation=LocationDefs.WorkerSpawn,
     ) -> tuple:
         """Create and Spawn in Worker and Worker Sprite
 
@@ -33,9 +34,7 @@ class Worker(Person.Person):
         """
         worker = cls.Create()
         workerSprite = Sprite.CharImageSprite(
-            center=Utils.OffsetTuple(
-                inputTuple=startLocation, offset=(0, random.randint(-500, 0))
-            ),
+            center=Utils.OffsetTuple(inputTuple=startLocation, offset=(0, random.randint(-500, 0))),
             path=AssetLibrary.ImagePath.WorkerSuitPath,
             objID=worker.IdNum,
         )
@@ -56,8 +55,8 @@ class Customer(Person.Person):
     @classmethod
     def CreateCustomer(
         cls,
-        startLocation=DefinedLocations.LocationDefs.CustomerSpawn,
-        activeGame=GameBase.MasterGame,
+        activeGame,
+        startLocation=LocationDefs.CustomerSpawn,
         imageType=AssetLibrary.ImageTypes.CustomerSuit,
     ) -> tuple:
         """Creates a Customer nad Customer Sprite
@@ -76,7 +75,7 @@ class Customer(Person.Person):
         customerSprite = Sprite.CharImageSprite(
             position=Utils.PositionRandomVariance(
                 position=startLocation,
-                percentVarianceTuple=(0.0005, 0.1),
+                percentVariance=(0.0005, 0.1),
                 screenSize=activeGame.ScreenSize,
             ),
             path=AssetLibrary.PathLookup(imageType),

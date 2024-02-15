@@ -2,8 +2,8 @@
 
 # pylint: disable=invalid-name
 
-from Testing import TestClass as TC
 from Engine import Utils
+from Testing import TestClass as TC
 
 
 def test_checkDecimalPercent() -> None:
@@ -36,9 +36,7 @@ def test_InRandomVarianceTest() -> None:
         TC.TestClass(ParamList=[10, -50], Result=(5, 15)),
     ]
     for test in testObjects:
-        testVal = Utils.InRandomVariance(
-            num=test.ParamList[0], percentVariance=test.ParamList[1]
-        )
+        testVal = Utils.InRandomVariance(num=test.ParamList[0], percentVariance=test.ParamList[1])
         try:
             assert testVal >= test.Result[0] and testVal <= test.Result[1]
         except AssertionError:
@@ -48,23 +46,17 @@ def test_InRandomVarianceTest() -> None:
 
 def test_PositionRandomVarianceTest() -> None:
     testObjects = [
-        TC.TestClass(
-            ParamList=[(500, 500), (-10, -10), (1000, 1000)], Result=(400, 600)
-        ),
+        TC.TestClass(ParamList=[(500, 500), (-10, -10), (1000, 1000)], Result=(400, 600)),
         TC.TestClass(ParamList=[(500, 500), (10, 10), (1000, 1000)], Result=(400, 600)),
-        TC.TestClass(
-            ParamList=[(500, 500), (0.1, 0.1), (1000, 1000)], Result=(400, 600)
-        ),
-        TC.TestClass(
-            ParamList=[(500, 500), (-0.1, -0.1), (1000, 1000)], Result=(400, 600)
-        ),
+        TC.TestClass(ParamList=[(500, 500), (0.1, 0.1), (1000, 1000)], Result=(400, 600)),
+        TC.TestClass(ParamList=[(500, 500), (-0.1, -0.1), (1000, 1000)], Result=(400, 600)),
         TC.TestClass(ParamList=[(0, 0), (0.1, 0.1), (1000, 1000)], Result=(-100, 100)),
     ]
     for test in testObjects:
         try:
             testVal = Utils.PositionRandomVariance(
                 position=test.ParamList[0],
-                percentVarianceTuple=test.ParamList[1],
+                percentVariance=test.ParamList[1],
                 screenSize=test.ParamList[2],
             )
             assert testVal[0] >= test.Result[0] and testVal[1] <= test.Result[1]
@@ -202,9 +194,7 @@ def test_ResizeMaxLength() -> None:
     ]
     for test in testObjs:
         try:
-            testVal = Utils.ResizeMaxLength(
-                dim=test.ParamList[0], maxSide=test.ParamList[1]
-            )
+            testVal = Utils.ResizeMaxLength(dim=test.ParamList[0], maxSide=test.ParamList[1])
             assert testVal == test.Result
         except AssertionError:
             print(test, testVal)

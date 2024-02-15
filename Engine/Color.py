@@ -6,13 +6,11 @@ import numpy as np
 from Engine import Utils
 
 
-def RGB_to_HSV(red, green, blue) -> tuple:
+def RGB_to_HSV(red: int, green: int, blue: int) -> tuple:
     red_percentage = red / float(255)
     green_percentage = green / float(255)
     blue_percentage = blue / float(255)
-    color_hsv_percentage = colorsys.rgb_to_hsv(
-        red_percentage, green_percentage, blue_percentage
-    )
+    color_hsv_percentage = colorsys.rgb_to_hsv(red_percentage, green_percentage, blue_percentage)
 
     h = round(255 * color_hsv_percentage[0])
     s = round(255 * color_hsv_percentage[1])
@@ -30,7 +28,14 @@ class Color:
     V: int
 
     def __init__(
-        self, h=None, s=None, v=None, r=None, g=None, b=None, hexstring=None
+        self,
+        h: int = None,  # type: ignore
+        s: int = None,  # type: ignore
+        v: int = None,  # type: ignore
+        r: int = None,  # type: ignore
+        g: int = None,  # type: ignore
+        b: int = None,  # type: ignore
+        hexstring: str = None,  # type: ignore
     ) -> None:
         """Creates a color from HSV or RGB input"""
         try:
@@ -43,9 +48,9 @@ class Color:
             elif hexstring is not None:
                 hexstring = hexstring.replace("0x", "").replace("#", "")
                 self.H, self.S, self.V = RGB_to_HSV(
-                    red=int(hexstring[0:1], 16) * (256 / 16),
-                    green=int(hexstring[2:3], 16) * (256 / 16),
-                    blue=int(hexstring[4:5], 16) * (256 / 16),
+                    red=int(int(hexstring[0:1], 16) * (256 / 16)),
+                    green=int(int(hexstring[2:3], 16) * (256 / 16)),
+                    blue=int(int(hexstring[4:5], 16) * (256 / 16)),
                 )
             else:
                 raise Exception("Invalid Inputs")
@@ -62,9 +67,9 @@ class Color:
         return (self.H, self.S, self.V)
 
     @property
-    def RGB(self) -> tuple[int, ...]:
+    def RGB(self) -> tuple[int, int, int]:
         """RGB Representation"""
-        return tuple(
+        rawColor = tuple(
             round(i * 255)
             for i in colorsys.hsv_to_rgb(
                 float(
@@ -75,6 +80,7 @@ class Color:
                 float(self.V) / 255,
             )
         )
+        return (rawColor[0], rawColor[1], rawColor[2])
 
     @property
     def BGR(self) -> tuple[int, int, int]:

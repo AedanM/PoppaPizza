@@ -6,6 +6,26 @@ with open("packages.dot", "r", encoding="utf8") as fp:
         if "->" in line:
             importer = line.split(" ")[0].replace('"', "")
             imported = line.split(" ")[2].replace('"', "")
+            if "." in importer and "." in imported and "Engine" in importer:
+                docString.append(line)
+        elif "[" in line:
+            importer = line.split(" ")[0].replace('"', "")
+            if "." in importer and "Engine" in importer:
+                docString.append(line)
+        else:
+            if "rankdir" in line:
+                line = line.replace("rankdir=BT", "rankdir=TB")
+            docString.append(line)
+with open("enginePackages.dot", "w", encoding="utf8") as fp:
+    fp.writelines(docString)
+
+
+docString = []
+with open("packages.dot", "r", encoding="utf8") as fp:
+    for line in fp:
+        if "->" in line:
+            importer = line.split(" ")[0].replace('"', "")
+            imported = line.split(" ")[2].replace('"', "")
             if (
                 "." in importer
                 and "." in imported
@@ -65,9 +85,7 @@ with open("classesAndMembers.dot", "r", encoding="utf8") as fp:
                 try:
                     importer = line.split(" ")[0].replace('"', "")
                     imported = line.split(" ")[2].replace('"', "")
-                    if importer in allowed and (
-                        imported in allowed or "font" in imported
-                    ):
+                    if importer in allowed and (imported in allowed or "font" in imported):
                         docString.append(line)
                 except:
                     pass
