@@ -101,7 +101,10 @@ def InPercentTolerance(num1: int | float, num2: int | float, tolerance: int | fl
     Returns-
         bool: Status of Tolerance
     """
+    if num1 == 0:
+        return num1 == num2
     tolerance = CheckDecimalPercent(val=tolerance)
+
     seperation = abs((num1 - num2) / num1)
     return seperation <= abs(tolerance)
 
@@ -203,10 +206,10 @@ def Sign(num: int | float) -> int:
 
 
 def ScaleToSize(
-    value: tuple[int | float, int | float],
-    newSize: tuple[int | float, int | float],
-    origSize: tuple[int | float, int | float] = (1200, 800),
-) -> tuple[int | float, int | float]:
+    value: tuple[int, int],
+    newSize: tuple[int, int],
+    origSize: tuple[int, int] = (1200, 800),
+) -> tuple[int, int]:
     """Scale a set of dimensions to a new screen size
 
     Args-
@@ -225,10 +228,10 @@ def ScaleToSize(
 
 # TODO - Actually Implement
 def ScaleValToSize(
-    val: int | float,
-    newSize: tuple[int | float, int | float],
-    oldSize: tuple[int | float, int | float] = (1200, 800),
-) -> int | float:
+    val: int,
+    newSize: tuple[int, int],
+    oldSize: tuple[int, int] = (1200, 800),
+) -> int:
     return val
 
 

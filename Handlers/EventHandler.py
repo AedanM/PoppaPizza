@@ -1,14 +1,13 @@
 """Handlers for all events"""
 
-import copy
 import sys
 
 import pygame
 
-from Classes import Matching, MiniGames, Stats
-from Definitions import AssetLibrary, CustomEvents
-from Generators import BackgroundPopulator, CharSpawner, Menus
-from Handlers import ClickHandler, ShopHandler, WorkerHandler
+from Classes import MiniGames
+from Definitions import CustomEvents
+from Generators import CharSpawner, Menus
+from Handlers import ClickHandler, ShopHandler
 
 
 def MainEventHandler(activeGame) -> None:
@@ -25,11 +24,11 @@ def MainEventHandler(activeGame) -> None:
         if event.type == pygame.USEREVENT:
             match (event):
                 case CustomEvents.UpdateBackground:
-                    BackgroundPopulator.SetupBackground(activeGame=activeGame)
+                    CustomEvents.UpdateBackgroundEvent(activeGame=activeGame)
                 case CustomEvents.NightCycle:
-                    DayNightEvent(activeGame=activeGame)
+                    CustomEvents.DayNightEvent(activeGame=activeGame)
                 case CustomEvents.GameOver:
-                    GameOver(activeGame=activeGame)
+                    CustomEvents.GameOverEvent(activeGame=activeGame)
         elif event.type == pygame.MOUSEBUTTONDOWN:
             ClickHandler.MainMouseHandler(
                 mousePos=event.pos, isLeftClick=(event.button == 1), activeGame=activeGame
@@ -56,7 +55,9 @@ def MainEventHandler(activeGame) -> None:
                 case pygame.K_ESCAPE:
                     Menus.OptionsMenu(activeGame=activeGame)
                 case pygame.K_s:
-                    Menus.ShopMenu(activeGame=activeGame)
+                    activeGame.SaveGame()
+                case pygame.K_l:
+                    print(activeGame.LoadGame())
                 case pygame.K_b:
                     ShopHandler.BuyTables(selectedRow=True, activeGame=activeGame)
                 case pygame.K_v:
@@ -72,51 +73,6 @@ def DebugSetup(activeGame) -> None:
 def RandomSpawnHandler(activeGame) -> None:
     """Handles Randomly Spawning Elements"""
     CharSpawner.CustomerSpawner(activeGame=activeGame)
-
-
-def DayNightEvent(activeGame) -> None:
-    """Logic behind a day transition
-
-    Pays Rent
-    Loads DayTransition Menu
-    Resets Sprites
-    Updates Stats
-    Resets Background
-
-    """
-    ShopHandler.PayUpkeep(activeGame=activeGame)
-    if activeGame.UserInventory.Money > 0:
-        Menus.DayTransistion(activeGame=activeGame)
-    else:
-        GameOver(activeGame=activeGame)
-    ResetSprites(activeGame=activeGame)
-    Stats.AllStats[f"Day {activeGame.GameClock.Day}"] = copy.deepcopy(
-        activeGame.UserInventory.Statistics
-    )
-    Stats.PrevDay = copy.deepcopy(activeGame.UserInventory.Statistics)
-    BackgroundPopulator.SetupBackground(activeGame=activeGame)
-
-
-def ResetSprites(activeGame) -> None:
-    """Reset all Sprites
-
-        Kill Customer Sprites
-        Reset Workers to Kitchen
-
-    Args-
-        activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
-    """
-    for sprite in activeGame.CharSpriteGroup:
-        if sprite.ImageType in AssetLibrary.CustomerOutfits:
-            Matching.RemoveObjFromSprite(activeGame=activeGame, targetSprite=sprite)
-        elif sprite.ImageType in AssetLibrary.WorkerOutfits:
-            WorkerHandler.DailyReset(sprite=sprite)
-
-
-def GameOver(activeGame) -> None:
-    """Logic for End of Game"""
-    activeGame.Running = False
-    Menus.GameOverMenu(activeGame=activeGame)
 
 
 def TriviaEventHandler(activeGame) -> None:

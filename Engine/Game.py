@@ -1,7 +1,8 @@
+from typing import Any
+
 import pygame
 
-from Engine import Clock, Color, LightingEngine
-
+from Engine import Clock, Color, LightingEngine, SaveHandler
 
 class Game:
     Name: str
@@ -53,3 +54,28 @@ class Game:
             tuple: tuple of current Size
         """
         return (self.Screen.get_width(), self.Screen.get_height())
+
+    @property
+    def HasGameOver(self) -> str:
+        return ""
+
+    def SaveGame(self) -> bool:
+        return SaveHandler.SaveGame(saveObj=self.MakeSaveObj(), path="SaveGame.sav")
+
+    def LoadGame(self) -> bool:
+        status, saveDict = SaveHandler.LoadGame(path="SaveGame.sav")
+        if status:
+            self.LoadSaveObj(saveDict=saveDict)
+        return status
+
+    def MakeSaveObj(self) -> dict[str, Any]:
+        saveDict = {
+            # "SpriteGroups": self.SpriteGroups,
+            "Screen Size": self.ScreenSize,
+            "Game Clock": self.GameClock.UnixTime,
+        }
+        return saveDict
+
+    def LoadSaveObj(self, saveDict):
+        self.StartScreen(saveDict["Screen Size"])
+        self.GameClock.SetUnixTime(time=saveDict["Game Clock"])

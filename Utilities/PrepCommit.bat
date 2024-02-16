@@ -1,40 +1,51 @@
 @ECHO OFF
+>PrepOutput.txt (
 ECHO ~~~~~~~~~~~~
->Cleanup.txt (
+ECHO ~Vulture~~~~
 vulture ..\..\PoppaPizza --min-confidence 40 
-)
 ECHO ~~~~~~~~~~~~
+ECHO ~code2Flow~~
+
 code2flow -q --o .\Structure\UtilsCallGraph.png .
-del .\Structure\UtilsCallGraph.gv
 code2flow -q --o .\Structure\ClassesCallGraph.png ..\Classes
-del .\Structure\ClassesCallGraph.gv
 code2flow -q --o .\Structure\HandlersCallGraph.png ..\Handlers
-del .\Structure\HandlersCallGraph.gv
 code2flow -q --o .\Structure\DefinitionsCallGraph.png ..\Definitions
-del .\Structure\DefinitionsCallGraph.gv
 code2flow -q --o .\Structure\GeneratorsCallGraph.png ..\Generators
-del .\Structure\GeneratorsCallGraph.gv
 code2flow -q --o .\Structure\EngineCallGraph.png ..\Engine
-del .\Structure\EngineCallGraph.gv
 code2flow -q --o .\Structure\MainCallGraph.png ..
-del .\Structure\MainCallGraph.gv
+
 ECHO ~~~~~~~~~~~~
-pyreverse --source-roots ..\..\PoppaPizza ..\..\PoppaPizza
+ECHO ~PyReverse~~
+pyreverse --source-roots ..\..\PoppaPizza ..\..\PoppaPizza --ignore Utilities
+
 move packages.dot ..\..\PoppaPizza\Utilities\Structure
 move classes.dot ..\..\PoppaPizza\Utilities\Structure
+
 cd .\Structure
+
 dot -Tpng packages.dot -o busyPackages.png -y
 dot -Tpng classes.dot -o busyClasses.png -y
+
 python ParseDot.py
+
 dot -Tpng packages.dot -o packages.png -y
 dot -Tpng enginePackages.dot -o enginePackages.png -x -y
-
 dot -Tpng classes.dot -o inheritanceStructure.png -x -y
 dot -Tpng classesAndMembers.dot -o classes.png -x -y
 
+ECHO ~~~~~~~~~~~~
+ECHO ~Cleanup~~~~
+del UtilsCallGraph.gv
+del ClassesCallGraph.gv
+del HandlersCallGraph.gv
+del DefinitionsCallGraph.gv
+del GeneratorsCallGraph.gv
+del EngineCallGraph.gv
+del MainCallGraph.gv
 
 del enginePackages.dot
 del packages.dot
 del classes.dot
 del classesAndMembers.dot
 ECHO ~~~~~~~~~~~~
+)

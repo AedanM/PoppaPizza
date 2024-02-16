@@ -167,3 +167,4 @@ cython_debug/
 
 #Profiler
 program.prof
+Saves/*.sav

@@ -1,5 +1,6 @@
 """Game statistics"""
 
+import copy
 from dataclasses import dataclass
 
 AllStats = {}
@@ -84,3 +85,9 @@ class GameStats:
 
 
 PrevDay = GameStats()
+
+
+def UpdateStats(activeGame) -> None:
+    global AllStats, PrevDay
+    AllStats[f"Day {activeGame.GameClock.Day}"] = copy.deepcopy(activeGame.UserInventory.Statistics)
+    PrevDay = copy.deepcopy(activeGame.UserInventory.Statistics)

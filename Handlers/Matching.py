@@ -4,6 +4,7 @@ from typing import Any
 
 from Definitions import AssetLibrary, Restaurants
 from Engine import Person
+from Handlers import WorkerHandler
 
 
 def MatchIdToPerson(activeGame, inputId, targetOutput="all") -> dict[str, Any] | None:
@@ -99,3 +100,19 @@ def CostumeMatch(workerSprite, customerSprite) -> bool:
         return workerSprite.ImageType in desiredRest.WorkerImageTypes  # type: ignore
 
     return False
+
+
+def ResetSprites(activeGame) -> None:
+    """Reset all Sprites
+
+        Kill Customer Sprites
+        Reset Workers to Kitchen
+
+    Args-
+        activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
+    """
+    for sprite in activeGame.CharSpriteGroup:
+        if sprite.ImageType in AssetLibrary.CustomerOutfits:
+            RemoveObjFromSprite(activeGame=activeGame, targetSprite=sprite)
+        elif sprite.ImageType in AssetLibrary.WorkerOutfits:
+            WorkerHandler.DailyReset(sprite=sprite)

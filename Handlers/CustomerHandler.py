@@ -2,7 +2,7 @@
 
 import random
 
-from Classes import Matching
+from Handlers import Matching
 from Definitions import ColorDefines
 from Definitions.CustomerDefs import CustomerStates
 from Definitions.DefinedPaths import DefinedPaths

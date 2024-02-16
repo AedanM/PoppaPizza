@@ -1,9 +1,12 @@
 """Class for Game"""
 
+from typing import Any
+
 import pygame
 
 from Classes import GameClock, GameLighting, Inventory, MiniGames, Settings, Writing
-from Definitions import AssetLibrary, Chances, DefinedLocations
+from Definitions import AssetLibrary, Chances, CustomEvents, Restaurants
+from Definitions.DefinedLocations import LocationDefs, StandardDimensions
 from Engine import Color, Game, RoundBasedGame
 
 
@@ -21,7 +24,7 @@ class MainGame(Game.Game):
     Mode: MiniGames.GameMode = MiniGames.GameMode.Base
     MiniGame: RoundBasedGame.RoundBasedGame = None  # type: ignore
 
-    def __init__(self, activateScreen=True, size=DefinedLocations.LocationDefs.ScreenSize) -> None:
+    def __init__(self, activateScreen=True, size=LocationDefs.ScreenSize) -> None:
         """Init for Game
 
         Args-
@@ -48,11 +51,11 @@ class MainGame(Game.Game):
 
     def StartScreen(self, size) -> None:
         if isinstance(size, str):
-            DefinedLocations.LocationDefs.ScreenSize = DefinedLocations.StandardDimensions[size]
-            width, height = DefinedLocations.LocationDefs.ScreenSize
+            LocationDefs.ScreenSize = StandardDimensions[size]
+            width, height = LocationDefs.ScreenSize
         else:
             width, height = size
-            DefinedLocations.LocationDefs.ScreenSize = (width, height)
+            LocationDefs.ScreenSize = (width, height)
         super().StartScreen(size=size)
 
     def ConvertPreRendered(self) -> None:
@@ -85,6 +88,35 @@ class MainGame(Game.Game):
 
     def UpdateLightingEngine(self) -> None:
         self.Lighting.LightingEngine(activeGame=self, dayTransition=True)
+
+    @property
+    def HasGameOver(self) -> str:
+        if super().HasGameOver:
+            return super().HasGameOver
+        if self.UserInventory.Money < 0:
+            return "Ran Out of Cash"
+        return ""
+
+    def MakeSaveObj(self) -> dict[str, Any]:
+        saveDict = super().MakeSaveObj()
+        saveDict["Workers"] = self.WorkerList
+        saveDict["Customers"] = self.CustomerList
+        saveDict["Jobs"] = self.JobList
+        saveDict["Restuarants"] = Restaurants.RestaurantList
+        saveDict["Inventory"] = self.UserInventory
+        return saveDict
+
+    def LoadSaveObj(self, saveDict) -> None:
+        super().LoadSaveObj(saveDict=saveDict)
+        self.WorkerList = saveDict["Workers"]
+        self.CustomerList = saveDict["Customers"]
+        self.JobList = saveDict["Jobs"]
+        Restaurants.RestaurantList = saveDict["Restuarants"]
+        self.UserInventory = saveDict["Inventory"]
+
+    def LoadGame(self) -> None:
+        super().LoadGame()
+        pygame.event.post(CustomEvents.UpdateBackground)
 
 
 MasterGame = MainGame()

@@ -1,9 +1,10 @@
 """Populate Background with Elements"""
 
-from Classes import Matching, Sprite
+from Classes import Sprite
 from Definitions import AssetLibrary, ColorDefines, Restaurants
 from Definitions.DefinedLocations import LocationDefs, SeatingPlan
 from Engine import SpriteObjects, Utils
+from Handlers import Matching
 
 # TODO - Stop Recalcing Tables
 
@@ -86,13 +87,3 @@ def UnlockLockerRooms(activeGame) -> None:
             activeGame.ButtonList.remove(button)
 
 
-def SetupBackground(activeGame) -> None:
-    """Regenerates the Background Elements
-
-    Args-
-        activeGame (Game, optional): Current Game Class being used. Defaults to Game.MasterGame.
-    """
-    activeGame.BackgroundSpriteGroup.empty()
-    AddTables(activeGame=activeGame)
-    AddLockerRooms(activeGame=activeGame)
-    UnlockLockerRooms(activeGame=activeGame)

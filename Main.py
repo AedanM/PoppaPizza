@@ -72,7 +72,7 @@ def Main(debugFlag: bool, profileFlag: bool, safetyFlag: bool) -> None:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-d", "--debugFlag", default="True")
-    parser.add_argument("-p", "--profilerFlag", default="True")
+    parser.add_argument("-p", "--profilerFlag", default="False")
     parser.add_argument("-s", "--safetyFlag", default="False")
     args = parser.parse_args()
     Main(

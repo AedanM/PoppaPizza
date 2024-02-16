@@ -128,3 +128,7 @@ class Clock:
             int: Hours since start of game
         """
         return self.Hour + ((self.Day - 1) * 24)
+
+    def SetUnixTime(self, time):
+        self.Second = (time % 24) * 60 * 60
+        self.Day = time // 24

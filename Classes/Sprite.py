@@ -4,11 +4,11 @@ from typing import Any
 
 import pygame
 
-from Classes import GameBase, Matching
+from Classes import GameBase
 from Definitions import AssetLibrary, ColorDefines
 from Definitions.DefinedLocations import LocationDefs
 from Engine import SpriteObjects, TimerBar, Utils
-from Handlers import CharacterMovementHandler
+from Handlers import CharacterMovementHandler, Matching
 
 
 class CharImageSprite(SpriteObjects.CharacterSprite):
@@ -104,7 +104,7 @@ class CharImageSprite(SpriteObjects.CharacterSprite):
         """
         timerBar = self.PersonalTimer
         if timerBar.Running:
-            timerBar.AgeTimer(timeInMinutes=activeGame.GameClock.Minute)
+            timerBar.UpdateTimer(currentTime=activeGame.GameClock.Minute)
             customerObj = Matching.MatchIdToPerson(
                 activeGame=activeGame, inputId=timerBar.AssocId, targetOutput="customer"
             )
@@ -163,7 +163,7 @@ class CharImageSprite(SpriteObjects.CharacterSprite):
         self.PersonalTimer.TimerRect.y -= 25
         self.PersonalTimer.SetMaxSize(size=self.rect.width if width == 0 else width)
         self.PersonalTimer.FillColor = fillColor
-        self.PersonalTimer.StartTimer(currentTime=activeGame.GameClock.Minute)
+        self.PersonalTimer.RestartTimer(currentTime=activeGame.GameClock.Minute)
 
     def __repr__(self) -> str:
         """String Rep of Object"""

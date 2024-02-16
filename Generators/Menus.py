@@ -4,15 +4,20 @@ import pygame_menu
 
 from Handlers import ShopHandler
 
+global GlobalGame
+
 
 def OpenMenu(activeGame) -> None:
     """Default Entry Point for Menus"""
+    global GlobalGame
+    GlobalGame = activeGame
     activeGame.GameClock.SetRunning(state=False)
 
 
-def CloseMenu(activeGame) -> None:
+def CloseMenu() -> None:
     """Default Exit Point for Menus"""
-    activeGame.GameClock.SetRunning(state=True)
+    global GlobalGame
+    GlobalGame.GameClock.SetRunning(state=True)
 
 
 def DayTransistion(activeGame) -> None:
