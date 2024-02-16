@@ -33,8 +33,9 @@ from dataclasses import dataclass
 
 import pygame
 
-from Definitions import AssetLibrary, ColorDefines, CustomEvents, DefinedLocations
-from Engine import Color
+from Definitions import AssetLibrary, ColorDefines, CustomEvents
+from Definitions.DefinedLocations import LocationDefs
+from Engine import Color, Utils
 
 
 @dataclass
@@ -52,15 +53,23 @@ class Restaurant:
     &#34;&#34;&#34;Restaurant Class&#34;&#34;&#34;
 
     Name: str
-    Logo: AssetLibrary.ImageTypes
+    Logo: AssetLibrary.ImageTypes | None
     CustomerImageTypes: list[AssetLibrary.ImageTypes]
     WorkerImageTypes: list[AssetLibrary.ImageTypes]
     LockerRoom: LockerRoom
     Size: tuple = (180, 150)
 
     @property
-    def LogoPath(self) -&gt; str:
+    def LogoPath(self) -&gt; str | None:
         return AssetLibrary.LogoPaths[self.Logo] if self.Logo else None
+
+    def RequiresChange(self, mousePos, target) -&gt; bool:
+        return (
+            Utils.PositionInTolerance(pos1=mousePos, pos2=self.LockerRoom.Location, tolerance=75)
+            and self.LockerRoom.Unlocked
+            and target not in restaurant.WorkerImageTypes  # type: ignore
+            and self.WorkerImageTypes
+        )
 
 
 RestaurantList = [
@@ -70,7 +79,7 @@ RestaurantList = [
         WorkerImageTypes=[],
         Logo=None,
         LockerRoom=LockerRoom(
-            Location=DefinedLocations.LocationDefs.LockerRoom0,
+            Location=LocationDefs.LockerRoom0,
             Color=ColorDefines.DarkRed,
             Price=0,
             Unlocked=True,
@@ -83,7 +92,7 @@ RestaurantList = [
         WorkerImageTypes=[AssetLibrary.ImageTypes.WorkerSuit],
         Logo=AssetLibrary.ImageTypes.LogoSuit,
         LockerRoom=LockerRoom(
-            Location=DefinedLocations.LocationDefs.LockerRoom1,
+            Location=LocationDefs.LockerRoom1,
             Color=ColorDefines.Blue,
             Price=0,
             Unlocked=True,
@@ -95,7 +104,7 @@ RestaurantList = [
         WorkerImageTypes=[AssetLibrary.ImageTypes.WorkerCoffee],
         Logo=AssetLibrary.ImageTypes.LogoCoffee,
         LockerRoom=LockerRoom(
-            Location=DefinedLocations.LocationDefs.LockerRoom2,
+            Location=LocationDefs.LockerRoom2,
             Color=ColorDefines.Yellow,
             Price=2500,
         ),
@@ -106,7 +115,7 @@ RestaurantList = [
         WorkerImageTypes=[AssetLibrary.ImageTypes.WorkerLuau],
         Logo=AssetLibrary.ImageTypes.LogoLuau,
         LockerRoom=LockerRoom(
-            Location=DefinedLocations.LocationDefs.LockerRoom3,
+            Location=LocationDefs.LockerRoom3,
             Color=ColorDefines.Pink,
             Price=5000,
         ),
@@ -117,7 +126,7 @@ RestaurantList = [
         WorkerImageTypes=[AssetLibrary.ImageTypes.WorkerCowboy],
         Logo=AssetLibrary.ImageTypes.LogoCowboy,
         LockerRoom=LockerRoom(
-            Location=DefinedLocations.LocationDefs.LockerRoom4,
+            Location=LocationDefs.LockerRoom4,
             Color=ColorDefines.Brown,
             Price=7500,
         ),
@@ -128,7 +137,7 @@ RestaurantList = [
         WorkerImageTypes=[AssetLibrary.ImageTypes.WorkerSafari],
         Logo=AssetLibrary.ImageTypes.LogoSafari,
         LockerRoom=LockerRoom(
-            Location=DefinedLocations.LocationDefs.LockerRoom5,
+            Location=LocationDefs.LockerRoom5,
             Color=ColorDefines.Green,
             Price=10000,
         ),
@@ -242,7 +251,7 @@ class LockerRoom:
 </dd>
 <dt id="Definitions.Restaurants.Restaurant"><code class="flex name class">
 <span>class <span class="ident">Restaurant</span></span>
-<span>(</span><span>Name: str, Logo: <a title="Definitions.AssetLibrary.ImageTypes" href="AssetLibrary.html#Definitions.AssetLibrary.ImageTypes">ImageTypes</a>, CustomerImageTypes: list[<a title="Definitions.AssetLibrary.ImageTypes" href="AssetLibrary.html#Definitions.AssetLibrary.ImageTypes">ImageTypes</a>], WorkerImageTypes: list[<a title="Definitions.AssetLibrary.ImageTypes" href="AssetLibrary.html#Definitions.AssetLibrary.ImageTypes">ImageTypes</a>], LockerRoom: <a title="Definitions.Restaurants.LockerRoom" href="#Definitions.Restaurants.LockerRoom">LockerRoom</a>, Size: tuple = (180, 150))</span>
+<span>(</span><span>Name: str, Logo: <a title="Definitions.AssetLibrary.ImageTypes" href="AssetLibrary.html#Definitions.AssetLibrary.ImageTypes">ImageTypes</a> | None, CustomerImageTypes: list[<a title="Definitions.AssetLibrary.ImageTypes" href="AssetLibrary.html#Definitions.AssetLibrary.ImageTypes">ImageTypes</a>], WorkerImageTypes: list[<a title="Definitions.AssetLibrary.ImageTypes" href="AssetLibrary.html#Definitions.AssetLibrary.ImageTypes">ImageTypes</a>], LockerRoom: <a title="Definitions.Restaurants.LockerRoom" href="#Definitions.Restaurants.LockerRoom">LockerRoom</a>, Size: tuple = (180, 150))</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Restaurant Class</p></div>
@@ -255,15 +264,23 @@ class Restaurant:
     &#34;&#34;&#34;Restaurant Class&#34;&#34;&#34;
 
     Name: str
-    Logo: AssetLibrary.ImageTypes
+    Logo: AssetLibrary.ImageTypes | None
     CustomerImageTypes: list[AssetLibrary.ImageTypes]
     WorkerImageTypes: list[AssetLibrary.ImageTypes]
     LockerRoom: LockerRoom
     Size: tuple = (180, 150)
 
     @property
-    def LogoPath(self) -&gt; str:
-        return AssetLibrary.LogoPaths[self.Logo] if self.Logo else None</code></pre>
+    def LogoPath(self) -&gt; str | None:
+        return AssetLibrary.LogoPaths[self.Logo] if self.Logo else None
+
+    def RequiresChange(self, mousePos, target) -&gt; bool:
+        return (
+            Utils.PositionInTolerance(pos1=mousePos, pos2=self.LockerRoom.Location, tolerance=75)
+            and self.LockerRoom.Unlocked
+            and target not in restaurant.WorkerImageTypes  # type: ignore
+            and self.WorkerImageTypes
+        )</code></pre>
 </details>
 <h3>Class variables</h3>
 <dl>
@@ -275,7 +292,7 @@ class Restaurant:
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="Definitions.Restaurants.Restaurant.Logo"><code class="name">var <span class="ident">Logo</span> : <a title="Definitions.AssetLibrary.ImageTypes" href="AssetLibrary.html#Definitions.AssetLibrary.ImageTypes">ImageTypes</a></code></dt>
+<dt id="Definitions.Restaurants.Restaurant.Logo"><code class="name">var <span class="ident">Logo</span> : <a title="Definitions.AssetLibrary.ImageTypes" href="AssetLibrary.html#Definitions.AssetLibrary.ImageTypes">ImageTypes</a> | None</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -294,7 +311,7 @@ class Restaurant:
 </dl>
 <h3>Instance variables</h3>
 <dl>
-<dt id="Definitions.Restaurants.Restaurant.LogoPath"><code class="name">var <span class="ident">LogoPath</span> : str</code></dt>
+<dt id="Definitions.Restaurants.Restaurant.LogoPath"><code class="name">var <span class="ident">LogoPath</span> : str | None</code></dt>
 <dd>
 <div class="desc"></div>
 <details class="source">
@@ -302,8 +319,29 @@ class Restaurant:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def LogoPath(self) -&gt; str:
+def LogoPath(self) -&gt; str | None:
     return AssetLibrary.LogoPaths[self.Logo] if self.Logo else None</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="Definitions.Restaurants.Restaurant.RequiresChange"><code class="name flex">
+<span>def <span class="ident">RequiresChange</span></span>(<span>self, mousePos, target) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def RequiresChange(self, mousePos, target) -&gt; bool:
+    return (
+        Utils.PositionInTolerance(pos1=mousePos, pos2=self.LockerRoom.Location, tolerance=75)
+        and self.LockerRoom.Unlocked
+        and target not in restaurant.WorkerImageTypes  # type: ignore
+        and self.WorkerImageTypes
+    )</code></pre>
 </details>
 </dd>
 </dl>
@@ -346,6 +384,7 @@ def LogoPath(self) -&gt; str:
 <li><code><a title="Definitions.Restaurants.Restaurant.Logo" href="#Definitions.Restaurants.Restaurant.Logo">Logo</a></code></li>
 <li><code><a title="Definitions.Restaurants.Restaurant.LogoPath" href="#Definitions.Restaurants.Restaurant.LogoPath">LogoPath</a></code></li>
 <li><code><a title="Definitions.Restaurants.Restaurant.Name" href="#Definitions.Restaurants.Restaurant.Name">Name</a></code></li>
+<li><code><a title="Definitions.Restaurants.Restaurant.RequiresChange" href="#Definitions.Restaurants.Restaurant.RequiresChange">RequiresChange</a></code></li>
 <li><code><a title="Definitions.Restaurants.Restaurant.Size" href="#Definitions.Restaurants.Restaurant.Size">Size</a></code></li>
 <li><code><a title="Definitions.Restaurants.Restaurant.WorkerImageTypes" href="#Definitions.Restaurants.Restaurant.WorkerImageTypes">WorkerImageTypes</a></code></li>
 </ul>

@@ -4,6 +4,7 @@ import pygame
 
 from Engine import Clock, Color, LightingEngine, SaveHandler
 
+
 class Game:
     Name: str
     SpriteGroups: list = []
@@ -70,12 +71,11 @@ class Game:
 
     def MakeSaveObj(self) -> dict[str, Any]:
         saveDict = {
-            # "SpriteGroups": self.SpriteGroups,
             "Screen Size": self.ScreenSize,
             "Game Clock": self.GameClock.UnixTime,
         }
         return saveDict
 
     def LoadSaveObj(self, saveDict):
-        self.StartScreen(saveDict["Screen Size"])
+        self.StartScreen(size=saveDict["Screen Size"])
         self.GameClock.SetUnixTime(time=saveDict["Game Clock"])

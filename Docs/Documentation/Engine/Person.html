@@ -31,6 +31,8 @@
 import names
 
 IDCOUNT = 0
+FIRSTNAMES = {&#34;&#34;}
+LASTNAMES = {&#34;&#34;}
 
 
 @dataclass
@@ -44,14 +46,13 @@ class Person:
     IsAssigned: bool = False
 
     @classmethod
-    def Create(cls) -&gt; &#34;Person&#34;:
+    def Create(cls, gender=&#34;female&#34;):
         &#34;&#34;&#34;Creates a person object
 
         Returns-
             Person: Base Person Object
         &#34;&#34;&#34;
-        fName = names.get_first_name(gender=&#34;female&#34;)
-        lName = names.get_last_name()
+        fName, lName = GenerateName(gender=gender)
         selfid = cls.GenerateID()
         return cls(FirstName=fName, LastName=lName, IdNum=selfid)
 
@@ -65,7 +66,28 @@ class Person:
         # pylint: disable=global-statement
         global IDCOUNT
         IDCOUNT += 1
-        return IDCOUNT</code></pre>
+        return IDCOUNT
+
+    def __hash__(self) -&gt; int:
+        return self.IdNum
+
+
+def GenerateName(gender) -&gt; tuple[str, str]:
+    global FIRSTNAMES, LASTNAMES
+    tryNum = 0
+    fName = names.get_first_name(gender=gender)
+    while fName in FIRSTNAMES and tryNum &lt; 20:
+        fName = names.get_first_name(gender=gender)
+        tryNum += 1
+    FIRSTNAMES.add(fName)
+
+    tryNum = 0
+    lName = names.get_last_name()
+    while lName in LASTNAMES and tryNum &lt; 10:
+        lName = names.get_last_name()
+        tryNum += 1
+    LASTNAMES.add(lName)
+    return (fName, lName)</code></pre>
 </details>
 </section>
 <section>
@@ -73,6 +95,36 @@ class Person:
 <section>
 </section>
 <section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="Engine.Person.GenerateName"><code class="name flex">
+<span>def <span class="ident">GenerateName</span></span>(<span>gender) ‑> tuple[str, str]</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def GenerateName(gender) -&gt; tuple[str, str]:
+    global FIRSTNAMES, LASTNAMES
+    tryNum = 0
+    fName = names.get_first_name(gender=gender)
+    while fName in FIRSTNAMES and tryNum &lt; 20:
+        fName = names.get_first_name(gender=gender)
+        tryNum += 1
+    FIRSTNAMES.add(fName)
+
+    tryNum = 0
+    lName = names.get_last_name()
+    while lName in LASTNAMES and tryNum &lt; 10:
+        lName = names.get_last_name()
+        tryNum += 1
+    LASTNAMES.add(lName)
+    return (fName, lName)</code></pre>
+</details>
+</dd>
+</dl>
 </section>
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
@@ -98,14 +150,13 @@ class Person:
     IsAssigned: bool = False
 
     @classmethod
-    def Create(cls) -&gt; &#34;Person&#34;:
+    def Create(cls, gender=&#34;female&#34;):
         &#34;&#34;&#34;Creates a person object
 
         Returns-
             Person: Base Person Object
         &#34;&#34;&#34;
-        fName = names.get_first_name(gender=&#34;female&#34;)
-        lName = names.get_last_name()
+        fName, lName = GenerateName(gender=gender)
         selfid = cls.GenerateID()
         return cls(FirstName=fName, LastName=lName, IdNum=selfid)
 
@@ -119,7 +170,10 @@ class Person:
         # pylint: disable=global-statement
         global IDCOUNT
         IDCOUNT += 1
-        return IDCOUNT</code></pre>
+        return IDCOUNT
+
+    def __hash__(self) -&gt; int:
+        return self.IdNum</code></pre>
 </details>
 <h3>Class variables</h3>
 <dl>
@@ -147,7 +201,7 @@ class Person:
 <h3>Static methods</h3>
 <dl>
 <dt id="Engine.Person.Person.Create"><code class="name flex">
-<span>def <span class="ident">Create</span></span>(<span>) ‑> <a title="Engine.Person.Person" href="#Engine.Person.Person">Person</a></span>
+<span>def <span class="ident">Create</span></span>(<span>gender='female')</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates a person object</p>
@@ -158,14 +212,13 @@ Person: Base Person Object</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@classmethod
-def Create(cls) -&gt; &#34;Person&#34;:
+def Create(cls, gender=&#34;female&#34;):
     &#34;&#34;&#34;Creates a person object
 
     Returns-
         Person: Base Person Object
     &#34;&#34;&#34;
-    fName = names.get_first_name(gender=&#34;female&#34;)
-    lName = names.get_last_name()
+    fName, lName = GenerateName(gender=gender)
     selfid = cls.GenerateID()
     return cls(FirstName=fName, LastName=lName, IdNum=selfid)</code></pre>
 </details>
@@ -208,6 +261,11 @@ def GenerateID() -&gt; int:
 <li><h3>Super-module</h3>
 <ul>
 <li><code><a title="Engine" href="index.html">Engine</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="Engine.Person.GenerateName" href="#Engine.Person.GenerateName">GenerateName</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>

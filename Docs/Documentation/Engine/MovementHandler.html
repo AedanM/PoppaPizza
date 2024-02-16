@@ -42,9 +42,9 @@ class MovementSpeeds:
 
 
 class MovementHandler:
-    OnComplete = None
+    OnComplete: callable = lambda: None  # type: ignore
     Dest: tuple = (0, 0)
-    MaxMovementSpeed: MovementSpeeds = MovementSpeeds.Medium
+    MaxMovementSpeed: int = MovementSpeeds.Medium
     MovementTolerance: float = 0.01
     InMotion: bool = False
     DstSet: bool = False
@@ -54,7 +54,7 @@ class MovementHandler:
 
     def Reset(self) -&gt; None:
         &#34;&#34;&#34;Reset OnComplete function and Finish any active movements&#34;&#34;&#34;
-        self.OnComplete = None
+        self.OnComplete = lambda: None
         self.FinishMovement()
 
     @property
@@ -67,7 +67,7 @@ class MovementHandler:
         &#34;&#34;&#34;X Coord of Destination&#34;&#34;&#34;
         return self.Dest[0]
 
-    def StartNewListedMotion(self, pointList, speed=10) -&gt; None:
+    def StartNewListedMotion(self, pointList: list[tuple[int, int]], speed=10) -&gt; None:
         &#34;&#34;&#34;Start point for Motion
 
             Takes a list of positions and begins the animation of a sprite between them
@@ -84,7 +84,7 @@ class MovementHandler:
             self.InMotion: bool = True
             self.MaxMovementSpeed = speed
 
-    def MoveChar(self, obj, gameSpeed) -&gt; None:
+    def MoveChar(self, obj, gameSpeed: int) -&gt; None:
         &#34;&#34;&#34;Update Location of Character
 
         Args-
@@ -133,14 +133,15 @@ class MovementHandler:
         self.InMotion = False
         self.PointsList = []
         self.CurrentPointIdx = 0
-        if self.OnComplete is not None:
-            self.OnComplete()
+        self.OnComplete()
 
-    def CalcNewPosition(self, obj, gameSpeed) -&gt; None:
+    def CalcNewPosition(self, obj, gameSpeed: int) -&gt; None:
         if self.DstSet:
             self.MoveChar(obj=obj, gameSpeed=gameSpeed)
             if self.IsFinished(obj=obj):
-                if self.Dest == self.PointsList[len(self.PointsList) - 1]:
+                if self.Dest == self.PointsList[len(self.PointsList) - 1] and not self.PointsList:
+                    self.FinishMovement()
+                elif self.PointsList and self.CurrentPointIdx+1 == len(self.PointsList):
                     self.FinishMovement()
                 else:
                     self.CurrentPointIdx += 1
@@ -166,9 +167,9 @@ class MovementHandler:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class MovementHandler:
-    OnComplete = None
+    OnComplete: callable = lambda: None  # type: ignore
     Dest: tuple = (0, 0)
-    MaxMovementSpeed: MovementSpeeds = MovementSpeeds.Medium
+    MaxMovementSpeed: int = MovementSpeeds.Medium
     MovementTolerance: float = 0.01
     InMotion: bool = False
     DstSet: bool = False
@@ -178,7 +179,7 @@ class MovementHandler:
 
     def Reset(self) -&gt; None:
         &#34;&#34;&#34;Reset OnComplete function and Finish any active movements&#34;&#34;&#34;
-        self.OnComplete = None
+        self.OnComplete = lambda: None
         self.FinishMovement()
 
     @property
@@ -191,7 +192,7 @@ class MovementHandler:
         &#34;&#34;&#34;X Coord of Destination&#34;&#34;&#34;
         return self.Dest[0]
 
-    def StartNewListedMotion(self, pointList, speed=10) -&gt; None:
+    def StartNewListedMotion(self, pointList: list[tuple[int, int]], speed=10) -&gt; None:
         &#34;&#34;&#34;Start point for Motion
 
             Takes a list of positions and begins the animation of a sprite between them
@@ -208,7 +209,7 @@ class MovementHandler:
             self.InMotion: bool = True
             self.MaxMovementSpeed = speed
 
-    def MoveChar(self, obj, gameSpeed) -&gt; None:
+    def MoveChar(self, obj, gameSpeed: int) -&gt; None:
         &#34;&#34;&#34;Update Location of Character
 
         Args-
@@ -257,14 +258,15 @@ class MovementHandler:
         self.InMotion = False
         self.PointsList = []
         self.CurrentPointIdx = 0
-        if self.OnComplete is not None:
-            self.OnComplete()
+        self.OnComplete()
 
-    def CalcNewPosition(self, obj, gameSpeed) -&gt; None:
+    def CalcNewPosition(self, obj, gameSpeed: int) -&gt; None:
         if self.DstSet:
             self.MoveChar(obj=obj, gameSpeed=gameSpeed)
             if self.IsFinished(obj=obj):
-                if self.Dest == self.PointsList[len(self.PointsList) - 1]:
+                if self.Dest == self.PointsList[len(self.PointsList) - 1] and not self.PointsList:
+                    self.FinishMovement()
+                elif self.PointsList and self.CurrentPointIdx+1 == len(self.PointsList):
                     self.FinishMovement()
                 else:
                     self.CurrentPointIdx += 1
@@ -288,15 +290,11 @@ class MovementHandler:
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="Engine.MovementHandler.MovementHandler.MaxMovementSpeed"><code class="name">var <span class="ident">MaxMovementSpeed</span> : <a title="Engine.MovementHandler.MovementSpeeds" href="#Engine.MovementHandler.MovementSpeeds">MovementSpeeds</a></code></dt>
+<dt id="Engine.MovementHandler.MovementHandler.MaxMovementSpeed"><code class="name">var <span class="ident">MaxMovementSpeed</span> : int</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
 <dt id="Engine.MovementHandler.MovementHandler.MovementTolerance"><code class="name">var <span class="ident">MovementTolerance</span> : float</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="Engine.MovementHandler.MovementHandler.OnComplete"><code class="name">var <span class="ident">OnComplete</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -341,7 +339,7 @@ def DestY(self) -&gt; int | float:
 <h3>Methods</h3>
 <dl>
 <dt id="Engine.MovementHandler.MovementHandler.CalcNewPosition"><code class="name flex">
-<span>def <span class="ident">CalcNewPosition</span></span>(<span>self, obj, gameSpeed) ‑> None</span>
+<span>def <span class="ident">CalcNewPosition</span></span>(<span>self, obj, gameSpeed: int) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -349,11 +347,13 @@ def DestY(self) -&gt; int | float:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def CalcNewPosition(self, obj, gameSpeed) -&gt; None:
+<pre><code class="python">def CalcNewPosition(self, obj, gameSpeed: int) -&gt; None:
     if self.DstSet:
         self.MoveChar(obj=obj, gameSpeed=gameSpeed)
         if self.IsFinished(obj=obj):
-            if self.Dest == self.PointsList[len(self.PointsList) - 1]:
+            if self.Dest == self.PointsList[len(self.PointsList) - 1] and not self.PointsList:
+                self.FinishMovement()
+            elif self.PointsList and self.CurrentPointIdx+1 == len(self.PointsList):
                 self.FinishMovement()
             else:
                 self.CurrentPointIdx += 1
@@ -375,8 +375,7 @@ def DestY(self) -&gt; int | float:
     self.InMotion = False
     self.PointsList = []
     self.CurrentPointIdx = 0
-    if self.OnComplete is not None:
-        self.OnComplete()</code></pre>
+    self.OnComplete()</code></pre>
 </details>
 </dd>
 <dt id="Engine.MovementHandler.MovementHandler.IsFinished"><code class="name flex">
@@ -409,7 +408,7 @@ bool: Is Motion Finished</p></div>
 </details>
 </dd>
 <dt id="Engine.MovementHandler.MovementHandler.MoveChar"><code class="name flex">
-<span>def <span class="ident">MoveChar</span></span>(<span>self, obj, gameSpeed) ‑> None</span>
+<span>def <span class="ident">MoveChar</span></span>(<span>self, obj, gameSpeed: int) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Update Location of Character</p>
@@ -419,7 +418,7 @@ obj (Sprite): Moving Sprite</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def MoveChar(self, obj, gameSpeed) -&gt; None:
+<pre><code class="python">def MoveChar(self, obj, gameSpeed: int) -&gt; None:
     &#34;&#34;&#34;Update Location of Character
 
     Args-
@@ -448,6 +447,18 @@ obj (Sprite): Moving Sprite</p></div>
     obj.rect.centery += yMotion * yDir</code></pre>
 </details>
 </dd>
+<dt id="Engine.MovementHandler.MovementHandler.OnComplete"><code class="name flex">
+<span>def <span class="ident">OnComplete</span></span>(<span>) ‑> <built-in function callable></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">OnComplete: callable = lambda: None  # type: ignore</code></pre>
+</details>
+</dd>
 <dt id="Engine.MovementHandler.MovementHandler.Reset"><code class="name flex">
 <span>def <span class="ident">Reset</span></span>(<span>self) ‑> None</span>
 </code></dt>
@@ -459,12 +470,12 @@ obj (Sprite): Moving Sprite</p></div>
 </summary>
 <pre><code class="python">def Reset(self) -&gt; None:
     &#34;&#34;&#34;Reset OnComplete function and Finish any active movements&#34;&#34;&#34;
-    self.OnComplete = None
+    self.OnComplete = lambda: None
     self.FinishMovement()</code></pre>
 </details>
 </dd>
 <dt id="Engine.MovementHandler.MovementHandler.StartNewListedMotion"><code class="name flex">
-<span>def <span class="ident">StartNewListedMotion</span></span>(<span>self, pointList, speed=10) ‑> None</span>
+<span>def <span class="ident">StartNewListedMotion</span></span>(<span>self, pointList: list[tuple[int, int]], speed=10) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Start point for Motion</p>
@@ -477,7 +488,7 @@ speed (CustomerDefs.MovementSpeeds, optional): Speed of Motion. Defaults to Cust
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def StartNewListedMotion(self, pointList, speed=10) -&gt; None:
+<pre><code class="python">def StartNewListedMotion(self, pointList: list[tuple[int, int]], speed=10) -&gt; None:
     &#34;&#34;&#34;Start point for Motion
 
         Takes a list of positions and begins the animation of a sprite between them

@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>Main API documentation</title>
-<meta name="description" content="Main Body of Game" />
+<title>Testing.Engine_Clock_test API documentation</title>
+<meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -19,96 +19,61 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>Main</code></h1>
+<h1 class="title">Module <code>Testing.Engine_Clock_test</code></h1>
 </header>
 <section id="section-intro">
-<p>Main Body of Game</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">&#34;&#34;&#34;Main Body of Game&#34;&#34;&#34;
-
-import argparse
-import os
-
-# *OS Call used to prevent a time printout from Pygame on first import
-# pylint: disable=wrong-import-position
-os.environ[&#34;PYGAME_HIDE_SUPPORT_PROMPT&#34;] = &#34;True&#34;
-import time
+<pre><code class="python">import time
 
 import pygame
 
-from Classes import GameBase, MiniGames
-from Definitions import AssetLibrary, CustomEvents
-from Handlers import EventHandler
-
-GAME_START_TIME = 0
+from Engine import Clock, Utils
+from Testing.TestClass import TestClass
 
 
-def MainLoop(CurrentGame: GameBase.MainGame) -&gt; None:
-    &#34;&#34;&#34;Main Loop of Game&#34;&#34;&#34;
-    if CurrentGame.Running:
-        match CurrentGame.Mode:
-            case MiniGames.GameMode.Base:
-                EventHandler.MainEventHandler(activeGame=CurrentGame)
-                CurrentGame.DrawBackground(source=AssetLibrary.Background)
-                CurrentGame.UpdateSprites()
-                CurrentGame.WriteAllText()
-                CurrentGame.UpdateLightingEngine()
-            case MiniGames.GameMode.TriviaGame:
-                CurrentGame.DrawBackground(source=AssetLibrary.TriviaBackground)
-                CurrentGame.MiniGame.PlayGame(activeGame=CurrentGame)
-                EventHandler.TriviaEventHandler(activeGame=CurrentGame)
-
-    if CurrentGame.ShowScreen:
-        pygame.display.update()
-
-    # Control the frame rate
-    CurrentGame.GameClock.UpdateClock(
-        clockSpeed=CurrentGame.Settings.ClockSpeed,
-        frameCap=CurrentGame.Settings.CapFrames,
-    )
+def RunClockForRealTime(clock, lenInSeconds, clockMul=1.0) -&gt; tuple[int, int]:
+    prevTime = clock.Minute
+    startTime = time.time()
+    while time.time() - lenInSeconds &lt; startTime:
+        clock.UpdateClock(clockSpeed=clockMul, frameCap=60)
+    return prevTime, clock.Minute
 
 
-def Setup(debugFlag: bool = True, profileFlag: bool = False) -&gt; GameBase.MainGame:
-    CurrentGame = GameBase.MainGame()
-    pygame.event.post(CustomEvents.UpdateBackground)
-    # Enables a series of functions to run automatically
-    if profileFlag:
-        global GAME_START_TIME
-        GAME_START_TIME = time.time()
-        CurrentGame.Settings.CapFrames = False
-    if debugFlag:
-        EventHandler.DebugSetup(activeGame=CurrentGame)
-    return CurrentGame
+def test_PauseClock() -&gt; None:
+    clock = Clock.Clock(pygame.Clock())
+
+    clock.SetRunning(False)
+    start, end = RunClockForRealTime(clock=clock, lenInSeconds=1)
+    assert start == end
+
+    clock.SetRunning(True)
+    start, end = RunClockForRealTime(clock=clock, lenInSeconds=1)
+    assert start &lt; end
 
 
-def Main(debugFlag: bool, profileFlag: bool, safetyFlag: bool) -&gt; None:
-    MainGame = Setup(debugFlag=debugFlag, profileFlag=profileFlag)
-    while True:
-        if safetyFlag:
-            try:
-                MainLoop(CurrentGame=MainGame)
-            except Exception as e:
-                print(f&#34;{e} Occured&#34;)
-        else:
-            MainLoop(CurrentGame=MainGame)
-        if profileFlag and time.time() - GAME_START_TIME &gt; 30:
-            break
-
-
-if __name__ == &#34;__main__&#34;:
-    parser = argparse.ArgumentParser()
-    parser.add_argument(&#34;-d&#34;, &#34;--debugFlag&#34;, default=&#34;True&#34;)
-    parser.add_argument(&#34;-p&#34;, &#34;--profilerFlag&#34;, default=&#34;False&#34;)
-    parser.add_argument(&#34;-s&#34;, &#34;--safetyFlag&#34;, default=&#34;False&#34;)
-    args = parser.parse_args()
-    Main(
-        debugFlag=args.debugFlag.capitalize() == &#34;True&#34;,
-        profileFlag=args.profilerFlag.capitalize() == &#34;True&#34;,
-        safetyFlag=args.safetyFlag.capitalize() == &#34;True&#34;,
-    )</code></pre>
+def test_ClockSpeeds() -&gt; None:
+    clock = Clock.Clock(pygame.Clock())
+    ACCEPTED_TOLERANCE = 3
+    testObjects = [
+        TestClass(ParamList=[0.5], Result=8),
+        TestClass(ParamList=[0.25], Result=4),
+        TestClass(ParamList=[0.125], Result=2),
+        TestClass(ParamList=[1], Result=16),
+        TestClass(ParamList=[2], Result=32),
+        TestClass(ParamList=[4], Result=64),
+    ]
+    for test in testObjects:
+        start, end = RunClockForRealTime(clock=clock, lenInSeconds=1, clockMul=test.ParamList[0])
+        try:
+            assert Utils.InTolerance(
+                num1=(end - start), num2=test.Result, tolerance=ACCEPTED_TOLERANCE
+            )
+        except AssertionError:
+            print(test, end - start)
+            assert False</code></pre>
 </details>
 </section>
 <section>
@@ -118,8 +83,8 @@ if __name__ == &#34;__main__&#34;:
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="Main.Main"><code class="name flex">
-<span>def <span class="ident">Main</span></span>(<span>debugFlag: bool, profileFlag: bool, safetyFlag: bool) ‑> None</span>
+<dt id="Testing.Engine_Clock_test.RunClockForRealTime"><code class="name flex">
+<span>def <span class="ident">RunClockForRealTime</span></span>(<span>clock, lenInSeconds, clockMul=1.0) ‑> tuple[int, int]</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -127,56 +92,16 @@ if __name__ == &#34;__main__&#34;:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def Main(debugFlag: bool, profileFlag: bool, safetyFlag: bool) -&gt; None:
-    MainGame = Setup(debugFlag=debugFlag, profileFlag=profileFlag)
-    while True:
-        if safetyFlag:
-            try:
-                MainLoop(CurrentGame=MainGame)
-            except Exception as e:
-                print(f&#34;{e} Occured&#34;)
-        else:
-            MainLoop(CurrentGame=MainGame)
-        if profileFlag and time.time() - GAME_START_TIME &gt; 30:
-            break</code></pre>
+<pre><code class="python">def RunClockForRealTime(clock, lenInSeconds, clockMul=1.0) -&gt; tuple[int, int]:
+    prevTime = clock.Minute
+    startTime = time.time()
+    while time.time() - lenInSeconds &lt; startTime:
+        clock.UpdateClock(clockSpeed=clockMul, frameCap=60)
+    return prevTime, clock.Minute</code></pre>
 </details>
 </dd>
-<dt id="Main.MainLoop"><code class="name flex">
-<span>def <span class="ident">MainLoop</span></span>(<span>CurrentGame: Classes.GameBase.MainGame) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Main Loop of Game</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def MainLoop(CurrentGame: GameBase.MainGame) -&gt; None:
-    &#34;&#34;&#34;Main Loop of Game&#34;&#34;&#34;
-    if CurrentGame.Running:
-        match CurrentGame.Mode:
-            case MiniGames.GameMode.Base:
-                EventHandler.MainEventHandler(activeGame=CurrentGame)
-                CurrentGame.DrawBackground(source=AssetLibrary.Background)
-                CurrentGame.UpdateSprites()
-                CurrentGame.WriteAllText()
-                CurrentGame.UpdateLightingEngine()
-            case MiniGames.GameMode.TriviaGame:
-                CurrentGame.DrawBackground(source=AssetLibrary.TriviaBackground)
-                CurrentGame.MiniGame.PlayGame(activeGame=CurrentGame)
-                EventHandler.TriviaEventHandler(activeGame=CurrentGame)
-
-    if CurrentGame.ShowScreen:
-        pygame.display.update()
-
-    # Control the frame rate
-    CurrentGame.GameClock.UpdateClock(
-        clockSpeed=CurrentGame.Settings.ClockSpeed,
-        frameCap=CurrentGame.Settings.CapFrames,
-    )</code></pre>
-</details>
-</dd>
-<dt id="Main.Setup"><code class="name flex">
-<span>def <span class="ident">Setup</span></span>(<span>debugFlag: bool = True, profileFlag: bool = False) ‑> Classes.GameBase.MainGame</span>
+<dt id="Testing.Engine_Clock_test.test_ClockSpeeds"><code class="name flex">
+<span>def <span class="ident">test_ClockSpeeds</span></span>(<span>) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -184,17 +109,47 @@ if __name__ == &#34;__main__&#34;:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def Setup(debugFlag: bool = True, profileFlag: bool = False) -&gt; GameBase.MainGame:
-    CurrentGame = GameBase.MainGame()
-    pygame.event.post(CustomEvents.UpdateBackground)
-    # Enables a series of functions to run automatically
-    if profileFlag:
-        global GAME_START_TIME
-        GAME_START_TIME = time.time()
-        CurrentGame.Settings.CapFrames = False
-    if debugFlag:
-        EventHandler.DebugSetup(activeGame=CurrentGame)
-    return CurrentGame</code></pre>
+<pre><code class="python">def test_ClockSpeeds() -&gt; None:
+    clock = Clock.Clock(pygame.Clock())
+    ACCEPTED_TOLERANCE = 3
+    testObjects = [
+        TestClass(ParamList=[0.5], Result=8),
+        TestClass(ParamList=[0.25], Result=4),
+        TestClass(ParamList=[0.125], Result=2),
+        TestClass(ParamList=[1], Result=16),
+        TestClass(ParamList=[2], Result=32),
+        TestClass(ParamList=[4], Result=64),
+    ]
+    for test in testObjects:
+        start, end = RunClockForRealTime(clock=clock, lenInSeconds=1, clockMul=test.ParamList[0])
+        try:
+            assert Utils.InTolerance(
+                num1=(end - start), num2=test.Result, tolerance=ACCEPTED_TOLERANCE
+            )
+        except AssertionError:
+            print(test, end - start)
+            assert False</code></pre>
+</details>
+</dd>
+<dt id="Testing.Engine_Clock_test.test_PauseClock"><code class="name flex">
+<span>def <span class="ident">test_PauseClock</span></span>(<span>) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_PauseClock() -&gt; None:
+    clock = Clock.Clock(pygame.Clock())
+
+    clock.SetRunning(False)
+    start, end = RunClockForRealTime(clock=clock, lenInSeconds=1)
+    assert start == end
+
+    clock.SetRunning(True)
+    start, end = RunClockForRealTime(clock=clock, lenInSeconds=1)
+    assert start &lt; end</code></pre>
 </details>
 </dd>
 </dl>
@@ -208,11 +163,16 @@ if __name__ == &#34;__main__&#34;:
 <ul></ul>
 </div>
 <ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="Testing" href="index.html">Testing</a></code></li>
+</ul>
+</li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
-<li><code><a title="Main.Main" href="#Main.Main">Main</a></code></li>
-<li><code><a title="Main.MainLoop" href="#Main.MainLoop">MainLoop</a></code></li>
-<li><code><a title="Main.Setup" href="#Main.Setup">Setup</a></code></li>
+<li><code><a title="Testing.Engine_Clock_test.RunClockForRealTime" href="#Testing.Engine_Clock_test.RunClockForRealTime">RunClockForRealTime</a></code></li>
+<li><code><a title="Testing.Engine_Clock_test.test_ClockSpeeds" href="#Testing.Engine_Clock_test.test_ClockSpeeds">test_ClockSpeeds</a></code></li>
+<li><code><a title="Testing.Engine_Clock_test.test_PauseClock" href="#Testing.Engine_Clock_test.test_PauseClock">test_PauseClock</a></code></li>
 </ul>
 </li>
 </ul>

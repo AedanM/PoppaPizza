@@ -33,7 +33,7 @@ import math
 
 import pygame
 
-from Engine import Color
+from Engine import Color, Utils
 
 
 class TimerBar:
@@ -50,14 +50,18 @@ class TimerBar:
     StartingState: int = 0
     Running: bool = False
     CompletionPercentage: float = 0.0
+    AutoReset: bool = False
 
     def __init__(
         self,
         duration: float,
-        position: tuple,
-        startTime,
-        assocId=0,
-        offset=(0, 0),
+        position: tuple[int, int],
+        startTime: int,
+        assocId: int = 0,
+        offset: tuple[int, int] = (0, 0),
+        maxWidth: int = 50,
+        height: int = 25,
+        autoReset: bool = False,
     ) -&gt; None:
         &#34;&#34;&#34;Init for Timer Bar
 
@@ -76,6 +80,9 @@ class TimerBar:
             self.Width,
             (self.Height - 10),
         )
+        self.MaxWidth = maxWidth
+        self.Height = height
+        self.AutoReset = autoReset
         self.MaxTimerRect = pygame.Rect(
             position[0] + offset[0], position[1] + offset[1], self.MaxWidth, self.Height
         )
@@ -85,9 +92,7 @@ class TimerBar:
         self.Running = True
 
     @property
-    def DynamicColor(
-        self,
-    ) -&gt; tuple:
+    def DynamicColor(self) -&gt; tuple[int, int, int]:
         &#34;&#34;&#34;Generates the gradient transistion between start and end colors
 
         Returns-
@@ -104,11 +109,11 @@ class TimerBar:
         )
         return color3.RGB
 
-    def SetMaxSize(self, size) -&gt; None:
+    def SetMaxSize(self, size: int) -&gt; None:
         &#34;&#34;&#34;Update the maximum size of the timer bar
 
         Args-
-            size (int | float): Max Width of Timer Bar
+            size (int): Max Width of Timer Bar
         &#34;&#34;&#34;
         self.MaxWidth = size
         self.MaxTimerRect = pygame.Rect(
@@ -119,7 +124,7 @@ class TimerBar:
             self.Height,
         )
 
-    def StartTimer(self, currentTime) -&gt; None:
+    def RestartTimer(self, currentTime: int) -&gt; None:
         &#34;&#34;&#34;Begins the timer and sets the reference start time
 
         Args-
@@ -127,20 +132,19 @@ class TimerBar:
         &#34;&#34;&#34;
         self.StartTime = currentTime
         self.Running = True
+        self.UpdateTimer(currentTime=currentTime)
 
-    def AgeTimer(self, timeInMinutes) -&gt; None:
+    def UpdateTimer(self, currentTime: int) -&gt; None:
         &#34;&#34;&#34;Increments timer based on the game clock
 
         Args-
             activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
         &#34;&#34;&#34;
-        if self.Running:
-            self.CompletionPercentage = (
-                (timeInMinutes - self.StartTime)
-            ) / self.Duration
+        if self.Running and currentTime &gt;= self.StartTime:
+            self.CompletionPercentage = ((currentTime - self.StartTime)) / self.Duration
             self.Width = int(
                 math.floor(
-                    min(self.CompletionPercentage * self.MaxWidth, self.MaxWidth)
+                    Utils.Bind(val=self.CompletionPercentage, inRange=(0, 1)) * self.MaxWidth,
                 )
             )
             self.TimerRect.width = self.Width
@@ -148,7 +152,9 @@ class TimerBar:
             if self.CompletionPercentage &gt;= 1:
                 self.OnComplete()
                 self.Running = False
-                self.AssocId = 0</code></pre>
+                self.AssocId = 0
+                if self.AutoReset:
+                    self.RestartTimer(currentTime=currentTime)</code></pre>
 </details>
 </section>
 <section>
@@ -162,7 +168,7 @@ class TimerBar:
 <dl>
 <dt id="Engine.TimerBar.TimerBar"><code class="flex name class">
 <span>class <span class="ident">TimerBar</span></span>
-<span>(</span><span>duration: float, position: tuple, startTime, assocId=0, offset=(0, 0))</span>
+<span>(</span><span>duration: float, position: tuple[int, int], startTime: int, assocId: int = 0, offset: tuple[int, int] = (0, 0), maxWidth: int = 50, height: int = 25, autoReset: bool = False)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Class for Progress Bars with a Running Timer</p>
@@ -191,14 +197,18 @@ offset (tuple, optional): Offset for the timer bar from position. Defaults to (0
     StartingState: int = 0
     Running: bool = False
     CompletionPercentage: float = 0.0
+    AutoReset: bool = False
 
     def __init__(
         self,
         duration: float,
-        position: tuple,
-        startTime,
-        assocId=0,
-        offset=(0, 0),
+        position: tuple[int, int],
+        startTime: int,
+        assocId: int = 0,
+        offset: tuple[int, int] = (0, 0),
+        maxWidth: int = 50,
+        height: int = 25,
+        autoReset: bool = False,
     ) -&gt; None:
         &#34;&#34;&#34;Init for Timer Bar
 
@@ -217,6 +227,9 @@ offset (tuple, optional): Offset for the timer bar from position. Defaults to (0
             self.Width,
             (self.Height - 10),
         )
+        self.MaxWidth = maxWidth
+        self.Height = height
+        self.AutoReset = autoReset
         self.MaxTimerRect = pygame.Rect(
             position[0] + offset[0], position[1] + offset[1], self.MaxWidth, self.Height
         )
@@ -226,9 +239,7 @@ offset (tuple, optional): Offset for the timer bar from position. Defaults to (0
         self.Running = True
 
     @property
-    def DynamicColor(
-        self,
-    ) -&gt; tuple:
+    def DynamicColor(self) -&gt; tuple[int, int, int]:
         &#34;&#34;&#34;Generates the gradient transistion between start and end colors
 
         Returns-
@@ -245,11 +256,11 @@ offset (tuple, optional): Offset for the timer bar from position. Defaults to (0
         )
         return color3.RGB
 
-    def SetMaxSize(self, size) -&gt; None:
+    def SetMaxSize(self, size: int) -&gt; None:
         &#34;&#34;&#34;Update the maximum size of the timer bar
 
         Args-
-            size (int | float): Max Width of Timer Bar
+            size (int): Max Width of Timer Bar
         &#34;&#34;&#34;
         self.MaxWidth = size
         self.MaxTimerRect = pygame.Rect(
@@ -260,7 +271,7 @@ offset (tuple, optional): Offset for the timer bar from position. Defaults to (0
             self.Height,
         )
 
-    def StartTimer(self, currentTime) -&gt; None:
+    def RestartTimer(self, currentTime: int) -&gt; None:
         &#34;&#34;&#34;Begins the timer and sets the reference start time
 
         Args-
@@ -268,20 +279,19 @@ offset (tuple, optional): Offset for the timer bar from position. Defaults to (0
         &#34;&#34;&#34;
         self.StartTime = currentTime
         self.Running = True
+        self.UpdateTimer(currentTime=currentTime)
 
-    def AgeTimer(self, timeInMinutes) -&gt; None:
+    def UpdateTimer(self, currentTime: int) -&gt; None:
         &#34;&#34;&#34;Increments timer based on the game clock
 
         Args-
             activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
         &#34;&#34;&#34;
-        if self.Running:
-            self.CompletionPercentage = (
-                (timeInMinutes - self.StartTime)
-            ) / self.Duration
+        if self.Running and currentTime &gt;= self.StartTime:
+            self.CompletionPercentage = ((currentTime - self.StartTime)) / self.Duration
             self.Width = int(
                 math.floor(
-                    min(self.CompletionPercentage * self.MaxWidth, self.MaxWidth)
+                    Utils.Bind(val=self.CompletionPercentage, inRange=(0, 1)) * self.MaxWidth,
                 )
             )
             self.TimerRect.width = self.Width
@@ -289,11 +299,17 @@ offset (tuple, optional): Offset for the timer bar from position. Defaults to (0
             if self.CompletionPercentage &gt;= 1:
                 self.OnComplete()
                 self.Running = False
-                self.AssocId = 0</code></pre>
+                self.AssocId = 0
+                if self.AutoReset:
+                    self.RestartTimer(currentTime=currentTime)</code></pre>
 </details>
 <h3>Class variables</h3>
 <dl>
 <dt id="Engine.TimerBar.TimerBar.AssocId"><code class="name">var <span class="ident">AssocId</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="Engine.TimerBar.TimerBar.AutoReset"><code class="name">var <span class="ident">AutoReset</span> : bool</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -340,7 +356,7 @@ offset (tuple, optional): Offset for the timer bar from position. Defaults to (0
 </dl>
 <h3>Instance variables</h3>
 <dl>
-<dt id="Engine.TimerBar.TimerBar.DynamicColor"><code class="name">var <span class="ident">DynamicColor</span> : tuple</code></dt>
+<dt id="Engine.TimerBar.TimerBar.DynamicColor"><code class="name">var <span class="ident">DynamicColor</span> : tuple[int, int, int]</code></dt>
 <dd>
 <div class="desc"><p>Generates the gradient transistion between start and end colors</p>
 <p>Returns-
@@ -350,9 +366,7 @@ Color.RGB: RGB representation of color</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def DynamicColor(
-    self,
-) -&gt; tuple:
+def DynamicColor(self) -&gt; tuple[int, int, int]:
     &#34;&#34;&#34;Generates the gradient transistion between start and end colors
 
     Returns-
@@ -373,56 +387,44 @@ def DynamicColor(
 </dl>
 <h3>Methods</h3>
 <dl>
-<dt id="Engine.TimerBar.TimerBar.AgeTimer"><code class="name flex">
-<span>def <span class="ident">AgeTimer</span></span>(<span>self, timeInMinutes) ‑> None</span>
+<dt id="Engine.TimerBar.TimerBar.RestartTimer"><code class="name flex">
+<span>def <span class="ident">RestartTimer</span></span>(<span>self, currentTime: int) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Increments timer based on the game clock</p>
+<div class="desc"><p>Begins the timer and sets the reference start time</p>
 <p>Args-
 activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def AgeTimer(self, timeInMinutes) -&gt; None:
-    &#34;&#34;&#34;Increments timer based on the game clock
+<pre><code class="python">def RestartTimer(self, currentTime: int) -&gt; None:
+    &#34;&#34;&#34;Begins the timer and sets the reference start time
 
     Args-
         activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
     &#34;&#34;&#34;
-    if self.Running:
-        self.CompletionPercentage = (
-            (timeInMinutes - self.StartTime)
-        ) / self.Duration
-        self.Width = int(
-            math.floor(
-                min(self.CompletionPercentage * self.MaxWidth, self.MaxWidth)
-            )
-        )
-        self.TimerRect.width = self.Width
-        self.TimerRect.height = self.Height
-        if self.CompletionPercentage &gt;= 1:
-            self.OnComplete()
-            self.Running = False
-            self.AssocId = 0</code></pre>
+    self.StartTime = currentTime
+    self.Running = True
+    self.UpdateTimer(currentTime=currentTime)</code></pre>
 </details>
 </dd>
 <dt id="Engine.TimerBar.TimerBar.SetMaxSize"><code class="name flex">
-<span>def <span class="ident">SetMaxSize</span></span>(<span>self, size) ‑> None</span>
+<span>def <span class="ident">SetMaxSize</span></span>(<span>self, size: int) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Update the maximum size of the timer bar</p>
 <p>Args-
-size (int | float): Max Width of Timer Bar</p></div>
+size (int): Max Width of Timer Bar</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def SetMaxSize(self, size) -&gt; None:
+<pre><code class="python">def SetMaxSize(self, size: int) -&gt; None:
     &#34;&#34;&#34;Update the maximum size of the timer bar
 
     Args-
-        size (int | float): Max Width of Timer Bar
+        size (int): Max Width of Timer Bar
     &#34;&#34;&#34;
     self.MaxWidth = size
     self.MaxTimerRect = pygame.Rect(
@@ -434,25 +436,38 @@ size (int | float): Max Width of Timer Bar</p></div>
     )</code></pre>
 </details>
 </dd>
-<dt id="Engine.TimerBar.TimerBar.StartTimer"><code class="name flex">
-<span>def <span class="ident">StartTimer</span></span>(<span>self, currentTime) ‑> None</span>
+<dt id="Engine.TimerBar.TimerBar.UpdateTimer"><code class="name flex">
+<span>def <span class="ident">UpdateTimer</span></span>(<span>self, currentTime: int) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Begins the timer and sets the reference start time</p>
+<div class="desc"><p>Increments timer based on the game clock</p>
 <p>Args-
 activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def StartTimer(self, currentTime) -&gt; None:
-    &#34;&#34;&#34;Begins the timer and sets the reference start time
+<pre><code class="python">def UpdateTimer(self, currentTime: int) -&gt; None:
+    &#34;&#34;&#34;Increments timer based on the game clock
 
     Args-
         activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
     &#34;&#34;&#34;
-    self.StartTime = currentTime
-    self.Running = True</code></pre>
+    if self.Running and currentTime &gt;= self.StartTime:
+        self.CompletionPercentage = ((currentTime - self.StartTime)) / self.Duration
+        self.Width = int(
+            math.floor(
+                Utils.Bind(val=self.CompletionPercentage, inRange=(0, 1)) * self.MaxWidth,
+            )
+        )
+        self.TimerRect.width = self.Width
+        self.TimerRect.height = self.Height
+        if self.CompletionPercentage &gt;= 1:
+            self.OnComplete()
+            self.Running = False
+            self.AssocId = 0
+            if self.AutoReset:
+                self.RestartTimer(currentTime=currentTime)</code></pre>
 </details>
 </dd>
 </dl>
@@ -476,20 +491,21 @@ activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.</p></div
 <li>
 <h4><code><a title="Engine.TimerBar.TimerBar" href="#Engine.TimerBar.TimerBar">TimerBar</a></code></h4>
 <ul class="">
-<li><code><a title="Engine.TimerBar.TimerBar.AgeTimer" href="#Engine.TimerBar.TimerBar.AgeTimer">AgeTimer</a></code></li>
 <li><code><a title="Engine.TimerBar.TimerBar.AssocId" href="#Engine.TimerBar.TimerBar.AssocId">AssocId</a></code></li>
+<li><code><a title="Engine.TimerBar.TimerBar.AutoReset" href="#Engine.TimerBar.TimerBar.AutoReset">AutoReset</a></code></li>
 <li><code><a title="Engine.TimerBar.TimerBar.CompletionPercentage" href="#Engine.TimerBar.TimerBar.CompletionPercentage">CompletionPercentage</a></code></li>
 <li><code><a title="Engine.TimerBar.TimerBar.DynamicColor" href="#Engine.TimerBar.TimerBar.DynamicColor">DynamicColor</a></code></li>
 <li><code><a title="Engine.TimerBar.TimerBar.FillColor" href="#Engine.TimerBar.TimerBar.FillColor">FillColor</a></code></li>
 <li><code><a title="Engine.TimerBar.TimerBar.Height" href="#Engine.TimerBar.TimerBar.Height">Height</a></code></li>
 <li><code><a title="Engine.TimerBar.TimerBar.MaxColor" href="#Engine.TimerBar.TimerBar.MaxColor">MaxColor</a></code></li>
 <li><code><a title="Engine.TimerBar.TimerBar.MaxWidth" href="#Engine.TimerBar.TimerBar.MaxWidth">MaxWidth</a></code></li>
+<li><code><a title="Engine.TimerBar.TimerBar.RestartTimer" href="#Engine.TimerBar.TimerBar.RestartTimer">RestartTimer</a></code></li>
 <li><code><a title="Engine.TimerBar.TimerBar.Running" href="#Engine.TimerBar.TimerBar.Running">Running</a></code></li>
 <li><code><a title="Engine.TimerBar.TimerBar.SetMaxSize" href="#Engine.TimerBar.TimerBar.SetMaxSize">SetMaxSize</a></code></li>
 <li><code><a title="Engine.TimerBar.TimerBar.StartTime" href="#Engine.TimerBar.TimerBar.StartTime">StartTime</a></code></li>
-<li><code><a title="Engine.TimerBar.TimerBar.StartTimer" href="#Engine.TimerBar.TimerBar.StartTimer">StartTimer</a></code></li>
 <li><code><a title="Engine.TimerBar.TimerBar.StartingState" href="#Engine.TimerBar.TimerBar.StartingState">StartingState</a></code></li>
 <li><code><a title="Engine.TimerBar.TimerBar.TimerColor" href="#Engine.TimerBar.TimerBar.TimerColor">TimerColor</a></code></li>
+<li><code><a title="Engine.TimerBar.TimerBar.UpdateTimer" href="#Engine.TimerBar.TimerBar.UpdateTimer">UpdateTimer</a></code></li>
 <li><code><a title="Engine.TimerBar.TimerBar.Width" href="#Engine.TimerBar.TimerBar.Width">Width</a></code></li>
 </ul>
 </li>

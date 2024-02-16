@@ -40,6 +40,9 @@ class Person:
         IDCOUNT += 1
         return IDCOUNT
 
+    def __hash__(self) -> int:
+        return self.IdNum
+
 
 def GenerateName(gender) -> tuple[str, str]:
     global FIRSTNAMES, LASTNAMES

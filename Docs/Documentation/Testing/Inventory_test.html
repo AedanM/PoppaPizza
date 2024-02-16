@@ -49,7 +49,7 @@ def test_GetPaid() -&gt; None:
 
 
 def test_Rent() -&gt; None:
-    currentGame = GameBase.MasterGame
+    currentGame = GameBase.MainGame()
     i = currentGame.UserInventory
     i.GetPaid(amount=2000.00)
     i.PayMoney(amount=Prices.CurrentRent)
@@ -95,7 +95,7 @@ def test_Rent() -&gt; None:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def test_Rent() -&gt; None:
-    currentGame = GameBase.MasterGame
+    currentGame = GameBase.MainGame()
     i = currentGame.UserInventory
     i.GetPaid(amount=2000.00)
     i.PayMoney(amount=Prices.CurrentRent)

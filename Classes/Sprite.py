@@ -51,7 +51,7 @@ class CharImageSprite(SpriteObjects.CharacterSprite):
         """
         activeGame = GameBase.MasterGame
         objDict = Matching.MatchIdToPerson(activeGame=activeGame, inputId=self.CorrespondingID)
-        if objDict is not None:
+        if objDict is not None and "sprite" in objDict:
             objDict.pop("sprite")
             obj = list(objDict.values())[0]
             return obj

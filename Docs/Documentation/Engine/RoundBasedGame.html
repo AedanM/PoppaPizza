@@ -26,42 +26,41 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">import pygame
+<pre><code class="python">from typing import Any
 
-from Engine import Color, Utils
+import pygame
+
+from Engine import Color, Game, Utils
 
 
 class RoundBasedGame:
     Rounds: int
     Screen = pygame.Surface
     BackgroundColor: Color.Color = Color.Color(hexstring=&#34;#000000&#34;)
-    GameState: any = 0
+    GameState: Any = 0
     ResultsList: list = []
     MaxRounds: int = 10
     CurrentRound: int = 1
-    OnRoundWin: callable = lambda self: None
-    OnRoundLoss: callable = lambda self: None
     RoundResult: bool = False
     MasterSpriteGroup: pygame.sprite.Group = pygame.sprite.Group()
 
     DisplayedText: dict = {}
 
-    def __init__(self, rounds, activeGame) -&gt; None:
-        self.Rounds = Utils.Bind(val=rounds, inRange=[0, self.MaxRounds])
+    def __init__(self, rounds: int, activeGame: Game.Game) -&gt; None:
+        self.Rounds = int(Utils.Bind(val=rounds, inRange=(0, self.MaxRounds)))
         self.Screen = activeGame.Screen
 
-    def StartRound(self) -&gt; None:
-        self.DisplayedText[
-            &#34;Round Text&#34;
-        ].Text = f&#34;Round {self.CurrentRound}/{self.Rounds}&#34;
+    def StartRound(self, activeGame) -&gt; None:
+        self.DisplayedText[&#34;Round Text&#34;].Text = f&#34;Round {self.CurrentRound}/{self.Rounds}&#34;
         self.MasterSpriteGroup.update()
-        self.MasterSpriteGroup.draw(self.Screen)
+        self.MasterSpriteGroup.draw(self.Screen)  # type: ignore
 
-    def UpdateStateMachine(self, input) -&gt; None:
+    def UpdateStateMachine(self, inputStr: str) -&gt; None:
         pass
 
-    def PlayGame(self, activeGame) -&gt; None:
-        self.StartRound(activeGame=activeGame)</code></pre>
+    def PlayGame(self,activeGame) -&gt; None:
+        # Pylance rejects activeGame as param due to overloading
+        self.StartRound(activeGame=activeGame)  # type: ignore</code></pre>
 </details>
 </section>
 <section>
@@ -75,7 +74,7 @@ class RoundBasedGame:
 <dl>
 <dt id="Engine.RoundBasedGame.RoundBasedGame"><code class="flex name class">
 <span>class <span class="ident">RoundBasedGame</span></span>
-<span>(</span><span>rounds, activeGame)</span>
+<span>(</span><span>rounds: int, activeGame: <a title="Engine.Game.Game" href="Game.html#Engine.Game.Game">Game</a>)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -87,33 +86,30 @@ class RoundBasedGame:
     Rounds: int
     Screen = pygame.Surface
     BackgroundColor: Color.Color = Color.Color(hexstring=&#34;#000000&#34;)
-    GameState: any = 0
+    GameState: Any = 0
     ResultsList: list = []
     MaxRounds: int = 10
     CurrentRound: int = 1
-    OnRoundWin: callable = lambda self: None
-    OnRoundLoss: callable = lambda self: None
     RoundResult: bool = False
     MasterSpriteGroup: pygame.sprite.Group = pygame.sprite.Group()
 
     DisplayedText: dict = {}
 
-    def __init__(self, rounds, activeGame) -&gt; None:
-        self.Rounds = Utils.Bind(val=rounds, inRange=[0, self.MaxRounds])
+    def __init__(self, rounds: int, activeGame: Game.Game) -&gt; None:
+        self.Rounds = int(Utils.Bind(val=rounds, inRange=(0, self.MaxRounds)))
         self.Screen = activeGame.Screen
 
-    def StartRound(self) -&gt; None:
-        self.DisplayedText[
-            &#34;Round Text&#34;
-        ].Text = f&#34;Round {self.CurrentRound}/{self.Rounds}&#34;
+    def StartRound(self, activeGame) -&gt; None:
+        self.DisplayedText[&#34;Round Text&#34;].Text = f&#34;Round {self.CurrentRound}/{self.Rounds}&#34;
         self.MasterSpriteGroup.update()
-        self.MasterSpriteGroup.draw(self.Screen)
+        self.MasterSpriteGroup.draw(self.Screen)  # type: ignore
 
-    def UpdateStateMachine(self, input) -&gt; None:
+    def UpdateStateMachine(self, inputStr: str) -&gt; None:
         pass
 
-    def PlayGame(self, activeGame) -&gt; None:
-        self.StartRound(activeGame=activeGame)</code></pre>
+    def PlayGame(self,activeGame) -&gt; None:
+        # Pylance rejects activeGame as param due to overloading
+        self.StartRound(activeGame=activeGame)  # type: ignore</code></pre>
 </details>
 <h3>Class variables</h3>
 <dl>
@@ -129,7 +125,7 @@ class RoundBasedGame:
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="Engine.RoundBasedGame.RoundBasedGame.GameState"><code class="name">var <span class="ident">GameState</span> : <built-in function any></code></dt>
+<dt id="Engine.RoundBasedGame.RoundBasedGame.GameState"><code class="name">var <span class="ident">GameState</span> : Any</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -162,30 +158,6 @@ pygame object for representing images</p></div>
 </dl>
 <h3>Methods</h3>
 <dl>
-<dt id="Engine.RoundBasedGame.RoundBasedGame.OnRoundLoss"><code class="name flex">
-<span>def <span class="ident">OnRoundLoss</span></span>(<span>self) ‑> <built-in function callable></span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">OnRoundLoss: callable = lambda self: None</code></pre>
-</details>
-</dd>
-<dt id="Engine.RoundBasedGame.RoundBasedGame.OnRoundWin"><code class="name flex">
-<span>def <span class="ident">OnRoundWin</span></span>(<span>self) ‑> <built-in function callable></span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">OnRoundWin: callable = lambda self: None</code></pre>
-</details>
-</dd>
 <dt id="Engine.RoundBasedGame.RoundBasedGame.PlayGame"><code class="name flex">
 <span>def <span class="ident">PlayGame</span></span>(<span>self, activeGame) ‑> None</span>
 </code></dt>
@@ -195,12 +167,13 @@ pygame object for representing images</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def PlayGame(self, activeGame) -&gt; None:
-    self.StartRound(activeGame=activeGame)</code></pre>
+<pre><code class="python">def PlayGame(self,activeGame) -&gt; None:
+    # Pylance rejects activeGame as param due to overloading
+    self.StartRound(activeGame=activeGame)  # type: ignore</code></pre>
 </details>
 </dd>
 <dt id="Engine.RoundBasedGame.RoundBasedGame.StartRound"><code class="name flex">
-<span>def <span class="ident">StartRound</span></span>(<span>self) ‑> None</span>
+<span>def <span class="ident">StartRound</span></span>(<span>self, activeGame) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -208,16 +181,14 @@ pygame object for representing images</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def StartRound(self) -&gt; None:
-    self.DisplayedText[
-        &#34;Round Text&#34;
-    ].Text = f&#34;Round {self.CurrentRound}/{self.Rounds}&#34;
+<pre><code class="python">def StartRound(self, activeGame) -&gt; None:
+    self.DisplayedText[&#34;Round Text&#34;].Text = f&#34;Round {self.CurrentRound}/{self.Rounds}&#34;
     self.MasterSpriteGroup.update()
-    self.MasterSpriteGroup.draw(self.Screen)</code></pre>
+    self.MasterSpriteGroup.draw(self.Screen)  # type: ignore</code></pre>
 </details>
 </dd>
 <dt id="Engine.RoundBasedGame.RoundBasedGame.UpdateStateMachine"><code class="name flex">
-<span>def <span class="ident">UpdateStateMachine</span></span>(<span>self, input) ‑> None</span>
+<span>def <span class="ident">UpdateStateMachine</span></span>(<span>self, inputStr: str) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -225,7 +196,7 @@ pygame object for representing images</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def UpdateStateMachine(self, input) -&gt; None:
+<pre><code class="python">def UpdateStateMachine(self, inputStr: str) -&gt; None:
     pass</code></pre>
 </details>
 </dd>
@@ -256,8 +227,6 @@ pygame object for representing images</p></div>
 <li><code><a title="Engine.RoundBasedGame.RoundBasedGame.GameState" href="#Engine.RoundBasedGame.RoundBasedGame.GameState">GameState</a></code></li>
 <li><code><a title="Engine.RoundBasedGame.RoundBasedGame.MasterSpriteGroup" href="#Engine.RoundBasedGame.RoundBasedGame.MasterSpriteGroup">MasterSpriteGroup</a></code></li>
 <li><code><a title="Engine.RoundBasedGame.RoundBasedGame.MaxRounds" href="#Engine.RoundBasedGame.RoundBasedGame.MaxRounds">MaxRounds</a></code></li>
-<li><code><a title="Engine.RoundBasedGame.RoundBasedGame.OnRoundLoss" href="#Engine.RoundBasedGame.RoundBasedGame.OnRoundLoss">OnRoundLoss</a></code></li>
-<li><code><a title="Engine.RoundBasedGame.RoundBasedGame.OnRoundWin" href="#Engine.RoundBasedGame.RoundBasedGame.OnRoundWin">OnRoundWin</a></code></li>
 <li><code><a title="Engine.RoundBasedGame.RoundBasedGame.PlayGame" href="#Engine.RoundBasedGame.RoundBasedGame.PlayGame">PlayGame</a></code></li>
 <li><code><a title="Engine.RoundBasedGame.RoundBasedGame.ResultsList" href="#Engine.RoundBasedGame.RoundBasedGame.ResultsList">ResultsList</a></code></li>
 <li><code><a title="Engine.RoundBasedGame.RoundBasedGame.RoundResult" href="#Engine.RoundBasedGame.RoundBasedGame.RoundResult">RoundResult</a></code></li>

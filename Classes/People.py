@@ -43,6 +43,9 @@ class Worker(Person.Person):
         activeGame.WorkerList.append(worker)
         return worker, workerSprite
 
+    def __hash__(self) -> int:
+        return super().__hash__()
+
 
 @dataclass
 class Customer(Person.Person):
@@ -84,3 +87,6 @@ class Customer(Person.Person):
         activeGame.CharSpriteGroup.add(customerSprite)
         activeGame.CustomerList.append(cust)
         return cust, customerSprite
+
+    def __hash__(self) -> int:
+        return super().__hash__()

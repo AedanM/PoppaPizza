@@ -26,9 +26,11 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">import pygame
+<pre><code class="python">from typing import Any
 
-from Engine import Clock, Color, LightingEngine
+import pygame
+
+from Engine import Clock, Color, LightingEngine, SaveHandler
 
 
 class Game:
@@ -38,9 +40,10 @@ class Game:
     ShowScreen: bool = True
     Running: bool = True
     BackgroundColor: Color.Color = Color.Color(hexstring=&#34;#000000&#34;)
-    Lighting: LightingEngine.LightingEngine = None
+    Lighting: LightingEngine.LightingEngine = None  # type: ignore
+    Screen: pygame.Surface = None  # type: ignore
 
-    def __init__(self, size, name, activateScreen=True) -&gt; None:
+    def __init__(self, size: tuple[int, int], name: str, activateScreen=True) -&gt; None:
         pygame.init()
         self.StartTime = pygame.time.get_ticks()
         self.ShowScreen = activateScreen
@@ -48,7 +51,7 @@ class Game:
         if self.ShowScreen:
             self.StartScreen(size=size)
 
-    def StartScreen(self, size) -&gt; None:
+    def StartScreen(self, size: tuple[int, int]) -&gt; None:
         &#34;&#34;&#34;Begins the screen and sets size
 
         Args-
@@ -79,7 +82,31 @@ class Game:
         Returns-
             tuple: tuple of current Size
         &#34;&#34;&#34;
-        return (self.Screen.get_width(), self.Screen.get_height())</code></pre>
+        return (self.Screen.get_width(), self.Screen.get_height())
+
+    @property
+    def HasGameOver(self) -&gt; str:
+        return &#34;&#34;
+
+    def SaveGame(self) -&gt; bool:
+        return SaveHandler.SaveGame(saveObj=self.MakeSaveObj(), path=&#34;SaveGame.sav&#34;)
+
+    def LoadGame(self) -&gt; bool:
+        status, saveDict = SaveHandler.LoadGame(path=&#34;SaveGame.sav&#34;)
+        if status:
+            self.LoadSaveObj(saveDict=saveDict)
+        return status
+
+    def MakeSaveObj(self) -&gt; dict[str, Any]:
+        saveDict = {
+            &#34;Screen Size&#34;: self.ScreenSize,
+            &#34;Game Clock&#34;: self.GameClock.UnixTime,
+        }
+        return saveDict
+
+    def LoadSaveObj(self, saveDict):
+        self.StartScreen(size=saveDict[&#34;Screen Size&#34;])
+        self.GameClock.SetUnixTime(time=saveDict[&#34;Game Clock&#34;])</code></pre>
 </details>
 </section>
 <section>
@@ -93,7 +120,7 @@ class Game:
 <dl>
 <dt id="Engine.Game.Game"><code class="flex name class">
 <span>class <span class="ident">Game</span></span>
-<span>(</span><span>size, name, activateScreen=True)</span>
+<span>(</span><span>size: tuple[int, int], name: str, activateScreen=True)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -108,9 +135,10 @@ class Game:
     ShowScreen: bool = True
     Running: bool = True
     BackgroundColor: Color.Color = Color.Color(hexstring=&#34;#000000&#34;)
-    Lighting: LightingEngine.LightingEngine = None
+    Lighting: LightingEngine.LightingEngine = None  # type: ignore
+    Screen: pygame.Surface = None  # type: ignore
 
-    def __init__(self, size, name, activateScreen=True) -&gt; None:
+    def __init__(self, size: tuple[int, int], name: str, activateScreen=True) -&gt; None:
         pygame.init()
         self.StartTime = pygame.time.get_ticks()
         self.ShowScreen = activateScreen
@@ -118,7 +146,7 @@ class Game:
         if self.ShowScreen:
             self.StartScreen(size=size)
 
-    def StartScreen(self, size) -&gt; None:
+    def StartScreen(self, size: tuple[int, int]) -&gt; None:
         &#34;&#34;&#34;Begins the screen and sets size
 
         Args-
@@ -149,7 +177,31 @@ class Game:
         Returns-
             tuple: tuple of current Size
         &#34;&#34;&#34;
-        return (self.Screen.get_width(), self.Screen.get_height())</code></pre>
+        return (self.Screen.get_width(), self.Screen.get_height())
+
+    @property
+    def HasGameOver(self) -&gt; str:
+        return &#34;&#34;
+
+    def SaveGame(self) -&gt; bool:
+        return SaveHandler.SaveGame(saveObj=self.MakeSaveObj(), path=&#34;SaveGame.sav&#34;)
+
+    def LoadGame(self) -&gt; bool:
+        status, saveDict = SaveHandler.LoadGame(path=&#34;SaveGame.sav&#34;)
+        if status:
+            self.LoadSaveObj(saveDict=saveDict)
+        return status
+
+    def MakeSaveObj(self) -&gt; dict[str, Any]:
+        saveDict = {
+            &#34;Screen Size&#34;: self.ScreenSize,
+            &#34;Game Clock&#34;: self.GameClock.UnixTime,
+        }
+        return saveDict
+
+    def LoadSaveObj(self, saveDict):
+        self.StartScreen(size=saveDict[&#34;Screen Size&#34;])
+        self.GameClock.SetUnixTime(time=saveDict[&#34;Game Clock&#34;])</code></pre>
 </details>
 <h3>Class variables</h3>
 <dl>
@@ -173,6 +225,10 @@ class Game:
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="Engine.Game.Game.Screen"><code class="name">var <span class="ident">Screen</span> : pygame.surface.Surface</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="Engine.Game.Game.ShowScreen"><code class="name">var <span class="ident">ShowScreen</span> : bool</code></dt>
 <dd>
 <div class="desc"></div>
@@ -184,6 +240,18 @@ class Game:
 </dl>
 <h3>Instance variables</h3>
 <dl>
+<dt id="Engine.Game.Game.HasGameOver"><code class="name">var <span class="ident">HasGameOver</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def HasGameOver(self) -&gt; str:
+    return &#34;&#34;</code></pre>
+</details>
+</dd>
 <dt id="Engine.Game.Game.ScreenSize"><code class="name">var <span class="ident">ScreenSize</span> : tuple[int, int]</code></dt>
 <dd>
 <div class="desc"><p>Current size of screen</p>
@@ -219,8 +287,68 @@ def ScreenSize(self) -&gt; tuple[int, int]:
     self.Screen.fill(self.BackgroundColor.RGB)</code></pre>
 </details>
 </dd>
+<dt id="Engine.Game.Game.LoadGame"><code class="name flex">
+<span>def <span class="ident">LoadGame</span></span>(<span>self) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def LoadGame(self) -&gt; bool:
+    status, saveDict = SaveHandler.LoadGame(path=&#34;SaveGame.sav&#34;)
+    if status:
+        self.LoadSaveObj(saveDict=saveDict)
+    return status</code></pre>
+</details>
+</dd>
+<dt id="Engine.Game.Game.LoadSaveObj"><code class="name flex">
+<span>def <span class="ident">LoadSaveObj</span></span>(<span>self, saveDict)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def LoadSaveObj(self, saveDict):
+    self.StartScreen(size=saveDict[&#34;Screen Size&#34;])
+    self.GameClock.SetUnixTime(time=saveDict[&#34;Game Clock&#34;])</code></pre>
+</details>
+</dd>
+<dt id="Engine.Game.Game.MakeSaveObj"><code class="name flex">
+<span>def <span class="ident">MakeSaveObj</span></span>(<span>self) ‑> dict[str, typing.Any]</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def MakeSaveObj(self) -&gt; dict[str, Any]:
+    saveDict = {
+        &#34;Screen Size&#34;: self.ScreenSize,
+        &#34;Game Clock&#34;: self.GameClock.UnixTime,
+    }
+    return saveDict</code></pre>
+</details>
+</dd>
+<dt id="Engine.Game.Game.SaveGame"><code class="name flex">
+<span>def <span class="ident">SaveGame</span></span>(<span>self) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def SaveGame(self) -&gt; bool:
+    return SaveHandler.SaveGame(saveObj=self.MakeSaveObj(), path=&#34;SaveGame.sav&#34;)</code></pre>
+</details>
+</dd>
 <dt id="Engine.Game.Game.StartScreen"><code class="name flex">
-<span>def <span class="ident">StartScreen</span></span>(<span>self, size) ‑> None</span>
+<span>def <span class="ident">StartScreen</span></span>(<span>self, size: tuple[int, int]) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Begins the screen and sets size</p>
@@ -230,7 +358,7 @@ size (str | tuple): Either member of StandardDimensions or custom tuple</p></div
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def StartScreen(self, size) -&gt; None:
+<pre><code class="python">def StartScreen(self, size: tuple[int, int]) -&gt; None:
     &#34;&#34;&#34;Begins the screen and sets size
 
     Args-
@@ -296,9 +424,15 @@ size (str | tuple): Either member of StandardDimensions or custom tuple</p></div
 <li><code><a title="Engine.Game.Game.BackgroundColor" href="#Engine.Game.Game.BackgroundColor">BackgroundColor</a></code></li>
 <li><code><a title="Engine.Game.Game.DrawBackground" href="#Engine.Game.Game.DrawBackground">DrawBackground</a></code></li>
 <li><code><a title="Engine.Game.Game.GameClock" href="#Engine.Game.Game.GameClock">GameClock</a></code></li>
+<li><code><a title="Engine.Game.Game.HasGameOver" href="#Engine.Game.Game.HasGameOver">HasGameOver</a></code></li>
 <li><code><a title="Engine.Game.Game.Lighting" href="#Engine.Game.Game.Lighting">Lighting</a></code></li>
+<li><code><a title="Engine.Game.Game.LoadGame" href="#Engine.Game.Game.LoadGame">LoadGame</a></code></li>
+<li><code><a title="Engine.Game.Game.LoadSaveObj" href="#Engine.Game.Game.LoadSaveObj">LoadSaveObj</a></code></li>
+<li><code><a title="Engine.Game.Game.MakeSaveObj" href="#Engine.Game.Game.MakeSaveObj">MakeSaveObj</a></code></li>
 <li><code><a title="Engine.Game.Game.Name" href="#Engine.Game.Game.Name">Name</a></code></li>
 <li><code><a title="Engine.Game.Game.Running" href="#Engine.Game.Game.Running">Running</a></code></li>
+<li><code><a title="Engine.Game.Game.SaveGame" href="#Engine.Game.Game.SaveGame">SaveGame</a></code></li>
+<li><code><a title="Engine.Game.Game.Screen" href="#Engine.Game.Game.Screen">Screen</a></code></li>
 <li><code><a title="Engine.Game.Game.ScreenSize" href="#Engine.Game.Game.ScreenSize">ScreenSize</a></code></li>
 <li><code><a title="Engine.Game.Game.ShowScreen" href="#Engine.Game.Game.ShowScreen">ShowScreen</a></code></li>
 <li><code><a title="Engine.Game.Game.SpriteGroups" href="#Engine.Game.Game.SpriteGroups">SpriteGroups</a></code></li>

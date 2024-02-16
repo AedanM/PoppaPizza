@@ -7,7 +7,7 @@ import pygame
 from Classes import GameClock, GameLighting, Inventory, MiniGames, Settings, Writing
 from Definitions import AssetLibrary, Chances, CustomEvents, Restaurants
 from Definitions.DefinedLocations import LocationDefs, StandardDimensions
-from Engine import Color, Game, RoundBasedGame
+from Engine import Color, Game, RoundBasedGame, SaveHandler
 
 
 class MainGame(Game.Game):
@@ -99,20 +99,28 @@ class MainGame(Game.Game):
 
     def MakeSaveObj(self) -> dict[str, Any]:
         saveDict = super().MakeSaveObj()
+        saveDict["Char Sprites"] = SaveHandler.SaveSpriteGroup(spriteGroup=self.CharSpriteGroup)
         saveDict["Workers"] = self.WorkerList
         saveDict["Customers"] = self.CustomerList
         saveDict["Jobs"] = self.JobList
         saveDict["Restuarants"] = Restaurants.RestaurantList
         saveDict["Inventory"] = self.UserInventory
+        saveDict["Mode"] = self.Mode
+        saveDict["Mini Game"] = self.MiniGame
         return saveDict
 
     def LoadSaveObj(self, saveDict) -> None:
         super().LoadSaveObj(saveDict=saveDict)
+        SaveHandler.LoadSpriteGroup(
+            saveObj=saveDict, Name="Char Sprites", spriteGroup=self.CharSpriteGroup
+        )
         self.WorkerList = saveDict["Workers"]
         self.CustomerList = saveDict["Customers"]
         self.JobList = saveDict["Jobs"]
         Restaurants.RestaurantList = saveDict["Restuarants"]
         self.UserInventory = saveDict["Inventory"]
+        self.Mode = saveDict["Mode"]
+        self.MiniGame = saveDict["Mini Game"]
 
     def LoadGame(self) -> None:
         super().LoadGame()

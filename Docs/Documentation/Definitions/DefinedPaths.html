@@ -33,10 +33,12 @@ import copy
 import random
 
 from Classes import GameBase
-from Definitions import AssetLibrary, DefinedLocations
+from Definitions import AssetLibrary
+from Definitions.DefinedLocations import LocationDefs, SeatingPlan
 from Engine import Utils
 
 
+# TODO- CheckOnTheWay and Make work
 def IsSeatTaken(seatLocation) -&gt; bool:
     &#34;&#34;&#34;Checks if Customer Sat in Seat
 
@@ -48,12 +50,8 @@ def IsSeatTaken(seatLocation) -&gt; bool:
     &#34;&#34;&#34;
     for sprite in GameBase.MasterGame.CharSpriteGroup:
         if sprite.ImageType in AssetLibrary.CustomerOutfits:
-            xCheck = Utils.InTolerance(
-                num1=sprite.rect.centerx, num2=seatLocation[0], tolerance=15
-            )
-            yCheck = Utils.InTolerance(
-                num1=sprite.rect.centery, num2=seatLocation[1], tolerance=15
-            )
+            xCheck = Utils.InTolerance(num1=sprite.rect.centerx, num2=seatLocation[0], tolerance=15)
+            yCheck = Utils.InTolerance(num1=sprite.rect.centery, num2=seatLocation[1], tolerance=15)
             dstCheck = (
                 sprite.MvmHandler.PointsList[-1] == seatLocation
                 if sprite.MvmHandler.PointsList != []
@@ -71,7 +69,7 @@ def GetRandomSeatPosition() -&gt; tuple | None:
     Returns-
         tuple | None: Seat position
     &#34;&#34;&#34;
-    seatingPlan = DefinedLocations.SeatingPlan
+    seatingPlan = SeatingPlan
     seats = copy.deepcopy(seatingPlan.GenerateTablePlaces())
     random.shuffle(seats)
     for seat in seats:
@@ -96,14 +94,14 @@ class DefinedPaths:
         &#34;&#34;&#34;
         path = [
             sprite.rect.center,
-            DefinedLocations.LocationDefs.KitchenEntrance,
-            (dest[0], DefinedLocations.LocationDefs.KitchenEntrance[1]),
+            LocationDefs.KitchenEntrance,
+            (dest[0], LocationDefs.KitchenEntrance[1]),
             dest,
         ]
         return path
 
     @staticmethod
-    def CustomerToRandomSeat(sprite) -&gt; list:
+    def CustomerToRandomSeat(sprite) -&gt; list | None:
         &#34;&#34;&#34;Picks a random seat and generates a path to it
 
         sprite (Sprite): Active Customer
@@ -119,6 +117,7 @@ class DefinedPaths:
                 (randomSeatPosition[0], randomSeatPosition[1] + 50),
             ]
             return path
+        return None
 
     @staticmethod
     def KitchenToCustomer(sprite, dest) -&gt; list:
@@ -133,14 +132,14 @@ class DefinedPaths:
         &#34;&#34;&#34;
         path = [
             sprite.rect.center,
-            DefinedLocations.LocationDefs.KitchenEntrance,
+            LocationDefs.KitchenEntrance,
             (
-                DefinedLocations.LocationDefs.KitchenEntrance[0] + 100,
-                DefinedLocations.LocationDefs.KitchenEntrance[1],
+                LocationDefs.KitchenEntrance[0] + 100,
+                LocationDefs.KitchenEntrance[1],
             ),
             (
                 dest.rect.center[0] - 100,
-                DefinedLocations.LocationDefs.KitchenEntrance[1],
+                LocationDefs.KitchenEntrance[1],
             ),
             dest.rect.center,
         ]
@@ -162,16 +161,16 @@ class DefinedPaths:
             (
                 (
                     sprite.rect.center[0],
-                    DefinedLocations.LocationDefs.KitchenEntrance[1],
+                    LocationDefs.KitchenEntrance[1],
                 )
                 if VertFirst
                 else (
-                    DefinedLocations.LocationDefs.KitchenEntrance[0],
+                    LocationDefs.KitchenEntrance[0],
                     sprite.rect.center[1],
                 )
             ),
-            DefinedLocations.LocationDefs.KitchenEntrance,
-            DefinedLocations.LocationDefs.KitchenLocation,
+            LocationDefs.KitchenEntrance,
+            LocationDefs.KitchenLocation,
         ]
         return path
 
@@ -185,7 +184,7 @@ class DefinedPaths:
         Returns-
             list: List of Points for Path
         &#34;&#34;&#34;
-        path = [sprite.rect.center, DefinedLocations.LocationDefs.CustomerExit]
+        path = [sprite.rect.center, LocationDefs.CustomerExit]
         return path
 
     @staticmethod
@@ -202,10 +201,10 @@ class DefinedPaths:
             sprite.rect.center,
             (sprite.rect.centerx, sprite.rect.centery - 100),
             (
-                DefinedLocations.LocationDefs.CustomerEntrance[0],
+                LocationDefs.CustomerEntrance[0],
                 sprite.rect.centery - 100,
             ),
-            DefinedLocations.LocationDefs.CustomerExit,
+            LocationDefs.CustomerExit,
         ]
         return path
 
@@ -219,7 +218,7 @@ class DefinedPaths:
         Returns-
             list: List of Points for Path
         &#34;&#34;&#34;
-        path = [sprite.rect.center, DefinedLocations.LocationDefs.CustomerEntrance]
+        path = [sprite.rect.center, LocationDefs.CustomerEntrance]
         return path</code></pre>
 </details>
 </section>
@@ -247,7 +246,7 @@ tuple | None: Seat position</p></div>
     Returns-
         tuple | None: Seat position
     &#34;&#34;&#34;
-    seatingPlan = DefinedLocations.SeatingPlan
+    seatingPlan = SeatingPlan
     seats = copy.deepcopy(seatingPlan.GenerateTablePlaces())
     random.shuffle(seats)
     for seat in seats:
@@ -280,12 +279,8 @@ bool: Is Seat Free</p></div>
     &#34;&#34;&#34;
     for sprite in GameBase.MasterGame.CharSpriteGroup:
         if sprite.ImageType in AssetLibrary.CustomerOutfits:
-            xCheck = Utils.InTolerance(
-                num1=sprite.rect.centerx, num2=seatLocation[0], tolerance=15
-            )
-            yCheck = Utils.InTolerance(
-                num1=sprite.rect.centery, num2=seatLocation[1], tolerance=15
-            )
+            xCheck = Utils.InTolerance(num1=sprite.rect.centerx, num2=seatLocation[0], tolerance=15)
+            yCheck = Utils.InTolerance(num1=sprite.rect.centery, num2=seatLocation[1], tolerance=15)
             dstCheck = (
                 sprite.MvmHandler.PointsList[-1] == seatLocation
                 if sprite.MvmHandler.PointsList != []
@@ -327,14 +322,14 @@ bool: Is Seat Free</p></div>
         &#34;&#34;&#34;
         path = [
             sprite.rect.center,
-            DefinedLocations.LocationDefs.KitchenEntrance,
-            (dest[0], DefinedLocations.LocationDefs.KitchenEntrance[1]),
+            LocationDefs.KitchenEntrance,
+            (dest[0], LocationDefs.KitchenEntrance[1]),
             dest,
         ]
         return path
 
     @staticmethod
-    def CustomerToRandomSeat(sprite) -&gt; list:
+    def CustomerToRandomSeat(sprite) -&gt; list | None:
         &#34;&#34;&#34;Picks a random seat and generates a path to it
 
         sprite (Sprite): Active Customer
@@ -350,6 +345,7 @@ bool: Is Seat Free</p></div>
                 (randomSeatPosition[0], randomSeatPosition[1] + 50),
             ]
             return path
+        return None
 
     @staticmethod
     def KitchenToCustomer(sprite, dest) -&gt; list:
@@ -364,14 +360,14 @@ bool: Is Seat Free</p></div>
         &#34;&#34;&#34;
         path = [
             sprite.rect.center,
-            DefinedLocations.LocationDefs.KitchenEntrance,
+            LocationDefs.KitchenEntrance,
             (
-                DefinedLocations.LocationDefs.KitchenEntrance[0] + 100,
-                DefinedLocations.LocationDefs.KitchenEntrance[1],
+                LocationDefs.KitchenEntrance[0] + 100,
+                LocationDefs.KitchenEntrance[1],
             ),
             (
                 dest.rect.center[0] - 100,
-                DefinedLocations.LocationDefs.KitchenEntrance[1],
+                LocationDefs.KitchenEntrance[1],
             ),
             dest.rect.center,
         ]
@@ -393,16 +389,16 @@ bool: Is Seat Free</p></div>
             (
                 (
                     sprite.rect.center[0],
-                    DefinedLocations.LocationDefs.KitchenEntrance[1],
+                    LocationDefs.KitchenEntrance[1],
                 )
                 if VertFirst
                 else (
-                    DefinedLocations.LocationDefs.KitchenEntrance[0],
+                    LocationDefs.KitchenEntrance[0],
                     sprite.rect.center[1],
                 )
             ),
-            DefinedLocations.LocationDefs.KitchenEntrance,
-            DefinedLocations.LocationDefs.KitchenLocation,
+            LocationDefs.KitchenEntrance,
+            LocationDefs.KitchenLocation,
         ]
         return path
 
@@ -416,7 +412,7 @@ bool: Is Seat Free</p></div>
         Returns-
             list: List of Points for Path
         &#34;&#34;&#34;
-        path = [sprite.rect.center, DefinedLocations.LocationDefs.CustomerExit]
+        path = [sprite.rect.center, LocationDefs.CustomerExit]
         return path
 
     @staticmethod
@@ -433,10 +429,10 @@ bool: Is Seat Free</p></div>
             sprite.rect.center,
             (sprite.rect.centerx, sprite.rect.centery - 100),
             (
-                DefinedLocations.LocationDefs.CustomerEntrance[0],
+                LocationDefs.CustomerEntrance[0],
                 sprite.rect.centery - 100,
             ),
-            DefinedLocations.LocationDefs.CustomerExit,
+            LocationDefs.CustomerExit,
         ]
         return path
 
@@ -450,7 +446,7 @@ bool: Is Seat Free</p></div>
         Returns-
             list: List of Points for Path
         &#34;&#34;&#34;
-        path = [sprite.rect.center, DefinedLocations.LocationDefs.CustomerEntrance]
+        path = [sprite.rect.center, LocationDefs.CustomerEntrance]
         return path</code></pre>
 </details>
 <h3>Static methods</h3>
@@ -485,16 +481,16 @@ def BackToKitchen(sprite, VertFirst=True) -&gt; list:
         (
             (
                 sprite.rect.center[0],
-                DefinedLocations.LocationDefs.KitchenEntrance[1],
+                LocationDefs.KitchenEntrance[1],
             )
             if VertFirst
             else (
-                DefinedLocations.LocationDefs.KitchenEntrance[0],
+                LocationDefs.KitchenEntrance[0],
                 sprite.rect.center[1],
             )
         ),
-        DefinedLocations.LocationDefs.KitchenEntrance,
-        DefinedLocations.LocationDefs.KitchenLocation,
+        LocationDefs.KitchenEntrance,
+        LocationDefs.KitchenLocation,
     ]
     return path</code></pre>
 </details>
@@ -522,7 +518,7 @@ def CustomerToEntrance(sprite) -&gt; list:
     Returns-
         list: List of Points for Path
     &#34;&#34;&#34;
-    path = [sprite.rect.center, DefinedLocations.LocationDefs.CustomerEntrance]
+    path = [sprite.rect.center, LocationDefs.CustomerEntrance]
     return path</code></pre>
 </details>
 </dd>
@@ -549,12 +545,12 @@ def CustomerToExit(sprite) -&gt; list:
     Returns-
         list: List of Points for Path
     &#34;&#34;&#34;
-    path = [sprite.rect.center, DefinedLocations.LocationDefs.CustomerExit]
+    path = [sprite.rect.center, LocationDefs.CustomerExit]
     return path</code></pre>
 </details>
 </dd>
 <dt id="Definitions.DefinedPaths.DefinedPaths.CustomerToRandomSeat"><code class="name flex">
-<span>def <span class="ident">CustomerToRandomSeat</span></span>(<span>sprite) ‑> list</span>
+<span>def <span class="ident">CustomerToRandomSeat</span></span>(<span>sprite) ‑> list | None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Picks a random seat and generates a path to it</p>
@@ -566,7 +562,7 @@ list: List of Points for Path</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@staticmethod
-def CustomerToRandomSeat(sprite) -&gt; list:
+def CustomerToRandomSeat(sprite) -&gt; list | None:
     &#34;&#34;&#34;Picks a random seat and generates a path to it
 
     sprite (Sprite): Active Customer
@@ -581,7 +577,8 @@ def CustomerToRandomSeat(sprite) -&gt; list:
             (randomSeatPosition[0], randomSeatPosition[1]),
             (randomSeatPosition[0], randomSeatPosition[1] + 50),
         ]
-        return path</code></pre>
+        return path
+    return None</code></pre>
 </details>
 </dd>
 <dt id="Definitions.DefinedPaths.DefinedPaths.KitchenToCustomer"><code class="name flex">
@@ -611,14 +608,14 @@ def KitchenToCustomer(sprite, dest) -&gt; list:
     &#34;&#34;&#34;
     path = [
         sprite.rect.center,
-        DefinedLocations.LocationDefs.KitchenEntrance,
+        LocationDefs.KitchenEntrance,
         (
-            DefinedLocations.LocationDefs.KitchenEntrance[0] + 100,
-            DefinedLocations.LocationDefs.KitchenEntrance[1],
+            LocationDefs.KitchenEntrance[0] + 100,
+            LocationDefs.KitchenEntrance[1],
         ),
         (
             dest.rect.center[0] - 100,
-            DefinedLocations.LocationDefs.KitchenEntrance[1],
+            LocationDefs.KitchenEntrance[1],
         ),
         dest.rect.center,
     ]
@@ -652,8 +649,8 @@ def KitchenToLockerRoom(sprite, dest) -&gt; list:
     &#34;&#34;&#34;
     path = [
         sprite.rect.center,
-        DefinedLocations.LocationDefs.KitchenEntrance,
-        (dest[0], DefinedLocations.LocationDefs.KitchenEntrance[1]),
+        LocationDefs.KitchenEntrance,
+        (dest[0], LocationDefs.KitchenEntrance[1]),
         dest,
     ]
     return path</code></pre>
@@ -686,10 +683,10 @@ def TableToExit(sprite) -&gt; list:
         sprite.rect.center,
         (sprite.rect.centerx, sprite.rect.centery - 100),
         (
-            DefinedLocations.LocationDefs.CustomerEntrance[0],
+            LocationDefs.CustomerEntrance[0],
             sprite.rect.centery - 100,
         ),
-        DefinedLocations.LocationDefs.CustomerExit,
+        LocationDefs.CustomerExit,
     ]
     return path</code></pre>
 </details>

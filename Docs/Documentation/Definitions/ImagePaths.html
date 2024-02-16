@@ -38,7 +38,7 @@ class ImagePaths:
     &#34;&#34;&#34;Object to hold all image paths and handle packaging&#34;&#34;&#34;
 
     # pylint: disable=W0212, E1101
-    AssetFolder = r&#34;Assets&#34; if not hasattr(sys, &#34;_MEIPASS&#34;) else sys._MEIPASS
+    AssetFolder = r&#34;Assets&#34; if not hasattr(sys, &#34;_MEIPASS&#34;) else sys._MEIPASS  # type: ignore
     BackgroundPath = AssetFolder + r&#34;\Backgrounds\background.png&#34;
     TriviaBackgroundPath = AssetFolder + r&#34;\Backgrounds\triviaBackground.png&#34;
     LightMaskPath = AssetFolder + r&#34;\Backgrounds\lightMask.png&#34;
@@ -90,7 +90,7 @@ class ImagePaths:
     &#34;&#34;&#34;Object to hold all image paths and handle packaging&#34;&#34;&#34;
 
     # pylint: disable=W0212, E1101
-    AssetFolder = r&#34;Assets&#34; if not hasattr(sys, &#34;_MEIPASS&#34;) else sys._MEIPASS
+    AssetFolder = r&#34;Assets&#34; if not hasattr(sys, &#34;_MEIPASS&#34;) else sys._MEIPASS  # type: ignore
     BackgroundPath = AssetFolder + r&#34;\Backgrounds\background.png&#34;
     TriviaBackgroundPath = AssetFolder + r&#34;\Backgrounds\triviaBackground.png&#34;
     LightMaskPath = AssetFolder + r&#34;\Backgrounds\lightMask.png&#34;

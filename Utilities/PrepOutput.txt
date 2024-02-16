@@ -26,6 +26,8 @@ C:\mysources\Aedan\PoppaPizza\Engine\MovementHandler.py:11: unused variable 'Fas
 C:\mysources\Aedan\PoppaPizza\Engine\MovementHandler.py:12: unused variable 'Instant' (60% confidence)
 C:\mysources\Aedan\PoppaPizza\Engine\Person.py:17: unused variable 'Body' (60% confidence)
 C:\mysources\Aedan\PoppaPizza\Engine\RoundBasedGame.py:16: unused variable 'RoundResult' (60% confidence)
+C:\mysources\Aedan\PoppaPizza\Engine\SaveHandler.py:12: unused function 'SaveImage' (60% confidence)
+C:\mysources\Aedan\PoppaPizza\Engine\SaveHandler.py:16: unused function 'LoadImage' (60% confidence)
 C:\mysources\Aedan\PoppaPizza\Engine\SpriteObjects.py:14: unused variable 'IsBackground' (60% confidence)
 C:\mysources\Aedan\PoppaPizza\Engine\SpriteObjects.py:15: unused variable 'IsRendered' (60% confidence)
 C:\mysources\Aedan\PoppaPizza\Engine\SpriteObjects.py:17: unused variable 'Collision' (60% confidence)
@@ -34,6 +36,7 @@ C:\mysources\Aedan\PoppaPizza\Engine\SpriteObjects.py:30: unused attribute 'Coll
 C:\mysources\Aedan\PoppaPizza\Engine\Utils.py:233: unused variable 'oldSize' (100% confidence)
 C:\mysources\Aedan\PoppaPizza\Engine\Utils.py:238: unused function 'ScaleTuple' (60% confidence)
 C:\mysources\Aedan\PoppaPizza\Generators\BackgroundPopulator.py:25: unused attribute 'Collision' (60% confidence)
+C:\mysources\Aedan\PoppaPizza\Generators\Menus.py:99: unused function 'ShopMenu' (60% confidence)
 C:\mysources\Aedan\PoppaPizza\Handlers\CustomerHandler.py:122: unused function 'AllWorkersBusy' (60% confidence)
 C:\mysources\Aedan\PoppaPizza\Handlers\WorkerHandler.py:40: unused attribute 'CurrentJobId' (60% confidence)
 MatchAndGroupImages.py:18: unused variable 'FileName' (60% confidence)
@@ -42,7 +45,7 @@ MatchAndGroupImages.py:21: unused variable 'HasParent' (60% confidence)
 ~code2Flow~~
 ~~~~~~~~~~~~
 ~PyReverse~~
-Analysed 49 modules with a total of 208 imports
+Analysed 50 modules with a total of 212 imports
         1 file(s) moved.
         1 file(s) moved.
 ~~~~~~~~~~~~

@@ -36,40 +36,44 @@ class LightingEngine:
     MaxNightLightAlpha: float = 200
     NightTransitionCover: float = 0.05
     LightMask: pygame.Surface = pygame.Surface((1, 1))
-    DayColorScreen: pygame.Surface = None
+    DayColorScreen: pygame.Surface = pygame.Surface((1, 1))
     NightTransitionColor: Color.Color = Color.Color(hexstring=&#34;#FFFFFF&#34;)
     MorningTransitionColor: Color.Color = Color.Color(hexstring=&#34;#000000&#34;)
 
-    def __init__(self, screenSize) -&gt; None:
+    def __init__(self, screenSize: tuple[int, int]) -&gt; None:
         self.DayColorScreen = pygame.Surface(screenSize)
 
-    def AllDayBlend(self, gameClock, screenSize) -&gt; None:
+    def AllDayBlend(self, gameClock) -&gt; pygame.Surface:
         dayPercent = gameClock.DayPercentage
         morningPercent = Utils.Bind(val=1 - (dayPercent * 2), inRange=(0, 1))
         nightPercent = Utils.Bind(val=((dayPercent - 0.5) * 2), inRange=(0, 1))
         noonPercent = (1 - morningPercent) - nightPercent
         currentColor = Color.Color(
-            h=(self.MorningTransitionColor.H * morningPercent)
-            + (self.NightTransitionColor.H * nightPercent),
-            s=(self.MorningTransitionColor.S * morningPercent)
-            + (self.NightTransitionColor.S * nightPercent),
-            v=(self.MorningTransitionColor.V * morningPercent)
-            + (self.NightTransitionColor.V * nightPercent)
-            + (255 * noonPercent),
+            h=int(
+                (self.MorningTransitionColor.H * morningPercent)
+                + (self.NightTransitionColor.H * nightPercent)
+            ),
+            s=int(
+                (self.MorningTransitionColor.S * morningPercent)
+                + (self.NightTransitionColor.S * nightPercent)
+            ),
+            v=int(
+                (self.MorningTransitionColor.V * morningPercent)
+                + (self.NightTransitionColor.V * nightPercent)
+                + (255 * noonPercent)
+            ),
         )
         self.DayColorScreen.fill(currentColor.RGB)
         return self.DayColorScreen
 
-    def ChangeNightColor(self, rgb) -&gt; None:
+    def ChangeNightColor(self, rgb: tuple[int, int, int]) -&gt; None:
         if rgb != (-1, -1, -1):
             r, g, b = rgb
             self.NightTransitionColor = Color.Color(r=r, g=g, b=b)
 
     def LightingEngine(self, activeGame, dayTransition=False) -&gt; None:
         if dayTransition:
-            lightLayer = self.AllDayBlend(
-                gameClock=activeGame.GameClock, screenSize=activeGame.ScreenSize
-            )
+            lightLayer = self.AllDayBlend(gameClock=activeGame.GameClock)
             lightLayer.blit(
                 self.LightMask,
                 (0, 0),
@@ -93,7 +97,7 @@ class LightingEngine:
 <dl>
 <dt id="Engine.LightingEngine.LightingEngine"><code class="flex name class">
 <span>class <span class="ident">LightingEngine</span></span>
-<span>(</span><span>screenSize)</span>
+<span>(</span><span>screenSize: tuple[int, int])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -106,40 +110,44 @@ class LightingEngine:
     MaxNightLightAlpha: float = 200
     NightTransitionCover: float = 0.05
     LightMask: pygame.Surface = pygame.Surface((1, 1))
-    DayColorScreen: pygame.Surface = None
+    DayColorScreen: pygame.Surface = pygame.Surface((1, 1))
     NightTransitionColor: Color.Color = Color.Color(hexstring=&#34;#FFFFFF&#34;)
     MorningTransitionColor: Color.Color = Color.Color(hexstring=&#34;#000000&#34;)
 
-    def __init__(self, screenSize) -&gt; None:
+    def __init__(self, screenSize: tuple[int, int]) -&gt; None:
         self.DayColorScreen = pygame.Surface(screenSize)
 
-    def AllDayBlend(self, gameClock, screenSize) -&gt; None:
+    def AllDayBlend(self, gameClock) -&gt; pygame.Surface:
         dayPercent = gameClock.DayPercentage
         morningPercent = Utils.Bind(val=1 - (dayPercent * 2), inRange=(0, 1))
         nightPercent = Utils.Bind(val=((dayPercent - 0.5) * 2), inRange=(0, 1))
         noonPercent = (1 - morningPercent) - nightPercent
         currentColor = Color.Color(
-            h=(self.MorningTransitionColor.H * morningPercent)
-            + (self.NightTransitionColor.H * nightPercent),
-            s=(self.MorningTransitionColor.S * morningPercent)
-            + (self.NightTransitionColor.S * nightPercent),
-            v=(self.MorningTransitionColor.V * morningPercent)
-            + (self.NightTransitionColor.V * nightPercent)
-            + (255 * noonPercent),
+            h=int(
+                (self.MorningTransitionColor.H * morningPercent)
+                + (self.NightTransitionColor.H * nightPercent)
+            ),
+            s=int(
+                (self.MorningTransitionColor.S * morningPercent)
+                + (self.NightTransitionColor.S * nightPercent)
+            ),
+            v=int(
+                (self.MorningTransitionColor.V * morningPercent)
+                + (self.NightTransitionColor.V * nightPercent)
+                + (255 * noonPercent)
+            ),
         )
         self.DayColorScreen.fill(currentColor.RGB)
         return self.DayColorScreen
 
-    def ChangeNightColor(self, rgb) -&gt; None:
+    def ChangeNightColor(self, rgb: tuple[int, int, int]) -&gt; None:
         if rgb != (-1, -1, -1):
             r, g, b = rgb
             self.NightTransitionColor = Color.Color(r=r, g=g, b=b)
 
     def LightingEngine(self, activeGame, dayTransition=False) -&gt; None:
         if dayTransition:
-            lightLayer = self.AllDayBlend(
-                gameClock=activeGame.GameClock, screenSize=activeGame.ScreenSize
-            )
+            lightLayer = self.AllDayBlend(gameClock=activeGame.GameClock)
             lightLayer.blit(
                 self.LightMask,
                 (0, 0),
@@ -185,7 +193,7 @@ class LightingEngine:
 <h3>Methods</h3>
 <dl>
 <dt id="Engine.LightingEngine.LightingEngine.AllDayBlend"><code class="name flex">
-<span>def <span class="ident">AllDayBlend</span></span>(<span>self, gameClock, screenSize) ‑> None</span>
+<span>def <span class="ident">AllDayBlend</span></span>(<span>self, gameClock) ‑> pygame.surface.Surface</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -193,26 +201,32 @@ class LightingEngine:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def AllDayBlend(self, gameClock, screenSize) -&gt; None:
+<pre><code class="python">def AllDayBlend(self, gameClock) -&gt; pygame.Surface:
     dayPercent = gameClock.DayPercentage
     morningPercent = Utils.Bind(val=1 - (dayPercent * 2), inRange=(0, 1))
     nightPercent = Utils.Bind(val=((dayPercent - 0.5) * 2), inRange=(0, 1))
     noonPercent = (1 - morningPercent) - nightPercent
     currentColor = Color.Color(
-        h=(self.MorningTransitionColor.H * morningPercent)
-        + (self.NightTransitionColor.H * nightPercent),
-        s=(self.MorningTransitionColor.S * morningPercent)
-        + (self.NightTransitionColor.S * nightPercent),
-        v=(self.MorningTransitionColor.V * morningPercent)
-        + (self.NightTransitionColor.V * nightPercent)
-        + (255 * noonPercent),
+        h=int(
+            (self.MorningTransitionColor.H * morningPercent)
+            + (self.NightTransitionColor.H * nightPercent)
+        ),
+        s=int(
+            (self.MorningTransitionColor.S * morningPercent)
+            + (self.NightTransitionColor.S * nightPercent)
+        ),
+        v=int(
+            (self.MorningTransitionColor.V * morningPercent)
+            + (self.NightTransitionColor.V * nightPercent)
+            + (255 * noonPercent)
+        ),
     )
     self.DayColorScreen.fill(currentColor.RGB)
     return self.DayColorScreen</code></pre>
 </details>
 </dd>
 <dt id="Engine.LightingEngine.LightingEngine.ChangeNightColor"><code class="name flex">
-<span>def <span class="ident">ChangeNightColor</span></span>(<span>self, rgb) ‑> None</span>
+<span>def <span class="ident">ChangeNightColor</span></span>(<span>self, rgb: tuple[int, int, int]) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -220,7 +234,7 @@ class LightingEngine:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def ChangeNightColor(self, rgb) -&gt; None:
+<pre><code class="python">def ChangeNightColor(self, rgb: tuple[int, int, int]) -&gt; None:
     if rgb != (-1, -1, -1):
         r, g, b = rgb
         self.NightTransitionColor = Color.Color(r=r, g=g, b=b)</code></pre>
@@ -237,9 +251,7 @@ class LightingEngine:
 </summary>
 <pre><code class="python">def LightingEngine(self, activeGame, dayTransition=False) -&gt; None:
     if dayTransition:
-        lightLayer = self.AllDayBlend(
-            gameClock=activeGame.GameClock, screenSize=activeGame.ScreenSize
-        )
+        lightLayer = self.AllDayBlend(gameClock=activeGame.GameClock)
         lightLayer.blit(
             self.LightMask,
             (0, 0),

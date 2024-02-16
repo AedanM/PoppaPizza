@@ -17,6 +17,29 @@ def LoadImage(obj, imageBytes) -> Any:
     return pygame.image.frombytes(imageBytes, (obj.rect.width, obj.rect.height), "RGBA")
 
 
+def SaveSpriteGroup(spriteGroup: pygame.sprite.Group) -> dict:
+    saveObj = {}
+    for sprite in spriteGroup:
+        print(dir(sprite))
+        spriteDict = {
+            "Image Type": sprite.ImageType if "ImageType" in dir(sprite) else None,
+            "Sprite Rect": sprite.rect,
+            "Object Type": type(sprite),
+            # TODO- Make this state based not lamda based so it can save
+            # "MvmHandler": sprite.MvmHandler,
+        }
+        saveObj[hash(sprite)] = spriteDict
+    return saveObj
+
+
+def LoadSpriteGroup(saveObj, Name, spriteGroup: pygame.sprite.Group) -> None:
+    for hashedSprite, savedSprite in saveObj[Name].items():
+        for sprite in spriteGroup:
+            if hash(sprite) == hashedSprite:
+                print(savedSprite)
+                # TODO -Finish Load
+
+
 def SaveGame(path, saveObj) -> bool:
     try:
         with open(DEFAULT_SAVE_FOLDER + path, "wb") as fp:

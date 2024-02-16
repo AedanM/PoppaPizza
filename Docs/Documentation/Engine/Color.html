@@ -26,23 +26,19 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">from Engine import Utils
-
+<pre><code class="python">import colorsys
+from dataclasses import dataclass
 
 import numpy as np
 
-
-import colorsys
-from dataclasses import dataclass
+from Engine import Utils
 
 
-def RGB_to_HSV(red, green, blue) -&gt; None:
+def RGB_to_HSV(red: int, green: int, blue: int) -&gt; tuple:
     red_percentage = red / float(255)
     green_percentage = green / float(255)
     blue_percentage = blue / float(255)
-    color_hsv_percentage = colorsys.rgb_to_hsv(
-        red_percentage, green_percentage, blue_percentage
-    )
+    color_hsv_percentage = colorsys.rgb_to_hsv(red_percentage, green_percentage, blue_percentage)
 
     h = round(255 * color_hsv_percentage[0])
     s = round(255 * color_hsv_percentage[1])
@@ -60,29 +56,36 @@ class Color:
     V: int
 
     def __init__(
-        self, h=None, s=None, v=None, r=None, g=None, b=None, hexstring=None
+        self,
+        h: int = None,  # type: ignore
+        s: int = None,  # type: ignore
+        v: int = None,  # type: ignore
+        r: int = None,  # type: ignore
+        g: int = None,  # type: ignore
+        b: int = None,  # type: ignore
+        hexstring: str = None,  # type: ignore
     ) -&gt; None:
         &#34;&#34;&#34;Creates a color from HSV or RGB input&#34;&#34;&#34;
         try:
             if h is not None and s is not None and v is not None:
-                self.H = Utils.Bind(val=h, inRange=(0, 255))
-                self.S = Utils.Bind(val=s, inRange=(0, 255))
-                self.V = Utils.Bind(val=v, inRange=(0, 255))
+                self.H = int(Utils.Bind(val=h, inRange=(0, 255)))
+                self.S = int(Utils.Bind(val=s, inRange=(0, 255)))
+                self.V = int(Utils.Bind(val=v, inRange=(0, 255)))
             elif r is not None and g is not None and b is not None:
                 self.H, self.S, self.V = RGB_to_HSV(red=r, green=g, blue=b)
             elif hexstring is not None:
                 hexstring = hexstring.replace(&#34;0x&#34;, &#34;&#34;).replace(&#34;#&#34;, &#34;&#34;)
                 self.H, self.S, self.V = RGB_to_HSV(
-                    red=int(hexstring[0:1], 16) * (256 / 16),
-                    green=int(hexstring[2:3], 16) * (256 / 16),
-                    blue=int(hexstring[4:5], 16) * (256 / 16),
+                    red=int(int(hexstring[0:1], 16) * (256 / 16)),
+                    green=int(int(hexstring[2:3], 16) * (256 / 16)),
+                    blue=int(int(hexstring[4:5], 16) * (256 / 16)),
                 )
             else:
                 raise Exception(&#34;Invalid Inputs&#34;)
         except Exception as e:
             raise Exception(f&#34;Invalid Inputs: {e}&#34;) from e
 
-    def GetNumPy(self) -&gt; &#34;np.NDArray[np.uint8]&#34;:
+    def GetNumPy(self) -&gt; &#34;np.NDArray[np.uint8]&#34;:  # type: ignore
         &#34;&#34;&#34;Numpy Representation&#34;&#34;&#34;
         return np.array([self.H, self.S, self.V], dtype=np.uint8)
 
@@ -92,9 +95,9 @@ class Color:
         return (self.H, self.S, self.V)
 
     @property
-    def RGB(self) -&gt; tuple[int, ...]:
+    def RGB(self) -&gt; tuple[int, int, int]:
         &#34;&#34;&#34;RGB Representation&#34;&#34;&#34;
-        return tuple(
+        rawColor = tuple(
             round(i * 255)
             for i in colorsys.hsv_to_rgb(
                 float(
@@ -105,6 +108,7 @@ class Color:
                 float(self.V) / 255,
             )
         )
+        return (rawColor[0], rawColor[1], rawColor[2])
 
     @property
     def BGR(self) -&gt; tuple[int, int, int]:
@@ -127,7 +131,7 @@ class Color:
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="Engine.Color.RGB_to_HSV"><code class="name flex">
-<span>def <span class="ident">RGB_to_HSV</span></span>(<span>red, green, blue) ‑> None</span>
+<span>def <span class="ident">RGB_to_HSV</span></span>(<span>red: int, green: int, blue: int) ‑> tuple</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -135,13 +139,11 @@ class Color:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def RGB_to_HSV(red, green, blue) -&gt; None:
+<pre><code class="python">def RGB_to_HSV(red: int, green: int, blue: int) -&gt; tuple:
     red_percentage = red / float(255)
     green_percentage = green / float(255)
     blue_percentage = blue / float(255)
-    color_hsv_percentage = colorsys.rgb_to_hsv(
-        red_percentage, green_percentage, blue_percentage
-    )
+    color_hsv_percentage = colorsys.rgb_to_hsv(red_percentage, green_percentage, blue_percentage)
 
     h = round(255 * color_hsv_percentage[0])
     s = round(255 * color_hsv_percentage[1])
@@ -157,7 +159,7 @@ class Color:
 <dl>
 <dt id="Engine.Color.Color"><code class="flex name class">
 <span>class <span class="ident">Color</span></span>
-<span>(</span><span>h=None, s=None, v=None, r=None, g=None, b=None, hexstring=None)</span>
+<span>(</span><span>h: int = None, s: int = None, v: int = None, r: int = None, g: int = None, b: int = None, hexstring: str = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Class for Defined Colors</p>
@@ -175,29 +177,36 @@ class Color:
     V: int
 
     def __init__(
-        self, h=None, s=None, v=None, r=None, g=None, b=None, hexstring=None
+        self,
+        h: int = None,  # type: ignore
+        s: int = None,  # type: ignore
+        v: int = None,  # type: ignore
+        r: int = None,  # type: ignore
+        g: int = None,  # type: ignore
+        b: int = None,  # type: ignore
+        hexstring: str = None,  # type: ignore
     ) -&gt; None:
         &#34;&#34;&#34;Creates a color from HSV or RGB input&#34;&#34;&#34;
         try:
             if h is not None and s is not None and v is not None:
-                self.H = Utils.Bind(val=h, inRange=(0, 255))
-                self.S = Utils.Bind(val=s, inRange=(0, 255))
-                self.V = Utils.Bind(val=v, inRange=(0, 255))
+                self.H = int(Utils.Bind(val=h, inRange=(0, 255)))
+                self.S = int(Utils.Bind(val=s, inRange=(0, 255)))
+                self.V = int(Utils.Bind(val=v, inRange=(0, 255)))
             elif r is not None and g is not None and b is not None:
                 self.H, self.S, self.V = RGB_to_HSV(red=r, green=g, blue=b)
             elif hexstring is not None:
                 hexstring = hexstring.replace(&#34;0x&#34;, &#34;&#34;).replace(&#34;#&#34;, &#34;&#34;)
                 self.H, self.S, self.V = RGB_to_HSV(
-                    red=int(hexstring[0:1], 16) * (256 / 16),
-                    green=int(hexstring[2:3], 16) * (256 / 16),
-                    blue=int(hexstring[4:5], 16) * (256 / 16),
+                    red=int(int(hexstring[0:1], 16) * (256 / 16)),
+                    green=int(int(hexstring[2:3], 16) * (256 / 16)),
+                    blue=int(int(hexstring[4:5], 16) * (256 / 16)),
                 )
             else:
                 raise Exception(&#34;Invalid Inputs&#34;)
         except Exception as e:
             raise Exception(f&#34;Invalid Inputs: {e}&#34;) from e
 
-    def GetNumPy(self) -&gt; &#34;np.NDArray[np.uint8]&#34;:
+    def GetNumPy(self) -&gt; &#34;np.NDArray[np.uint8]&#34;:  # type: ignore
         &#34;&#34;&#34;Numpy Representation&#34;&#34;&#34;
         return np.array([self.H, self.S, self.V], dtype=np.uint8)
 
@@ -207,9 +216,9 @@ class Color:
         return (self.H, self.S, self.V)
 
     @property
-    def RGB(self) -&gt; tuple[int, ...]:
+    def RGB(self) -&gt; tuple[int, int, int]:
         &#34;&#34;&#34;RGB Representation&#34;&#34;&#34;
-        return tuple(
+        rawColor = tuple(
             round(i * 255)
             for i in colorsys.hsv_to_rgb(
                 float(
@@ -220,6 +229,7 @@ class Color:
                 float(self.V) / 255,
             )
         )
+        return (rawColor[0], rawColor[1], rawColor[2])
 
     @property
     def BGR(self) -&gt; tuple[int, int, int]:
@@ -291,7 +301,7 @@ def HexString(self) -&gt; str:
     return f&#34;#{R:2x}{G:2x}{B:2x}&#34;</code></pre>
 </details>
 </dd>
-<dt id="Engine.Color.Color.RGB"><code class="name">var <span class="ident">RGB</span> : tuple[int, ...]</code></dt>
+<dt id="Engine.Color.Color.RGB"><code class="name">var <span class="ident">RGB</span> : tuple[int, int, int]</code></dt>
 <dd>
 <div class="desc"><p>RGB Representation</p></div>
 <details class="source">
@@ -299,9 +309,9 @@ def HexString(self) -&gt; str:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def RGB(self) -&gt; tuple[int, ...]:
+def RGB(self) -&gt; tuple[int, int, int]:
     &#34;&#34;&#34;RGB Representation&#34;&#34;&#34;
-    return tuple(
+    rawColor = tuple(
         round(i * 255)
         for i in colorsys.hsv_to_rgb(
             float(
@@ -311,7 +321,8 @@ def RGB(self) -&gt; tuple[int, ...]:
             float(self.S) / 255,
             float(self.V) / 255,
         )
-    )</code></pre>
+    )
+    return (rawColor[0], rawColor[1], rawColor[2])</code></pre>
 </details>
 </dd>
 </dl>
@@ -326,7 +337,7 @@ def RGB(self) -&gt; tuple[int, ...]:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def GetNumPy(self) -&gt; &#34;np.NDArray[np.uint8]&#34;:
+<pre><code class="python">def GetNumPy(self) -&gt; &#34;np.NDArray[np.uint8]&#34;:  # type: ignore
     &#34;&#34;&#34;Numpy Representation&#34;&#34;&#34;
     return np.array([self.H, self.S, self.V], dtype=np.uint8)</code></pre>
 </details>

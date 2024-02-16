@@ -29,20 +29,22 @@
 </summary>
 <pre><code class="python">&#34;&#34;&#34;Populate Background with Elements&#34;&#34;&#34;
 
-from Classes import GameBase, Matching, Sprite
-from Definitions import AssetLibrary, ColorDefines, DefinedLocations, Restaurants
+from Classes import Sprite
+from Definitions import AssetLibrary, ColorDefines, Restaurants
+from Definitions.DefinedLocations import LocationDefs, SeatingPlan
 from Engine import SpriteObjects, Utils
+from Handlers import Matching
 
 # TODO - Stop Recalcing Tables
 
 
-def AddTables(activeGame=GameBase.MasterGame) -&gt; None:
+def AddTables(activeGame) -&gt; None:
     &#34;&#34;&#34;Places tables as they are unlocked
 
     Args-
         activeGame (Game, optional): Current Game being used. Defaults to Game.MasterGame.
     &#34;&#34;&#34;
-    for location in DefinedLocations.SeatingPlan.GenerateTablePlaces():
+    for location in SeatingPlan.GenerateTablePlaces():
         table = Sprite.BackgroundElementSprite(
             position=location,
             path=AssetLibrary.ImagePath.TablePath,
@@ -53,7 +55,7 @@ def AddTables(activeGame=GameBase.MasterGame) -&gt; None:
         activeGame.BackgroundSpriteGroup.add(table)
 
 
-def AddLockerRooms(activeGame=GameBase.MasterGame) -&gt; None:
+def AddLockerRooms(activeGame) -&gt; None:
     &#34;&#34;&#34;Generate and Add Locker Rooms based on locked status
 
     Args-
@@ -61,23 +63,19 @@ def AddLockerRooms(activeGame=GameBase.MasterGame) -&gt; None:
     &#34;&#34;&#34;
     for restaurant in Restaurants.RestaurantList:
         lockerRoom = restaurant.LockerRoom
-        Matching.RemoveButtonFromLocation(
-            activeGame=activeGame, location=lockerRoom.Location
-        )
+
+        Matching.RemoveButtonFromLocation(activeGame=activeGame, location=lockerRoom.Location)
+
         if lockerRoom.Unlocked:
             color = lockerRoom.Color
             path = restaurant.LogoPath
             maxSize = 100
-            offset = Utils.ScaleToSize(
-                value=(-50, -50), newSize=DefinedLocations.LocationDefs.ScreenSize
-            )
+            offset = Utils.ScaleToSize(value=(-50, -50), newSize=LocationDefs.ScreenSize)
         else:
             path = AssetLibrary.ImagePath.LogoLockedPath
             color = ColorDefines.Grey
             maxSize = 180
-            offset = Utils.ScaleToSize(
-                value=(-90, -50), newSize=DefinedLocations.LocationDefs.ScreenSize
-            )
+            offset = Utils.ScaleToSize(value=(-90, -50), newSize=LocationDefs.ScreenSize)
         logo = None
         if restaurant.LogoPath:
             logo = Sprite.BackgroundElementSprite(
@@ -100,7 +98,7 @@ def AddLockerRooms(activeGame=GameBase.MasterGame) -&gt; None:
                 backColor=ColorDefines.CautionTapeYellow,
                 color=ColorDefines.Black,
                 enabled=lockerRoom.Price &lt; activeGame.UserInventory.Money,
-                activeGame=GameBase.MasterGame,
+                activeGame=activeGame,
             )
 
 
@@ -112,24 +110,10 @@ def UnlockLockerRooms(activeGame) -&gt; None:
     &#34;&#34;&#34;
     for button in activeGame.ButtonList:
         matchingRestaurant = [
-            x
-            for x in Restaurants.RestaurantList
-            if x.LockerRoom.Location == button.position
+            x for x in Restaurants.RestaurantList if x.LockerRoom.Location == button.position
         ][0]
         if matchingRestaurant.LockerRoom.Unlocked:
-            activeGame.ButtonList.remove(button)
-
-
-def SetupBackground(activeGame=GameBase.MasterGame) -&gt; None:
-    &#34;&#34;&#34;Regenerates the Background Elements
-
-    Args-
-        activeGame (Game, optional): Current Game Class being used. Defaults to Game.MasterGame.
-    &#34;&#34;&#34;
-    activeGame.BackgroundSpriteGroup.empty()
-    AddTables(activeGame=activeGame)
-    AddLockerRooms(activeGame=activeGame)
-    UnlockLockerRooms(activeGame=activeGame)</code></pre>
+            activeGame.ButtonList.remove(button)</code></pre>
 </details>
 </section>
 <section>
@@ -140,7 +124,7 @@ def SetupBackground(activeGame=GameBase.MasterGame) -&gt; None:
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="Generators.BackgroundPopulator.AddLockerRooms"><code class="name flex">
-<span>def <span class="ident">AddLockerRooms</span></span>(<span>activeGame=&lt;Classes.GameBase.MainGame object&gt;) ‑> None</span>
+<span>def <span class="ident">AddLockerRooms</span></span>(<span>activeGame) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Generate and Add Locker Rooms based on locked status</p>
@@ -150,7 +134,7 @@ activeGame (Game, optional): Current Game Class being used. Defaults to Game.Mas
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def AddLockerRooms(activeGame=GameBase.MasterGame) -&gt; None:
+<pre><code class="python">def AddLockerRooms(activeGame) -&gt; None:
     &#34;&#34;&#34;Generate and Add Locker Rooms based on locked status
 
     Args-
@@ -158,23 +142,19 @@ activeGame (Game, optional): Current Game Class being used. Defaults to Game.Mas
     &#34;&#34;&#34;
     for restaurant in Restaurants.RestaurantList:
         lockerRoom = restaurant.LockerRoom
-        Matching.RemoveButtonFromLocation(
-            activeGame=activeGame, location=lockerRoom.Location
-        )
+
+        Matching.RemoveButtonFromLocation(activeGame=activeGame, location=lockerRoom.Location)
+
         if lockerRoom.Unlocked:
             color = lockerRoom.Color
             path = restaurant.LogoPath
             maxSize = 100
-            offset = Utils.ScaleToSize(
-                value=(-50, -50), newSize=DefinedLocations.LocationDefs.ScreenSize
-            )
+            offset = Utils.ScaleToSize(value=(-50, -50), newSize=LocationDefs.ScreenSize)
         else:
             path = AssetLibrary.ImagePath.LogoLockedPath
             color = ColorDefines.Grey
             maxSize = 180
-            offset = Utils.ScaleToSize(
-                value=(-90, -50), newSize=DefinedLocations.LocationDefs.ScreenSize
-            )
+            offset = Utils.ScaleToSize(value=(-90, -50), newSize=LocationDefs.ScreenSize)
         logo = None
         if restaurant.LogoPath:
             logo = Sprite.BackgroundElementSprite(
@@ -197,12 +177,12 @@ activeGame (Game, optional): Current Game Class being used. Defaults to Game.Mas
                 backColor=ColorDefines.CautionTapeYellow,
                 color=ColorDefines.Black,
                 enabled=lockerRoom.Price &lt; activeGame.UserInventory.Money,
-                activeGame=GameBase.MasterGame,
+                activeGame=activeGame,
             )</code></pre>
 </details>
 </dd>
 <dt id="Generators.BackgroundPopulator.AddTables"><code class="name flex">
-<span>def <span class="ident">AddTables</span></span>(<span>activeGame=&lt;Classes.GameBase.MainGame object&gt;) ‑> None</span>
+<span>def <span class="ident">AddTables</span></span>(<span>activeGame) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Places tables as they are unlocked</p>
@@ -212,13 +192,13 @@ activeGame (Game, optional): Current Game being used. Defaults to Game.MasterGam
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def AddTables(activeGame=GameBase.MasterGame) -&gt; None:
+<pre><code class="python">def AddTables(activeGame) -&gt; None:
     &#34;&#34;&#34;Places tables as they are unlocked
 
     Args-
         activeGame (Game, optional): Current Game being used. Defaults to Game.MasterGame.
     &#34;&#34;&#34;
-    for location in DefinedLocations.SeatingPlan.GenerateTablePlaces():
+    for location in SeatingPlan.GenerateTablePlaces():
         table = Sprite.BackgroundElementSprite(
             position=location,
             path=AssetLibrary.ImagePath.TablePath,
@@ -227,29 +207,6 @@ activeGame (Game, optional): Current Game being used. Defaults to Game.MasterGam
         )
         table.Collision = False
         activeGame.BackgroundSpriteGroup.add(table)</code></pre>
-</details>
-</dd>
-<dt id="Generators.BackgroundPopulator.SetupBackground"><code class="name flex">
-<span>def <span class="ident">SetupBackground</span></span>(<span>activeGame=&lt;Classes.GameBase.MainGame object&gt;) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Regenerates the Background Elements</p>
-<p>Args-
-activeGame (Game, optional): Current Game Class being used. Defaults to Game.MasterGame.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def SetupBackground(activeGame=GameBase.MasterGame) -&gt; None:
-    &#34;&#34;&#34;Regenerates the Background Elements
-
-    Args-
-        activeGame (Game, optional): Current Game Class being used. Defaults to Game.MasterGame.
-    &#34;&#34;&#34;
-    activeGame.BackgroundSpriteGroup.empty()
-    AddTables(activeGame=activeGame)
-    AddLockerRooms(activeGame=activeGame)
-    UnlockLockerRooms(activeGame=activeGame)</code></pre>
 </details>
 </dd>
 <dt id="Generators.BackgroundPopulator.UnlockLockerRooms"><code class="name flex">
@@ -271,9 +228,7 @@ activeGame (Game): Current Game Class being used</p></div>
     &#34;&#34;&#34;
     for button in activeGame.ButtonList:
         matchingRestaurant = [
-            x
-            for x in Restaurants.RestaurantList
-            if x.LockerRoom.Location == button.position
+            x for x in Restaurants.RestaurantList if x.LockerRoom.Location == button.position
         ][0]
         if matchingRestaurant.LockerRoom.Unlocked:
             activeGame.ButtonList.remove(button)</code></pre>
@@ -299,7 +254,6 @@ activeGame (Game): Current Game Class being used</p></div>
 <ul class="">
 <li><code><a title="Generators.BackgroundPopulator.AddLockerRooms" href="#Generators.BackgroundPopulator.AddLockerRooms">AddLockerRooms</a></code></li>
 <li><code><a title="Generators.BackgroundPopulator.AddTables" href="#Generators.BackgroundPopulator.AddTables">AddTables</a></code></li>
-<li><code><a title="Generators.BackgroundPopulator.SetupBackground" href="#Generators.BackgroundPopulator.SetupBackground">SetupBackground</a></code></li>
 <li><code><a title="Generators.BackgroundPopulator.UnlockLockerRooms" href="#Generators.BackgroundPopulator.UnlockLockerRooms">UnlockLockerRooms</a></code></li>
 </ul>
 </li>

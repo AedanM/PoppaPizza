@@ -38,6 +38,9 @@ class GameObject(pygame.sprite.Sprite):
         if self.Moveable:
             self.MvmHandler.CalcNewPosition(obj=self, activeGame=activeGame)  # type: ignore
 
+    def __hash__(self) -> int:
+        return super().__hash__() + sum(self.rect)
+
 
 class RectangleObject(GameObject):
     """Base Rectange Object Class"""
@@ -103,4 +106,7 @@ class CharacterSprite(GameObject):
 
     @property
     def DataObject(self) -> Any:
-        pass
+        return 0
+
+    def __hash__(self) -> int:
+        return super().__hash__() + hash(self.DataObject)

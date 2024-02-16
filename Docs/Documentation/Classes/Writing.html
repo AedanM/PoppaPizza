@@ -33,7 +33,8 @@ from dataclasses import dataclass
 
 import pygame
 
-from Definitions import AssetLibrary, ColorDefines, DefinedLocations
+from Definitions import AssetLibrary, ColorDefines
+from Definitions.DefinedLocations import LocationDefs
 from Engine import Color, Utils
 
 pygame.font.init()
@@ -42,15 +43,9 @@ DefinedFonts = {
     &#34;Trivia Game&#34;: pygame.font.Font(
         filename=pygame.font.match_font(&#34;century schoolbook&#34;, True), size=36
     ),
-    &#34;Datetime&#34;: pygame.font.Font(
-        filename=pygame.font.match_font(&#34;book antiqua&#34;), size=24
-    ),
-    &#34;Buttons&#34;: pygame.font.Font(
-        filename=pygame.font.match_font(&#34;gill sans&#34;, True), size=24
-    ),
-    &#34;Default&#34;: pygame.font.Font(
-        filename=pygame.font.match_font(&#34;century schoolbook&#34;), size=24
-    ),
+    &#34;Datetime&#34;: pygame.font.Font(filename=pygame.font.match_font(&#34;book antiqua&#34;), size=24),
+    &#34;Buttons&#34;: pygame.font.Font(filename=pygame.font.match_font(&#34;gill sans&#34;, True), size=24),
+    &#34;Default&#34;: pygame.font.Font(filename=pygame.font.match_font(&#34;century schoolbook&#34;), size=24),
     &#34;Trivia Answers&#34;: pygame.font.Font(
         filename=pygame.font.match_font(&#34;century schoolbook&#34;), size=48
     ),
@@ -59,10 +54,10 @@ DefinedFonts = {
 
 class TextBox:
     Text: str
-    TopLeft: tuple
-    Center: tuple
+    TopLeft: tuple | None
+    Center: tuple | None
     ForeColor: Color.Color
-    Font: pygame.font
+    Font: pygame.font.Font
     Rect: pygame.Rect
 
     def __init__(
@@ -144,9 +139,7 @@ def WriteButtonLabel(activeGame) -&gt; None:
     &#34;&#34;&#34;
     for button in activeGame.ButtonList:
         CreateTextBox(
-            locationTopLeft=Utils.OffsetTuple(
-                inputTuple=button.position, offset=(-45, -12)
-            ),
+            locationTopLeft=Utils.OffsetTuple(inputTuple=button.position, offset=(-45, -12)),
             text=button.text,
             foreColor=ColorDefines.Black,
             font=DefinedFonts[&#34;Buttons&#34;],
@@ -156,9 +149,7 @@ def WriteButtonLabel(activeGame) -&gt; None:
 
 def WriteKitchenLabel(activeGame) -&gt; None:
     kitchenRect = [
-        x
-        for x in activeGame.ForegroundSpriteGroup
-        if x.rect.center == DefinedLocations.LocationDefs.LockerRoom0
+        x for x in activeGame.ForegroundSpriteGroup if x.rect.center == LocationDefs.LockerRoom0
     ][0].rect
     numWorkers = len(
         [
@@ -172,9 +163,7 @@ def WriteKitchenLabel(activeGame) -&gt; None:
     kitchenText = f&#34;{numWorkers} Worker{&#39;s&#39; if numWorkers != 1 else &#39;&#39;} inside&#34;
 
     CreateTextBox(
-        locationTopLeft=Utils.OffsetTuple(
-            inputTuple=DefinedLocations.LocationDefs.LockerRoom0, offset=(-100, 0)
-        ),
+        locationTopLeft=Utils.OffsetTuple(inputTuple=LocationDefs.LockerRoom0, offset=(-100, 0)),
         text=kitchenText,
         foreColor=ColorDefines.White,
         font=DefinedFonts[&#34;Default&#34;],
@@ -252,9 +241,7 @@ activeGame (Game): Current Game</p></div>
     &#34;&#34;&#34;
     for button in activeGame.ButtonList:
         CreateTextBox(
-            locationTopLeft=Utils.OffsetTuple(
-                inputTuple=button.position, offset=(-45, -12)
-            ),
+            locationTopLeft=Utils.OffsetTuple(inputTuple=button.position, offset=(-45, -12)),
             text=button.text,
             foreColor=ColorDefines.Black,
             font=DefinedFonts[&#34;Buttons&#34;],
@@ -302,9 +289,7 @@ activeGame (Game): Current Game</p></div>
 </summary>
 <pre><code class="python">def WriteKitchenLabel(activeGame) -&gt; None:
     kitchenRect = [
-        x
-        for x in activeGame.ForegroundSpriteGroup
-        if x.rect.center == DefinedLocations.LocationDefs.LockerRoom0
+        x for x in activeGame.ForegroundSpriteGroup if x.rect.center == LocationDefs.LockerRoom0
     ][0].rect
     numWorkers = len(
         [
@@ -318,9 +303,7 @@ activeGame (Game): Current Game</p></div>
     kitchenText = f&#34;{numWorkers} Worker{&#39;s&#39; if numWorkers != 1 else &#39;&#39;} inside&#34;
 
     CreateTextBox(
-        locationTopLeft=Utils.OffsetTuple(
-            inputTuple=DefinedLocations.LocationDefs.LockerRoom0, offset=(-100, 0)
-        ),
+        locationTopLeft=Utils.OffsetTuple(inputTuple=LocationDefs.LockerRoom0, offset=(-100, 0)),
         text=kitchenText,
         foreColor=ColorDefines.White,
         font=DefinedFonts[&#34;Default&#34;],
@@ -345,10 +328,10 @@ activeGame (Game): Current Game</p></div>
 </summary>
 <pre><code class="python">class TextBox:
     Text: str
-    TopLeft: tuple
-    Center: tuple
+    TopLeft: tuple | None
+    Center: tuple | None
     ForeColor: Color.Color
-    Font: pygame.font
+    Font: pygame.font.Font
     Rect: pygame.Rect
 
     def __init__(
@@ -377,11 +360,11 @@ activeGame (Game): Current Game</p></div>
 </details>
 <h3>Class variables</h3>
 <dl>
-<dt id="Classes.Writing.TextBox.Center"><code class="name">var <span class="ident">Center</span> : tuple</code></dt>
+<dt id="Classes.Writing.TextBox.Center"><code class="name">var <span class="ident">Center</span> : tuple | None</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="Classes.Writing.TextBox.Font"><code class="name">var <span class="ident">Font</span> : <module 'pygame.font' from 'C:\\Users\\mchaae01\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\pygame\\font.cp312-win_amd64.pyd'></code></dt>
+<dt id="Classes.Writing.TextBox.Font"><code class="name">var <span class="ident">Font</span> : pygame.font.Font</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -397,7 +380,7 @@ activeGame (Game): Current Game</p></div>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="Classes.Writing.TextBox.TopLeft"><code class="name">var <span class="ident">TopLeft</span> : tuple</code></dt>
+<dt id="Classes.Writing.TextBox.TopLeft"><code class="name">var <span class="ident">TopLeft</span> : tuple | None</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>

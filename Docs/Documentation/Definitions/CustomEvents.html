@@ -28,11 +28,55 @@
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">&#34;&#34;&#34;Defined Custom Events&#34;&#34;&#34;
+
 import pygame
+
+from Classes import Stats
+from Generators import BackgroundPopulator, Menus
+from Handlers import Matching, ShopHandler
 
 NightCycle = pygame.event.Event(pygame.USEREVENT, attr1=&#34;NightCycle&#34;)
 GameOver = pygame.event.Event(pygame.USEREVENT, attr1=&#34;GameOver&#34;)
-UpdateBackground = pygame.event.Event(pygame.USEREVENT, attr1=&#34;UpdateBackground&#34;)</code></pre>
+UpdateBackground = pygame.event.Event(pygame.USEREVENT, attr1=&#34;UpdateBackground&#34;)
+
+
+def DayNightEvent(activeGame) -&gt; None:
+    &#34;&#34;&#34;Logic behind a day transition
+
+    Pays Rent
+    Loads DayTransition Menu
+    Resets Sprites
+    Updates Stats
+    Resets Background
+
+    &#34;&#34;&#34;
+    ShopHandler.PayUpkeep(activeGame=activeGame)
+    (
+        GameOverEvent(activeGame=activeGame)
+        if activeGame.HasGameOver
+        else Menus.DayTransistion(activeGame=activeGame)
+    )
+    Matching.ResetSprites(activeGame=activeGame)
+    Stats.UpdateStats(activeGame=activeGame)
+    UpdateBackgroundEvent(activeGame=activeGame)
+
+
+def GameOverEvent(activeGame) -&gt; None:
+    &#34;&#34;&#34;Logic for End of Game&#34;&#34;&#34;
+    activeGame.Running = False
+    Menus.GameOverMenu(activeGame=activeGame)
+
+
+def UpdateBackgroundEvent(activeGame) -&gt; None:
+    &#34;&#34;&#34;Regenerates the Background Elements
+
+    Args-
+        activeGame (Game, optional): Current Game Class being used. Defaults to Game.MasterGame.
+    &#34;&#34;&#34;
+    activeGame.BackgroundSpriteGroup.empty()
+    BackgroundPopulator.AddTables(activeGame=activeGame)
+    BackgroundPopulator.AddLockerRooms(activeGame=activeGame)
+    BackgroundPopulator.UnlockLockerRooms(activeGame=activeGame)</code></pre>
 </details>
 </section>
 <section>
@@ -40,6 +84,82 @@ UpdateBackground = pygame.event.Event(pygame.USEREVENT, attr1=&#34;UpdateBackgro
 <section>
 </section>
 <section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="Definitions.CustomEvents.DayNightEvent"><code class="name flex">
+<span>def <span class="ident">DayNightEvent</span></span>(<span>activeGame) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Logic behind a day transition</p>
+<p>Pays Rent
+Loads DayTransition Menu
+Resets Sprites
+Updates Stats
+Resets Background</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def DayNightEvent(activeGame) -&gt; None:
+    &#34;&#34;&#34;Logic behind a day transition
+
+    Pays Rent
+    Loads DayTransition Menu
+    Resets Sprites
+    Updates Stats
+    Resets Background
+
+    &#34;&#34;&#34;
+    ShopHandler.PayUpkeep(activeGame=activeGame)
+    (
+        GameOverEvent(activeGame=activeGame)
+        if activeGame.HasGameOver
+        else Menus.DayTransistion(activeGame=activeGame)
+    )
+    Matching.ResetSprites(activeGame=activeGame)
+    Stats.UpdateStats(activeGame=activeGame)
+    UpdateBackgroundEvent(activeGame=activeGame)</code></pre>
+</details>
+</dd>
+<dt id="Definitions.CustomEvents.GameOverEvent"><code class="name flex">
+<span>def <span class="ident">GameOverEvent</span></span>(<span>activeGame) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Logic for End of Game</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def GameOverEvent(activeGame) -&gt; None:
+    &#34;&#34;&#34;Logic for End of Game&#34;&#34;&#34;
+    activeGame.Running = False
+    Menus.GameOverMenu(activeGame=activeGame)</code></pre>
+</details>
+</dd>
+<dt id="Definitions.CustomEvents.UpdateBackgroundEvent"><code class="name flex">
+<span>def <span class="ident">UpdateBackgroundEvent</span></span>(<span>activeGame) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Regenerates the Background Elements</p>
+<p>Args-
+activeGame (Game, optional): Current Game Class being used. Defaults to Game.MasterGame.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def UpdateBackgroundEvent(activeGame) -&gt; None:
+    &#34;&#34;&#34;Regenerates the Background Elements
+
+    Args-
+        activeGame (Game, optional): Current Game Class being used. Defaults to Game.MasterGame.
+    &#34;&#34;&#34;
+    activeGame.BackgroundSpriteGroup.empty()
+    BackgroundPopulator.AddTables(activeGame=activeGame)
+    BackgroundPopulator.AddLockerRooms(activeGame=activeGame)
+    BackgroundPopulator.UnlockLockerRooms(activeGame=activeGame)</code></pre>
+</details>
+</dd>
+</dl>
 </section>
 <section>
 </section>
@@ -53,6 +173,13 @@ UpdateBackground = pygame.event.Event(pygame.USEREVENT, attr1=&#34;UpdateBackgro
 <li><h3>Super-module</h3>
 <ul>
 <li><code><a title="Definitions" href="index.html">Definitions</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="Definitions.CustomEvents.DayNightEvent" href="#Definitions.CustomEvents.DayNightEvent">DayNightEvent</a></code></li>
+<li><code><a title="Definitions.CustomEvents.GameOverEvent" href="#Definitions.CustomEvents.GameOverEvent">GameOverEvent</a></code></li>
+<li><code><a title="Definitions.CustomEvents.UpdateBackgroundEvent" href="#Definitions.CustomEvents.UpdateBackgroundEvent">UpdateBackgroundEvent</a></code></li>
 </ul>
 </li>
 </ul>

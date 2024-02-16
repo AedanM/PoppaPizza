@@ -29,20 +29,23 @@
 </summary>
 <pre><code class="python">&#34;&#34;&#34;Class for Game Object BaseClass&#34;&#34;&#34;
 
+from typing import Any
+
 import pygame
 
-from Engine import MovementHandler, Utils
+from Engine import Color, Game, MovementHandler, Utils
 
 
 class GameObject(pygame.sprite.Sprite):
     &#34;&#34;&#34;Base class for all images in game&#34;&#34;&#34;
 
+    rect: pygame.Rect = pygame.Rect(0, 0, 0, 0)
     IsBackground: bool = False
     IsRendered: bool = False
     Moveable: bool = False
     Collision: bool = False
 
-    def __init__(self, backgroundFlag, moveFlag, collisionFlag) -&gt; None:
+    def __init__(self, backgroundFlag: bool, moveFlag: bool, collisionFlag: bool) -&gt; None:
         &#34;&#34;&#34;Init for Game Object
 
         Args-
@@ -55,14 +58,17 @@ class GameObject(pygame.sprite.Sprite):
         self.Moveable = moveFlag
         self.Collision = collisionFlag
 
-    def UpdateSprite(self, activeGame) -&gt; None:
+    def UpdateSprite(self, activeGame: Game.Game) -&gt; None:
         &#34;&#34;&#34;Virtual method for inherited classes to update&#34;&#34;&#34;
         self.Update(activeGame=activeGame)
 
-    def Update(self, activeGame) -&gt; None:
+    def Update(self, activeGame: Game.Game) -&gt; None:
         &#34;&#34;&#34;Update the sprite on screen&#34;&#34;&#34;
         if self.Moveable:
-            self.MvmHandler.CalcNewPosition(obj=self, activeGame=activeGame)
+            self.MvmHandler.CalcNewPosition(obj=self, activeGame=activeGame)  # type: ignore
+
+    def __hash__(self) -&gt; int:
+        return super().__hash__() + sum(self.rect)
 
 
 class RectangleObject(GameObject):
@@ -71,9 +77,9 @@ class RectangleObject(GameObject):
     # pylint: disable=invalid-name
     def __init__(
         self,
-        position,
-        color=(0, 0, 0),
-        size=(100, 100),
+        position: tuple[int, int],
+        color: Color.Color = Color.Color(hexstring=&#34;#000000&#34;),
+        size: tuple[int, int] = (100, 100),
     ) -&gt; None:
         &#34;&#34;&#34;Init for rectange objects
 
@@ -91,17 +97,17 @@ class RectangleObject(GameObject):
 
 class CharacterSprite(GameObject):
     rect: pygame.rect.Rect = pygame.rect.Rect(0, 0, 0, 0)
-    MvmHandler: MovementHandler.MovementHandler = None
+    MvmHandler: MovementHandler.MovementHandler = None  # type: ignore
 
     def __init__(
         self,
-        path,
-        backgroundFlag,
-        moveFlag,
-        collisionFlag,
-        maxSize,
-        position=None,
-        center=None,
+        path: str,
+        backgroundFlag: bool,
+        moveFlag: bool,
+        collisionFlag: bool,
+        maxSize: int,
+        position: tuple[int, int] = None,  # type: ignore
+        center: tuple[int, int] = None,  # type: ignore
     ) -&gt; None:
         super().__init__(
             backgroundFlag=backgroundFlag,
@@ -110,9 +116,7 @@ class CharacterSprite(GameObject):
         )
         self.image = pygame.image.load(path).convert_alpha()
         self.rect = self.image.get_rect()
-        newSize = Utils.ResizeMaxLength(
-            dim=(self.rect.width, self.rect.height), maxSide=maxSize
-        )
+        newSize = Utils.ResizeMaxLength(dim=(self.rect.width, self.rect.height), maxSide=maxSize)
         self.image = pygame.transform.scale(
             surface=self.image,
             size=newSize,
@@ -125,9 +129,16 @@ class CharacterSprite(GameObject):
             self.rect.center = center
         self.MvmHandler = MovementHandler.MovementHandler()
 
-    def UpdateSprite(self, activeGame) -&gt; None:
+    def UpdateSprite(self, activeGame: Game.Game) -&gt; None:
         &#34;&#34;&#34;Update sprite for each frame&#34;&#34;&#34;
-        self.Update(activeGame=activeGame)</code></pre>
+        self.Update(activeGame=activeGame)
+
+    @property
+    def DataObject(self) -&gt; Any:
+        return 0
+
+    def __hash__(self) -&gt; int:
+        return super().__hash__() + hash(self.DataObject)</code></pre>
 </details>
 </section>
 <section>
@@ -141,7 +152,7 @@ class CharacterSprite(GameObject):
 <dl>
 <dt id="Engine.SpriteObjects.CharacterSprite"><code class="flex name class">
 <span>class <span class="ident">CharacterSprite</span></span>
-<span>(</span><span>path, backgroundFlag, moveFlag, collisionFlag, maxSize, position=None, center=None)</span>
+<span>(</span><span>path: str, backgroundFlag: bool, moveFlag: bool, collisionFlag: bool, maxSize: int, position: tuple[int, int] = None, center: tuple[int, int] = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Base class for all images in game</p>
@@ -156,17 +167,17 @@ collisionFlag (bool): Can the object collide</p></div>
 </summary>
 <pre><code class="python">class CharacterSprite(GameObject):
     rect: pygame.rect.Rect = pygame.rect.Rect(0, 0, 0, 0)
-    MvmHandler: MovementHandler.MovementHandler = None
+    MvmHandler: MovementHandler.MovementHandler = None  # type: ignore
 
     def __init__(
         self,
-        path,
-        backgroundFlag,
-        moveFlag,
-        collisionFlag,
-        maxSize,
-        position=None,
-        center=None,
+        path: str,
+        backgroundFlag: bool,
+        moveFlag: bool,
+        collisionFlag: bool,
+        maxSize: int,
+        position: tuple[int, int] = None,  # type: ignore
+        center: tuple[int, int] = None,  # type: ignore
     ) -&gt; None:
         super().__init__(
             backgroundFlag=backgroundFlag,
@@ -175,9 +186,7 @@ collisionFlag (bool): Can the object collide</p></div>
         )
         self.image = pygame.image.load(path).convert_alpha()
         self.rect = self.image.get_rect()
-        newSize = Utils.ResizeMaxLength(
-            dim=(self.rect.width, self.rect.height), maxSide=maxSize
-        )
+        newSize = Utils.ResizeMaxLength(dim=(self.rect.width, self.rect.height), maxSide=maxSize)
         self.image = pygame.transform.scale(
             surface=self.image,
             size=newSize,
@@ -190,9 +199,16 @@ collisionFlag (bool): Can the object collide</p></div>
             self.rect.center = center
         self.MvmHandler = MovementHandler.MovementHandler()
 
-    def UpdateSprite(self, activeGame) -&gt; None:
+    def UpdateSprite(self, activeGame: Game.Game) -&gt; None:
         &#34;&#34;&#34;Update sprite for each frame&#34;&#34;&#34;
-        self.Update(activeGame=activeGame)</code></pre>
+        self.Update(activeGame=activeGame)
+
+    @property
+    def DataObject(self) -&gt; Any:
+        return 0
+
+    def __hash__(self) -&gt; int:
+        return super().__hash__() + hash(self.DataObject)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -210,10 +226,25 @@ collisionFlag (bool): Can the object collide</p></div>
 <div class="desc"></div>
 </dd>
 </dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="Engine.SpriteObjects.CharacterSprite.DataObject"><code class="name">var <span class="ident">DataObject</span> : Any</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def DataObject(self) -&gt; Any:
+    return 0</code></pre>
+</details>
+</dd>
+</dl>
 <h3>Methods</h3>
 <dl>
 <dt id="Engine.SpriteObjects.CharacterSprite.UpdateSprite"><code class="name flex">
-<span>def <span class="ident">UpdateSprite</span></span>(<span>self, activeGame) ‑> None</span>
+<span>def <span class="ident">UpdateSprite</span></span>(<span>self, activeGame: <a title="Engine.Game.Game" href="Game.html#Engine.Game.Game">Game</a>) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Update sprite for each frame</p></div>
@@ -221,7 +252,7 @@ collisionFlag (bool): Can the object collide</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def UpdateSprite(self, activeGame) -&gt; None:
+<pre><code class="python">def UpdateSprite(self, activeGame: Game.Game) -&gt; None:
     &#34;&#34;&#34;Update sprite for each frame&#34;&#34;&#34;
     self.Update(activeGame=activeGame)</code></pre>
 </details>
@@ -238,7 +269,7 @@ collisionFlag (bool): Can the object collide</p></div>
 </dd>
 <dt id="Engine.SpriteObjects.GameObject"><code class="flex name class">
 <span>class <span class="ident">GameObject</span></span>
-<span>(</span><span>backgroundFlag, moveFlag, collisionFlag)</span>
+<span>(</span><span>backgroundFlag: bool, moveFlag: bool, collisionFlag: bool)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Base class for all images in game</p>
@@ -254,12 +285,13 @@ collisionFlag (bool): Can the object collide</p></div>
 <pre><code class="python">class GameObject(pygame.sprite.Sprite):
     &#34;&#34;&#34;Base class for all images in game&#34;&#34;&#34;
 
+    rect: pygame.Rect = pygame.Rect(0, 0, 0, 0)
     IsBackground: bool = False
     IsRendered: bool = False
     Moveable: bool = False
     Collision: bool = False
 
-    def __init__(self, backgroundFlag, moveFlag, collisionFlag) -&gt; None:
+    def __init__(self, backgroundFlag: bool, moveFlag: bool, collisionFlag: bool) -&gt; None:
         &#34;&#34;&#34;Init for Game Object
 
         Args-
@@ -272,14 +304,17 @@ collisionFlag (bool): Can the object collide</p></div>
         self.Moveable = moveFlag
         self.Collision = collisionFlag
 
-    def UpdateSprite(self, activeGame) -&gt; None:
+    def UpdateSprite(self, activeGame: Game.Game) -&gt; None:
         &#34;&#34;&#34;Virtual method for inherited classes to update&#34;&#34;&#34;
         self.Update(activeGame=activeGame)
 
-    def Update(self, activeGame) -&gt; None:
+    def Update(self, activeGame: Game.Game) -&gt; None:
         &#34;&#34;&#34;Update the sprite on screen&#34;&#34;&#34;
         if self.Moveable:
-            self.MvmHandler.CalcNewPosition(obj=self, activeGame=activeGame)</code></pre>
+            self.MvmHandler.CalcNewPosition(obj=self, activeGame=activeGame)  # type: ignore
+
+    def __hash__(self) -&gt; int:
+        return super().__hash__() + sum(self.rect)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -308,11 +343,15 @@ collisionFlag (bool): Can the object collide</p></div>
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="Engine.SpriteObjects.GameObject.rect"><code class="name">var <span class="ident">rect</span> : pygame.rect.Rect</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 </dl>
 <h3>Methods</h3>
 <dl>
 <dt id="Engine.SpriteObjects.GameObject.Update"><code class="name flex">
-<span>def <span class="ident">Update</span></span>(<span>self, activeGame) ‑> None</span>
+<span>def <span class="ident">Update</span></span>(<span>self, activeGame: <a title="Engine.Game.Game" href="Game.html#Engine.Game.Game">Game</a>) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Update the sprite on screen</p></div>
@@ -320,14 +359,14 @@ collisionFlag (bool): Can the object collide</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def Update(self, activeGame) -&gt; None:
+<pre><code class="python">def Update(self, activeGame: Game.Game) -&gt; None:
     &#34;&#34;&#34;Update the sprite on screen&#34;&#34;&#34;
     if self.Moveable:
-        self.MvmHandler.CalcNewPosition(obj=self, activeGame=activeGame)</code></pre>
+        self.MvmHandler.CalcNewPosition(obj=self, activeGame=activeGame)  # type: ignore</code></pre>
 </details>
 </dd>
 <dt id="Engine.SpriteObjects.GameObject.UpdateSprite"><code class="name flex">
-<span>def <span class="ident">UpdateSprite</span></span>(<span>self, activeGame) ‑> None</span>
+<span>def <span class="ident">UpdateSprite</span></span>(<span>self, activeGame: <a title="Engine.Game.Game" href="Game.html#Engine.Game.Game">Game</a>) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Virtual method for inherited classes to update</p></div>
@@ -335,7 +374,7 @@ collisionFlag (bool): Can the object collide</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def UpdateSprite(self, activeGame) -&gt; None:
+<pre><code class="python">def UpdateSprite(self, activeGame: Game.Game) -&gt; None:
     &#34;&#34;&#34;Virtual method for inherited classes to update&#34;&#34;&#34;
     self.Update(activeGame=activeGame)</code></pre>
 </details>
@@ -344,7 +383,7 @@ collisionFlag (bool): Can the object collide</p></div>
 </dd>
 <dt id="Engine.SpriteObjects.RectangleObject"><code class="flex name class">
 <span>class <span class="ident">RectangleObject</span></span>
-<span>(</span><span>position, color=(0, 0, 0), size=(100, 100))</span>
+<span>(</span><span>position: tuple[int, int], color: <a title="Engine.Color.Color" href="Color.html#Engine.Color.Color">Color</a> = Color(H=0, S=0, V=0), size: tuple[int, int] = (100, 100))</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Base Rectange Object Class</p>
@@ -363,9 +402,9 @@ size (tuple, optional): Dimensions of Rectangle. Defaults to (100, 100).</p></di
     # pylint: disable=invalid-name
     def __init__(
         self,
-        position,
-        color=(0, 0, 0),
-        size=(100, 100),
+        position: tuple[int, int],
+        color: Color.Color = Color.Color(hexstring=&#34;#000000&#34;),
+        size: tuple[int, int] = (100, 100),
     ) -&gt; None:
         &#34;&#34;&#34;Init for rectange objects
 
@@ -414,6 +453,7 @@ size (tuple, optional): Dimensions of Rectangle. Defaults to (100, 100).</p></di
 <li>
 <h4><code><a title="Engine.SpriteObjects.CharacterSprite" href="#Engine.SpriteObjects.CharacterSprite">CharacterSprite</a></code></h4>
 <ul class="">
+<li><code><a title="Engine.SpriteObjects.CharacterSprite.DataObject" href="#Engine.SpriteObjects.CharacterSprite.DataObject">DataObject</a></code></li>
 <li><code><a title="Engine.SpriteObjects.CharacterSprite.MvmHandler" href="#Engine.SpriteObjects.CharacterSprite.MvmHandler">MvmHandler</a></code></li>
 <li><code><a title="Engine.SpriteObjects.CharacterSprite.UpdateSprite" href="#Engine.SpriteObjects.CharacterSprite.UpdateSprite">UpdateSprite</a></code></li>
 <li><code><a title="Engine.SpriteObjects.CharacterSprite.rect" href="#Engine.SpriteObjects.CharacterSprite.rect">rect</a></code></li>
@@ -428,6 +468,7 @@ size (tuple, optional): Dimensions of Rectangle. Defaults to (100, 100).</p></di
 <li><code><a title="Engine.SpriteObjects.GameObject.Moveable" href="#Engine.SpriteObjects.GameObject.Moveable">Moveable</a></code></li>
 <li><code><a title="Engine.SpriteObjects.GameObject.Update" href="#Engine.SpriteObjects.GameObject.Update">Update</a></code></li>
 <li><code><a title="Engine.SpriteObjects.GameObject.UpdateSprite" href="#Engine.SpriteObjects.GameObject.UpdateSprite">UpdateSprite</a></code></li>
+<li><code><a title="Engine.SpriteObjects.GameObject.rect" href="#Engine.SpriteObjects.GameObject.rect">rect</a></code></li>
 </ul>
 </li>
 <li>
