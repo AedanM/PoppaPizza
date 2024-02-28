@@ -30,8 +30,10 @@ python ParseDot.py
 
 dot -Tpng packages.dot -o packages.png -y
 dot -Tpng enginePackages.dot -o enginePackages.png -x -y
+
 dot -Tpng classes.dot -o inheritanceStructure.png -x -y
 dot -Tpng classesAndMembers.dot -o classes.png -x -y
+
 
 ECHO ~~~~~~~~~~~~
 ECHO ~Cleanup~~~~
@@ -47,5 +49,7 @@ del enginePackages.dot
 del packages.dot
 del classes.dot
 del classesAndMembers.dot
+copy enginePackages.png ..\..\Engine\Docs
+copy EngineCallGraph.png ..\..\Engine\Docs
 ECHO ~~~~~~~~~~~~
 )

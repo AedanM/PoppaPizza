@@ -1,4 +1,5 @@
 """Base Test Class for testing Modules"""
+
 from dataclasses import dataclass
 from typing import Any
 

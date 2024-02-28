@@ -1,3 +1,5 @@
+"""Clock class for daily and monthly working cycle"""
+
 # BUG- Weird Flickering between 1:00 and 8:00 in 24hr clock
 import math
 from dataclasses import dataclass
@@ -37,29 +39,30 @@ class Clock:
     Day: int = 1
     CurrMonth: Month = Months[0]
     Second: int = 1
-    WorkingDayStart: int = 9
-    WorkingDayEnd: int = 17
+
     ClockMul: float = 1.0
     Running: bool = False
 
-    def __init__(self, clock) -> None:
+    def __init__(self, clock: pygame.Clock) -> None:
+        """Creates an overloaded pygame clock class"""
         self.PygameClock = clock
         self.LastTime = pygame.time.get_ticks()
         self.Running = True
 
-    def SetRunning(self, state) -> None:
+    def SetRunning(self, setRun: bool) -> None:
         """Set the clock to running or not
 
         Args-
             state (bool): Running or Not
         """
-        if state != self.Running:
-            self.Running = state
+        if setRun != self.Running:
+            self.Running = setRun
             self.LastTime = pygame.time.get_ticks()
 
-    def UpdateClock(self, clockSpeed, frameCap) -> None:
+    def UpdateClock(self, clockSpeed: float, frameCap: int) -> None:
         """Update the clock and wait for next frame"""
         if self.Running:
+
             self.ClockMul = clockSpeed
             self.Second += math.floor((pygame.time.get_ticks() - self.LastTime) * self.ClockMul)
             self.LastTime = pygame.time.get_ticks()
@@ -68,6 +71,7 @@ class Clock:
                 self.DayChange()
             if self.Day >= self.CurrMonth.Days:
                 self.MonthChange()
+
             if frameCap:
                 self.PygameClock.tick(60)
             else:
@@ -75,8 +79,19 @@ class Clock:
 
     @property
     def DayPercentage(self) -> float:
-        return (self.Minute - (self.WorkingDayStart * 60)) / float(
-            (self.WorkingDayEnd - self.WorkingDayStart) * 60
+        """Represents the percentage of the day that has passed"""
+        return self.Minute / float(24 * 60)
+
+    @property
+    def DateTime(self) -> str:
+        """String of Current time and date
+
+        Returns-
+            str: Formatted String
+        """
+        return (
+            f"{self.CurrMonth.Name} {self.DayOfMonth} "
+            + f"{(self.Hour):02d}:{(self.Minute % 60):02d}"
         )
 
     def DayChange(self) -> None:
@@ -122,13 +137,14 @@ class Clock:
 
     @property
     def UnixTime(self) -> int:
-        """Hours since start of game
+        """Seconds since start of game
 
         Returns-
-            int: Hours since start of game
+            int: Seconds since start of game
         """
-        return self.Hour + ((self.Day - 1) * 24)
+        return self.Hour + ((self.Day - 1) * 24) + self.Second
 
-    def SetUnixTime(self, time):
+    def SetUnixTime(self, time: int) -> None:
+        """Force the current time to be reset"""
         self.Second = (time % 24) * 60 * 60
         self.Day = time // 24

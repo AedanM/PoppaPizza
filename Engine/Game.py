@@ -1,3 +1,5 @@
+"""Base class for pygame engine"""
+
 from typing import Any
 
 import pygame
@@ -15,7 +17,7 @@ class Game:
     Lighting: LightingEngine.LightingEngine = None  # type: ignore
     Screen: pygame.Surface = None  # type: ignore
 
-    def __init__(self, size: tuple[int, int], name: str, activateScreen=True) -> None:
+    def __init__(self, size: tuple[int, int], name: str, activateScreen: bool = True) -> None:
         pygame.init()
         self.StartTime = pygame.time.get_ticks()
         self.ShowScreen = activateScreen
@@ -76,6 +78,9 @@ class Game:
         }
         return saveDict
 
-    def LoadSaveObj(self, saveDict):
+    def LoadSaveObj(self, saveDict: dict):
         self.StartScreen(size=saveDict["Screen Size"])
         self.GameClock.SetUnixTime(time=saveDict["Game Clock"])
+
+
+StandardDimensions = {"Medium": (1200, 800), "Small": (600, 400), "Large": (2400, 1600)}

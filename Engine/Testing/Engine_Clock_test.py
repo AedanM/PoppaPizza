@@ -1,9 +1,11 @@
+"""Test Module for Clock"""
+
 import time
 
 import pygame
 
 from Engine import Clock, Utils
-from Testing.TestClass import TestClass
+from Engine.Testing.TestClass import TestClass
 
 
 def RunClockForRealTime(clock, lenInSeconds, clockMul=1.0) -> tuple[int, int]:

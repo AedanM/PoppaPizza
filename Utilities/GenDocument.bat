@@ -19,5 +19,6 @@ pdoc3 --html Testing -o Docs\Documentation --force
 python Utilities\RestructureDocumentation.py -f .\Docs\Documentation\Testing\index.html
 
 pdoc3 --html Engine -o Docs\Documentation\ --force
+copy -r Docs\Documentation\Engine Engine\Docs\Documentation
 python Utilities\RestructureDocumentation.py -f .\Docs\Documentation\Engine\index.html
 

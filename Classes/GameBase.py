@@ -6,8 +6,9 @@ import pygame
 
 from Classes import GameClock, GameLighting, Inventory, MiniGames, Settings, Writing
 from Definitions import AssetLibrary, Chances, CustomEvents, Restaurants
-from Definitions.DefinedLocations import LocationDefs, StandardDimensions
+from Definitions.DefinedLocations import LocationDefs
 from Engine import Color, Game, RoundBasedGame, SaveHandler
+from Engine.Game import StandardDimensions
 
 
 class MainGame(Game.Game):

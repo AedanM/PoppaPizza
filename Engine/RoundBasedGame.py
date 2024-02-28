@@ -1,3 +1,5 @@
+"""Class to generate a game with defined rounds"""
+
 from typing import Any
 
 import pygame
@@ -22,7 +24,7 @@ class RoundBasedGame:
         self.Rounds = int(Utils.Bind(val=rounds, inRange=(0, self.MaxRounds)))
         self.Screen = activeGame.Screen
 
-    def StartRound(self, activeGame) -> None:
+    def StartRound(self, activeGame: Game.Game) -> None:
         self.DisplayedText["Round Text"].Text = f"Round {self.CurrentRound}/{self.Rounds}"
         self.MasterSpriteGroup.update()
         self.MasterSpriteGroup.draw(self.Screen)  # type: ignore
@@ -30,6 +32,6 @@ class RoundBasedGame:
     def UpdateStateMachine(self, inputStr: str) -> None:
         pass
 
-    def PlayGame(self,activeGame) -> None:
+    def PlayGame(self, activeGame: Game.Game) -> None:
         # Pylance rejects activeGame as param due to overloading
         self.StartRound(activeGame=activeGame)  # type: ignore

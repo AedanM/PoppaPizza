@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>Testing.Settings_test API documentation</title>
-<meta name="description" content="Test Module for Settings" />
+<title>Engine.Testing.TestClass API documentation</title>
+<meta name="description" content="Base Test Class for testing Modules" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -19,23 +19,24 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>Testing.Settings_test</code></h1>
+<h1 class="title">Module <code>Engine.Testing.TestClass</code></h1>
 </header>
 <section id="section-intro">
-<p>Test Module for Settings</p>
+<p>Base Test Class for testing Modules</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">&#34;&#34;&#34;Test Module for Settings&#34;&#34;&#34;
+<pre><code class="python">&#34;&#34;&#34;Base Test Class for testing Modules&#34;&#34;&#34;
 
-# pylint: disable=invalid-name
+from dataclasses import dataclass
+from typing import Any
 
-from Classes import GameBase
 
-
-def test_ClockSpeed() -&gt; None:
-    assert GameBase.MasterGame.Settings is not None</code></pre>
+@dataclass
+class TestClass:
+    Result: Any
+    ParamList: list</code></pre>
 </details>
 </section>
 <section>
@@ -43,24 +44,38 @@ def test_ClockSpeed() -&gt; None:
 <section>
 </section>
 <section>
-<h2 class="section-title" id="header-functions">Functions</h2>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="Testing.Settings_test.test_ClockSpeed"><code class="name flex">
-<span>def <span class="ident">test_ClockSpeed</span></span>(<span>) ‑> None</span>
+<dt id="Engine.Testing.TestClass.TestClass"><code class="flex name class">
+<span>class <span class="ident">TestClass</span></span>
+<span>(</span><span>Result: Any, ParamList: list)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>TestClass(Result: Any, ParamList: list)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def test_ClockSpeed() -&gt; None:
-    assert GameBase.MasterGame.Settings is not None</code></pre>
+<pre><code class="python">@dataclass
+class TestClass:
+    Result: Any
+    ParamList: list</code></pre>
 </details>
+<h3>Class variables</h3>
+<dl>
+<dt id="Engine.Testing.TestClass.TestClass.ParamList"><code class="name">var <span class="ident">ParamList</span> : list</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="Engine.Testing.TestClass.TestClass.Result"><code class="name">var <span class="ident">Result</span> : Any</code></dt>
+<dd>
+<div class="desc"></div>
 </dd>
 </dl>
-</section>
-<section>
+</dd>
+</dl>
 </section>
 </article>
 <nav id="sidebar">
@@ -71,12 +86,18 @@ def test_ClockSpeed() -&gt; None:
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="Testing" href="index.html">Testing</a></code></li>
+<li><code><a title="Engine.Testing" href="index.html">Engine.Testing</a></code></li>
 </ul>
 </li>
-<li><h3><a href="#header-functions">Functions</a></h3>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="Engine.Testing.TestClass.TestClass" href="#Engine.Testing.TestClass.TestClass">TestClass</a></code></h4>
 <ul class="">
-<li><code><a title="Testing.Settings_test.test_ClockSpeed" href="#Testing.Settings_test.test_ClockSpeed">test_ClockSpeed</a></code></li>
+<li><code><a title="Engine.Testing.TestClass.TestClass.ParamList" href="#Engine.Testing.TestClass.TestClass.ParamList">ParamList</a></code></li>
+<li><code><a title="Engine.Testing.TestClass.TestClass.Result" href="#Engine.Testing.TestClass.TestClass.Result">Result</a></code></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

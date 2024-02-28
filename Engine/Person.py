@@ -1,8 +1,12 @@
+"""Base Dataclass of Characters"""
+
 from dataclasses import dataclass
 
 import names
 
+# Unique incrementing ids for people classes
 IDCOUNT = 0
+# Global sets of character names to avoid too many duplicates
 FIRSTNAMES = {""}
 LASTNAMES = {""}
 
@@ -14,7 +18,7 @@ class Person:
     FirstName: str
     LastName: str
     IdNum: int
-    Body: None = None
+    Body: None = None  # TODO - Implement Body
     IsAssigned: bool = False
 
     @classmethod
@@ -25,8 +29,8 @@ class Person:
             Person: Base Person Object
         """
         fName, lName = GenerateName(gender=gender)
-        selfid = cls.GenerateID()
-        return cls(FirstName=fName, LastName=lName, IdNum=selfid)
+        selfId = cls.GenerateID()
+        return cls(FirstName=fName, LastName=lName, IdNum=selfId)
 
     @staticmethod
     def GenerateID() -> int:
@@ -44,7 +48,8 @@ class Person:
         return self.IdNum
 
 
-def GenerateName(gender) -> tuple[str, str]:
+def GenerateName(gender: str) -> tuple[str, str]:
+    # pylint: disable=global-statement
     global FIRSTNAMES, LASTNAMES
     tryNum = 0
     fName = names.get_first_name(gender=gender)

@@ -16,18 +16,18 @@ C:\mysources\Aedan\PoppaPizza\Definitions\ColorDefines.py:18: unused variable 'B
 C:\mysources\Aedan\PoppaPizza\Definitions\ColorDefines.py:19: unused variable 'BlueNight' (60% confidence)
 C:\mysources\Aedan\PoppaPizza\Definitions\CustomerDefs.py:17: unused variable 'WaitingForSeating' (60% confidence)
 C:\mysources\Aedan\PoppaPizza\Definitions\CustomerDefs.py:18: unused variable 'BeingServed' (60% confidence)
-C:\mysources\Aedan\PoppaPizza\Engine\Color.py:91: unused property 'HexString' (60% confidence)
-C:\mysources\Aedan\PoppaPizza\Engine\LightingEngine.py:7: unused variable 'CurrentNightTransitionAlpha' (60% confidence)
-C:\mysources\Aedan\PoppaPizza\Engine\LightingEngine.py:8: unused variable 'MaxNightLightAlpha' (60% confidence)
-C:\mysources\Aedan\PoppaPizza\Engine\LightingEngine.py:9: unused variable 'NightTransitionCover' (60% confidence)
-C:\mysources\Aedan\PoppaPizza\Engine\LightingEngine.py:41: unused method 'ChangeNightColor' (60% confidence)
+C:\mysources\Aedan\PoppaPizza\Engine\Color.py:94: unused property 'HexString' (60% confidence)
+C:\mysources\Aedan\PoppaPizza\Engine\LightingEngine.py:9: unused variable 'CurrentNightTransitionAlpha' (60% confidence)
+C:\mysources\Aedan\PoppaPizza\Engine\LightingEngine.py:10: unused variable 'MaxNightLightAlpha' (60% confidence)
+C:\mysources\Aedan\PoppaPizza\Engine\LightingEngine.py:11: unused variable 'NightTransitionCover' (60% confidence)
+C:\mysources\Aedan\PoppaPizza\Engine\LightingEngine.py:43: unused method 'ChangeNightColor' (60% confidence)
 C:\mysources\Aedan\PoppaPizza\Engine\MovementHandler.py:9: unused variable 'Slow' (60% confidence)
 C:\mysources\Aedan\PoppaPizza\Engine\MovementHandler.py:11: unused variable 'Fast' (60% confidence)
 C:\mysources\Aedan\PoppaPizza\Engine\MovementHandler.py:12: unused variable 'Instant' (60% confidence)
-C:\mysources\Aedan\PoppaPizza\Engine\Person.py:17: unused variable 'Body' (60% confidence)
-C:\mysources\Aedan\PoppaPizza\Engine\RoundBasedGame.py:16: unused variable 'RoundResult' (60% confidence)
-C:\mysources\Aedan\PoppaPizza\Engine\SaveHandler.py:12: unused function 'SaveImage' (60% confidence)
-C:\mysources\Aedan\PoppaPizza\Engine\SaveHandler.py:16: unused function 'LoadImage' (60% confidence)
+C:\mysources\Aedan\PoppaPizza\Engine\Person.py:21: unused variable 'Body' (60% confidence)
+C:\mysources\Aedan\PoppaPizza\Engine\RoundBasedGame.py:18: unused variable 'RoundResult' (60% confidence)
+C:\mysources\Aedan\PoppaPizza\Engine\SaveHandler.py:14: unused function 'SaveImage' (60% confidence)
+C:\mysources\Aedan\PoppaPizza\Engine\SaveHandler.py:18: unused function 'LoadImage' (60% confidence)
 C:\mysources\Aedan\PoppaPizza\Engine\SpriteObjects.py:14: unused variable 'IsBackground' (60% confidence)
 C:\mysources\Aedan\PoppaPizza\Engine\SpriteObjects.py:15: unused variable 'IsRendered' (60% confidence)
 C:\mysources\Aedan\PoppaPizza\Engine\SpriteObjects.py:17: unused variable 'Collision' (60% confidence)
@@ -50,4 +50,6 @@ Analysed 50 modules with a total of 212 imports
         1 file(s) moved.
 ~~~~~~~~~~~~
 ~Cleanup~~~~
+        1 file(s) copied.
+        1 file(s) copied.
 ~~~~~~~~~~~~

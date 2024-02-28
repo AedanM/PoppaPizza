@@ -1,3 +1,5 @@
+"""Custom Lighting Engine to overlay effects"""
+
 import pygame
 
 from Engine import Color, Utils

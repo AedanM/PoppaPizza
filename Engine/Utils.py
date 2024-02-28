@@ -1,4 +1,4 @@
-"""Utilites"""
+"""Utility functions"""
 
 import math
 import random

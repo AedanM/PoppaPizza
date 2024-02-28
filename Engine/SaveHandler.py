@@ -1,3 +1,5 @@
+"""Functions for saving game"""
+
 import os
 import pickle
 from typing import Any
@@ -32,7 +34,7 @@ def SaveSpriteGroup(spriteGroup: pygame.sprite.Group) -> dict:
     return saveObj
 
 
-def LoadSpriteGroup(saveObj, Name, spriteGroup: pygame.sprite.Group) -> None:
+def LoadSpriteGroup(saveObj: dict, Name: str, spriteGroup: pygame.sprite.Group) -> None:
     for hashedSprite, savedSprite in saveObj[Name].items():
         for sprite in spriteGroup:
             if hash(sprite) == hashedSprite:
@@ -40,7 +42,7 @@ def LoadSpriteGroup(saveObj, Name, spriteGroup: pygame.sprite.Group) -> None:
                 # TODO -Finish Load
 
 
-def SaveGame(path, saveObj) -> bool:
+def SaveGame(path: str, saveObj: dict) -> bool:
     try:
         with open(DEFAULT_SAVE_FOLDER + path, "wb") as fp:
             pickle.dump(saveObj, fp)
@@ -50,11 +52,11 @@ def SaveGame(path, saveObj) -> bool:
     return False
 
 
-def LoadGame(path) -> tuple[bool, Any]:
+def LoadGame(path: str) -> tuple[bool, Any]:
     try:
         with open(DEFAULT_SAVE_FOLDER + path, "rb") as fp:
             newGame = pickle.load(fp)
             return (True, newGame)
     except IOError as e:
-        print(f"Error:{e} - Cannot Save Game")
+        print(f"Error:{e} - Cannot Load Game")
     return (False, None)

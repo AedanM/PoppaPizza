@@ -39,6 +39,7 @@ class GameObject(pygame.sprite.Sprite):
             self.MvmHandler.CalcNewPosition(obj=self, activeGame=activeGame)  # type: ignore
 
     def __hash__(self) -> int:
+        """Overload of hash method"""
         return super().__hash__() + sum(self.rect)
 
 
@@ -109,4 +110,5 @@ class CharacterSprite(GameObject):
         return 0
 
     def __hash__(self) -> int:
+        """Overload of hash method"""
         return super().__hash__() + hash(self.DataObject)

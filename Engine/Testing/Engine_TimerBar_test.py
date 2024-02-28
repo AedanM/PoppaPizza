@@ -1,3 +1,5 @@
+"""Test Module for Timer Bar"""
+
 from Engine import TimerBar
 
 

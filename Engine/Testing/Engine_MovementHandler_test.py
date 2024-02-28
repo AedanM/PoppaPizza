@@ -1,4 +1,4 @@
-import pygame
+"""Test Module for Movement Handler"""
 
 from Engine import MovementHandler, SpriteObjects
 

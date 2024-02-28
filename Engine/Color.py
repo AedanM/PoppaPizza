@@ -1,3 +1,5 @@
+"""Custom Color Class for HSV and RGB representation"""
+
 import colorsys
 from dataclasses import dataclass
 
@@ -6,7 +8,8 @@ import numpy as np
 from Engine import Utils
 
 
-def RGB_to_HSV(red: int, green: int, blue: int) -> tuple:
+def RGB2HSV(red: int, green: int, blue: int) -> tuple:
+    """Convert RGB Colorspace to HSV"""
     red_percentage = red / float(255)
     green_percentage = green / float(255)
     blue_percentage = blue / float(255)
@@ -44,10 +47,10 @@ class Color:
                 self.S = int(Utils.Bind(val=s, inRange=(0, 255)))
                 self.V = int(Utils.Bind(val=v, inRange=(0, 255)))
             elif r is not None and g is not None and b is not None:
-                self.H, self.S, self.V = RGB_to_HSV(red=r, green=g, blue=b)
+                self.H, self.S, self.V = RGB2HSV(red=r, green=g, blue=b)
             elif hexstring is not None:
                 hexstring = hexstring.replace("0x", "").replace("#", "")
-                self.H, self.S, self.V = RGB_to_HSV(
+                self.H, self.S, self.V = RGB2HSV(
                     red=int(int(hexstring[0:1], 16) * (256 / 16)),
                     green=int(int(hexstring[2:3], 16) * (256 / 16)),
                     blue=int(int(hexstring[4:5], 16) * (256 / 16)),

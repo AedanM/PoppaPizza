@@ -31,18 +31,16 @@
 
 import math
 
-from Engine import Utils
-
-StandardDimensions = {&#34;Medium&#34;: (1200, 800), &#34;Small&#34;: (600, 400), &#34;Large&#34;: (2400, 1600)}
+from Engine import Game, Utils
 
 
 class DefinedLocations:
     &#34;&#34;&#34;Defined Locations and their scaling&#34;&#34;&#34;
 
-    ScreenSize = StandardDimensions[&#34;Medium&#34;]
+    ScreenSize = Game.StandardDimensions[&#34;Medium&#34;]
 
     @property
-    def LockerRoom0(self) -&gt; tuple[int,int]:
+    def LockerRoom0(self) -&gt; tuple[int, int]:
         &#34;&#34;&#34;Location of First Locker Room
 
         Returns-
@@ -52,7 +50,7 @@ class DefinedLocations:
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
-    def LockerRoom1(self) -&gt; tuple[int,int]:
+    def LockerRoom1(self) -&gt; tuple[int, int]:
         &#34;&#34;&#34;Location of First Locker Room
 
         Returns-
@@ -62,7 +60,7 @@ class DefinedLocations:
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
-    def LockerRoom2(self) -&gt; tuple[int,int]:
+    def LockerRoom2(self) -&gt; tuple[int, int]:
         &#34;&#34;&#34;Location of Second Locker Room
 
         Returns-
@@ -72,7 +70,7 @@ class DefinedLocations:
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
-    def LockerRoom3(self) -&gt; tuple[int,int]:
+    def LockerRoom3(self) -&gt; tuple[int, int]:
         &#34;&#34;&#34;Location of Third Locker Room
 
         Returns-
@@ -82,7 +80,7 @@ class DefinedLocations:
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
-    def LockerRoom4(self) -&gt; tuple[int,int]:
+    def LockerRoom4(self) -&gt; tuple[int, int]:
         &#34;&#34;&#34;Location of Fourth Locker Room
 
         Returns-
@@ -92,7 +90,7 @@ class DefinedLocations:
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
-    def LockerRoom5(self) -&gt; tuple[int,int]:
+    def LockerRoom5(self) -&gt; tuple[int, int]:
         &#34;&#34;&#34;Location of Fifth Locker Room
 
         Returns-
@@ -102,7 +100,7 @@ class DefinedLocations:
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
-    def KitchenEntrance(self) -&gt; tuple[int,int]:
+    def KitchenEntrance(self) -&gt; tuple[int, int]:
         &#34;&#34;&#34;Location of Kitchen Entrance
 
         Returns-
@@ -112,7 +110,7 @@ class DefinedLocations:
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
-    def KitchenLocation(self) -&gt; tuple[int,int]:
+    def KitchenLocation(self) -&gt; tuple[int, int]:
         &#34;&#34;&#34;Location of Kitchen Entrance
 
         Returns-
@@ -122,7 +120,7 @@ class DefinedLocations:
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
-    def CustomerExit(self) -&gt; tuple[int,int]:
+    def CustomerExit(self) -&gt; tuple[int, int]:
         &#34;&#34;&#34;Location of Customer Exit Location
 
         Returns-
@@ -132,7 +130,7 @@ class DefinedLocations:
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
-    def CustomerEntrance(self) -&gt; tuple[int,int]:
+    def CustomerEntrance(self) -&gt; tuple[int, int]:
         &#34;&#34;&#34;Location of Start of Customer Queue
 
         Returns-
@@ -142,7 +140,7 @@ class DefinedLocations:
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
-    def EndOfLine(self) -&gt; tuple[int,int]:
+    def EndOfLine(self) -&gt; tuple[int, int]:
         &#34;&#34;&#34;Location of End of Queue
 
         Returns-
@@ -152,7 +150,7 @@ class DefinedLocations:
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
-    def CustomerSpawn(self) -&gt; tuple[int,int]:
+    def CustomerSpawn(self) -&gt; tuple[int, int]:
         &#34;&#34;&#34;Location of Customer Spawn in
 
         Returns-
@@ -162,7 +160,7 @@ class DefinedLocations:
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
-    def WorkerSpawn(self) -&gt; tuple[int,int]:
+    def WorkerSpawn(self) -&gt; tuple[int, int]:
         &#34;&#34;&#34;Location of Customer Spawn in
 
         Returns-
@@ -172,7 +170,7 @@ class DefinedLocations:
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
-    def TriviaTitleText(self) -&gt; tuple[int,int]:
+    def TriviaTitleText(self) -&gt; tuple[int, int]:
         &#34;&#34;&#34;Location of Main Trivia Game Text
 
         Returns-
@@ -182,7 +180,7 @@ class DefinedLocations:
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
-    def TriviaMainText(self) -&gt; tuple[int,int]:
+    def TriviaMainText(self) -&gt; tuple[int, int]:
         &#34;&#34;&#34;Location of Main Trivia Title Text
 
         Returns-
@@ -192,7 +190,7 @@ class DefinedLocations:
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
-    def TriviaMinorText(self) -&gt; tuple[int,int]:
+    def TriviaMinorText(self) -&gt; tuple[int, int]:
         &#34;&#34;&#34;Location of Secondary Trivia Game Text
 
         Returns-
@@ -202,7 +200,7 @@ class DefinedLocations:
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
-    def TriviaRoundText(self) -&gt; tuple[int,int]:
+    def TriviaRoundText(self) -&gt; tuple[int, int]:
         &#34;&#34;&#34;Location of Round Label for Trivia Game
 
         Returns-
@@ -346,10 +344,10 @@ SeatingPlan = SeatingPlanClass()</code></pre>
 <pre><code class="python">class DefinedLocations:
     &#34;&#34;&#34;Defined Locations and their scaling&#34;&#34;&#34;
 
-    ScreenSize = StandardDimensions[&#34;Medium&#34;]
+    ScreenSize = Game.StandardDimensions[&#34;Medium&#34;]
 
     @property
-    def LockerRoom0(self) -&gt; tuple[int,int]:
+    def LockerRoom0(self) -&gt; tuple[int, int]:
         &#34;&#34;&#34;Location of First Locker Room
 
         Returns-
@@ -359,7 +357,7 @@ SeatingPlan = SeatingPlanClass()</code></pre>
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
-    def LockerRoom1(self) -&gt; tuple[int,int]:
+    def LockerRoom1(self) -&gt; tuple[int, int]:
         &#34;&#34;&#34;Location of First Locker Room
 
         Returns-
@@ -369,7 +367,7 @@ SeatingPlan = SeatingPlanClass()</code></pre>
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
-    def LockerRoom2(self) -&gt; tuple[int,int]:
+    def LockerRoom2(self) -&gt; tuple[int, int]:
         &#34;&#34;&#34;Location of Second Locker Room
 
         Returns-
@@ -379,7 +377,7 @@ SeatingPlan = SeatingPlanClass()</code></pre>
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
-    def LockerRoom3(self) -&gt; tuple[int,int]:
+    def LockerRoom3(self) -&gt; tuple[int, int]:
         &#34;&#34;&#34;Location of Third Locker Room
 
         Returns-
@@ -389,7 +387,7 @@ SeatingPlan = SeatingPlanClass()</code></pre>
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
-    def LockerRoom4(self) -&gt; tuple[int,int]:
+    def LockerRoom4(self) -&gt; tuple[int, int]:
         &#34;&#34;&#34;Location of Fourth Locker Room
 
         Returns-
@@ -399,7 +397,7 @@ SeatingPlan = SeatingPlanClass()</code></pre>
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
-    def LockerRoom5(self) -&gt; tuple[int,int]:
+    def LockerRoom5(self) -&gt; tuple[int, int]:
         &#34;&#34;&#34;Location of Fifth Locker Room
 
         Returns-
@@ -409,7 +407,7 @@ SeatingPlan = SeatingPlanClass()</code></pre>
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
-    def KitchenEntrance(self) -&gt; tuple[int,int]:
+    def KitchenEntrance(self) -&gt; tuple[int, int]:
         &#34;&#34;&#34;Location of Kitchen Entrance
 
         Returns-
@@ -419,7 +417,7 @@ SeatingPlan = SeatingPlanClass()</code></pre>
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
-    def KitchenLocation(self) -&gt; tuple[int,int]:
+    def KitchenLocation(self) -&gt; tuple[int, int]:
         &#34;&#34;&#34;Location of Kitchen Entrance
 
         Returns-
@@ -429,7 +427,7 @@ SeatingPlan = SeatingPlanClass()</code></pre>
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
-    def CustomerExit(self) -&gt; tuple[int,int]:
+    def CustomerExit(self) -&gt; tuple[int, int]:
         &#34;&#34;&#34;Location of Customer Exit Location
 
         Returns-
@@ -439,7 +437,7 @@ SeatingPlan = SeatingPlanClass()</code></pre>
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
-    def CustomerEntrance(self) -&gt; tuple[int,int]:
+    def CustomerEntrance(self) -&gt; tuple[int, int]:
         &#34;&#34;&#34;Location of Start of Customer Queue
 
         Returns-
@@ -449,7 +447,7 @@ SeatingPlan = SeatingPlanClass()</code></pre>
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
-    def EndOfLine(self) -&gt; tuple[int,int]:
+    def EndOfLine(self) -&gt; tuple[int, int]:
         &#34;&#34;&#34;Location of End of Queue
 
         Returns-
@@ -459,7 +457,7 @@ SeatingPlan = SeatingPlanClass()</code></pre>
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
-    def CustomerSpawn(self) -&gt; tuple[int,int]:
+    def CustomerSpawn(self) -&gt; tuple[int, int]:
         &#34;&#34;&#34;Location of Customer Spawn in
 
         Returns-
@@ -469,7 +467,7 @@ SeatingPlan = SeatingPlanClass()</code></pre>
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
-    def WorkerSpawn(self) -&gt; tuple[int,int]:
+    def WorkerSpawn(self) -&gt; tuple[int, int]:
         &#34;&#34;&#34;Location of Customer Spawn in
 
         Returns-
@@ -479,7 +477,7 @@ SeatingPlan = SeatingPlanClass()</code></pre>
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
-    def TriviaTitleText(self) -&gt; tuple[int,int]:
+    def TriviaTitleText(self) -&gt; tuple[int, int]:
         &#34;&#34;&#34;Location of Main Trivia Game Text
 
         Returns-
@@ -489,7 +487,7 @@ SeatingPlan = SeatingPlanClass()</code></pre>
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
-    def TriviaMainText(self) -&gt; tuple[int,int]:
+    def TriviaMainText(self) -&gt; tuple[int, int]:
         &#34;&#34;&#34;Location of Main Trivia Title Text
 
         Returns-
@@ -499,7 +497,7 @@ SeatingPlan = SeatingPlanClass()</code></pre>
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
-    def TriviaMinorText(self) -&gt; tuple[int,int]:
+    def TriviaMinorText(self) -&gt; tuple[int, int]:
         &#34;&#34;&#34;Location of Secondary Trivia Game Text
 
         Returns-
@@ -509,7 +507,7 @@ SeatingPlan = SeatingPlanClass()</code></pre>
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
-    def TriviaRoundText(self) -&gt; tuple[int,int]:
+    def TriviaRoundText(self) -&gt; tuple[int, int]:
         &#34;&#34;&#34;Location of Round Label for Trivia Game
 
         Returns-
@@ -553,7 +551,7 @@ tuple[int,int]: Scaled Location</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def CustomerEntrance(self) -&gt; tuple[int,int]:
+def CustomerEntrance(self) -&gt; tuple[int, int]:
     &#34;&#34;&#34;Location of Start of Customer Queue
 
     Returns-
@@ -573,7 +571,7 @@ tuple[int,int]: Scaled Location</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def CustomerExit(self) -&gt; tuple[int,int]:
+def CustomerExit(self) -&gt; tuple[int, int]:
     &#34;&#34;&#34;Location of Customer Exit Location
 
     Returns-
@@ -593,7 +591,7 @@ tuple[int,int]: Scaled Location</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def CustomerSpawn(self) -&gt; tuple[int,int]:
+def CustomerSpawn(self) -&gt; tuple[int, int]:
     &#34;&#34;&#34;Location of Customer Spawn in
 
     Returns-
@@ -613,7 +611,7 @@ tuple[int,int]: Scaled Location</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def EndOfLine(self) -&gt; tuple[int,int]:
+def EndOfLine(self) -&gt; tuple[int, int]:
     &#34;&#34;&#34;Location of End of Queue
 
     Returns-
@@ -633,7 +631,7 @@ tuple[int,int]: Scaled Location</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def KitchenEntrance(self) -&gt; tuple[int,int]:
+def KitchenEntrance(self) -&gt; tuple[int, int]:
     &#34;&#34;&#34;Location of Kitchen Entrance
 
     Returns-
@@ -653,7 +651,7 @@ tuple[int,int]: Scaled Location</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def KitchenLocation(self) -&gt; tuple[int,int]:
+def KitchenLocation(self) -&gt; tuple[int, int]:
     &#34;&#34;&#34;Location of Kitchen Entrance
 
     Returns-
@@ -673,7 +671,7 @@ tuple[int,int]: Scaled Location</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def LockerRoom0(self) -&gt; tuple[int,int]:
+def LockerRoom0(self) -&gt; tuple[int, int]:
     &#34;&#34;&#34;Location of First Locker Room
 
     Returns-
@@ -693,7 +691,7 @@ tuple[int,int]: Scaled Location</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def LockerRoom1(self) -&gt; tuple[int,int]:
+def LockerRoom1(self) -&gt; tuple[int, int]:
     &#34;&#34;&#34;Location of First Locker Room
 
     Returns-
@@ -713,7 +711,7 @@ tuple[int,int]: Scaled Location</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def LockerRoom2(self) -&gt; tuple[int,int]:
+def LockerRoom2(self) -&gt; tuple[int, int]:
     &#34;&#34;&#34;Location of Second Locker Room
 
     Returns-
@@ -733,7 +731,7 @@ tuple[int,int]: Scaled Location</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def LockerRoom3(self) -&gt; tuple[int,int]:
+def LockerRoom3(self) -&gt; tuple[int, int]:
     &#34;&#34;&#34;Location of Third Locker Room
 
     Returns-
@@ -753,7 +751,7 @@ tuple[int,int]: Scaled Location</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def LockerRoom4(self) -&gt; tuple[int,int]:
+def LockerRoom4(self) -&gt; tuple[int, int]:
     &#34;&#34;&#34;Location of Fourth Locker Room
 
     Returns-
@@ -773,7 +771,7 @@ tuple[int,int]: Scaled Location</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def LockerRoom5(self) -&gt; tuple[int,int]:
+def LockerRoom5(self) -&gt; tuple[int, int]:
     &#34;&#34;&#34;Location of Fifth Locker Room
 
     Returns-
@@ -793,7 +791,7 @@ tuple[int,int]: Scaled Location</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def TriviaMainText(self) -&gt; tuple[int,int]:
+def TriviaMainText(self) -&gt; tuple[int, int]:
     &#34;&#34;&#34;Location of Main Trivia Title Text
 
     Returns-
@@ -813,7 +811,7 @@ tuple[int,int]: Scaled Location</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def TriviaMinorText(self) -&gt; tuple[int,int]:
+def TriviaMinorText(self) -&gt; tuple[int, int]:
     &#34;&#34;&#34;Location of Secondary Trivia Game Text
 
     Returns-
@@ -833,7 +831,7 @@ tuple[int,int]: Scaled Location</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def TriviaRoundText(self) -&gt; tuple[int,int]:
+def TriviaRoundText(self) -&gt; tuple[int, int]:
     &#34;&#34;&#34;Location of Round Label for Trivia Game
 
     Returns-
@@ -853,7 +851,7 @@ tuple[int,int]: Scaled Location</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def TriviaTitleText(self) -&gt; tuple[int,int]:
+def TriviaTitleText(self) -&gt; tuple[int, int]:
     &#34;&#34;&#34;Location of Main Trivia Game Text
 
     Returns-
@@ -873,7 +871,7 @@ tuple[int,int]: Scaled Location</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def WorkerSpawn(self) -&gt; tuple[int,int]:
+def WorkerSpawn(self) -&gt; tuple[int, int]:
     &#34;&#34;&#34;Location of Customer Spawn in
 
     Returns-
