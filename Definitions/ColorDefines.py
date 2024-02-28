@@ -1,6 +1,6 @@
 """Class for Altering Colors"""
 
-from Engine import Color
+from AtomicbritEngine.Engine import Color
 
 White = Color.Color(h=0, s=0, v=255)
 Blue = Color.Color(h=150, s=200, v=128)

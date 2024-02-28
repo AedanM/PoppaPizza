@@ -3,10 +3,10 @@
 import copy
 import random
 
+from AtomicbritEngine.Engine import Utils
 from Classes import GameBase
 from Definitions import AssetLibrary
 from Definitions.DefinedLocations import LocationDefs, SeatingPlan
-from Engine import Utils
 
 
 # TODO- CheckOnTheWay and Make work

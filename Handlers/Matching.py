@@ -2,8 +2,8 @@
 
 from typing import Any
 
+from AtomicbritEngine.Engine import Person
 from Definitions import AssetLibrary, Restaurants
-from Engine import Person
 from Handlers import WorkerHandler
 
 

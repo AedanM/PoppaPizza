@@ -4,9 +4,9 @@ from dataclasses import dataclass
 
 import pygame
 
+from AtomicbritEngine.Engine import Color, Utils
 from Definitions import AssetLibrary, ColorDefines
 from Definitions.DefinedLocations import LocationDefs
-from Engine import Color, Utils
 
 pygame.font.init()
 DefinedFonts = {

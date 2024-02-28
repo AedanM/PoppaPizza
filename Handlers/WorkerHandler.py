@@ -2,10 +2,10 @@
 
 import random
 
+from AtomicbritEngine.Engine import Utils
 from Definitions import AssetLibrary
 from Definitions.DefinedLocations import LocationDefs
 from Definitions.DefinedPaths import DefinedPaths
-from Engine import Utils
 
 
 def DailyReset(sprite) -> None:

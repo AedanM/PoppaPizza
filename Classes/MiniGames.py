@@ -5,9 +5,9 @@ from enum import Enum
 
 from pytrivia import Trivia
 
+from AtomicbritEngine.Engine import RoundBasedGame, Utils
 from Classes import GameBase, Sprite, Writing
 from Definitions import ColorDefines, DefinedLocations
-from Engine import RoundBasedGame, Utils
 
 
 class GameMode(Enum):
@@ -222,7 +222,7 @@ class TriviaGame(RoundBasedGame.RoundBasedGame):
         for text in self.DisplayedText.values():
             text.Rect = text.WriteToScreen(activeScreen=self.Screen)
 
-    def PlayGame(self,activeGame) -> None:
+    def PlayGame(self, activeGame) -> None:
         super().PlayGame(activeGame=activeGame)
 
 
@@ -241,7 +241,7 @@ class DiceGame(RoundBasedGame.RoundBasedGame):
         super().__init__(rounds=rounds, activeGame=activeGame)
         self.Dice = math.floor(Utils.Bind(val=dice, inRange=(0, self.MaxDice)))
 
-    def StartRound(self,activeGame) -> None:
+    def StartRound(self, activeGame) -> None:
         super().StartRound(activeGame=activeGame)
 
         markToBeat = random.randint(self.DiceBounds[0], self.DiceBounds[1])

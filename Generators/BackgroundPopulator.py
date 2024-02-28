@@ -1,9 +1,9 @@
 """Populate Background with Elements"""
 
+from AtomicbritEngine.Engine import SpriteObjects, Utils
 from Classes import Sprite
 from Definitions import AssetLibrary, ColorDefines, Restaurants
 from Definitions.DefinedLocations import LocationDefs, SeatingPlan
-from Engine import SpriteObjects, Utils
 from Handlers import Matching
 
 # TODO - Stop Recalcing Tables
@@ -85,5 +85,3 @@ def UnlockLockerRooms(activeGame) -> None:
         ][0]
         if matchingRestaurant.LockerRoom.Unlocked:
             activeGame.ButtonList.remove(button)
-
-

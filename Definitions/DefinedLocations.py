@@ -2,7 +2,7 @@
 
 import math
 
-from Engine import Game, Utils
+from AtomicbritEngine.Engine import Game, Utils
 
 
 class DefinedLocations:

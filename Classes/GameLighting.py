@@ -1,7 +1,7 @@
 import pygame
 
+from AtomicbritEngine.Engine import Color, LightingEngine
 from Definitions import AssetLibrary, ColorDefines
-from Engine import Color, LightingEngine
 
 
 class GameLighting(LightingEngine.LightingEngine):

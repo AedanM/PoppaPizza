@@ -3,10 +3,10 @@
 import random
 from dataclasses import dataclass
 
+from AtomicbritEngine.Engine import Person, Utils
 from Classes import Jobs, Sprite
 from Definitions import AssetLibrary, CustomerDefs
 from Definitions.DefinedLocations import LocationDefs
-from Engine import Person, Utils
 
 IDCOUNT = 1
 

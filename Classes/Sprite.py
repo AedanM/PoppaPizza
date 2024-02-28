@@ -4,10 +4,10 @@ from typing import Any
 
 import pygame
 
+from AtomicbritEngine.Engine import SpriteObjects, TimerBar, Utils
 from Classes import GameBase
 from Definitions import AssetLibrary, ColorDefines
 from Definitions.DefinedLocations import LocationDefs
-from Engine import SpriteObjects, TimerBar, Utils
 from Handlers import CharacterMovementHandler, Matching
 
 

@@ -1,6 +1,6 @@
+from AtomicbritEngine.Engine import MovementHandler, Utils
 from Definitions import AssetLibrary
 from Definitions.CustomerDefs import CustomerStates, QueueStates
-from Engine import MovementHandler, Utils
 
 QUEUEDISTANCE = 75
 

@@ -1,6 +1,6 @@
 """Settings Object"""
 
-from Engine import Utils
+from AtomicbritEngine.Engine import Utils
 
 
 class Settings:

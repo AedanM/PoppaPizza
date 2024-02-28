@@ -4,7 +4,7 @@ import pygame
 
 from Classes import Settings
 from Definitions import CustomEvents
-from Engine import Clock
+from AtomicbritEngine.Engine import Clock
 
 
 class GameClock(Clock.Clock):
