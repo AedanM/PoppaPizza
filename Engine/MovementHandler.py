@@ -13,7 +13,7 @@ class MovementSpeeds:
 
 
 class MovementHandler:
-    OnComplete = None
+    OnComplete: callable = lambda: None  # type: ignore
     Dest: tuple = (0, 0)
     MaxMovementSpeed: int = MovementSpeeds.Medium
     MovementTolerance: float = 0.01
@@ -25,7 +25,7 @@ class MovementHandler:
 
     def Reset(self) -> None:
         """Reset OnComplete function and Finish any active movements"""
-        self.OnComplete = None
+        self.OnComplete = lambda: None
         self.FinishMovement()
 
     @property
@@ -38,7 +38,7 @@ class MovementHandler:
         """X Coord of Destination"""
         return self.Dest[0]
 
-    def StartNewListedMotion(self, pointList, speed=10) -> None:
+    def StartNewListedMotion(self, pointList: list[tuple[int, int]], speed=10) -> None:
         """Start point for Motion
 
             Takes a list of positions and begins the animation of a sprite between them
@@ -55,7 +55,7 @@ class MovementHandler:
             self.InMotion: bool = True
             self.MaxMovementSpeed = speed
 
-    def MoveChar(self, obj, gameSpeed) -> None:
+    def MoveChar(self, obj, gameSpeed: int) -> None:
         """Update Location of Character
 
         Args-
@@ -104,14 +104,15 @@ class MovementHandler:
         self.InMotion = False
         self.PointsList = []
         self.CurrentPointIdx = 0
-        if self.OnComplete is not None:
-            self.OnComplete()
+        self.OnComplete()
 
-    def CalcNewPosition(self, obj, gameSpeed) -> None:
+    def CalcNewPosition(self, obj, gameSpeed: int) -> None:
         if self.DstSet:
             self.MoveChar(obj=obj, gameSpeed=gameSpeed)
             if self.IsFinished(obj=obj):
-                if self.Dest == self.PointsList[len(self.PointsList) - 1]:
+                if self.Dest == self.PointsList[len(self.PointsList) - 1] and not self.PointsList:
+                    self.FinishMovement()
+                elif self.PointsList and self.CurrentPointIdx+1 == len(self.PointsList):
                     self.FinishMovement()
                 else:
                     self.CurrentPointIdx += 1

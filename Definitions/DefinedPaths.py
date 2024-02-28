@@ -4,7 +4,8 @@ import copy
 import random
 
 from Classes import GameBase
-from Definitions import AssetLibrary, DefinedLocations
+from Definitions import AssetLibrary
+from Definitions.DefinedLocations import LocationDefs, SeatingPlan
 from Engine import Utils
 
 
@@ -20,12 +21,8 @@ def IsSeatTaken(seatLocation) -> bool:
     """
     for sprite in GameBase.MasterGame.CharSpriteGroup:
         if sprite.ImageType in AssetLibrary.CustomerOutfits:
-            xCheck = Utils.InTolerance(
-                num1=sprite.rect.centerx, num2=seatLocation[0], tolerance=15
-            )
-            yCheck = Utils.InTolerance(
-                num1=sprite.rect.centery, num2=seatLocation[1], tolerance=15
-            )
+            xCheck = Utils.InTolerance(num1=sprite.rect.centerx, num2=seatLocation[0], tolerance=15)
+            yCheck = Utils.InTolerance(num1=sprite.rect.centery, num2=seatLocation[1], tolerance=15)
             dstCheck = (
                 sprite.MvmHandler.PointsList[-1] == seatLocation
                 if sprite.MvmHandler.PointsList != []
@@ -43,7 +40,7 @@ def GetRandomSeatPosition() -> tuple | None:
     Returns-
         tuple | None: Seat position
     """
-    seatingPlan = DefinedLocations.SeatingPlan
+    seatingPlan = SeatingPlan
     seats = copy.deepcopy(seatingPlan.GenerateTablePlaces())
     random.shuffle(seats)
     for seat in seats:
@@ -68,8 +65,8 @@ class DefinedPaths:
         """
         path = [
             sprite.rect.center,
-            DefinedLocations.LocationDefs.KitchenEntrance,
-            (dest[0], DefinedLocations.LocationDefs.KitchenEntrance[1]),
+            LocationDefs.KitchenEntrance,
+            (dest[0], LocationDefs.KitchenEntrance[1]),
             dest,
         ]
         return path
@@ -106,14 +103,14 @@ class DefinedPaths:
         """
         path = [
             sprite.rect.center,
-            DefinedLocations.LocationDefs.KitchenEntrance,
+            LocationDefs.KitchenEntrance,
             (
-                DefinedLocations.LocationDefs.KitchenEntrance[0] + 100,
-                DefinedLocations.LocationDefs.KitchenEntrance[1],
+                LocationDefs.KitchenEntrance[0] + 100,
+                LocationDefs.KitchenEntrance[1],
             ),
             (
                 dest.rect.center[0] - 100,
-                DefinedLocations.LocationDefs.KitchenEntrance[1],
+                LocationDefs.KitchenEntrance[1],
             ),
             dest.rect.center,
         ]
@@ -135,16 +132,16 @@ class DefinedPaths:
             (
                 (
                     sprite.rect.center[0],
-                    DefinedLocations.LocationDefs.KitchenEntrance[1],
+                    LocationDefs.KitchenEntrance[1],
                 )
                 if VertFirst
                 else (
-                    DefinedLocations.LocationDefs.KitchenEntrance[0],
+                    LocationDefs.KitchenEntrance[0],
                     sprite.rect.center[1],
                 )
             ),
-            DefinedLocations.LocationDefs.KitchenEntrance,
-            DefinedLocations.LocationDefs.KitchenLocation,
+            LocationDefs.KitchenEntrance,
+            LocationDefs.KitchenLocation,
         ]
         return path
 
@@ -158,7 +155,7 @@ class DefinedPaths:
         Returns-
             list: List of Points for Path
         """
-        path = [sprite.rect.center, DefinedLocations.LocationDefs.CustomerExit]
+        path = [sprite.rect.center, LocationDefs.CustomerExit]
         return path
 
     @staticmethod
@@ -175,10 +172,10 @@ class DefinedPaths:
             sprite.rect.center,
             (sprite.rect.centerx, sprite.rect.centery - 100),
             (
-                DefinedLocations.LocationDefs.CustomerEntrance[0],
+                LocationDefs.CustomerEntrance[0],
                 sprite.rect.centery - 100,
             ),
-            DefinedLocations.LocationDefs.CustomerExit,
+            LocationDefs.CustomerExit,
         ]
         return path
 
@@ -192,5 +189,5 @@ class DefinedPaths:
         Returns-
             list: List of Points for Path
         """
-        path = [sprite.rect.center, DefinedLocations.LocationDefs.CustomerEntrance]
+        path = [sprite.rect.center, LocationDefs.CustomerEntrance]
         return path

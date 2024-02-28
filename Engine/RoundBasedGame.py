@@ -1,8 +1,10 @@
+"""Class to generate a game with defined rounds"""
+
 from typing import Any
 
 import pygame
 
-from Engine import Color, Utils
+from Engine import Color, Game, Utils
 
 
 class RoundBasedGame:
@@ -18,20 +20,18 @@ class RoundBasedGame:
 
     DisplayedText: dict = {}
 
-    def __init__(self, rounds, activeGame) -> None:
-        self.Rounds = int(Utils.Bind(val=rounds, inRange=[0, self.MaxRounds]))
+    def __init__(self, rounds: int, activeGame: Game.Game) -> None:
+        self.Rounds = int(Utils.Bind(val=rounds, inRange=(0, self.MaxRounds)))
         self.Screen = activeGame.Screen
 
-    def StartRound(self) -> None:
-        self.DisplayedText["Round Text"].Text = (
-            f"Round {self.CurrentRound}/{self.Rounds}"
-        )
+    def StartRound(self, activeGame: Game.Game) -> None:
+        self.DisplayedText["Round Text"].Text = f"Round {self.CurrentRound}/{self.Rounds}"
         self.MasterSpriteGroup.update()
         self.MasterSpriteGroup.draw(self.Screen)  # type: ignore
 
-    def UpdateStateMachine(self, inputStr) -> None:
+    def UpdateStateMachine(self, inputStr: str) -> None:
         pass
 
-    def PlayGame(self) -> None:
+    def PlayGame(self, activeGame: Game.Game) -> None:
         # Pylance rejects activeGame as param due to overloading
-        self.StartRound()  # type: ignore
+        self.StartRound(activeGame=activeGame)  # type: ignore

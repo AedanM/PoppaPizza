@@ -6,7 +6,6 @@ import os
 # *OS Call used to prevent a time printout from Pygame on first import
 # pylint: disable=wrong-import-position
 os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "True"
-import threading
 import time
 
 import pygame
@@ -18,53 +17,54 @@ from Handlers import EventHandler
 GAME_START_TIME = 0
 
 
-def MainLoop() -> None:
+def MainLoop(CurrentGame: GameBase.MainGame) -> None:
     """Main Loop of Game"""
-    if GameBase.MasterGame.Running:
-        match GameBase.MasterGame.Mode:
+    if CurrentGame.Running:
+        match CurrentGame.Mode:
             case MiniGames.GameMode.Base:
-                EventHandler.MainEventHandler(activeGame=GameBase.MasterGame)
-                GameBase.MasterGame.DrawBackground(source=AssetLibrary.Background)
-                GameBase.MasterGame.UpdateSprites()
-                GameBase.MasterGame.WriteAllText()
-                GameBase.MasterGame.UpdateLightingEngine()
+                EventHandler.MainEventHandler(activeGame=CurrentGame)
+                CurrentGame.DrawBackground(source=AssetLibrary.Background)
+                CurrentGame.UpdateSprites()
+                CurrentGame.WriteAllText()
+                CurrentGame.UpdateLightingEngine()
             case MiniGames.GameMode.TriviaGame:
-                GameBase.MasterGame.DrawBackground(source=AssetLibrary.TriviaBackground)
-                GameBase.MasterGame.MiniGame.PlayGame()
-                EventHandler.TriviaEventHandler(activeGame=GameBase.MasterGame)
+                CurrentGame.DrawBackground(source=AssetLibrary.TriviaBackground)
+                CurrentGame.MiniGame.PlayGame(activeGame=CurrentGame)
+                EventHandler.TriviaEventHandler(activeGame=CurrentGame)
 
-    if GameBase.MasterGame.ShowScreen:
+    if CurrentGame.ShowScreen:
         pygame.display.update()
 
     # Control the frame rate
-    GameBase.MasterGame.GameClock.UpdateClock(
-        clockSpeed=GameBase.MasterGame.Settings.ClockSpeed,
-        frameCap=GameBase.MasterGame.Settings.CapFrames,
+    CurrentGame.GameClock.UpdateClock(
+        clockSpeed=CurrentGame.Settings.ClockSpeed,
+        frameCap=CurrentGame.Settings.CapFrames,
     )
 
 
-def Setup(debugFlag=True, profileFlag=False) -> None:
-    GameBase.MasterGame = GameBase.MainGame()
+def Setup(debugFlag: bool = True, profileFlag: bool = False) -> GameBase.MainGame:
+    CurrentGame = GameBase.MainGame()
     pygame.event.post(CustomEvents.UpdateBackground)
     # Enables a series of functions to run automatically
     if profileFlag:
         global GAME_START_TIME
         GAME_START_TIME = time.time()
-        GameBase.MasterGame.Settings.CapFrames = False
+        CurrentGame.Settings.CapFrames = False
     if debugFlag:
-        EventHandler.DebugSetup()
+        EventHandler.DebugSetup(activeGame=CurrentGame)
+    return CurrentGame
 
 
-def Main(debugFlag, profileFlag, safetyFlag) -> None:
-    Setup(debugFlag=debugFlag, profileFlag=profileFlag)
+def Main(debugFlag: bool, profileFlag: bool, safetyFlag: bool) -> None:
+    MainGame = Setup(debugFlag=debugFlag, profileFlag=profileFlag)
     while True:
         if safetyFlag:
             try:
-                MainLoop()
+                MainLoop(CurrentGame=MainGame)
             except Exception as e:
                 print(f"{e} Occured")
         else:
-            MainLoop()
+            MainLoop(CurrentGame=MainGame)
         if profileFlag and time.time() - GAME_START_TIME > 30:
             break
 
@@ -72,7 +72,7 @@ def Main(debugFlag, profileFlag, safetyFlag) -> None:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-d", "--debugFlag", default="True")
-    parser.add_argument("-p", "--profilerFlag", default="True")
+    parser.add_argument("-p", "--profilerFlag", default="False")
     parser.add_argument("-s", "--safetyFlag", default="False")
     args = parser.parse_args()
     Main(

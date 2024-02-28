@@ -2,16 +2,16 @@
 
 import random
 
-from Classes import GameBase, People
-from Definitions import AssetLibrary, DefinedLocations, Prices, Restaurants
-from Engine import Utils
+from Classes import People
+from Definitions import AssetLibrary, Prices, Restaurants
+from Definitions.DefinedLocations import LocationDefs
 from Handlers import CustomerHandler, WorkerHandler
 
 # pylint: disable=C0103
 LastSpawnTime = 0
 
 
-def SpawnLocationFree(spawnPoint=DefinedLocations.LocationDefs.EndOfLine) -> bool:
+def SpawnLocationFree(activeGame, spawnPoint=LocationDefs.EndOfLine) -> bool:
     """Determines if spawn location has another sprite on it
 
     Args-
@@ -20,35 +20,33 @@ def SpawnLocationFree(spawnPoint=DefinedLocations.LocationDefs.EndOfLine) -> boo
     Returns-
         bool: Free status of Spawn Location
     """
-    for sprite in GameBase.MasterGame.CharSpriteGroup:
+    for sprite in activeGame.CharSpriteGroup:
         if sprite.rect.collidepoint(spawnPoint[0], spawnPoint[1]):
             return False
     return True
 
 
-def CustomerSpawner(force=False) -> None:
+def CustomerSpawner(activeGame, force=False) -> None:
     """Randomly Spawns Customers
 
     Args-
         force (bool, optional): Force a spawn on this run. Defaults to False.
     """
     global LastSpawnTime
-    currentTime = GameBase.MasterGame.GameClock.UnixTime
-    chanceOfSpawn = GameBase.MasterGame.Chances.CustomerSpawn * float(
-        currentTime - LastSpawnTime
-    )
-    if (random.random() < chanceOfSpawn or force) and SpawnLocationFree():
-        spawnLocation = DefinedLocations.LocationDefs.CustomerSpawn
-        customerType = GetRandomCustomerType()
+    currentTime = activeGame.GameClock.UnixTime
+    chanceOfSpawn = activeGame.Chances.CustomerSpawn * float(currentTime - LastSpawnTime)
+    if (random.random() < chanceOfSpawn or force) and SpawnLocationFree(activeGame=activeGame):
+        spawnLocation = LocationDefs.CustomerSpawn
+        customerType = GetRandomCustomerType(activeGame=activeGame)
         _, customerSprite = People.Customer.CreateCustomer(
-            startLocation=spawnLocation, imageType=customerType
+            startLocation=spawnLocation, imageType=customerType, activeGame=activeGame
         )
         CustomerHandler.WalkIn(target=customerSprite)
         LastSpawnTime = currentTime
-        GameBase.MasterGame.UserInventory.Statistics.CustomersEntered += 1
+        activeGame.UserInventory.Statistics.CustomersEntered += 1
 
 
-def GetRandomCustomerType() -> AssetLibrary.ImageTypes:
+def GetRandomCustomerType(activeGame) -> AssetLibrary.ImageTypes:
     """Randomly Select a Customer Type for Spawn
 
         Weighting is based on the ActiveRestLuck number in the Chances object
@@ -71,7 +69,7 @@ def GetRandomCustomerType() -> AssetLibrary.ImageTypes:
     customerType = random.choice(
         random.choice(
             random.choice(
-                [activeClientTypes] * GameBase.MasterGame.Chances.ActiveRestLuck
+                [activeClientTypes] * activeGame.Chances.ActiveRestLuck
                 + [inactiveClientTypes]  # type:ignore
             )
         )
@@ -80,17 +78,19 @@ def GetRandomCustomerType() -> AssetLibrary.ImageTypes:
     return customerType
 
 
-def BuyWorker(free=False) -> None:
+def BuyWorker(activeGame, free=False) -> None:
     """Buy Worker and Spawn Them In
 
     Args-
         free (bool, optional): Forces a free purchase. Defaults to False.
     """
-    if GameBase.MasterGame.UserInventory.Money > Prices.CurrentWorkerPrice:
-        spawnLocation = DefinedLocations.LocationDefs.WorkerSpawn
-        _, workerSprite = People.Worker.CreateWorker(startLocation=spawnLocation)
+    if activeGame.UserInventory.Money > Prices.CurrentWorkerPrice:
+        spawnLocation = LocationDefs.WorkerSpawn
+        _, workerSprite = People.Worker.CreateWorker(
+            startLocation=spawnLocation, activeGame=activeGame
+        )
         if not free:
-            GameBase.MasterGame.UserInventory.Money -= Prices.CurrentWorkerPrice
+            activeGame.UserInventory.Money -= Prices.CurrentWorkerPrice
             Prices.CurrentWorkerPrice = round(
                 Prices.CurrentWorkerPrice * random.uniform(1.0, 2.5), 2
             )

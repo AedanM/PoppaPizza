@@ -29,6 +29,7 @@
 </summary>
 <pre><code class="python">&#34;&#34;&#34;Game statistics&#34;&#34;&#34;
 
+import copy
 from dataclasses import dataclass
 
 AllStats = {}
@@ -112,7 +113,13 @@ class GameStats:
         return self.CustomersEntered - PrevDay.CustomersEntered
 
 
-PrevDay = GameStats()</code></pre>
+PrevDay = GameStats()
+
+
+def UpdateStats(activeGame) -&gt; None:
+    global AllStats, PrevDay
+    AllStats[f&#34;Day {activeGame.GameClock.Day}&#34;] = copy.deepcopy(activeGame.UserInventory.Statistics)
+    PrevDay = copy.deepcopy(activeGame.UserInventory.Statistics)</code></pre>
 </details>
 </section>
 <section>
@@ -120,6 +127,24 @@ PrevDay = GameStats()</code></pre>
 <section>
 </section>
 <section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="Classes.Stats.UpdateStats"><code class="name flex">
+<span>def <span class="ident">UpdateStats</span></span>(<span>activeGame) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def UpdateStats(activeGame) -&gt; None:
+    global AllStats, PrevDay
+    AllStats[f&#34;Day {activeGame.GameClock.Day}&#34;] = copy.deepcopy(activeGame.UserInventory.Statistics)
+    PrevDay = copy.deepcopy(activeGame.UserInventory.Statistics)</code></pre>
+</details>
+</dd>
+</dl>
 </section>
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
@@ -421,6 +446,11 @@ amount (int | float): Amount Spent or Earned</p></div>
 <li><h3>Super-module</h3>
 <ul>
 <li><code><a title="Classes" href="index.html">Classes</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="Classes.Stats.UpdateStats" href="#Classes.Stats.UpdateStats">UpdateStats</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>

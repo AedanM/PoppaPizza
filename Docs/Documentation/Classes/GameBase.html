@@ -29,21 +29,15 @@
 </summary>
 <pre><code class="python">&#34;&#34;&#34;Class for Game&#34;&#34;&#34;
 
+from typing import Any
+
 import pygame
 
-from Classes import (
-    GameBase,
-    GameClock,
-    GameLighting,
-    Inventory,
-    MiniGames,
-    Settings,
-    Writing,
-)
-from Definitions import AssetLibrary, Chances, DefinedLocations
-from Engine import Color, Game, RoundBasedGame
-
-# TODO - extract a parent class for a general framework
+from Classes import GameClock, GameLighting, Inventory, MiniGames, Settings, Writing
+from Definitions import AssetLibrary, Chances, CustomEvents, Restaurants
+from Definitions.DefinedLocations import LocationDefs
+from Engine import Color, Game, RoundBasedGame, SaveHandler
+from Engine.Game import StandardDimensions
 
 
 class MainGame(Game.Game):
@@ -56,13 +50,11 @@ class MainGame(Game.Game):
     CustomerList: list = []
     JobList: list = []
     ButtonList: list = []
-    UserInventory: Inventory.Inventory = None
+    UserInventory: Inventory.Inventory = None  # type: ignore
     Mode: MiniGames.GameMode = MiniGames.GameMode.Base
-    MiniGame: RoundBasedGame.RoundBasedGame = None
+    MiniGame: RoundBasedGame.RoundBasedGame = None  # type: ignore
 
-    def __init__(
-        self, activateScreen=True, size=DefinedLocations.LocationDefs.ScreenSize
-    ) -&gt; None:
+    def __init__(self, activateScreen=True, size=LocationDefs.ScreenSize) -&gt; None:
         &#34;&#34;&#34;Init for Game
 
         Args-
@@ -89,13 +81,11 @@ class MainGame(Game.Game):
 
     def StartScreen(self, size) -&gt; None:
         if isinstance(size, str):
-            DefinedLocations.LocationDefs.ScreenSize = (
-                DefinedLocations.StandardDimensions[size]
-            )
-            width, height = DefinedLocations.LocationDefs.ScreenSize
+            LocationDefs.ScreenSize = StandardDimensions[size]
+            width, height = LocationDefs.ScreenSize
         else:
             width, height = size
-            DefinedLocations.LocationDefs.ScreenSize = (width, height)
+            LocationDefs.ScreenSize = (width, height)
         super().StartScreen(size=size)
 
     def ConvertPreRendered(self) -&gt; None:
@@ -111,7 +101,7 @@ class MainGame(Game.Game):
         Writing.WriteKitchenLabel(activeGame=self)
 
     def DrawBackground(
-        self, source: pygame.Surface = None, color: Color.Color = None
+        self, source: pygame.Surface = None, color: Color.Color = None  # type: ignore
     ) -&gt; None:
         &#34;&#34;&#34;Wiping screen with background image&#34;&#34;&#34;
         if source:
@@ -122,12 +112,49 @@ class MainGame(Game.Game):
             super().DrawBackground()
 
     def ClearMiniGame(self) -&gt; None:
-        self.MiniGame = None
+        self.MiniGame = None  # type: ignore
         self.Mode = MiniGames.GameMode.Base
         self.GameClock.SetRunning(True)
 
     def UpdateLightingEngine(self) -&gt; None:
         self.Lighting.LightingEngine(activeGame=self, dayTransition=True)
+
+    @property
+    def HasGameOver(self) -&gt; str:
+        if super().HasGameOver:
+            return super().HasGameOver
+        if self.UserInventory.Money &lt; 0:
+            return &#34;Ran Out of Cash&#34;
+        return &#34;&#34;
+
+    def MakeSaveObj(self) -&gt; dict[str, Any]:
+        saveDict = super().MakeSaveObj()
+        saveDict[&#34;Char Sprites&#34;] = SaveHandler.SaveSpriteGroup(spriteGroup=self.CharSpriteGroup)
+        saveDict[&#34;Workers&#34;] = self.WorkerList
+        saveDict[&#34;Customers&#34;] = self.CustomerList
+        saveDict[&#34;Jobs&#34;] = self.JobList
+        saveDict[&#34;Restuarants&#34;] = Restaurants.RestaurantList
+        saveDict[&#34;Inventory&#34;] = self.UserInventory
+        saveDict[&#34;Mode&#34;] = self.Mode
+        saveDict[&#34;Mini Game&#34;] = self.MiniGame
+        return saveDict
+
+    def LoadSaveObj(self, saveDict) -&gt; None:
+        super().LoadSaveObj(saveDict=saveDict)
+        SaveHandler.LoadSpriteGroup(
+            saveObj=saveDict, Name=&#34;Char Sprites&#34;, spriteGroup=self.CharSpriteGroup
+        )
+        self.WorkerList = saveDict[&#34;Workers&#34;]
+        self.CustomerList = saveDict[&#34;Customers&#34;]
+        self.JobList = saveDict[&#34;Jobs&#34;]
+        Restaurants.RestaurantList = saveDict[&#34;Restuarants&#34;]
+        self.UserInventory = saveDict[&#34;Inventory&#34;]
+        self.Mode = saveDict[&#34;Mode&#34;]
+        self.MiniGame = saveDict[&#34;Mini Game&#34;]
+
+    def LoadGame(self) -&gt; None:
+        super().LoadGame()
+        pygame.event.post(CustomEvents.UpdateBackground)
 
 
 MasterGame = MainGame()</code></pre>
@@ -166,13 +193,11 @@ size (tuple, optional): Dimensions of Screeen. Defaults to DefinedLocations.Loca
     CustomerList: list = []
     JobList: list = []
     ButtonList: list = []
-    UserInventory: Inventory.Inventory = None
+    UserInventory: Inventory.Inventory = None  # type: ignore
     Mode: MiniGames.GameMode = MiniGames.GameMode.Base
-    MiniGame: RoundBasedGame.RoundBasedGame = None
+    MiniGame: RoundBasedGame.RoundBasedGame = None  # type: ignore
 
-    def __init__(
-        self, activateScreen=True, size=DefinedLocations.LocationDefs.ScreenSize
-    ) -&gt; None:
+    def __init__(self, activateScreen=True, size=LocationDefs.ScreenSize) -&gt; None:
         &#34;&#34;&#34;Init for Game
 
         Args-
@@ -199,13 +224,11 @@ size (tuple, optional): Dimensions of Screeen. Defaults to DefinedLocations.Loca
 
     def StartScreen(self, size) -&gt; None:
         if isinstance(size, str):
-            DefinedLocations.LocationDefs.ScreenSize = (
-                DefinedLocations.StandardDimensions[size]
-            )
-            width, height = DefinedLocations.LocationDefs.ScreenSize
+            LocationDefs.ScreenSize = StandardDimensions[size]
+            width, height = LocationDefs.ScreenSize
         else:
             width, height = size
-            DefinedLocations.LocationDefs.ScreenSize = (width, height)
+            LocationDefs.ScreenSize = (width, height)
         super().StartScreen(size=size)
 
     def ConvertPreRendered(self) -&gt; None:
@@ -221,7 +244,7 @@ size (tuple, optional): Dimensions of Screeen. Defaults to DefinedLocations.Loca
         Writing.WriteKitchenLabel(activeGame=self)
 
     def DrawBackground(
-        self, source: pygame.Surface = None, color: Color.Color = None
+        self, source: pygame.Surface = None, color: Color.Color = None  # type: ignore
     ) -&gt; None:
         &#34;&#34;&#34;Wiping screen with background image&#34;&#34;&#34;
         if source:
@@ -232,12 +255,49 @@ size (tuple, optional): Dimensions of Screeen. Defaults to DefinedLocations.Loca
             super().DrawBackground()
 
     def ClearMiniGame(self) -&gt; None:
-        self.MiniGame = None
+        self.MiniGame = None  # type: ignore
         self.Mode = MiniGames.GameMode.Base
         self.GameClock.SetRunning(True)
 
     def UpdateLightingEngine(self) -&gt; None:
-        self.Lighting.LightingEngine(activeGame=self, dayTransition=True)</code></pre>
+        self.Lighting.LightingEngine(activeGame=self, dayTransition=True)
+
+    @property
+    def HasGameOver(self) -&gt; str:
+        if super().HasGameOver:
+            return super().HasGameOver
+        if self.UserInventory.Money &lt; 0:
+            return &#34;Ran Out of Cash&#34;
+        return &#34;&#34;
+
+    def MakeSaveObj(self) -&gt; dict[str, Any]:
+        saveDict = super().MakeSaveObj()
+        saveDict[&#34;Char Sprites&#34;] = SaveHandler.SaveSpriteGroup(spriteGroup=self.CharSpriteGroup)
+        saveDict[&#34;Workers&#34;] = self.WorkerList
+        saveDict[&#34;Customers&#34;] = self.CustomerList
+        saveDict[&#34;Jobs&#34;] = self.JobList
+        saveDict[&#34;Restuarants&#34;] = Restaurants.RestaurantList
+        saveDict[&#34;Inventory&#34;] = self.UserInventory
+        saveDict[&#34;Mode&#34;] = self.Mode
+        saveDict[&#34;Mini Game&#34;] = self.MiniGame
+        return saveDict
+
+    def LoadSaveObj(self, saveDict) -&gt; None:
+        super().LoadSaveObj(saveDict=saveDict)
+        SaveHandler.LoadSpriteGroup(
+            saveObj=saveDict, Name=&#34;Char Sprites&#34;, spriteGroup=self.CharSpriteGroup
+        )
+        self.WorkerList = saveDict[&#34;Workers&#34;]
+        self.CustomerList = saveDict[&#34;Customers&#34;]
+        self.JobList = saveDict[&#34;Jobs&#34;]
+        Restaurants.RestaurantList = saveDict[&#34;Restuarants&#34;]
+        self.UserInventory = saveDict[&#34;Inventory&#34;]
+        self.Mode = saveDict[&#34;Mode&#34;]
+        self.MiniGame = saveDict[&#34;Mini Game&#34;]
+
+    def LoadGame(self) -&gt; None:
+        super().LoadGame()
+        pygame.event.post(CustomEvents.UpdateBackground)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -286,6 +346,25 @@ size (tuple, optional): Dimensions of Screeen. Defaults to DefinedLocations.Loca
 <div class="desc"></div>
 </dd>
 </dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="Classes.GameBase.MainGame.HasGameOver"><code class="name">var <span class="ident">HasGameOver</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def HasGameOver(self) -&gt; str:
+    if super().HasGameOver:
+        return super().HasGameOver
+    if self.UserInventory.Money &lt; 0:
+        return &#34;Ran Out of Cash&#34;
+    return &#34;&#34;</code></pre>
+</details>
+</dd>
+</dl>
 <h3>Methods</h3>
 <dl>
 <dt id="Classes.GameBase.MainGame.ClearMiniGame"><code class="name flex">
@@ -298,7 +377,7 @@ size (tuple, optional): Dimensions of Screeen. Defaults to DefinedLocations.Loca
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def ClearMiniGame(self) -&gt; None:
-    self.MiniGame = None
+    self.MiniGame = None  # type: ignore
     self.Mode = MiniGames.GameMode.Base
     self.GameClock.SetRunning(True)</code></pre>
 </details>
@@ -329,7 +408,7 @@ size (tuple, optional): Dimensions of Screeen. Defaults to DefinedLocations.Loca
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def DrawBackground(
-    self, source: pygame.Surface = None, color: Color.Color = None
+    self, source: pygame.Surface = None, color: Color.Color = None  # type: ignore
 ) -&gt; None:
     &#34;&#34;&#34;Wiping screen with background image&#34;&#34;&#34;
     if source:
@@ -338,6 +417,65 @@ size (tuple, optional): Dimensions of Screeen. Defaults to DefinedLocations.Loca
         self.Screen.fill(color.RGB)
     else:
         super().DrawBackground()</code></pre>
+</details>
+</dd>
+<dt id="Classes.GameBase.MainGame.LoadGame"><code class="name flex">
+<span>def <span class="ident">LoadGame</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def LoadGame(self) -&gt; None:
+    super().LoadGame()
+    pygame.event.post(CustomEvents.UpdateBackground)</code></pre>
+</details>
+</dd>
+<dt id="Classes.GameBase.MainGame.LoadSaveObj"><code class="name flex">
+<span>def <span class="ident">LoadSaveObj</span></span>(<span>self, saveDict) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def LoadSaveObj(self, saveDict) -&gt; None:
+    super().LoadSaveObj(saveDict=saveDict)
+    SaveHandler.LoadSpriteGroup(
+        saveObj=saveDict, Name=&#34;Char Sprites&#34;, spriteGroup=self.CharSpriteGroup
+    )
+    self.WorkerList = saveDict[&#34;Workers&#34;]
+    self.CustomerList = saveDict[&#34;Customers&#34;]
+    self.JobList = saveDict[&#34;Jobs&#34;]
+    Restaurants.RestaurantList = saveDict[&#34;Restuarants&#34;]
+    self.UserInventory = saveDict[&#34;Inventory&#34;]
+    self.Mode = saveDict[&#34;Mode&#34;]
+    self.MiniGame = saveDict[&#34;Mini Game&#34;]</code></pre>
+</details>
+</dd>
+<dt id="Classes.GameBase.MainGame.MakeSaveObj"><code class="name flex">
+<span>def <span class="ident">MakeSaveObj</span></span>(<span>self) ‑> dict[str, typing.Any]</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def MakeSaveObj(self) -&gt; dict[str, Any]:
+    saveDict = super().MakeSaveObj()
+    saveDict[&#34;Char Sprites&#34;] = SaveHandler.SaveSpriteGroup(spriteGroup=self.CharSpriteGroup)
+    saveDict[&#34;Workers&#34;] = self.WorkerList
+    saveDict[&#34;Customers&#34;] = self.CustomerList
+    saveDict[&#34;Jobs&#34;] = self.JobList
+    saveDict[&#34;Restuarants&#34;] = Restaurants.RestaurantList
+    saveDict[&#34;Inventory&#34;] = self.UserInventory
+    saveDict[&#34;Mode&#34;] = self.Mode
+    saveDict[&#34;Mini Game&#34;] = self.MiniGame
+    return saveDict</code></pre>
 </details>
 </dd>
 <dt id="Classes.GameBase.MainGame.StartScreen"><code class="name flex">
@@ -353,13 +491,11 @@ size (str | tuple): Either member of StandardDimensions or custom tuple</p></div
 </summary>
 <pre><code class="python">def StartScreen(self, size) -&gt; None:
     if isinstance(size, str):
-        DefinedLocations.LocationDefs.ScreenSize = (
-            DefinedLocations.StandardDimensions[size]
-        )
-        width, height = DefinedLocations.LocationDefs.ScreenSize
+        LocationDefs.ScreenSize = StandardDimensions[size]
+        width, height = LocationDefs.ScreenSize
     else:
         width, height = size
-        DefinedLocations.LocationDefs.ScreenSize = (width, height)
+        LocationDefs.ScreenSize = (width, height)
     super().StartScreen(size=size)</code></pre>
 </details>
 </dd>
@@ -421,7 +557,11 @@ size (str | tuple): Either member of StandardDimensions or custom tuple</p></div
 <li><code><a title="Classes.GameBase.MainGame.CustomerList" href="#Classes.GameBase.MainGame.CustomerList">CustomerList</a></code></li>
 <li><code><a title="Classes.GameBase.MainGame.DrawBackground" href="#Classes.GameBase.MainGame.DrawBackground">DrawBackground</a></code></li>
 <li><code><a title="Classes.GameBase.MainGame.ForegroundSpriteGroup" href="#Classes.GameBase.MainGame.ForegroundSpriteGroup">ForegroundSpriteGroup</a></code></li>
+<li><code><a title="Classes.GameBase.MainGame.HasGameOver" href="#Classes.GameBase.MainGame.HasGameOver">HasGameOver</a></code></li>
 <li><code><a title="Classes.GameBase.MainGame.JobList" href="#Classes.GameBase.MainGame.JobList">JobList</a></code></li>
+<li><code><a title="Classes.GameBase.MainGame.LoadGame" href="#Classes.GameBase.MainGame.LoadGame">LoadGame</a></code></li>
+<li><code><a title="Classes.GameBase.MainGame.LoadSaveObj" href="#Classes.GameBase.MainGame.LoadSaveObj">LoadSaveObj</a></code></li>
+<li><code><a title="Classes.GameBase.MainGame.MakeSaveObj" href="#Classes.GameBase.MainGame.MakeSaveObj">MakeSaveObj</a></code></li>
 <li><code><a title="Classes.GameBase.MainGame.MiniGame" href="#Classes.GameBase.MainGame.MiniGame">MiniGame</a></code></li>
 <li><code><a title="Classes.GameBase.MainGame.Mode" href="#Classes.GameBase.MainGame.Mode">Mode</a></code></li>
 <li><code><a title="Classes.GameBase.MainGame.StartScreen" href="#Classes.GameBase.MainGame.StartScreen">StartScreen</a></code></li>

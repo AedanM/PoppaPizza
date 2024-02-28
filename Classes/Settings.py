@@ -35,9 +35,7 @@ class Settings:
         Args-
             value (int): Increment to Clock Power
         """
-        self.ClockPow = int(
-            Utils.Bind(val=self.ClockPow + value, inRange=self.ClockPowRange)
-        )
+        self.ClockPow = int(Utils.Bind(val=self.ClockPow + value, inRange=self.ClockPowRange))
 
     def SetClockMul(self, value) -> None:
         """Force certain speed of clock

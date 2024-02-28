@@ -29,12 +29,15 @@
 </summary>
 <pre><code class="python">&#34;&#34;&#34;Class for visibile sprites&#34;&#34;&#34;
 
+from typing import Any
+
 import pygame
 
-from Classes import GameBase, Matching
-from Definitions import AssetLibrary, ColorDefines, DefinedLocations
+from Classes import GameBase
+from Definitions import AssetLibrary, ColorDefines
+from Definitions.DefinedLocations import LocationDefs
 from Engine import SpriteObjects, TimerBar, Utils
-from Handlers import CharacterMovementHandler
+from Handlers import CharacterMovementHandler, Matching
 
 
 class CharImageSprite(SpriteObjects.CharacterSprite):
@@ -43,18 +46,15 @@ class CharImageSprite(SpriteObjects.CharacterSprite):
     # pylint: disable=invalid-name
     CorrespondingID: int = 0
     ImageType: AssetLibrary.ImageTypes = AssetLibrary.ImageTypes.Null
-    PersonalTimer: TimerBar.TimerBar = None
+    PersonalTimer: TimerBar.TimerBar = None  # type: ignore
 
     def __init__(
         self,
         path,
-        activeGame,
         objID,
-        position=None,
-        center=None,
-        maxSize=Utils.ScaleToSize(
-            value=100, newSize=DefinedLocations.LocationDefs.ScreenSize
-        ),
+        position: tuple[int, int] = None,  # type: ignore
+        center: tuple[int, int] = None,  # type: ignore
+        maxSize: int = int(Utils.ScaleValToSize(val=100, newSize=LocationDefs.ScreenSize)),
     ) -&gt; None:
         super().__init__(
             backgroundFlag=False,
@@ -70,35 +70,35 @@ class CharImageSprite(SpriteObjects.CharacterSprite):
         self.CorrespondingID = objID
         self.MvmHandler = CharacterMovementHandler.CharacterMovementHandler()
 
+    # HACK- pass active game in plz
     @property
-    def DataObject(self):
+    def DataObject(self) -&gt; Any | None:
         &#34;&#34;&#34;Numerical Data Object Associated with Image
 
         Returns-
             Customer | Worker: Data Object Assoc with Sprite
         &#34;&#34;&#34;
         activeGame = GameBase.MasterGame
-        objDict = Matching.MatchIdToPerson(
-            activeGame=activeGame, inputId=self.CorrespondingID
-        )
-        objDict.pop(&#34;sprite&#34;)
-        obj = list(objDict.values())[0]
-        return obj
+        objDict = Matching.MatchIdToPerson(activeGame=activeGame, inputId=self.CorrespondingID)
+        if objDict is not None and &#34;sprite&#34; in objDict:
+            objDict.pop(&#34;sprite&#34;)
+            obj = list(objDict.values())[0]
+            return obj
 
-    def CheckSpawnCollision(self) -&gt; None:
+    def CheckSpawnCollision(self, activeGame) -&gt; None:
         &#34;&#34;&#34;Changes spawn location until new sprite is not colliding
 
         Args-
             activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
         &#34;&#34;&#34;
         currentCenter = self.rect.center
-        for group in self.ActiveGame.SpriteGroups:
+        for group in activeGame.SpriteGroups:
             for sprite in group:
                 while sprite.rect.colliderect(self.rect) and sprite is not self:
                     self.rect.center = Utils.PositionRandomVariance(
                         position=currentCenter,
-                        percentVarianceTuple=(0.1, 1),
-                        screenSize=self.ActiveGame.ScreenSize,
+                        percentVariance=(0.1, 1),
+                        screenSize=activeGame.ScreenSize,
                     )
 
     def ChangeOutfit(self, newOutfitPath) -&gt; None:
@@ -122,7 +122,7 @@ class CharImageSprite(SpriteObjects.CharacterSprite):
         &#34;&#34;&#34;Update sprite for each frame&#34;&#34;&#34;
         if self.PersonalTimer is not None:
             self.UpdateTimerAndDraw(activeGame=activeGame)
-            self.PersonalTimer.Rect = self.rect.topleft
+            self.PersonalTimer.Rect = self.rect.topleft  # type: ignore
         super().UpdateSprite(activeGame=activeGame)
 
     def UpdateTimerAndDraw(self, activeGame) -&gt; None:
@@ -133,7 +133,7 @@ class CharImageSprite(SpriteObjects.CharacterSprite):
         &#34;&#34;&#34;
         timerBar = self.PersonalTimer
         if timerBar.Running:
-            timerBar.AgeTimer(timeInMinutes=activeGame.GameClock.Minute)
+            timerBar.UpdateTimer(currentTime=activeGame.GameClock.Minute)
             customerObj = Matching.MatchIdToPerson(
                 activeGame=activeGame, inputId=timerBar.AssocId, targetOutput=&#34;customer&#34;
             )
@@ -142,7 +142,7 @@ class CharImageSprite(SpriteObjects.CharacterSprite):
                 and timerBar.AssocId != 0
                 and (
                     customerObj is None
-                    or customerObj.CurrentState.value != timerBar.StartingState
+                    or customerObj.CurrentState.value != timerBar.StartingState  # type: ignore
                 )
             ):
                 timerBar.Running = False
@@ -192,7 +192,7 @@ class CharImageSprite(SpriteObjects.CharacterSprite):
         self.PersonalTimer.TimerRect.y -= 25
         self.PersonalTimer.SetMaxSize(size=self.rect.width if width == 0 else width)
         self.PersonalTimer.FillColor = fillColor
-        self.PersonalTimer.StartTimer(currentTime=activeGame.GameClock.Minute)
+        self.PersonalTimer.RestartTimer(currentTime=activeGame.GameClock.Minute)
 
     def __repr__(self) -&gt; str:
         &#34;&#34;&#34;String Rep of Object&#34;&#34;&#34;
@@ -219,9 +219,7 @@ class BackgroundElementSprite(SpriteObjects.GameObject):
             path
         ).convert_alpha()  # Replace with the actual sprite image file
         self.rect = self.image.get_rect()
-        dim = Utils.ResizeMaxLength(
-            dim=(self.rect.width, self.rect.height), maxSide=maxSize
-        )
+        dim = Utils.ResizeMaxLength(dim=(self.rect.width, self.rect.height), maxSide=maxSize)
         self.image = pygame.transform.scale(self.image, dim)
         self.rect.x = position[0] + offset[0]
 
@@ -289,7 +287,7 @@ class ButtonObject(SpriteObjects.GameObject):
             backColor=backColor,
             text=text,
             size=[125, 50],
-            enabled=enabled,
+            enabled=enabled,  # type:ignore
         )
 
         activeGame.ForegroundSpriteGroup.add(buttonObj)
@@ -342,9 +340,7 @@ offset (tuple, optional): Offset from position. Defaults to (0, 0).</p></div>
             path
         ).convert_alpha()  # Replace with the actual sprite image file
         self.rect = self.image.get_rect()
-        dim = Utils.ResizeMaxLength(
-            dim=(self.rect.width, self.rect.height), maxSide=maxSize
-        )
+        dim = Utils.ResizeMaxLength(dim=(self.rect.width, self.rect.height), maxSide=maxSize)
         self.image = pygame.transform.scale(self.image, dim)
         self.rect.x = position[0] + offset[0]
 
@@ -442,7 +438,7 @@ enabled (bool, optional): Is the button able to be clicked. Defaults to True.</p
             backColor=backColor,
             text=text,
             size=[125, 50],
-            enabled=enabled,
+            enabled=enabled,  # type:ignore
         )
 
         activeGame.ForegroundSpriteGroup.add(buttonObj)
@@ -490,7 +486,7 @@ def AddButton(cls, location, text, color, backColor, enabled, activeGame) -&gt; 
         backColor=backColor,
         text=text,
         size=[125, 50],
-        enabled=enabled,
+        enabled=enabled,  # type:ignore
     )
 
     activeGame.ForegroundSpriteGroup.add(buttonObj)
@@ -502,7 +498,7 @@ def AddButton(cls, location, text, color, backColor, enabled, activeGame) -&gt; 
 </dd>
 <dt id="Classes.Sprite.CharImageSprite"><code class="flex name class">
 <span>class <span class="ident">CharImageSprite</span></span>
-<span>(</span><span>path, activeGame, objID, position=None, center=None, maxSize=100)</span>
+<span>(</span><span>path, objID, position: tuple[int, int] = None, center: tuple[int, int] = None, maxSize: int = 100)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Class for Sprites of Characters</p>
@@ -521,18 +517,15 @@ collisionFlag (bool): Can the object collide</p></div>
     # pylint: disable=invalid-name
     CorrespondingID: int = 0
     ImageType: AssetLibrary.ImageTypes = AssetLibrary.ImageTypes.Null
-    PersonalTimer: TimerBar.TimerBar = None
+    PersonalTimer: TimerBar.TimerBar = None  # type: ignore
 
     def __init__(
         self,
         path,
-        activeGame,
         objID,
-        position=None,
-        center=None,
-        maxSize=Utils.ScaleToSize(
-            value=100, newSize=DefinedLocations.LocationDefs.ScreenSize
-        ),
+        position: tuple[int, int] = None,  # type: ignore
+        center: tuple[int, int] = None,  # type: ignore
+        maxSize: int = int(Utils.ScaleValToSize(val=100, newSize=LocationDefs.ScreenSize)),
     ) -&gt; None:
         super().__init__(
             backgroundFlag=False,
@@ -548,35 +541,35 @@ collisionFlag (bool): Can the object collide</p></div>
         self.CorrespondingID = objID
         self.MvmHandler = CharacterMovementHandler.CharacterMovementHandler()
 
+    # HACK- pass active game in plz
     @property
-    def DataObject(self):
+    def DataObject(self) -&gt; Any | None:
         &#34;&#34;&#34;Numerical Data Object Associated with Image
 
         Returns-
             Customer | Worker: Data Object Assoc with Sprite
         &#34;&#34;&#34;
         activeGame = GameBase.MasterGame
-        objDict = Matching.MatchIdToPerson(
-            activeGame=activeGame, inputId=self.CorrespondingID
-        )
-        objDict.pop(&#34;sprite&#34;)
-        obj = list(objDict.values())[0]
-        return obj
+        objDict = Matching.MatchIdToPerson(activeGame=activeGame, inputId=self.CorrespondingID)
+        if objDict is not None and &#34;sprite&#34; in objDict:
+            objDict.pop(&#34;sprite&#34;)
+            obj = list(objDict.values())[0]
+            return obj
 
-    def CheckSpawnCollision(self) -&gt; None:
+    def CheckSpawnCollision(self, activeGame) -&gt; None:
         &#34;&#34;&#34;Changes spawn location until new sprite is not colliding
 
         Args-
             activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
         &#34;&#34;&#34;
         currentCenter = self.rect.center
-        for group in self.ActiveGame.SpriteGroups:
+        for group in activeGame.SpriteGroups:
             for sprite in group:
                 while sprite.rect.colliderect(self.rect) and sprite is not self:
                     self.rect.center = Utils.PositionRandomVariance(
                         position=currentCenter,
-                        percentVarianceTuple=(0.1, 1),
-                        screenSize=self.ActiveGame.ScreenSize,
+                        percentVariance=(0.1, 1),
+                        screenSize=activeGame.ScreenSize,
                     )
 
     def ChangeOutfit(self, newOutfitPath) -&gt; None:
@@ -600,7 +593,7 @@ collisionFlag (bool): Can the object collide</p></div>
         &#34;&#34;&#34;Update sprite for each frame&#34;&#34;&#34;
         if self.PersonalTimer is not None:
             self.UpdateTimerAndDraw(activeGame=activeGame)
-            self.PersonalTimer.Rect = self.rect.topleft
+            self.PersonalTimer.Rect = self.rect.topleft  # type: ignore
         super().UpdateSprite(activeGame=activeGame)
 
     def UpdateTimerAndDraw(self, activeGame) -&gt; None:
@@ -611,7 +604,7 @@ collisionFlag (bool): Can the object collide</p></div>
         &#34;&#34;&#34;
         timerBar = self.PersonalTimer
         if timerBar.Running:
-            timerBar.AgeTimer(timeInMinutes=activeGame.GameClock.Minute)
+            timerBar.UpdateTimer(currentTime=activeGame.GameClock.Minute)
             customerObj = Matching.MatchIdToPerson(
                 activeGame=activeGame, inputId=timerBar.AssocId, targetOutput=&#34;customer&#34;
             )
@@ -620,7 +613,7 @@ collisionFlag (bool): Can the object collide</p></div>
                 and timerBar.AssocId != 0
                 and (
                     customerObj is None
-                    or customerObj.CurrentState.value != timerBar.StartingState
+                    or customerObj.CurrentState.value != timerBar.StartingState  # type: ignore
                 )
             ):
                 timerBar.Running = False
@@ -670,7 +663,7 @@ collisionFlag (bool): Can the object collide</p></div>
         self.PersonalTimer.TimerRect.y -= 25
         self.PersonalTimer.SetMaxSize(size=self.rect.width if width == 0 else width)
         self.PersonalTimer.FillColor = fillColor
-        self.PersonalTimer.StartTimer(currentTime=activeGame.GameClock.Minute)
+        self.PersonalTimer.RestartTimer(currentTime=activeGame.GameClock.Minute)
 
     def __repr__(self) -&gt; str:
         &#34;&#34;&#34;String Rep of Object&#34;&#34;&#34;
@@ -699,7 +692,7 @@ collisionFlag (bool): Can the object collide</p></div>
 </dl>
 <h3>Instance variables</h3>
 <dl>
-<dt id="Classes.Sprite.CharImageSprite.DataObject"><code class="name">var <span class="ident">DataObject</span></code></dt>
+<dt id="Classes.Sprite.CharImageSprite.DataObject"><code class="name">var <span class="ident">DataObject</span> : typing.Any | None</code></dt>
 <dd>
 <div class="desc"><p>Numerical Data Object Associated with Image</p>
 <p>Returns-
@@ -709,19 +702,18 @@ Customer | Worker: Data Object Assoc with Sprite</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def DataObject(self):
+def DataObject(self) -&gt; Any | None:
     &#34;&#34;&#34;Numerical Data Object Associated with Image
 
     Returns-
         Customer | Worker: Data Object Assoc with Sprite
     &#34;&#34;&#34;
     activeGame = GameBase.MasterGame
-    objDict = Matching.MatchIdToPerson(
-        activeGame=activeGame, inputId=self.CorrespondingID
-    )
-    objDict.pop(&#34;sprite&#34;)
-    obj = list(objDict.values())[0]
-    return obj</code></pre>
+    objDict = Matching.MatchIdToPerson(activeGame=activeGame, inputId=self.CorrespondingID)
+    if objDict is not None and &#34;sprite&#34; in objDict:
+        objDict.pop(&#34;sprite&#34;)
+        obj = list(objDict.values())[0]
+        return obj</code></pre>
 </details>
 </dd>
 </dl>
@@ -757,7 +749,7 @@ newOutfitPath (str): Path to New Outfit</p></div>
 </details>
 </dd>
 <dt id="Classes.Sprite.CharImageSprite.CheckSpawnCollision"><code class="name flex">
-<span>def <span class="ident">CheckSpawnCollision</span></span>(<span>self) ‑> None</span>
+<span>def <span class="ident">CheckSpawnCollision</span></span>(<span>self, activeGame) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Changes spawn location until new sprite is not colliding</p>
@@ -767,20 +759,20 @@ activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.</p></div
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def CheckSpawnCollision(self) -&gt; None:
+<pre><code class="python">def CheckSpawnCollision(self, activeGame) -&gt; None:
     &#34;&#34;&#34;Changes spawn location until new sprite is not colliding
 
     Args-
         activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
     &#34;&#34;&#34;
     currentCenter = self.rect.center
-    for group in self.ActiveGame.SpriteGroups:
+    for group in activeGame.SpriteGroups:
         for sprite in group:
             while sprite.rect.colliderect(self.rect) and sprite is not self:
                 self.rect.center = Utils.PositionRandomVariance(
                     position=currentCenter,
-                    percentVarianceTuple=(0.1, 1),
-                    screenSize=self.ActiveGame.ScreenSize,
+                    percentVariance=(0.1, 1),
+                    screenSize=activeGame.ScreenSize,
                 )</code></pre>
 </details>
 </dd>
@@ -835,7 +827,7 @@ fillColor (ColorTools.Color, optional): Color of Timer bar. Defaults to ColorToo
     self.PersonalTimer.TimerRect.y -= 25
     self.PersonalTimer.SetMaxSize(size=self.rect.width if width == 0 else width)
     self.PersonalTimer.FillColor = fillColor
-    self.PersonalTimer.StartTimer(currentTime=activeGame.GameClock.Minute)</code></pre>
+    self.PersonalTimer.RestartTimer(currentTime=activeGame.GameClock.Minute)</code></pre>
 </details>
 </dd>
 <dt id="Classes.Sprite.CharImageSprite.UpdateSprite"><code class="name flex">
@@ -851,7 +843,7 @@ fillColor (ColorTools.Color, optional): Color of Timer bar. Defaults to ColorToo
     &#34;&#34;&#34;Update sprite for each frame&#34;&#34;&#34;
     if self.PersonalTimer is not None:
         self.UpdateTimerAndDraw(activeGame=activeGame)
-        self.PersonalTimer.Rect = self.rect.topleft
+        self.PersonalTimer.Rect = self.rect.topleft  # type: ignore
     super().UpdateSprite(activeGame=activeGame)</code></pre>
 </details>
 </dd>
@@ -874,7 +866,7 @@ activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.</p></div
     &#34;&#34;&#34;
     timerBar = self.PersonalTimer
     if timerBar.Running:
-        timerBar.AgeTimer(timeInMinutes=activeGame.GameClock.Minute)
+        timerBar.UpdateTimer(currentTime=activeGame.GameClock.Minute)
         customerObj = Matching.MatchIdToPerson(
             activeGame=activeGame, inputId=timerBar.AssocId, targetOutput=&#34;customer&#34;
         )
@@ -883,7 +875,7 @@ activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.</p></div
             and timerBar.AssocId != 0
             and (
                 customerObj is None
-                or customerObj.CurrentState.value != timerBar.StartingState
+                or customerObj.CurrentState.value != timerBar.StartingState  # type: ignore
             )
         ):
             timerBar.Running = False

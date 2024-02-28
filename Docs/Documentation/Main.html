@@ -35,79 +35,79 @@ import os
 # *OS Call used to prevent a time printout from Pygame on first import
 # pylint: disable=wrong-import-position
 os.environ[&#34;PYGAME_HIDE_SUPPORT_PROMPT&#34;] = &#34;True&#34;
-import threading
 import time
 
 import pygame
 
 from Classes import GameBase, MiniGames
-from Definitions import AssetLibrary, ColorDefines, CustomEvents
+from Definitions import AssetLibrary, CustomEvents
 from Handlers import EventHandler
 
 GAME_START_TIME = 0
 
 
-def MainLoop() -&gt; None:
+def MainLoop(CurrentGame: GameBase.MainGame) -&gt; None:
     &#34;&#34;&#34;Main Loop of Game&#34;&#34;&#34;
-    if GameBase.MasterGame.Running:
-        match GameBase.MasterGame.Mode:
+    if CurrentGame.Running:
+        match CurrentGame.Mode:
             case MiniGames.GameMode.Base:
-                EventHandler.MainEventHandler(activeGame=GameBase.MasterGame)
-                GameBase.MasterGame.DrawBackground(source=AssetLibrary.Background)
-                GameBase.MasterGame.UpdateSprites()
-                GameBase.MasterGame.WriteAllText()
-                GameBase.MasterGame.UpdateLightingEngine()
+                EventHandler.MainEventHandler(activeGame=CurrentGame)
+                CurrentGame.DrawBackground(source=AssetLibrary.Background)
+                CurrentGame.UpdateSprites()
+                CurrentGame.WriteAllText()
+                CurrentGame.UpdateLightingEngine()
             case MiniGames.GameMode.TriviaGame:
-                GameBase.MasterGame.DrawBackground(source=AssetLibrary.TriviaBackground)
-                GameBase.MasterGame.MiniGame.PlayGame(activeGame=GameBase.MasterGame)
-                EventHandler.TriviaEventHandler(activeGame=GameBase.MasterGame)
+                CurrentGame.DrawBackground(source=AssetLibrary.TriviaBackground)
+                CurrentGame.MiniGame.PlayGame(activeGame=CurrentGame)
+                EventHandler.TriviaEventHandler(activeGame=CurrentGame)
 
-    if GameBase.MasterGame.ShowScreen:
+    if CurrentGame.ShowScreen:
         pygame.display.update()
 
     # Control the frame rate
-    GameBase.MasterGame.GameClock.UpdateClock(
-        clockSpeed=GameBase.MasterGame.Settings.ClockSpeed,
-        frameCap=GameBase.MasterGame.Settings.CapFrames,
+    CurrentGame.GameClock.UpdateClock(
+        clockSpeed=CurrentGame.Settings.ClockSpeed,
+        frameCap=CurrentGame.Settings.CapFrames,
     )
 
 
-def Setup(debugFlag=True, profileFlag=False) -&gt; None:
-    GameBase.MasterGame = GameBase.MainGame()
+def Setup(debugFlag: bool = True, profileFlag: bool = False) -&gt; GameBase.MainGame:
+    CurrentGame = GameBase.MainGame()
     pygame.event.post(CustomEvents.UpdateBackground)
     # Enables a series of functions to run automatically
     if profileFlag:
         global GAME_START_TIME
         GAME_START_TIME = time.time()
-        GameBase.MasterGame.Settings.CapFrames = False
+        CurrentGame.Settings.CapFrames = False
     if debugFlag:
-        EventHandler.DebugSetup()
+        EventHandler.DebugSetup(activeGame=CurrentGame)
+    return CurrentGame
 
 
-def Main(debugFlag, profileFlag, safetyFlag) -&gt; None:
-    Setup(debugFlag=debugFlag, profileFlag=profileFlag)
+def Main(debugFlag: bool, profileFlag: bool, safetyFlag: bool) -&gt; None:
+    MainGame = Setup(debugFlag=debugFlag, profileFlag=profileFlag)
     while True:
         if safetyFlag:
             try:
-                MainLoop()
+                MainLoop(CurrentGame=MainGame)
             except Exception as e:
                 print(f&#34;{e} Occured&#34;)
         else:
-            MainLoop()
+            MainLoop(CurrentGame=MainGame)
         if profileFlag and time.time() - GAME_START_TIME &gt; 30:
             break
 
 
 if __name__ == &#34;__main__&#34;:
     parser = argparse.ArgumentParser()
-    parser.add_argument(&#34;-d&#34;, &#34;--debugFlag&#34;, default=True)
-    parser.add_argument(&#34;-f&#34;, &#34;--profilerFlag&#34;, default=True)
-    parser.add_argument(&#34;-s&#34;, &#34;--safetyFlag&#34;, default=False)
+    parser.add_argument(&#34;-d&#34;, &#34;--debugFlag&#34;, default=&#34;True&#34;)
+    parser.add_argument(&#34;-p&#34;, &#34;--profilerFlag&#34;, default=&#34;False&#34;)
+    parser.add_argument(&#34;-s&#34;, &#34;--safetyFlag&#34;, default=&#34;False&#34;)
     args = parser.parse_args()
     Main(
-        debugFlag=args.debugFlag,
-        profileFlag=args.profilerFlag,
-        safetyFlag=args.safetyFlag,
+        debugFlag=args.debugFlag.capitalize() == &#34;True&#34;,
+        profileFlag=args.profilerFlag.capitalize() == &#34;True&#34;,
+        safetyFlag=args.safetyFlag.capitalize() == &#34;True&#34;,
     )</code></pre>
 </details>
 </section>
@@ -119,7 +119,7 @@ if __name__ == &#34;__main__&#34;:
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="Main.Main"><code class="name flex">
-<span>def <span class="ident">Main</span></span>(<span>debugFlag, profileFlag, safetyFlag) ‑> None</span>
+<span>def <span class="ident">Main</span></span>(<span>debugFlag: bool, profileFlag: bool, safetyFlag: bool) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -127,22 +127,22 @@ if __name__ == &#34;__main__&#34;:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def Main(debugFlag, profileFlag, safetyFlag) -&gt; None:
-    Setup(debugFlag=debugFlag, profileFlag=profileFlag)
+<pre><code class="python">def Main(debugFlag: bool, profileFlag: bool, safetyFlag: bool) -&gt; None:
+    MainGame = Setup(debugFlag=debugFlag, profileFlag=profileFlag)
     while True:
         if safetyFlag:
             try:
-                MainLoop()
+                MainLoop(CurrentGame=MainGame)
             except Exception as e:
                 print(f&#34;{e} Occured&#34;)
         else:
-            MainLoop()
+            MainLoop(CurrentGame=MainGame)
         if profileFlag and time.time() - GAME_START_TIME &gt; 30:
             break</code></pre>
 </details>
 </dd>
 <dt id="Main.MainLoop"><code class="name flex">
-<span>def <span class="ident">MainLoop</span></span>(<span>) ‑> None</span>
+<span>def <span class="ident">MainLoop</span></span>(<span>CurrentGame: Classes.GameBase.MainGame) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Main Loop of Game</p></div>
@@ -150,33 +150,33 @@ if __name__ == &#34;__main__&#34;:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def MainLoop() -&gt; None:
+<pre><code class="python">def MainLoop(CurrentGame: GameBase.MainGame) -&gt; None:
     &#34;&#34;&#34;Main Loop of Game&#34;&#34;&#34;
-    if GameBase.MasterGame.Running:
-        match GameBase.MasterGame.Mode:
+    if CurrentGame.Running:
+        match CurrentGame.Mode:
             case MiniGames.GameMode.Base:
-                EventHandler.MainEventHandler(activeGame=GameBase.MasterGame)
-                GameBase.MasterGame.DrawBackground(source=AssetLibrary.Background)
-                GameBase.MasterGame.UpdateSprites()
-                GameBase.MasterGame.WriteAllText()
-                GameBase.MasterGame.UpdateLightingEngine()
+                EventHandler.MainEventHandler(activeGame=CurrentGame)
+                CurrentGame.DrawBackground(source=AssetLibrary.Background)
+                CurrentGame.UpdateSprites()
+                CurrentGame.WriteAllText()
+                CurrentGame.UpdateLightingEngine()
             case MiniGames.GameMode.TriviaGame:
-                GameBase.MasterGame.DrawBackground(source=AssetLibrary.TriviaBackground)
-                GameBase.MasterGame.MiniGame.PlayGame(activeGame=GameBase.MasterGame)
-                EventHandler.TriviaEventHandler(activeGame=GameBase.MasterGame)
+                CurrentGame.DrawBackground(source=AssetLibrary.TriviaBackground)
+                CurrentGame.MiniGame.PlayGame(activeGame=CurrentGame)
+                EventHandler.TriviaEventHandler(activeGame=CurrentGame)
 
-    if GameBase.MasterGame.ShowScreen:
+    if CurrentGame.ShowScreen:
         pygame.display.update()
 
     # Control the frame rate
-    GameBase.MasterGame.GameClock.UpdateClock(
-        clockSpeed=GameBase.MasterGame.Settings.ClockSpeed,
-        frameCap=GameBase.MasterGame.Settings.CapFrames,
+    CurrentGame.GameClock.UpdateClock(
+        clockSpeed=CurrentGame.Settings.ClockSpeed,
+        frameCap=CurrentGame.Settings.CapFrames,
     )</code></pre>
 </details>
 </dd>
 <dt id="Main.Setup"><code class="name flex">
-<span>def <span class="ident">Setup</span></span>(<span>debugFlag=True, profileFlag=False) ‑> None</span>
+<span>def <span class="ident">Setup</span></span>(<span>debugFlag: bool = True, profileFlag: bool = False) ‑> Classes.GameBase.MainGame</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -184,16 +184,17 @@ if __name__ == &#34;__main__&#34;:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def Setup(debugFlag=True, profileFlag=False) -&gt; None:
-    GameBase.MasterGame = GameBase.MainGame()
+<pre><code class="python">def Setup(debugFlag: bool = True, profileFlag: bool = False) -&gt; GameBase.MainGame:
+    CurrentGame = GameBase.MainGame()
     pygame.event.post(CustomEvents.UpdateBackground)
     # Enables a series of functions to run automatically
     if profileFlag:
         global GAME_START_TIME
         GAME_START_TIME = time.time()
-        GameBase.MasterGame.Settings.CapFrames = False
+        CurrentGame.Settings.CapFrames = False
     if debugFlag:
-        EventHandler.DebugSetup()</code></pre>
+        EventHandler.DebugSetup(activeGame=CurrentGame)
+    return CurrentGame</code></pre>
 </details>
 </dd>
 </dl>

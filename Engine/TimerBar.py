@@ -4,7 +4,7 @@ import math
 
 import pygame
 
-from Engine import Color
+from Engine import Color, Utils
 
 
 class TimerBar:
@@ -21,14 +21,18 @@ class TimerBar:
     StartingState: int = 0
     Running: bool = False
     CompletionPercentage: float = 0.0
+    AutoReset: bool = False
 
     def __init__(
         self,
         duration: float,
-        position: tuple,
-        startTime,
-        assocId=0,
-        offset=(0, 0),
+        position: tuple[int, int],
+        startTime: int,
+        assocId: int = 0,
+        offset: tuple[int, int] = (0, 0),
+        maxWidth: int = 50,
+        height: int = 25,
+        autoReset: bool = False,
     ) -> None:
         """Init for Timer Bar
 
@@ -47,6 +51,9 @@ class TimerBar:
             self.Width,
             (self.Height - 10),
         )
+        self.MaxWidth = maxWidth
+        self.Height = height
+        self.AutoReset = autoReset
         self.MaxTimerRect = pygame.Rect(
             position[0] + offset[0], position[1] + offset[1], self.MaxWidth, self.Height
         )
@@ -56,9 +63,7 @@ class TimerBar:
         self.Running = True
 
     @property
-    def DynamicColor(
-        self,
-    ) -> tuple:
+    def DynamicColor(self) -> tuple[int, int, int]:
         """Generates the gradient transistion between start and end colors
 
         Returns-
@@ -75,11 +80,11 @@ class TimerBar:
         )
         return color3.RGB
 
-    def SetMaxSize(self, size) -> None:
+    def SetMaxSize(self, size: int) -> None:
         """Update the maximum size of the timer bar
 
         Args-
-            size (int | float): Max Width of Timer Bar
+            size (int): Max Width of Timer Bar
         """
         self.MaxWidth = size
         self.MaxTimerRect = pygame.Rect(
@@ -90,7 +95,7 @@ class TimerBar:
             self.Height,
         )
 
-    def StartTimer(self, currentTime) -> None:
+    def RestartTimer(self, currentTime: int) -> None:
         """Begins the timer and sets the reference start time
 
         Args-
@@ -98,20 +103,19 @@ class TimerBar:
         """
         self.StartTime = currentTime
         self.Running = True
+        self.UpdateTimer(currentTime=currentTime)
 
-    def AgeTimer(self, timeInMinutes) -> None:
+    def UpdateTimer(self, currentTime: int) -> None:
         """Increments timer based on the game clock
 
         Args-
             activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
         """
-        if self.Running:
-            self.CompletionPercentage = (
-                (timeInMinutes - self.StartTime)
-            ) / self.Duration
+        if self.Running and currentTime >= self.StartTime:
+            self.CompletionPercentage = ((currentTime - self.StartTime)) / self.Duration
             self.Width = int(
                 math.floor(
-                    min(self.CompletionPercentage * self.MaxWidth, self.MaxWidth)
+                    Utils.Bind(val=self.CompletionPercentage, inRange=(0, 1)) * self.MaxWidth,
                 )
             )
             self.TimerRect.width = self.Width
@@ -120,3 +124,5 @@ class TimerBar:
                 self.OnComplete()
                 self.Running = False
                 self.AssocId = 0
+                if self.AutoReset:
+                    self.RestartTimer(currentTime=currentTime)

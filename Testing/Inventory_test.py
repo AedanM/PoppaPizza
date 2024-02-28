@@ -20,7 +20,7 @@ def test_GetPaid() -> None:
 
 
 def test_Rent() -> None:
-    currentGame = GameBase.MasterGame
+    currentGame = GameBase.MainGame()
     i = currentGame.UserInventory
     i.GetPaid(amount=2000.00)
     i.PayMoney(amount=Prices.CurrentRent)

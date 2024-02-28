@@ -37,8 +37,15 @@ from Engine import Clock
 
 
 class GameClock(Clock.Clock):
+    WorkingDayStart: int = 9  # 9 AM start of day
+    WorkingDayEnd: int = 17  # 5 PM end of day
+
     def __init__(self, clock) -&gt; None:
         super().__init__(clock=clock)
+
+    def UpdateClock(self, clockSpeed, frameCap) -&gt; None:
+        super().UpdateClock(clockSpeed, frameCap)
+        self.CheckWorkingDay()
 
     def CheckWorkingDay(self) -&gt; None:
         &#34;&#34;&#34;Checks if working day is over and runs the night cycle event if so&#34;&#34;&#34;
@@ -63,7 +70,7 @@ class GameClock(Clock.Clock):
 
     @property
     def DateTime(self) -&gt; str:
-        &#34;&#34;&#34;String of Current time and date
+        &#34;&#34;&#34;Overlaod of String of Current time and date with formatting
 
         Returns-
             str: Formatted String
@@ -72,6 +79,13 @@ class GameClock(Clock.Clock):
             f&#34;{self.CurrMonth.Name} {self.DayOfMonth} &#34;
             + f&#34;{(self.DisplayHour):02d}:{(self.Minute % 60):02d}&#34;
             + f&#34;{Settings.GameSettings.AMPM(hour=self.Hour)}&#34;
+        )
+
+    @property
+    def DayPercentage(self) -&gt; float:
+        &#34;&#34;&#34;Represents the percentage of the working day that has passed&#34;&#34;&#34;
+        return (self.Minute - (self.WorkingDayStart * 60)) / float(
+            (self.WorkingDayEnd - self.WorkingDayStart) * 60
         )</code></pre>
 </details>
 </section>
@@ -89,14 +103,22 @@ class GameClock(Clock.Clock):
 <span>(</span><span>clock)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Class for a clock with custom speeds</p></div>
+<div class="desc"><p>Class for a clock with custom speeds</p>
+<p>Creates an overloaded pygame clock class</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class GameClock(Clock.Clock):
+    WorkingDayStart: int = 9  # 9 AM start of day
+    WorkingDayEnd: int = 17  # 5 PM end of day
+
     def __init__(self, clock) -&gt; None:
         super().__init__(clock=clock)
+
+    def UpdateClock(self, clockSpeed, frameCap) -&gt; None:
+        super().UpdateClock(clockSpeed, frameCap)
+        self.CheckWorkingDay()
 
     def CheckWorkingDay(self) -&gt; None:
         &#34;&#34;&#34;Checks if working day is over and runs the night cycle event if so&#34;&#34;&#34;
@@ -121,7 +143,7 @@ class GameClock(Clock.Clock):
 
     @property
     def DateTime(self) -&gt; str:
-        &#34;&#34;&#34;String of Current time and date
+        &#34;&#34;&#34;Overlaod of String of Current time and date with formatting
 
         Returns-
             str: Formatted String
@@ -130,17 +152,35 @@ class GameClock(Clock.Clock):
             f&#34;{self.CurrMonth.Name} {self.DayOfMonth} &#34;
             + f&#34;{(self.DisplayHour):02d}:{(self.Minute % 60):02d}&#34;
             + f&#34;{Settings.GameSettings.AMPM(hour=self.Hour)}&#34;
+        )
+
+    @property
+    def DayPercentage(self) -&gt; float:
+        &#34;&#34;&#34;Represents the percentage of the working day that has passed&#34;&#34;&#34;
+        return (self.Minute - (self.WorkingDayStart * 60)) / float(
+            (self.WorkingDayEnd - self.WorkingDayStart) * 60
         )</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li>Engine.Clock.Clock</li>
 </ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="Classes.GameClock.GameClock.WorkingDayEnd"><code class="name">var <span class="ident">WorkingDayEnd</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="Classes.GameClock.GameClock.WorkingDayStart"><code class="name">var <span class="ident">WorkingDayStart</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
 <h3>Instance variables</h3>
 <dl>
 <dt id="Classes.GameClock.GameClock.DateTime"><code class="name">var <span class="ident">DateTime</span> : str</code></dt>
 <dd>
-<div class="desc"><p>String of Current time and date</p>
+<div class="desc"><p>Overlaod of String of Current time and date with formatting</p>
 <p>Returns-
 str: Formatted String</p></div>
 <details class="source">
@@ -149,7 +189,7 @@ str: Formatted String</p></div>
 </summary>
 <pre><code class="python">@property
 def DateTime(self) -&gt; str:
-    &#34;&#34;&#34;String of Current time and date
+    &#34;&#34;&#34;Overlaod of String of Current time and date with formatting
 
     Returns-
         str: Formatted String
@@ -158,6 +198,21 @@ def DateTime(self) -&gt; str:
         f&#34;{self.CurrMonth.Name} {self.DayOfMonth} &#34;
         + f&#34;{(self.DisplayHour):02d}:{(self.Minute % 60):02d}&#34;
         + f&#34;{Settings.GameSettings.AMPM(hour=self.Hour)}&#34;
+    )</code></pre>
+</details>
+</dd>
+<dt id="Classes.GameClock.GameClock.DayPercentage"><code class="name">var <span class="ident">DayPercentage</span> : float</code></dt>
+<dd>
+<div class="desc"><p>Represents the percentage of the working day that has passed</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def DayPercentage(self) -&gt; float:
+    &#34;&#34;&#34;Represents the percentage of the working day that has passed&#34;&#34;&#34;
+    return (self.Minute - (self.WorkingDayStart * 60)) / float(
+        (self.WorkingDayEnd - self.WorkingDayStart) * 60
     )</code></pre>
 </details>
 </dd>
@@ -205,6 +260,20 @@ def DisplayHour(self) -&gt; int:
         self.Second = self.WorkingDayStart * 60 * 60</code></pre>
 </details>
 </dd>
+<dt id="Classes.GameClock.GameClock.UpdateClock"><code class="name flex">
+<span>def <span class="ident">UpdateClock</span></span>(<span>self, clockSpeed, frameCap) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Update the clock and wait for next frame</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def UpdateClock(self, clockSpeed, frameCap) -&gt; None:
+    super().UpdateClock(clockSpeed, frameCap)
+    self.CheckWorkingDay()</code></pre>
+</details>
+</dd>
 </dl>
 </dd>
 </dl>
@@ -225,10 +294,14 @@ def DisplayHour(self) -&gt; int:
 <ul>
 <li>
 <h4><code><a title="Classes.GameClock.GameClock" href="#Classes.GameClock.GameClock">GameClock</a></code></h4>
-<ul class="">
+<ul class="two-column">
 <li><code><a title="Classes.GameClock.GameClock.CheckWorkingDay" href="#Classes.GameClock.GameClock.CheckWorkingDay">CheckWorkingDay</a></code></li>
 <li><code><a title="Classes.GameClock.GameClock.DateTime" href="#Classes.GameClock.GameClock.DateTime">DateTime</a></code></li>
+<li><code><a title="Classes.GameClock.GameClock.DayPercentage" href="#Classes.GameClock.GameClock.DayPercentage">DayPercentage</a></code></li>
 <li><code><a title="Classes.GameClock.GameClock.DisplayHour" href="#Classes.GameClock.GameClock.DisplayHour">DisplayHour</a></code></li>
+<li><code><a title="Classes.GameClock.GameClock.UpdateClock" href="#Classes.GameClock.GameClock.UpdateClock">UpdateClock</a></code></li>
+<li><code><a title="Classes.GameClock.GameClock.WorkingDayEnd" href="#Classes.GameClock.GameClock.WorkingDayEnd">WorkingDayEnd</a></code></li>
+<li><code><a title="Classes.GameClock.GameClock.WorkingDayStart" href="#Classes.GameClock.GameClock.WorkingDayStart">WorkingDayStart</a></code></li>
 </ul>
 </li>
 </ul>

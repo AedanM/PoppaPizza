@@ -2,182 +2,180 @@
 
 import math
 
-from Engine import Utils
-
-StandardDimensions = {"Medium": (1200, 800), "Small": (600, 400), "Large": (2400, 1600)}
+from Engine import Game, Utils
 
 
 class DefinedLocations:
     """Defined Locations and their scaling"""
 
-    ScreenSize = StandardDimensions["Medium"]
+    ScreenSize = Game.StandardDimensions["Medium"]
 
     @property
-    def LockerRoom0(self) -> tuple:
+    def LockerRoom0(self) -> tuple[int, int]:
         """Location of First Locker Room
 
         Returns-
-            tuple: Scaled Location
+            tuple[int,int]: Scaled Location
         """
         location = (125, 65)
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
-    def LockerRoom1(self) -> tuple:
+    def LockerRoom1(self) -> tuple[int, int]:
         """Location of First Locker Room
 
         Returns-
-            tuple: Scaled Location
+            tuple[int,int]: Scaled Location
         """
         location = (350, 65)
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
-    def LockerRoom2(self) -> tuple:
+    def LockerRoom2(self) -> tuple[int, int]:
         """Location of Second Locker Room
 
         Returns-
-            tuple: Scaled Location
+            tuple[int,int]: Scaled Location
         """
         location = (530, 65)
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
-    def LockerRoom3(self) -> tuple:
+    def LockerRoom3(self) -> tuple[int, int]:
         """Location of Third Locker Room
 
         Returns-
-            tuple: Scaled Location
+            tuple[int,int]: Scaled Location
         """
         location = (710, 65)
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
-    def LockerRoom4(self) -> tuple:
+    def LockerRoom4(self) -> tuple[int, int]:
         """Location of Fourth Locker Room
 
         Returns-
-            tuple: Scaled Location
+            tuple[int,int]: Scaled Location
         """
         location = (890, 65)
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
-    def LockerRoom5(self) -> tuple:
+    def LockerRoom5(self) -> tuple[int, int]:
         """Location of Fifth Locker Room
 
         Returns-
-            tuple: Scaled Location
+            tuple[int,int]: Scaled Location
         """
         location = (1070, 65)
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
-    def KitchenEntrance(self) -> tuple:
+    def KitchenEntrance(self) -> tuple[int, int]:
         """Location of Kitchen Entrance
 
         Returns-
-            tuple: Scaled Location
+            tuple[int,int]: Scaled Location
         """
         location = (125, 225)
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
-    def KitchenLocation(self) -> tuple:
+    def KitchenLocation(self) -> tuple[int, int]:
         """Location of Kitchen Entrance
 
         Returns-
-            tuple: Scaled Location
+            tuple[int,int]: Scaled Location
         """
         location = (125, 50)
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
-    def CustomerExit(self) -> tuple:
+    def CustomerExit(self) -> tuple[int, int]:
         """Location of Customer Exit Location
 
         Returns-
-            tuple: Scaled Location
+            tuple[int,int]: Scaled Location
         """
         location = (1200, 1000)
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
-    def CustomerEntrance(self) -> tuple:
+    def CustomerEntrance(self) -> tuple[int, int]:
         """Location of Start of Customer Queue
 
         Returns-
-            tuple: Scaled Location
+            tuple[int,int]: Scaled Location
         """
         location = (1150, 325)
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
-    def EndOfLine(self) -> tuple:
+    def EndOfLine(self) -> tuple[int, int]:
         """Location of End of Queue
 
         Returns-
-            tuple: Scaled Location
+            tuple[int,int]: Scaled Location
         """
         location = (1100, 700)
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
-    def CustomerSpawn(self) -> tuple:
+    def CustomerSpawn(self) -> tuple[int, int]:
         """Location of Customer Spawn in
 
         Returns-
-            tuple: Scaled Location
+            tuple[int,int]: Scaled Location
         """
         location = (1150, 1000)
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
-    def WorkerSpawn(self) -> tuple:
+    def WorkerSpawn(self) -> tuple[int, int]:
         """Location of Customer Spawn in
 
         Returns-
-            tuple: Scaled Location
+            tuple[int,int]: Scaled Location
         """
         location = (125, 1600)
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
-    def TriviaTitleText(self) -> tuple:
+    def TriviaTitleText(self) -> tuple[int, int]:
         """Location of Main Trivia Game Text
 
         Returns-
-            tuple: Scaled Location
+            tuple[int,int]: Scaled Location
         """
         location = (600, 100)
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
-    def TriviaMainText(self) -> tuple:
+    def TriviaMainText(self) -> tuple[int, int]:
         """Location of Main Trivia Title Text
 
         Returns-
-            tuple: Scaled Location
+            tuple[int,int]: Scaled Location
         """
         location = (600, 250)
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
-    def TriviaMinorText(self) -> tuple:
+    def TriviaMinorText(self) -> tuple[int, int]:
         """Location of Secondary Trivia Game Text
 
         Returns-
-            tuple: Scaled Location
+            tuple[int,int]: Scaled Location
         """
         location = (600, 600)
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property
-    def TriviaRoundText(self) -> tuple:
+    def TriviaRoundText(self) -> tuple[int, int]:
         """Location of Round Label for Trivia Game
 
         Returns-
-            tuple: Scaled Location
+            tuple[int,int]: Scaled Location
         """
         location = (100, 100)
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
@@ -186,7 +184,7 @@ class DefinedLocations:
         """Location of Round Label for Trivia Game
 
         Returns-
-            tuple: Scaled Location
+            tuple[int,int]: Scaled Location
         """
         location = []
         match num:
@@ -200,7 +198,6 @@ class DefinedLocations:
 
 
 LocationDefs = DefinedLocations()
-TablePlaces = []
 
 
 class SeatingPlanClass:

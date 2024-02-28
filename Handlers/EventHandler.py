@@ -1,14 +1,13 @@
 """Handlers for all events"""
 
-import copy
 import sys
 
 import pygame
 
-from Classes import GameBase, Matching, MiniGames, Stats
-from Definitions import AssetLibrary, CustomEvents
-from Generators import BackgroundPopulator, CharSpawner, Menus
-from Handlers import ClickHandler, ShopHandler, WorkerHandler
+from Classes import MiniGames
+from Definitions import CustomEvents
+from Generators import CharSpawner, Menus
+from Handlers import ClickHandler, ShopHandler
 
 
 def MainEventHandler(activeGame) -> None:
@@ -17,7 +16,7 @@ def MainEventHandler(activeGame) -> None:
     Args-
         activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
     """
-    RandomSpawnHandler()
+    RandomSpawnHandler(activeGame=activeGame)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -25,98 +24,55 @@ def MainEventHandler(activeGame) -> None:
         if event.type == pygame.USEREVENT:
             match (event):
                 case CustomEvents.UpdateBackground:
-                    BackgroundPopulator.SetupBackground(GameBase.MasterGame)
+                    CustomEvents.UpdateBackgroundEvent(activeGame=activeGame)
                 case CustomEvents.NightCycle:
-                    DayNightEvent()
+                    CustomEvents.DayNightEvent(activeGame=activeGame)
                 case CustomEvents.GameOver:
-                    GameOver()
+                    CustomEvents.GameOverEvent(activeGame=activeGame)
         elif event.type == pygame.MOUSEBUTTONDOWN:
             ClickHandler.MainMouseHandler(
-                mousePos=event.pos, lClick=(event.button == 1)
+                mousePos=event.pos, isLeftClick=(event.button == 1), activeGame=activeGame
             )
         elif event.type == pygame.KEYDOWN:
             match (event.key):
                 case pygame.K_a:
-                    GameBase.MasterGame.Mode = MiniGames.GameMode.TriviaGame
-                    MiniGames.MakeTriviaGame(activeGame=GameBase.MasterGame)
+                    activeGame.Mode = MiniGames.GameMode.TriviaGame
+                    MiniGames.MakeTriviaGame(activeGame=activeGame)
                 case pygame.K_m:
-                    GameBase.MasterGame.UserInventory.GetPaid(amount=1000.0)
+                    activeGame.UserInventory.GetPaid(amount=1000.0)
                 case pygame.K_t:
                     activeGame.Settings.ChangeClockMul(value=-1)
                 case pygame.K_y:
                     activeGame.Settings.ChangeClockMul(value=1)
                 case pygame.K_w:
-                    CharSpawner.BuyWorker()
+                    CharSpawner.BuyWorker(activeGame=activeGame)
                 case pygame.K_c:
-                    CharSpawner.CustomerSpawner(force=True)
+                    CharSpawner.CustomerSpawner(activeGame=activeGame, force=True)
                 case pygame.K_2:
                     activeGame.Settings.ToggleClock24()
                 case pygame.K_p:
                     activeGame.GameClock.SetRunning(not activeGame.GameClock.Running)
                 case pygame.K_ESCAPE:
-                    Menus.OptionsMenu()
+                    Menus.OptionsMenu(activeGame=activeGame)
                 case pygame.K_s:
-                    Menus.ShopMenu()
+                    activeGame.SaveGame()
+                case pygame.K_l:
+                    print(activeGame.LoadGame())
                 case pygame.K_b:
-                    ShopHandler.BuyTables(selectedRow=True)
+                    ShopHandler.BuyTables(selectedRow=True, activeGame=activeGame)
                 case pygame.K_v:
-                    ShopHandler.BuyTables(selectedRow=False)
+                    ShopHandler.BuyTables(selectedRow=False, activeGame=activeGame)
 
 
-def DebugSetup() -> None:
+def DebugSetup(activeGame) -> None:
     """Sets up game in Debug Mode"""
-    CharSpawner.BuyWorker(free=True)
-    CharSpawner.BuyWorker(free=True)
+    CharSpawner.BuyWorker(free=True, activeGame=activeGame)
+    CharSpawner.BuyWorker(free=True, activeGame=activeGame)
 
 
-def RandomSpawnHandler() -> None:
+def RandomSpawnHandler(activeGame) -> None:
     """Handles Randomly Spawning Elements"""
-    CharSpawner.CustomerSpawner()
-
-
-def DayNightEvent() -> None:
-    """Logic behind a day transition
-
-    Pays Rent
-    Loads DayTransition Menu
-    Resets Sprites
-    Updates Stats
-    Resets Background
-
-    """
-    ShopHandler.PayUpkeep()
-    if GameBase.MasterGame.UserInventory.Money > 0:
-        Menus.DayTransistion()
-    else:
-        GameOver()
-    ResetSprites(activeGame=GameBase.MasterGame)
-    Stats.AllStats[f"Day {GameBase.MasterGame.GameClock.Day}"] = copy.deepcopy(
-        GameBase.MasterGame.UserInventory.Statistics
-    )
-    Stats.PrevDay = copy.deepcopy(GameBase.MasterGame.UserInventory.Statistics)
-    BackgroundPopulator.SetupBackground()
-
-
-def ResetSprites(activeGame) -> None:
-    """Reset all Sprites
-
-        Kill Customer Sprites
-        Reset Workers to Kitchen
-
-    Args-
-        activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
-    """
-    for sprite in activeGame.CharSpriteGroup:
-        if sprite.ImageType in AssetLibrary.CustomerOutfits:
-            Matching.RemoveObjFromSprite(activeGame=activeGame, targetSprite=sprite)
-        elif sprite.ImageType in AssetLibrary.WorkerOutfits:
-            WorkerHandler.DailyReset(sprite=sprite)
-
-
-def GameOver() -> None:
-    """Logic for End of Game"""
-    GameBase.MasterGame.Running = False
-    Menus.GameOverMenu()
+    CharSpawner.CustomerSpawner(activeGame=activeGame)
 
 
 def TriviaEventHandler(activeGame) -> None:
@@ -125,7 +81,7 @@ def TriviaEventHandler(activeGame) -> None:
             pygame.quit()
             sys.exit()
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            ClickHandler.TriviaMouseHandler(mousePos=event.pos)
+            ClickHandler.TriviaMouseHandler(mousePos=event.pos, activeGame=activeGame)
         elif event.type == pygame.KEYDOWN:
             match (event.key):
                 case pygame.K_a:

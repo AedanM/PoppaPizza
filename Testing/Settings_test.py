@@ -1,4 +1,5 @@
 """Test Module for Settings"""
+
 # pylint: disable=invalid-name
 
 from Classes import GameBase

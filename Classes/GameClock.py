@@ -8,6 +8,9 @@ from Engine import Clock
 
 
 class GameClock(Clock.Clock):
+    WorkingDayStart: int = 9  # 9 AM start of day
+    WorkingDayEnd: int = 17  # 5 PM end of day
+
     def __init__(self, clock) -> None:
         super().__init__(clock=clock)
 
@@ -38,7 +41,7 @@ class GameClock(Clock.Clock):
 
     @property
     def DateTime(self) -> str:
-        """String of Current time and date
+        """Overlaod of String of Current time and date with formatting
 
         Returns-
             str: Formatted String
@@ -47,4 +50,11 @@ class GameClock(Clock.Clock):
             f"{self.CurrMonth.Name} {self.DayOfMonth} "
             + f"{(self.DisplayHour):02d}:{(self.Minute % 60):02d}"
             + f"{Settings.GameSettings.AMPM(hour=self.Hour)}"
+        )
+
+    @property
+    def DayPercentage(self) -> float:
+        """Represents the percentage of the working day that has passed"""
+        return (self.Minute - (self.WorkingDayStart * 60)) / float(
+            (self.WorkingDayEnd - self.WorkingDayStart) * 60
         )

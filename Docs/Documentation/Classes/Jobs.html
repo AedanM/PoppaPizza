@@ -99,9 +99,7 @@ class Job:
             tuple: (Assigned Worker, Assigned Customer)
         &#34;&#34;&#34;
         assignedMems = [
-            (job.AssignedWorker, job.JobCustomer)
-            for job in jobList
-            if job.JobId == targetID
+            (job.AssignedWorker, job.JobCustomer) for job in jobList if job.JobId == targetID
         ]
         if assignedMems:
             return assignedMems[0]
@@ -192,9 +190,7 @@ class Job:
             tuple: (Assigned Worker, Assigned Customer)
         &#34;&#34;&#34;
         assignedMems = [
-            (job.AssignedWorker, job.JobCustomer)
-            for job in jobList
-            if job.JobId == targetID
+            (job.AssignedWorker, job.JobCustomer) for job in jobList if job.JobId == targetID
         ]
         if assignedMems:
             return assignedMems[0]
@@ -273,9 +269,7 @@ def GetAssignedFromID(jobList, targetID) -&gt; tuple:
         tuple: (Assigned Worker, Assigned Customer)
     &#34;&#34;&#34;
     assignedMems = [
-        (job.AssignedWorker, job.JobCustomer)
-        for job in jobList
-        if job.JobId == targetID
+        (job.AssignedWorker, job.JobCustomer) for job in jobList if job.JobId == targetID
     ]
     if assignedMems:
         return assignedMems[0]

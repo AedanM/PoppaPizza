@@ -4,10 +4,11 @@ from typing import Any
 
 import pygame
 
-from Classes import GameBase, Matching
-from Definitions import AssetLibrary, ColorDefines, DefinedLocations
+from Classes import GameBase
+from Definitions import AssetLibrary, ColorDefines
+from Definitions.DefinedLocations import LocationDefs
 from Engine import SpriteObjects, TimerBar, Utils
-from Handlers import CharacterMovementHandler
+from Handlers import CharacterMovementHandler, Matching
 
 
 class CharImageSprite(SpriteObjects.CharacterSprite):
@@ -22,11 +23,9 @@ class CharImageSprite(SpriteObjects.CharacterSprite):
         self,
         path,
         objID,
-        position=None,
-        center=None,
-        maxSize=Utils.ScaleToSize(
-            value=100, newSize=DefinedLocations.LocationDefs.ScreenSize
-        ),
+        position: tuple[int, int] = None,  # type: ignore
+        center: tuple[int, int] = None,  # type: ignore
+        maxSize: int = int(Utils.ScaleValToSize(val=100, newSize=LocationDefs.ScreenSize)),
     ) -> None:
         super().__init__(
             backgroundFlag=False,
@@ -42,6 +41,7 @@ class CharImageSprite(SpriteObjects.CharacterSprite):
         self.CorrespondingID = objID
         self.MvmHandler = CharacterMovementHandler.CharacterMovementHandler()
 
+    # HACK- pass active game in plz
     @property
     def DataObject(self) -> Any | None:
         """Numerical Data Object Associated with Image
@@ -50,10 +50,8 @@ class CharImageSprite(SpriteObjects.CharacterSprite):
             Customer | Worker: Data Object Assoc with Sprite
         """
         activeGame = GameBase.MasterGame
-        objDict = Matching.MatchIdToPerson(
-            activeGame=activeGame, inputId=self.CorrespondingID
-        )
-        if objDict is not None:
+        objDict = Matching.MatchIdToPerson(activeGame=activeGame, inputId=self.CorrespondingID)
+        if objDict is not None and "sprite" in objDict:
             objDict.pop("sprite")
             obj = list(objDict.values())[0]
             return obj
@@ -70,7 +68,7 @@ class CharImageSprite(SpriteObjects.CharacterSprite):
                 while sprite.rect.colliderect(self.rect) and sprite is not self:
                     self.rect.center = Utils.PositionRandomVariance(
                         position=currentCenter,
-                        percentVarianceTuple=(0.1, 1),
+                        percentVariance=(0.1, 1),
                         screenSize=activeGame.ScreenSize,
                     )
 
@@ -95,7 +93,7 @@ class CharImageSprite(SpriteObjects.CharacterSprite):
         """Update sprite for each frame"""
         if self.PersonalTimer is not None:
             self.UpdateTimerAndDraw(activeGame=activeGame)
-            self.PersonalTimer.Rect = self.rect.topleft #type: ignore
+            self.PersonalTimer.Rect = self.rect.topleft  # type: ignore
         super().UpdateSprite(activeGame=activeGame)
 
     def UpdateTimerAndDraw(self, activeGame) -> None:
@@ -106,7 +104,7 @@ class CharImageSprite(SpriteObjects.CharacterSprite):
         """
         timerBar = self.PersonalTimer
         if timerBar.Running:
-            timerBar.AgeTimer(timeInMinutes=activeGame.GameClock.Minute)
+            timerBar.UpdateTimer(currentTime=activeGame.GameClock.Minute)
             customerObj = Matching.MatchIdToPerson(
                 activeGame=activeGame, inputId=timerBar.AssocId, targetOutput="customer"
             )
@@ -115,7 +113,7 @@ class CharImageSprite(SpriteObjects.CharacterSprite):
                 and timerBar.AssocId != 0
                 and (
                     customerObj is None
-                    or customerObj.CurrentState.value != timerBar.StartingState #type: ignore
+                    or customerObj.CurrentState.value != timerBar.StartingState  # type: ignore
                 )
             ):
                 timerBar.Running = False
@@ -165,7 +163,7 @@ class CharImageSprite(SpriteObjects.CharacterSprite):
         self.PersonalTimer.TimerRect.y -= 25
         self.PersonalTimer.SetMaxSize(size=self.rect.width if width == 0 else width)
         self.PersonalTimer.FillColor = fillColor
-        self.PersonalTimer.StartTimer(currentTime=activeGame.GameClock.Minute)
+        self.PersonalTimer.RestartTimer(currentTime=activeGame.GameClock.Minute)
 
     def __repr__(self) -> str:
         """String Rep of Object"""
@@ -192,9 +190,7 @@ class BackgroundElementSprite(SpriteObjects.GameObject):
             path
         ).convert_alpha()  # Replace with the actual sprite image file
         self.rect = self.image.get_rect()
-        dim = Utils.ResizeMaxLength(
-            dim=(self.rect.width, self.rect.height), maxSide=maxSize
-        )
+        dim = Utils.ResizeMaxLength(dim=(self.rect.width, self.rect.height), maxSide=maxSize)
         self.image = pygame.transform.scale(self.image, dim)
         self.rect.x = position[0] + offset[0]
 
@@ -262,7 +258,7 @@ class ButtonObject(SpriteObjects.GameObject):
             backColor=backColor,
             text=text,
             size=[125, 50],
-            enabled=enabled, #type:ignore
+            enabled=enabled,  # type:ignore
         )
 
         activeGame.ForegroundSpriteGroup.add(buttonObj)
