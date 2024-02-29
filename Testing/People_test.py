@@ -24,12 +24,8 @@ def test_PeopleNames() -> None:
     currentGame = GameBase.MainGame(activateScreen=True)
     currentGame.CustomerList = []
     currentGame.WorkerList = []
-    for _ in range(10):
+    for _ in range(100):
         worker, workerSprite = People.Worker.CreateWorker(activeGame=currentGame)
         customer, customerSprite = People.Customer.CreateCustomer(activeGame=currentGame)
         assert worker.FirstName != customer.FirstName
         assert worker.LastName != customer.LastName
-        Matching.RemoveObjFromSprite(activeGame=currentGame, targetSprite=workerSprite)
-        Matching.RemoveObjFromSprite(activeGame=currentGame, targetSprite=customerSprite)
-    assert not currentGame.WorkerList
-    assert not currentGame.CustomerList

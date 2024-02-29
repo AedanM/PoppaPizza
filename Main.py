@@ -34,7 +34,6 @@ def MainLoop(CurrentGame: GameBase.MainGame) -> None:
 
     if CurrentGame.ShowScreen:
         pygame.display.update()
-
     # Control the frame rate
     CurrentGame.GameClock.UpdateClock(
         clockSpeed=CurrentGame.Settings.ClockSpeed,

@@ -137,7 +137,7 @@ class DefinedLocations:
         Returns-
             tuple[int,int]: Scaled Location
         """
-        location = (125, 1600)
+        location = (500, 500)  # (125, 1600)
         return Utils.ScaleToSize(value=location, newSize=self.ScreenSize)
 
     @property

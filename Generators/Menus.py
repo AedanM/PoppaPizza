@@ -11,13 +11,13 @@ def OpenMenu(activeGame) -> None:
     """Default Entry Point for Menus"""
     global GlobalGame
     GlobalGame = activeGame
-    activeGame.GameClock.SetRunning(state=False)
+    activeGame.GameClock.SetRunning(False)
 
 
 def CloseMenu() -> None:
     """Default Exit Point for Menus"""
     global GlobalGame
-    GlobalGame.GameClock.SetRunning(state=True)
+    GlobalGame.GameClock.SetRunning(True)
 
 
 def DayTransistion(activeGame) -> None:

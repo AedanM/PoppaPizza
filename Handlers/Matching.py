@@ -41,10 +41,8 @@ def RemoveObjFromSprite(activeGame, targetSprite) -> None:
         targetSprite (CharImageSprite): Sprite to delete
     """
     responseDict = MatchIdToPerson(activeGame=activeGame, inputId=targetSprite.CorrespondingID)
-
-    if responseDict is None:
-        pass
-    else:
+    # TODO Check removing customers
+    if bool(responseDict) and responseDict is not None:
         responseDict.pop("sprite")
         personObj = list(responseDict.values())[0]
         Person.FIRSTNAMES.discard(personObj.FirstName)
@@ -53,7 +51,8 @@ def RemoveObjFromSprite(activeGame, targetSprite) -> None:
             activeGame.CustomerList.remove(responseDict["customer"])
         elif "worker" in responseDict:
             activeGame.WorkerList.remove(responseDict["worker"])
-    targetSprite.kill()
+    if targetSprite in activeGame.CharSpriteGroup:
+        targetSprite.remove(activeGame.CharSpriteGroup)
 
 
 def RemoveButtonFromLocation(activeGame, location) -> None:

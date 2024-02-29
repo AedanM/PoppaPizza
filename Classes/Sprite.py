@@ -18,6 +18,7 @@ class CharImageSprite(SpriteObjects.CharacterSprite):
     CorrespondingID: int = 0
     ImageType: AssetLibrary.ImageTypes = AssetLibrary.ImageTypes.Null
     PersonalTimer: TimerBar.TimerBar = None  # type: ignore
+    DataObject: Any = None
 
     def __init__(
         self,
@@ -26,6 +27,7 @@ class CharImageSprite(SpriteObjects.CharacterSprite):
         position: tuple[int, int] = None,  # type: ignore
         center: tuple[int, int] = None,  # type: ignore
         maxSize: int = int(Utils.ScaleValToSize(val=100, newSize=LocationDefs.ScreenSize)),
+        dataObj=None,
     ) -> None:
         super().__init__(
             backgroundFlag=False,
@@ -36,25 +38,31 @@ class CharImageSprite(SpriteObjects.CharacterSprite):
             center=center,
             path=path,
         )
+        if dataObj:
+            self.DataObject = dataObj
         self.ImageType = AssetLibrary.PathToTypeDict[path]
         # self.CheckSpawnCollision()
         self.CorrespondingID = objID
         self.MvmHandler = CharacterMovementHandler.CharacterMovementHandler()
 
-    # HACK- pass active game in plz
-    @property
-    def DataObject(self) -> Any | None:
-        """Numerical Data Object Associated with Image
+    # @property
+    # def DataObject(self) -> Any | None:
+    #     """Numerical Data Object Associated with Image
 
-        Returns-
-            Customer | Worker: Data Object Assoc with Sprite
-        """
-        activeGame = GameBase.MasterGame
-        objDict = Matching.MatchIdToPerson(activeGame=activeGame, inputId=self.CorrespondingID)
-        if objDict is not None and "sprite" in objDict:
-            objDict.pop("sprite")
-            obj = list(objDict.values())[0]
-            return obj
+    #     Returns-
+    #         Customer | Worker: Data Object Assoc with Sprite
+    #     """
+    #     returnObj = None
+    #     if self.Dataclass:
+    #         returnObj = self.Dataclass
+    #     else:
+    #         activeGame = GameBase.MasterGame
+    #         objDict = Matching.MatchIdToPerson(activeGame=activeGame, inputId=self.CorrespondingID)
+    #         if objDict is not None and "sprite" in objDict:
+    #             objDict.pop("sprite")
+    #             obj = list(objDict.values())[0]
+    #             returnObj = obj
+    #     return returnObj
 
     def CheckSpawnCollision(self, activeGame) -> None:
         """Changes spawn location until new sprite is not colliding

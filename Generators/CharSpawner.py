@@ -33,8 +33,8 @@ def CustomerSpawner(activeGame, force=False) -> None:
         force (bool, optional): Force a spawn on this run. Defaults to False.
     """
     global LastSpawnTime
-    currentTime = activeGame.GameClock.UnixTime
-    chanceOfSpawn = activeGame.Chances.CustomerSpawn * float(currentTime - LastSpawnTime) * 0.0005
+    currentTime = activeGame.GameClock.UnixTime / 36000
+    chanceOfSpawn = activeGame.Chances.CustomerSpawn * float(currentTime - LastSpawnTime)
     if (random.random() < chanceOfSpawn or force) and SpawnLocationFree(activeGame=activeGame):
         spawnLocation = LocationDefs.CustomerSpawn
         customerType = GetRandomCustomerType(activeGame=activeGame)

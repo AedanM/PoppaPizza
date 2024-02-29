@@ -121,22 +121,24 @@ def WriteButtonLabel(activeGame) -> None:
 def WriteKitchenLabel(activeGame) -> None:
     kitchenRect = [
         x for x in activeGame.ForegroundSpriteGroup if x.rect.center == LocationDefs.LockerRoom0
-    ][0].rect
-    numWorkers = len(
-        [
-            sprite
-            for sprite in activeGame.CharSpriteGroup
-            if sprite.ImageType in AssetLibrary.WorkerOutfits
-            and kitchenRect.collidepoint(sprite.rect.x, sprite.rect.y)
-        ]
-    )
+    ]
+    if kitchenRect:
+        kitchenRect = kitchenRect[0].rect
+        numWorkers = len(
+            [
+                sprite
+                for sprite in activeGame.CharSpriteGroup
+                if sprite.ImageType in AssetLibrary.WorkerOutfits
+                and kitchenRect.collidepoint(sprite.rect.x, sprite.rect.y)
+            ]
+        )
 
-    kitchenText = f"{numWorkers} Worker{'s' if numWorkers != 1 else ''} inside"
+        kitchenText = f"{numWorkers} Worker{'s' if numWorkers != 1 else ''} inside"
 
-    CreateTextBox(
-        locationTopLeft=Utils.OffsetTuple(inputTuple=LocationDefs.LockerRoom0, offset=(-100, 0)),
-        text=kitchenText,
-        foreColor=ColorDefines.White,
-        font=DefinedFonts["Default"],
-        screen=activeGame.Screen,
-    )
+        CreateTextBox(
+            locationTopLeft=Utils.OffsetTuple(inputTuple=LocationDefs.LockerRoom0, offset=(-100, 0)),
+            text=kitchenText,
+            foreColor=ColorDefines.White,
+            font=DefinedFonts["Default"],
+            screen=activeGame.Screen,
+        )

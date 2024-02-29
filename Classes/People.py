@@ -37,6 +37,7 @@ class Worker(Person.Person):
             center=Utils.OffsetTuple(inputTuple=startLocation, offset=(0, random.randint(-500, 0))),
             path=AssetLibrary.ImagePath.WorkerSuitPath,
             objID=worker.IdNum,
+            dataObj=worker,
         )
         worker.BasePay = random.uniform(0.25, 5.0)
         activeGame.CharSpriteGroup.add(workerSprite)
@@ -83,6 +84,7 @@ class Customer(Person.Person):
             ),
             path=AssetLibrary.PathLookup(imageType),
             objID=cust.IdNum,
+            dataObj=cust,
         )
         activeGame.CharSpriteGroup.add(customerSprite)
         activeGame.CustomerList.append(cust)
