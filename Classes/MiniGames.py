@@ -3,11 +3,12 @@ import random
 import threading
 from enum import Enum
 
-from pytrivia import Trivia
-
-from Classes import GameBase, Sprite, Writing
+from Classes import Sprite, Writing
 from Definitions import ColorDefines, DefinedLocations
 from Engine import RoundBasedGame, Utils
+from pytrivia import Trivia
+
+from .GameBase import MainGame
 
 
 class GameMode(Enum):
@@ -39,7 +40,7 @@ class TriviaGame(RoundBasedGame.RoundBasedGame):
         ),
         "Title Text": Writing.TextBox(
             center=DefinedLocations.LocationDefs.TriviaTitleText,
-            text="Trivia Minigame",
+            text="Trivia Mini-Game",
             font=Writing.DefinedFonts["Titles"],
         ),
         "Main Text L1": Writing.TextBox(
@@ -63,6 +64,7 @@ class TriviaGame(RoundBasedGame.RoundBasedGame):
         questionThread = threading.Thread(target=self.GetQuestions)
         self.StartingCash = activeGame.UserInventory.Money  # type:ignore
         self.CurrentCash = activeGame.UserInventory.Money  # type:ignore
+        self.CurrentRound = 0
         questionThread.start()
 
     def UpdateStateMachine(self, inputStr) -> None:
@@ -94,19 +96,23 @@ class TriviaGame(RoundBasedGame.RoundBasedGame):
 
     def GetQuestions(self) -> None:
         responseCode = 100
+        rawResponse = None
         while responseCode != 0:
             rawResponse = self.TriviaAPI.request(num_questions=self.Rounds + 1)
             responseCode = rawResponse["response_code"]
-        results = rawResponse["results"]
-        for question in results:
-            questionDict = {}
-            questionDict["Question"] = question["question"]
-            questionDict["Difficulty"] = question["difficulty"]
-            questionDict["Category"] = question["category"]
-            questionDict["Answers"] = question["incorrect_answers"] + [question["correct_answer"]]
-            random.shuffle(questionDict["Answers"])
-            questionDict["Correct Answer"] = question["correct_answer"]
-            self.QuestionList.append(questionDict)
+        if rawResponse:
+            results = rawResponse["results"]
+            for question in results:
+                questionDict = {}
+                questionDict["Question"] = question["question"]
+                questionDict["Difficulty"] = question["difficulty"]
+                questionDict["Category"] = question["category"]
+                questionDict["Answers"] = question["incorrect_answers"] + [
+                    question["correct_answer"]
+                ]
+                random.shuffle(questionDict["Answers"])
+                questionDict["Correct Answer"] = question["correct_answer"]
+                self.QuestionList.append(questionDict)
 
     def PopulateButtons(self, textList) -> None:
         self.MasterSpriteGroup.empty()
@@ -175,10 +181,12 @@ class TriviaGame(RoundBasedGame.RoundBasedGame):
             self.CurrentCash *= scale
         else:
             self.DisplayedText["Main Text L1"].Text = (
-                f"Incorrect! You have lost ${abs((self.CurrentCash / scale) - self.CurrentCash):.2f}"
+                "Incorrect! You have lost "
+                + f"${abs((self.CurrentCash / scale) - self.CurrentCash):.2f}"
             )
             self.DisplayedText["Main Text L2"].Text = (
-                f"Correct Answer was {self.QuestionList[self.CurrentRound -1]['Correct Answer']}"
+                "Correct Answer was "
+                + f"{self.QuestionList[self.CurrentRound -1]['Correct Answer']}"
             )
             self.ResultsList.append(False)
             self.CurrentCash /= scale
@@ -188,7 +196,8 @@ class TriviaGame(RoundBasedGame.RoundBasedGame):
 
     def Summary(self) -> None:
         self.DisplayedText["Main Text L1"].Text = (
-            f"You answered {len([x for x in self.ResultsList if x])}/{len(self.ResultsList)} correctly and skipped {self.Rounds - len(self.ResultsList)}"
+            f"You answered {len([x for x in self.ResultsList if x])}/{len(self.ResultsList)}"
+            + f" correctly and skipped {self.Rounds - len(self.ResultsList)}"
         )
         deltaMoney = self.CurrentCash - self.StartingCash
         descriptor = "earnings" if deltaMoney > 0 else "losses"
@@ -215,14 +224,15 @@ class TriviaGame(RoundBasedGame.RoundBasedGame):
             case GameStates.End:
                 self.Summary()
             case GameStates.Exit:
-                activeGame.ClearMiniGame()
-            case other:
+                if isinstance(activeGame, MainGame):
+                    activeGame.ClearMiniGame()
+            case _other:
                 pass
 
         for text in self.DisplayedText.values():
             text.Rect = text.WriteToScreen(activeScreen=self.Screen)
 
-    def PlayGame(self,activeGame) -> None:
+    def PlayGame(self, activeGame) -> None:
         super().PlayGame(activeGame=activeGame)
 
 
@@ -241,7 +251,7 @@ class DiceGame(RoundBasedGame.RoundBasedGame):
         super().__init__(rounds=rounds, activeGame=activeGame)
         self.Dice = math.floor(Utils.Bind(val=dice, inRange=(0, self.MaxDice)))
 
-    def StartRound(self,activeGame) -> None:
+    def StartRound(self, activeGame) -> None:
         super().StartRound(activeGame=activeGame)
 
         markToBeat = random.randint(self.DiceBounds[0], self.DiceBounds[1])
@@ -249,12 +259,12 @@ class DiceGame(RoundBasedGame.RoundBasedGame):
 
         numDice = self.GetDiceCount() if self.Dice > 0 else 0
         self.Dice -= numDice
-        diceSum = self.MakeDiceRoll(numDice=numDice)
+        # diceSum = self.MakeDiceRoll(numDice=numDice)
 
     def GetDiceCount(self) -> int:
         numDice = input(f"How many dice would you like to use? ({self.Dice} remaining) ")
         while not numDice.isnumeric() or int(numDice) > self.Dice:
-            numDice = input(f"Invalid Choice: ")
+            numDice = input("Invalid Choice: ")
         return int(numDice)
 
     def MakeDiceRoll(self, numDice) -> int:

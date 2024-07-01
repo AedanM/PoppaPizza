@@ -3,7 +3,6 @@
 from typing import Any
 
 import pygame
-
 from Classes import GameClock, GameLighting, Inventory, MiniGames, Settings, Writing
 from Definitions import AssetLibrary, Chances, CustomEvents, Restaurants
 from Definitions.DefinedLocations import LocationDefs
@@ -30,7 +29,8 @@ class MainGame(Game.Game):
 
         Args-
             activateScreen (bool, optional): Is the screen turned on. Defaults to True.
-            size (tuple, optional): Dimensions of Screeen. Defaults to DefinedLocations.LocationDefs.ScreenSize.
+            size (tuple, optional): Dimensions of Screen. 
+                Defaults to DefinedLocations.LocationDefs.ScreenSize.
         """
         super().__init__(
             name="Poppa Pizza",
@@ -60,7 +60,7 @@ class MainGame(Game.Game):
         super().StartScreen(size=size)
 
     def ConvertPreRendered(self) -> None:
-        """Speeds up blitting by converting colorspaces"""
+        """Speeds up blit by converting color spaces"""
         AssetLibrary.Background = AssetLibrary.Background.convert()
         AssetLibrary.TriviaBackground = AssetLibrary.TriviaBackground.convert()
         self.Lighting.LightMask = self.Lighting.LightMask.convert()
@@ -104,7 +104,7 @@ class MainGame(Game.Game):
         saveDict["Workers"] = self.WorkerList
         saveDict["Customers"] = self.CustomerList
         saveDict["Jobs"] = self.JobList
-        saveDict["Restuarants"] = Restaurants.RestaurantList
+        saveDict["Restaurants"] = Restaurants.RestaurantList
         saveDict["Inventory"] = self.UserInventory
         saveDict["Mode"] = self.Mode
         saveDict["Mini Game"] = self.MiniGame
@@ -118,14 +118,15 @@ class MainGame(Game.Game):
         self.WorkerList = saveDict["Workers"]
         self.CustomerList = saveDict["Customers"]
         self.JobList = saveDict["Jobs"]
-        Restaurants.RestaurantList = saveDict["Restuarants"]
+        Restaurants.RestaurantList = saveDict["Restaurants"]
         self.UserInventory = saveDict["Inventory"]
         self.Mode = saveDict["Mode"]
         self.MiniGame = saveDict["Mini Game"]
 
-    def LoadGame(self) -> None:
-        super().LoadGame()
+    def LoadGame(self) -> bool:
+        result = super().LoadGame()
         pygame.event.post(CustomEvents.UpdateBackground)
+        return result
 
 
 MasterGame = MainGame()

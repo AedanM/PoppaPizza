@@ -3,7 +3,6 @@
 from typing import Any
 
 import pygame
-
 from Classes import GameBase
 from Definitions import AssetLibrary, ColorDefines
 from Definitions.DefinedLocations import LocationDefs
@@ -62,11 +61,11 @@ class CharImageSprite(SpriteObjects.CharacterSprite):
         Args-
             activeGame (Game, optional): Current Game. Defaults to Game.MasterGame.
         """
-        currentCenter = self.rect.center
+        currentCenter = self.Rectangle.center
         for group in activeGame.SpriteGroups:
             for sprite in group:
-                while sprite.rect.colliderect(self.rect) and sprite is not self:
-                    self.rect.center = Utils.PositionRandomVariance(
+                while sprite.rect.colliderect(self.Rectangle) and sprite is not self:
+                    self.Rectangle.center = Utils.PositionRandomVariance(
                         position=currentCenter,
                         percentVariance=(0.1, 1),
                         screenSize=activeGame.ScreenSize,
@@ -82,10 +81,10 @@ class CharImageSprite(SpriteObjects.CharacterSprite):
         newImageRect = newImage.get_rect()
         dim = Utils.ResizeMaxLength(
             dim=(newImageRect.width, newImageRect.height),
-            maxSide=max(self.rect.width, self.rect.height),
+            maxSide=max(self.Rectangle.width, self.Rectangle.height),
         )
         newImage = pygame.transform.scale(newImage, dim)
-        newImageRect = self.rect
+        newImageRect = self.Rectangle
         self.image = newImage
         self.ImageType = AssetLibrary.PathToTypeDict[newOutfitPath]
 
@@ -93,7 +92,7 @@ class CharImageSprite(SpriteObjects.CharacterSprite):
         """Update sprite for each frame"""
         if self.PersonalTimer is not None:
             self.UpdateTimerAndDraw(activeGame=activeGame)
-            self.PersonalTimer.Rect = self.rect.topleft  # type: ignore
+            self.PersonalTimer.Rect = self.Rectangle.topleft  # type: ignore
         super().UpdateSprite(activeGame=activeGame)
 
     def UpdateTimerAndDraw(self, activeGame) -> None:
@@ -153,7 +152,7 @@ class CharImageSprite(SpriteObjects.CharacterSprite):
         """
         self.PersonalTimer = TimerBar.TimerBar(
             duration=length if length != 0 else 29.0,
-            position=(self.rect.topleft),
+            position=(self.Rectangle.topleft),
             assocId=assocId,
             offset=offset,
             startTime=activeGame.GameClock.Minute,
@@ -161,7 +160,7 @@ class CharImageSprite(SpriteObjects.CharacterSprite):
         self.PersonalTimer.StartingState = startingState
         self.PersonalTimer.OnComplete = completeTask
         self.PersonalTimer.TimerRect.y -= 25
-        self.PersonalTimer.SetMaxSize(size=self.rect.width if width == 0 else width)
+        self.PersonalTimer.SetMaxSize(size=self.Rectangle.width if width == 0 else width)
         self.PersonalTimer.FillColor = fillColor
         self.PersonalTimer.RestartTimer(currentTime=activeGame.GameClock.Minute)
 
@@ -189,12 +188,14 @@ class BackgroundElementSprite(SpriteObjects.GameObject):
         self.image = pygame.image.load(
             path
         ).convert_alpha()  # Replace with the actual sprite image file
-        self.rect = self.image.get_rect()
-        dim = Utils.ResizeMaxLength(dim=(self.rect.width, self.rect.height), maxSide=maxSize)
+        self.Rectangle = self.image.get_rect()
+        dim = Utils.ResizeMaxLength(
+            dim=(self.Rectangle.width, self.Rectangle.height), maxSide=maxSize
+        )
         self.image = pygame.transform.scale(self.image, dim)
-        self.rect.x = position[0] + offset[0]
+        self.Rectangle.x = position[0] + offset[0]
 
-        self.rect.y = position[1] + offset[1]
+        self.Rectangle.y = position[1] + offset[1]
         self.ImageType = AssetLibrary.PathToTypeDict[path]
 
 
@@ -237,8 +238,8 @@ class ButtonObject(SpriteObjects.GameObject):
             border_radius=10,
         )
 
-        self.rect = self.image.get_rect()
-        self.rect.center = position
+        self.Rectangle = self.image.get_rect()
+        self.Rectangle.center = position
 
     @classmethod
     def AddButton(cls, location, text, color, backColor, enabled, activeGame) -> None:

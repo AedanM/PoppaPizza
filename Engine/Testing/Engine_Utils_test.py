@@ -65,6 +65,7 @@ def test_PositionRandomVarianceTest() -> None:
         TestClass(ParamList=[(0, 0), (0.1, 0.1), (1000, 1000)], Result=(-100, 100)),
     ]
     for test in testObjects:
+        testVal = 0
         try:
             testVal = Utils.PositionRandomVariance(
                 position=test.ParamList[0],
@@ -89,6 +90,7 @@ def test_InTolerance() -> None:
     ]
 
     for test in testObjs:
+        testVal = 0
         try:
             testVal = Utils.InTolerance(
                 num1=test.ParamList[0],
@@ -116,6 +118,7 @@ def test_InPercentTolerance() -> None:
         TestClass(Result=False, ParamList=[0, 1, 200]),
     ]
     for test in testObjs:
+        testVal = 0
         try:
             testVal = Utils.InPercentTolerance(
                 num1=test.ParamList[0],
@@ -143,6 +146,7 @@ def test_ProRateValue() -> None:
         TestClass(Result=-2.5, ParamList=[2.5, (0, 10), (0, -10)]),
     ]
     for test in testObjs:
+        testVal = 0
         try:
             testVal = Utils.ProRateValue(
                 value=test.ParamList[0],
@@ -165,6 +169,7 @@ def test_Bind() -> None:
         TestClass(Result=100, ParamList=[100, (0, 100)]),
     ]
     for test in testObjs:
+        testVal = 0
         try:
             testVal = Utils.Bind(
                 val=test.ParamList[0],
@@ -185,6 +190,7 @@ def test_Sign() -> None:
         TestClass(Result=-1, ParamList=[-0.5]),
     ]
     for test in testObjs:
+        testVal = 0
         try:
             testVal = Utils.Sign(
                 num=test.ParamList[0],
@@ -206,6 +212,7 @@ def test_ResizeMaxLength() -> None:
         TestClass(Result=(25, 50), ParamList=[(10, 20), 50]),
     ]
     for test in testObjs:
+        testVal = 0
         try:
             testVal = Utils.ResizeMaxLength(dim=test.ParamList[0], maxSide=test.ParamList[1])
             assert testVal == test.Result

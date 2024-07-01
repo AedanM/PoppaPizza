@@ -1,8 +1,10 @@
+from typing import Any
+
 from Definitions import AssetLibrary
 from Definitions.CustomerDefs import CustomerStates, QueueStates
 from Engine import MovementHandler, Utils
 
-QUEUEDISTANCE = 75
+QUEUE_DISTANCE = 75
 
 
 class CharacterMovementHandler(MovementHandler.MovementHandler):
@@ -14,19 +16,20 @@ class CharacterMovementHandler(MovementHandler.MovementHandler):
         CharacterMovementHandler:
     """
 
-    def CalcNewPosition(self, obj, activeGame) -> None:
+    def CalcNewPosition(self, obj, gameSpeed: int = 1, activeGame: Any = None) -> None:
         """Logic for Moving Characters and Queuing
 
         Args-
             obj (Sprite): Moving Sprite
         """
         if activeGame.GameClock.Running:
+            gameSpeed = activeGame.GameClock.ClockMul
             if obj.ImageType in AssetLibrary.CustomerOutfits and NeedsToQueue(
                 movingSprite=obj, activeGame=activeGame
             ):
                 obj.DataObject.CurrentState = CustomerStates.Queuing
             else:
-                super().CalcNewPosition(obj=obj, gameSpeed=activeGame.GameClock.ClockMul)
+                super().CalcNewPosition(obj=obj, gameSpeed=gameSpeed)
 
 
 def NeedsToQueue(movingSprite, activeGame) -> bool:
@@ -57,7 +60,7 @@ def NeedsToQueue(movingSprite, activeGame) -> bool:
                     and Utils.PositionInTolerance(
                         pos1=sprite.rect.center,
                         pos2=movingSprite.rect.center,
-                        tolerance=QUEUEDISTANCE,
+                        tolerance=QUEUE_DISTANCE,
                     )
                 ):
                     return True
@@ -81,7 +84,7 @@ def FirstInLine(movingSprite, activeGame) -> bool:
             and Utils.PositionInTolerance(
                 pos1=sprite.rect.center,
                 pos2=movingSprite.rect.center,
-                tolerance=QUEUEDISTANCE,
+                tolerance=QUEUE_DISTANCE,
             )
         ):
             return False

@@ -3,14 +3,13 @@
 from typing import Any
 
 import pygame
-
 from Engine import Color, Game, MovementHandler, Utils
 
 
 class GameObject(pygame.sprite.Sprite):
     """Base class for all images in game"""
 
-    rect: pygame.Rect = pygame.Rect(0, 0, 0, 0)
+    Rectangle: pygame.Rect = pygame.Rect(0, 0, 0, 0)
     IsBackground: bool = False
     IsRendered: bool = False
     Moveable: bool = False
@@ -40,11 +39,11 @@ class GameObject(pygame.sprite.Sprite):
 
     def __hash__(self) -> int:
         """Overload of hash method"""
-        return super().__hash__() + sum(self.rect)
+        return super().__hash__() + sum(self.Rectangle)
 
 
 class RectangleObject(GameObject):
-    """Base Rectange Object Class"""
+    """Base Rectangle Object Class"""
 
     # pylint: disable=invalid-name
     def __init__(
@@ -53,22 +52,22 @@ class RectangleObject(GameObject):
         color: Color.Color = Color.Color(hexstring="#000000"),
         size: tuple[int, int] = (100, 100),
     ) -> None:
-        """Init for rectange objects
+        """Init for rectangle objects
 
         Args-
             position (tuple): Center position
-            color (tuple, optional): Color of Rectange. Defaults to (0, 0, 0).
+            color (tuple, optional): Color of Rectangle. Defaults to (0, 0, 0).
             size (tuple, optional): Dimensions of Rectangle. Defaults to (100, 100).
         """
         super().__init__(backgroundFlag=True, moveFlag=False, collisionFlag=False)
         self.image = pygame.Surface(size=size)
         self.image.fill(color.RGB)
-        self.rect = self.image.get_rect()
-        self.rect.center = position
+        self.Rectangle = self.image.get_rect()
+        self.Rectangle.center = position
 
 
 class CharacterSprite(GameObject):
-    rect: pygame.rect.Rect = pygame.rect.Rect(0, 0, 0, 0)
+    Rectangle: pygame.rect.Rect = pygame.rect.Rect(0, 0, 0, 0)
     MvmHandler: MovementHandler.MovementHandler = None  # type: ignore
 
     def __init__(
@@ -86,19 +85,22 @@ class CharacterSprite(GameObject):
             moveFlag=moveFlag,
             collisionFlag=collisionFlag,
         )
+        # pylint:disable=C0103
         self.image = pygame.image.load(path).convert_alpha()
-        self.rect = self.image.get_rect()
-        newSize = Utils.ResizeMaxLength(dim=(self.rect.width, self.rect.height), maxSide=maxSize)
+        self.Rectangle = self.image.get_rect()
+        newSize = Utils.ResizeMaxLength(
+            dim=(self.Rectangle.width, self.Rectangle.height), maxSide=maxSize
+        )
         self.image = pygame.transform.scale(
             surface=self.image,
             size=newSize,
         )
-        self.rect = self.image.get_rect()
+        self.Rectangle = self.image.get_rect()
         if position:
-            self.rect.x = position[0]
-            self.rect.y = position[1]
+            self.Rectangle.x = position[0]
+            self.Rectangle.y = position[1]
         elif center:
-            self.rect.center = center
+            self.Rectangle.center = center
         self.MvmHandler = MovementHandler.MovementHandler()
 
     def UpdateSprite(self, activeGame: Game.Game) -> None:

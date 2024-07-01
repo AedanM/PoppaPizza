@@ -1,5 +1,7 @@
 """Handler for Sprite Movement Tasks"""
 
+from typing import Any
+
 from Engine import Utils
 
 
@@ -45,7 +47,8 @@ class MovementHandler:
 
         Args-
             pointList (list[tuple]): List of Tuple Positions
-            speed (CustomerDefs.MovementSpeeds, optional): Speed of Motion. Defaults to CustomerDefs.MovementSpeeds.Medium.
+            speed (CustomerDefs.MovementSpeeds, optional): Speed of Motion.
+                Defaults to CustomerDefs.MovementSpeeds.Medium.
         """
         if not self.InMotion:
             self.OnComplete = lambda: None
@@ -106,14 +109,16 @@ class MovementHandler:
         self.CurrentPointIdx = 0
         self.OnComplete()
 
-    def CalcNewPosition(self, obj, gameSpeed: int) -> None:
+    def CalcNewPosition(self, obj, gameSpeed: int, activeGame: Any = None) -> None:
         if self.DstSet:
             self.MoveChar(obj=obj, gameSpeed=gameSpeed)
             if self.IsFinished(obj=obj):
                 if self.Dest == self.PointsList[len(self.PointsList) - 1] and not self.PointsList:
                     self.FinishMovement()
-                elif self.PointsList and self.CurrentPointIdx+1 == len(self.PointsList):
+                elif self.PointsList and self.CurrentPointIdx + 1 == len(self.PointsList):
                     self.FinishMovement()
                 else:
                     self.CurrentPointIdx += 1
                     self.Dest = self.PointsList[self.CurrentPointIdx]
+        if not activeGame:
+            print("No Game")
