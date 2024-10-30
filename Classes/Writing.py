@@ -1,24 +1,30 @@
 """Functions for Text Generation"""
 
-from dataclasses import dataclass
-
 import pygame
-
 from Definitions import AssetLibrary, ColorDefines
 from Definitions.DefinedLocations import LocationDefs
 from Engine import Color, Utils
 
 pygame.font.init()
 DefinedFonts = {
-    "Titles": pygame.font.Font(filename=pygame.font.match_font("elephant"), size=60),
-    "Trivia Game": pygame.font.Font(
-        filename=pygame.font.match_font("century schoolbook", True), size=36
+    "Titles": pygame.font.Font(
+        filename=pygame.font.match_font("elephant"),  # type: ignore
+        size=60,
     ),
-    "Datetime": pygame.font.Font(filename=pygame.font.match_font("book antiqua"), size=24),
-    "Buttons": pygame.font.Font(filename=pygame.font.match_font("gill sans", True), size=24),
-    "Default": pygame.font.Font(filename=pygame.font.match_font("century schoolbook"), size=24),
+    "Trivia Game": pygame.font.Font(
+        filename=pygame.font.match_font("century schoolbook", True), size=36  # type: ignore
+    ),
+    "Datetime": pygame.font.Font(filename=pygame.font.match_font("book antiqua"), size=24),  # type: ignore
+    "Buttons": pygame.font.Font(
+        filename=pygame.font.match_font("gill sans", True),  # type: ignore
+        size=24,
+    ),  # type: ignore
+    "Default": pygame.font.Font(
+        filename=pygame.font.match_font("century schoolbook"),  # type: ignore
+        size=24,
+    ),  # type: ignore
     "Trivia Answers": pygame.font.Font(
-        filename=pygame.font.match_font("century schoolbook"), size=48
+        filename=pygame.font.match_font("century schoolbook"), size=48  # type: ignore
     ),
 }
 

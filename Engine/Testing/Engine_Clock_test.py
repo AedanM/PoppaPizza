@@ -3,7 +3,6 @@
 import time
 
 import pygame
-
 from Engine import Clock, Utils
 from Engine.Testing.TestClass import TestClass
 
@@ -17,7 +16,8 @@ def RunClockForRealTime(clock, lenInSeconds, clockMul=1.0) -> tuple[int, int]:
 
 
 def test_PauseClock() -> None:
-    clock = Clock.Clock(pygame.Clock())
+    # pylint: disable=E1101
+    clock = Clock.Clock(pygame.Clock()) # type: ignore
 
     clock.SetRunning(False)
     start, end = RunClockForRealTime(clock=clock, lenInSeconds=1)
@@ -29,8 +29,9 @@ def test_PauseClock() -> None:
 
 
 def test_ClockSpeeds() -> None:
-    clock = Clock.Clock(pygame.Clock())
-    ACCEPTED_TOLERANCE = 3
+    # pylint: disable=E1101
+    clock = Clock.Clock(pygame.Clock()) # type: ignore
+    tolerance = 3
     testObjects = [
         TestClass(ParamList=[0.5], Result=8),
         TestClass(ParamList=[0.25], Result=4),
@@ -43,7 +44,7 @@ def test_ClockSpeeds() -> None:
         start, end = RunClockForRealTime(clock=clock, lenInSeconds=1, clockMul=test.ParamList[0])
         try:
             assert Utils.InTolerance(
-                num1=(end - start), num2=test.Result, tolerance=ACCEPTED_TOLERANCE
+                num1=(end - start), num2=test.Result, tolerance=tolerance
             )
         except AssertionError:
             print(test, end - start)
