@@ -8,23 +8,23 @@ from Engine import Color, Utils
 pygame.font.init()
 DefinedFonts = {
     "Titles": pygame.font.Font(
-        filename=pygame.font.match_font("elephant"),  # type: ignore
+        pygame.font.match_font("elephant"),  # type: ignore
         size=60,
     ),
     "Trivia Game": pygame.font.Font(
-        filename=pygame.font.match_font("century schoolbook", True), size=36  # type: ignore
+        pygame.font.match_font("century schoolbook", True), size=36  # type: ignore
     ),
-    "Datetime": pygame.font.Font(filename=pygame.font.match_font("book antiqua"), size=24),  # type: ignore
+    "Datetime": pygame.font.Font(pygame.font.match_font("book antiqua"), size=24),  # type: ignore
     "Buttons": pygame.font.Font(
-        filename=pygame.font.match_font("gill sans", True),  # type: ignore
+        pygame.font.match_font("gill sans", True),  # type: ignore
         size=24,
     ),  # type: ignore
     "Default": pygame.font.Font(
-        filename=pygame.font.match_font("century schoolbook"),  # type: ignore
+        pygame.font.match_font("century schoolbook"),  # type: ignore
         size=24,
     ),  # type: ignore
     "Trivia Answers": pygame.font.Font(
-        filename=pygame.font.match_font("century schoolbook"), size=48  # type: ignore
+        pygame.font.match_font("century schoolbook"), size=48  # type: ignore
     ),
 }
 

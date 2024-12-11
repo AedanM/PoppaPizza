@@ -8,8 +8,6 @@ from Definitions import ColorDefines, DefinedLocations
 from Engine import RoundBasedGame, Utils
 from pytrivia import Trivia
 
-from .GameBase import MainGame
-
 
 class GameMode(Enum):
     (Base, DiceGame, TriviaGame, *_) = range(10)
@@ -163,7 +161,8 @@ class TriviaGame(RoundBasedGame.RoundBasedGame):
         self.GameState = GameStates.Wait
 
     def Results(self) -> None:
-        scale = 1
+
+        scale: float = 1
         match self.QuestionList[self.CurrentRound - 1]["Difficulty"]:
             case "hard":
                 scale = 2
@@ -209,6 +208,7 @@ class TriviaGame(RoundBasedGame.RoundBasedGame):
 
     def StartRound(self, activeGame) -> None:
         super().StartRound(activeGame=activeGame)
+        from .GameBase import MainGame
 
         match self.GameState:
             case GameStates.Loading | GameStates.Start:

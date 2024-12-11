@@ -1,0 +1,7 @@
+names
+numpy
+pygame
+pygame_ce
+pygame_menu
+Python_Trivia_API
+setuptools

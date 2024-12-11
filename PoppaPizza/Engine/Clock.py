@@ -44,7 +44,7 @@ class Clock:
     Running: bool = False
 
     # pylint: disable=E1101
-    def __init__(self, clock: pygame.Clock) -> None:  # type: ignore
+    def __init__(self, clock: pygame.time.Clock) -> None:  # type: ignore
         """Creates an overloaded pygame clock class"""
         self.PygameClock = clock
         self.LastTime = pygame.time.get_ticks()
