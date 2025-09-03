@@ -1,4 +1,4 @@
-"""Main Body of Game"""
+"""Main Body of Game."""
 
 import argparse
 import os
@@ -9,7 +9,6 @@ os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "True"
 import time
 
 import pygame
-
 from Classes import GameBase, MiniGames
 from Definitions import AssetLibrary, CustomEvents
 from Handlers import EventHandler
@@ -18,7 +17,7 @@ GAME_START_TIME = 0
 
 
 def MainLoop(CurrentGame: GameBase.MainGame) -> None:
-    """Main Loop of Game"""
+    """Run Main Loop of Game."""
     if CurrentGame.Running:
         match CurrentGame.Mode:
             case MiniGames.GameMode.Base:
