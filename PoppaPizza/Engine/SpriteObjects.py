@@ -3,6 +3,7 @@
 from typing import Any
 
 import pygame
+
 from Engine import Color, Game, MovementHandler, Utils
 
 
@@ -77,15 +78,14 @@ class CharacterSprite(GameObject):
         moveFlag: bool,
         collisionFlag: bool,
         maxSize: int,
-        position: tuple[int, int] = None,  # type: ignore
-        center: tuple[int, int] = None,  # type: ignore
+        position: tuple[int, int] = None,  # noqa: RUF013 # pyright: ignore[reportArgumentType] # ty: ignore
+        center: tuple[int, int] = None,  # noqa: RUF013 # pyright: ignore[reportArgumentType] # ty: ignore
     ) -> None:
         super().__init__(
             backgroundFlag=backgroundFlag,
             moveFlag=moveFlag,
             collisionFlag=collisionFlag,
         )
-        # pylint:disable=C0103
         self.image = pygame.image.load(path).convert_alpha()
         self.Rectangle = self.image.get_rect()
         newSize = Utils.ResizeMaxLength(
