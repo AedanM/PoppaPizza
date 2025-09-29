@@ -3,10 +3,10 @@
 from dataclasses import dataclass
 
 import pygame
+from Engine import Color, Utils
 
 from Definitions import AssetLibrary, ColorDefines, CustomEvents
 from Definitions.DefinedLocations import LocationDefs
-from Engine import Color, Utils
 
 
 @dataclass
@@ -38,7 +38,7 @@ class Restaurant:
         return (
             Utils.PositionInTolerance(pos1=mousePos, pos2=self.LockerRoom.Location, tolerance=75)
             and self.LockerRoom.Unlocked
-            and target not in restaurant.WorkerImageTypes  # type: ignore
+            and target not in restaurant.WorkerImageTypes  # pyright: ignore
             and self.WorkerImageTypes
         )
 

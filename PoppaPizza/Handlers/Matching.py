@@ -4,6 +4,7 @@ from typing import Any
 
 from Definitions import AssetLibrary, Restaurants
 from Engine import Person
+
 from Handlers import WorkerHandler
 
 
@@ -97,7 +98,7 @@ def CostumeMatch(workerSprite, customerSprite) -> bool:
     """
     if workerSprite is not None:
         desiredRest = FindRestaurant(imageType=customerSprite.ImageType)
-        return workerSprite.ImageType in desiredRest.WorkerImageTypes  # type: ignore
+        return workerSprite.ImageType in desiredRest.WorkerImageTypes  # pyright: ignore
 
     return False
 

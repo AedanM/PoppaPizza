@@ -3,11 +3,12 @@
 from typing import Any
 
 import pygame
-from Classes import GameBase
 from Definitions import AssetLibrary, ColorDefines
 from Definitions.DefinedLocations import LocationDefs
 from Engine import SpriteObjects, TimerBar, Utils
 from Handlers import CharacterMovementHandler, Matching
+
+from Classes import GameBase
 
 
 class CharImageSprite(SpriteObjects.CharacterSprite):
@@ -16,14 +17,14 @@ class CharImageSprite(SpriteObjects.CharacterSprite):
     # pylint: disable=invalid-name
     CorrespondingID: int = 0
     ImageType: AssetLibrary.ImageTypes = AssetLibrary.ImageTypes.Null
-    PersonalTimer: TimerBar.TimerBar = None  # type: ignore
+    PersonalTimer: TimerBar.TimerBar = None  # pyright: ignore
 
     def __init__(
         self,
         path,
         objID,
-        position: tuple[int, int] = None,  # type: ignore
-        center: tuple[int, int] = None,  # type: ignore
+        position: tuple[int, int] = None,  # pyright: ignore
+        center: tuple[int, int] = None,  # pyright: ignore
         maxSize: int = int(Utils.ScaleValToSize(val=100, newSize=LocationDefs.ScreenSize)),
     ) -> None:
         super().__init__(
@@ -92,7 +93,7 @@ class CharImageSprite(SpriteObjects.CharacterSprite):
         """Update sprite for each frame"""
         if self.PersonalTimer is not None:
             self.UpdateTimerAndDraw(activeGame=activeGame)
-            self.PersonalTimer.Rect = self.Rectangle.topleft  # type: ignore
+            self.PersonalTimer.Rect = self.Rectangle.topleft  # pyright: ignore
         super().UpdateSprite(activeGame=activeGame)
 
     def UpdateTimerAndDraw(self, activeGame) -> None:
@@ -111,8 +112,7 @@ class CharImageSprite(SpriteObjects.CharacterSprite):
                 timerBar.StartingState != 0
                 and timerBar.AssocId != 0
                 and (
-                    customerObj is None
-                    or customerObj.CurrentState.value != timerBar.StartingState  # type: ignore
+                    customerObj is None or customerObj.CurrentState.value != timerBar.StartingState  # pyright: ignore
                 )
             ):
                 timerBar.Running = False
@@ -259,7 +259,7 @@ class ButtonObject(SpriteObjects.GameObject):
             backColor=backColor,
             text=text,
             size=[125, 50],
-            enabled=enabled,  # type:ignore
+            enabled=enabled,  # pyright: ignore
         )
 
         activeGame.ForegroundSpriteGroup.add(buttonObj)

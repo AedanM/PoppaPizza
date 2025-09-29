@@ -17,7 +17,7 @@ def RunClockForRealTime(clock, lenInSeconds, clockMul=1.0) -> tuple[int, int]:
 
 def test_PauseClock() -> None:
     # pylint: disable=E1101
-    clock = Clock.Clock(pygame.Clock()) # type: ignore
+    clock = Clock.Clock(pygame.Clock())  # pyright: ignore
 
     clock.SetRunning(False)
     start, end = RunClockForRealTime(clock=clock, lenInSeconds=1)
@@ -30,7 +30,7 @@ def test_PauseClock() -> None:
 
 def test_ClockSpeeds() -> None:
     # pylint: disable=E1101
-    clock = Clock.Clock(pygame.Clock()) # type: ignore
+    clock = Clock.Clock(pygame.Clock())  # pyright: ignore
     tolerance = 3
     testObjects = [
         TestClass(ParamList=[0.5], Result=8),
@@ -43,9 +43,7 @@ def test_ClockSpeeds() -> None:
     for test in testObjects:
         start, end = RunClockForRealTime(clock=clock, lenInSeconds=1, clockMul=test.ParamList[0])
         try:
-            assert Utils.InTolerance(
-                num1=(end - start), num2=test.Result, tolerance=tolerance
-            )
+            assert Utils.InTolerance(num1=(end - start), num2=test.Result, tolerance=tolerance)
         except AssertionError:
             print(test, end - start)
             assert False

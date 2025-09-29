@@ -27,11 +27,11 @@ class RoundBasedGame:
     def StartRound(self, activeGame: Game.Game) -> None:
         self.DisplayedText["Round Text"].Text = f"Round {self.CurrentRound}/{self.Rounds}"
         self.MasterSpriteGroup.update()
-        self.MasterSpriteGroup.draw(self.Screen)  # type: ignore
+        self.MasterSpriteGroup.draw(self.Screen)  # pyright: ignore
 
     def UpdateStateMachine(self, inputStr: str) -> None:
         pass
 
     def PlayGame(self, activeGame: Game.Game) -> None:
         # Pylance rejects activeGame as param due to overloading
-        self.StartRound(activeGame=activeGame)  # type: ignore
+        self.StartRound(activeGame=activeGame)  # pyright: ignore

@@ -15,7 +15,7 @@ class MovementSpeeds:
 
 
 class MovementHandler:
-    OnComplete: callable = lambda: None  # type: ignore
+    OnComplete: callable = lambda: None  # pyright: ignore
     Dest: tuple = (0, 0)
     MaxMovementSpeed: int = MovementSpeeds.Medium
     MovementTolerance: float = 0.01

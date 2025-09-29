@@ -69,8 +69,7 @@ def GetRandomCustomerType(activeGame) -> AssetLibrary.ImageTypes:
     customerType = random.choice(
         random.choice(
             random.choice(
-                [activeClientTypes] * activeGame.Chances.ActiveRestLuck
-                + [inactiveClientTypes]  # type:ignore
+                [activeClientTypes] * activeGame.Chances.ActiveRestLuck + [inactiveClientTypes]  # pyright: ignore
             )
         )
     )

@@ -44,7 +44,7 @@ class Clock:
     Running: bool = False
 
     # pylint: disable=E1101
-    def __init__(self, clock: pygame.time.Clock) -> None:  # type: ignore
+    def __init__(self, clock: pygame.time.Clock) -> None:  # pyright: ignore
         """Creates an overloaded pygame clock class"""
         self.PygameClock = clock
         self.LastTime = pygame.time.get_ticks()
@@ -63,7 +63,6 @@ class Clock:
     def UpdateClock(self, clockSpeed: float, frameCap: int) -> None:
         """Update the clock and wait for next frame"""
         if self.Running:
-
             self.ClockMul = clockSpeed
             self.Second += math.floor((pygame.time.get_ticks() - self.LastTime) * self.ClockMul)
             self.LastTime = pygame.time.get_ticks()

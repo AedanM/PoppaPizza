@@ -14,8 +14,8 @@ class Game:
     ShowScreen: bool = True
     Running: bool = True
     BackgroundColor: Color.Color = Color.Color(hexstring="#000000")
-    Lighting: LightingEngine.LightingEngine = None  # type: ignore
-    Screen: pygame.Surface = None  # type: ignore
+    Lighting: LightingEngine.LightingEngine = None  # pyright: ignore
+    Screen: pygame.Surface = None  # pyright: ignore
 
     def __init__(self, size: tuple[int, int], name: str, activateScreen: bool = True) -> None:
         pygame.init()

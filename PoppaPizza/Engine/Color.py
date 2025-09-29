@@ -32,13 +32,13 @@ class Color:
 
     def __init__(
         self,
-        h: int = None,  # type: ignore
-        s: int = None,  # type: ignore
-        v: int = None,  # type: ignore
-        r: int = None,  # type: ignore
-        g: int = None,  # type: ignore
-        b: int = None,  # type: ignore
-        hexstring: str = None,  # type: ignore
+        h: int = None,  # pyright: ignore
+        s: int = None,  # pyright: ignore
+        v: int = None,  # pyright: ignore
+        r: int = None,  # pyright: ignore
+        g: int = None,  # pyright: ignore
+        b: int = None,  # pyright: ignore
+        hexstring: str = None,  # pyright: ignore
     ) -> None:
         """Creates a color from HSV or RGB input"""
         try:
@@ -60,7 +60,7 @@ class Color:
         except Exception as e:
             raise Exception(f"Invalid Inputs: {e}") from e
 
-    def GetNumPy(self) -> "np.NDArray[np.uint8]":  # type: ignore
+    def GetNumPy(self) -> "np.NDArray[np.uint8]":  # pyright: ignore
         """Numpy Representation"""
         return np.array([self.H, self.S, self.V], dtype=np.uint8)
 

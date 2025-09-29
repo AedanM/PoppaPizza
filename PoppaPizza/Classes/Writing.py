@@ -8,23 +8,25 @@ from Engine import Color, Utils
 pygame.font.init()
 DefinedFonts = {
     "Titles": pygame.font.Font(
-        pygame.font.match_font("elephant"),  # type: ignore
+        pygame.font.match_font("elephant"),  # pyright: ignore
         size=60,
     ),
     "Trivia Game": pygame.font.Font(
-        pygame.font.match_font("century schoolbook", True), size=36  # type: ignore
+        pygame.font.match_font("century schoolbook", True),
+        size=36,  # pyright: ignore
     ),
-    "Datetime": pygame.font.Font(pygame.font.match_font("book antiqua"), size=24),  # type: ignore
+    "Datetime": pygame.font.Font(pygame.font.match_font("book antiqua"), size=24),  # pyright: ignore
     "Buttons": pygame.font.Font(
-        pygame.font.match_font("gill sans", True),  # type: ignore
+        pygame.font.match_font("gill sans", True),  # pyright: ignore
         size=24,
-    ),  # type: ignore
+    ),  # pyright: ignore
     "Default": pygame.font.Font(
-        pygame.font.match_font("century schoolbook"),  # type: ignore
+        pygame.font.match_font("century schoolbook"),  # pyright: ignore
         size=24,
-    ),  # type: ignore
+    ),  # pyright: ignore
     "Trivia Answers": pygame.font.Font(
-        pygame.font.match_font("century schoolbook"), size=48  # type: ignore
+        pygame.font.match_font("century schoolbook"),
+        size=48,  # pyright: ignore
     ),
 }
 
@@ -96,7 +98,7 @@ def WriteDateLabel(activeGame) -> None:
     Args-
         activeGame (Game): Current Game
     """
-    clockText = f"{activeGame.GameClock.DateTime} ${activeGame.UserInventory.Money:0.2f} FPS:{round(activeGame.GameClock.PygameClock.get_fps(),2)}"
+    clockText = f"{activeGame.GameClock.DateTime} ${activeGame.UserInventory.Money:0.2f} FPS:{round(activeGame.GameClock.PygameClock.get_fps(), 2)}"
 
     CreateTextBox(
         locationTopLeft=(0, 0),

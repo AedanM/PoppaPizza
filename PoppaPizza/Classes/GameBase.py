@@ -3,11 +3,12 @@
 from typing import Any
 
 import pygame
-from Classes import GameClock, GameLighting, Inventory, MiniGames, Settings, Writing
 from Definitions import AssetLibrary, Chances, CustomEvents, Restaurants
 from Definitions.DefinedLocations import LocationDefs
 from Engine import Color, Game, RoundBasedGame, SaveHandler
 from Engine.Game import StandardDimensions
+
+from Classes import GameClock, GameLighting, Inventory, MiniGames, Settings, Writing
 
 
 class MainGame(Game.Game):
@@ -20,16 +21,16 @@ class MainGame(Game.Game):
     CustomerList: list = []
     JobList: list = []
     ButtonList: list = []
-    UserInventory: Inventory.Inventory = None  # type: ignore
+    UserInventory: Inventory.Inventory = None  # pyright: ignore
     Mode: MiniGames.GameMode = MiniGames.GameMode.Base
-    MiniGame: RoundBasedGame.RoundBasedGame = None  # type: ignore
+    MiniGame: RoundBasedGame.RoundBasedGame = None  # pyright: ignore
 
     def __init__(self, activateScreen=True, size=LocationDefs.ScreenSize) -> None:
         """Init for Game
 
         Args-
             activateScreen (bool, optional): Is the screen turned on. Defaults to True.
-            size (tuple, optional): Dimensions of Screen. 
+            size (tuple, optional): Dimensions of Screen.
                 Defaults to DefinedLocations.LocationDefs.ScreenSize.
         """
         super().__init__(
@@ -72,7 +73,9 @@ class MainGame(Game.Game):
         Writing.WriteKitchenLabel(activeGame=self)
 
     def DrawBackground(
-        self, source: pygame.Surface = None, color: Color.Color = None  # type: ignore
+        self,
+        source: pygame.Surface = None,
+        color: Color.Color = None,  # pyright: ignore
     ) -> None:
         """Wiping screen with background image"""
         if source:
@@ -83,7 +86,7 @@ class MainGame(Game.Game):
             super().DrawBackground()
 
     def ClearMiniGame(self) -> None:
-        self.MiniGame = None  # type: ignore
+        self.MiniGame = None  # pyright: ignore
         self.Mode = MiniGames.GameMode.Base
         self.GameClock.SetRunning(True)
 

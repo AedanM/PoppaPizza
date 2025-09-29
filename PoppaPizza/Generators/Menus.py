@@ -1,7 +1,6 @@
 """Generator Functions for Menus"""
 
 import pygame_menu
-
 from Handlers import ShopHandler
 
 global GlobalGame
@@ -31,11 +30,11 @@ def DayTransistion(activeGame) -> None:
         title="End of Day",
         width=800,
         height=600,
-        theme=pygame_menu.themes.THEME_GREEN,  # type: ignore
+        theme=pygame_menu.themes.THEME_GREEN,  # pyright: ignore
         onclose=CloseMenu,
     )
     menu.add.label(title=f"Day {activeGame.GameClock.Day}", label_id="Title")
-    menu.get_widget(widget_id="Title").scale(width=2, height=2, smooth=True)  # type: ignore
+    menu.get_widget(widget_id="Title").scale(width=2, height=2, smooth=True)  # pyright: ignore
     menu.add.label(
         title=(
             f"Customers Served: {activeGame.UserInventory.Statistics.GetDailyServedCustomers()}"
@@ -51,7 +50,7 @@ def DayTransistion(activeGame) -> None:
     )
     menu.add.label(title=f"Money Spent: {activeGame.UserInventory.Statistics.GetDailySpend():.2f}")
     menu.add.label(title=f"Profit: {activeGame.UserInventory.Statistics.GetDailyProfit():.2f}")
-    menu.add.button(title="Continue to Next Day", action=pygame_menu.events.CLOSE)  # type: ignore
+    menu.add.button(title="Continue to Next Day", action=pygame_menu.events.CLOSE)  # pyright: ignore
     menu.mainloop(surface=activeGame.Screen, wait_for_event=True)
 
 
@@ -67,7 +66,7 @@ def OptionsMenu(activeGame) -> None:
         title="Settings",
         width=400,
         height=300,
-        theme=pygame_menu.themes.THEME_BLUE,  # type: ignore
+        theme=pygame_menu.themes.THEME_BLUE,  # pyright: ignore
         onclose=CloseMenu,
     )
     menu.add.toggle_switch(
@@ -92,7 +91,7 @@ def OptionsMenu(activeGame) -> None:
         onchange=lambda x: (activeGame.Settings.SetClockMul(value=x)),
     )
 
-    menu.add.button(title="Return", action=pygame_menu.events.CLOSE)  # type: ignore
+    menu.add.button(title="Return", action=pygame_menu.events.CLOSE)  # pyright: ignore
     menu.mainloop(surface=surface, wait_for_event=True)
 
 
@@ -108,7 +107,7 @@ def ShopMenu(activeGame) -> None:
         title="Shop",
         width=800,
         height=600,
-        theme=pygame_menu.themes.THEME_BLUE,  # type: ignore
+        theme=pygame_menu.themes.THEME_BLUE,  # pyright: ignore
         onclose=CloseMenu,
     )
     menu.add.range_slider(
@@ -121,7 +120,7 @@ def ShopMenu(activeGame) -> None:
         title="x1",
         action=lambda: (ShopHandler.BuyNumWorkers(num=1, activeGame=activeGame)),
     )
-    menu.add.button(title="Return", action=pygame_menu.events.CLOSE)  # type: ignore
+    menu.add.button(title="Return", action=pygame_menu.events.CLOSE)  # pyright: ignore
     menu.mainloop(surface=surface, wait_for_event=True)
 
 
@@ -139,9 +138,9 @@ def GameOverMenu(activeGame, reason="You ran out of Money") -> None:
         title="Game Over",
         width=activeGame.Screen.get_width(),
         height=activeGame.Screen.get_height(),
-        onclose=pygame_menu.events.EXIT,  # type: ignore
-        theme=pygame_menu.themes.THEME_DARK,  # type: ignore
+        onclose=pygame_menu.events.EXIT,  # pyright: ignore
+        theme=pygame_menu.themes.THEME_DARK,  # pyright: ignore
     )
     menu.add.label(title=f"Game Over \n{reason}\n\n", font_size=60, font_shadow=True)
-    menu.add.button(title="Close Game", action=pygame_menu.events.EXIT)  # type: ignore
+    menu.add.button(title="Close Game", action=pygame_menu.events.EXIT)  # pyright: ignore
     menu.mainloop(surface=surface)

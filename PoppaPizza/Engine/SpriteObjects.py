@@ -36,7 +36,7 @@ class GameObject(pygame.sprite.Sprite):
     def Update(self, activeGame: Game.Game) -> None:
         """Update the sprite on screen"""
         if self.Moveable:
-            self.MvmHandler.CalcNewPosition(obj=self, activeGame=activeGame)  # type: ignore
+            self.MvmHandler.CalcNewPosition(obj=self, activeGame=activeGame)  # pyright: ignore
 
     def __hash__(self) -> int:
         """Overload of hash method"""
@@ -69,7 +69,7 @@ class RectangleObject(GameObject):
 
 class CharacterSprite(GameObject):
     Rectangle: pygame.rect.Rect = pygame.rect.Rect(0, 0, 0, 0)
-    MvmHandler: MovementHandler.MovementHandler = None  # type: ignore
+    MvmHandler: MovementHandler.MovementHandler = None  # pyright: ignore
 
     def __init__(
         self,

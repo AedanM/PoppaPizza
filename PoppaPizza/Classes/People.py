@@ -3,10 +3,11 @@
 import random
 from dataclasses import dataclass
 
-from Classes import Jobs, Sprite
 from Definitions import AssetLibrary, CustomerDefs
 from Definitions.DefinedLocations import LocationDefs
 from Engine import Person, Utils
+
+from Classes import Jobs, Sprite
 
 IDCOUNT = 1
 
@@ -51,7 +52,7 @@ class Worker(Person.Person):
 class Customer(Person.Person):
     """Data Class for Customers, inherits from Person Class"""
 
-    DesiredJob: Jobs.Job = None  # type: ignore
+    DesiredJob: Jobs.Job = None  # pyright: ignore
     WorkerAssigned: bool = False
     CurrentState: CustomerDefs.CustomerStates = CustomerDefs.CustomerStates.Null
 

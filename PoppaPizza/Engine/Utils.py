@@ -15,7 +15,7 @@ def InRandomVariance(num: int | float, percentVariance: float) -> float:
         float: New Varied Number
     """
     percentVariance = CheckDecimalPercent(percentVariance)
-    varyAmount = random.randint(a=-100, b=100) * percentVariance * 0.01 * num  # type:ignore
+    varyAmount = random.randint(a=-100, b=100) * percentVariance * 0.01 * num  # pyright: ignore
     return num + varyAmount
 
 
@@ -62,11 +62,11 @@ def PositionRandomVariance(
     """
     percentVariance = CheckDecimalPercentTuple(val=percentVariance)
     varyAmountX = math.ceil(
-        (random.randint(-100, 100) * 0.01 * percentVariance[0] * screenSize[0])  # type: ignore
+        (random.randint(-100, 100) * 0.01 * percentVariance[0] * screenSize[0])  # pyright: ignore
         + position[0]
     )
     varyAmountY = math.ceil(
-        (random.randint(-100, 100) * 0.01 * percentVariance[1] * screenSize[1])  # type: ignore
+        (random.randint(-100, 100) * 0.01 * percentVariance[1] * screenSize[1])  # pyright: ignore
         + position[1]
     )
     out = (

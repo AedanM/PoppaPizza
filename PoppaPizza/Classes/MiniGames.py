@@ -3,10 +3,11 @@ import random
 import threading
 from enum import Enum
 
-from Classes import Sprite, Writing
 from Definitions import ColorDefines, DefinedLocations
 from Engine import RoundBasedGame, Utils
 from pytrivia import Trivia
+
+from Classes import Sprite, Writing
 
 
 class GameMode(Enum):
@@ -60,8 +61,8 @@ class TriviaGame(RoundBasedGame.RoundBasedGame):
         self.GameState = GameStates.Loading
         self.BackgroundColor = ColorDefines.TriviaBlue
         questionThread = threading.Thread(target=self.GetQuestions)
-        self.StartingCash = activeGame.UserInventory.Money  # type:ignore
-        self.CurrentCash = activeGame.UserInventory.Money  # type:ignore
+        self.StartingCash = activeGame.UserInventory.Money  # pyright: ignore
+        self.CurrentCash = activeGame.UserInventory.Money  # pyright: ignore
         self.CurrentRound = 0
         questionThread.start()
 
@@ -138,9 +139,9 @@ class TriviaGame(RoundBasedGame.RoundBasedGame):
 
     def PlayOrSkip(self) -> None:
         question = self.QuestionList[self.CurrentRound - 1]
-        self.DisplayedText["Main Text L1"].Text = (
-            f"This question is ranked {question['Difficulty']}"
-        )
+        self.DisplayedText[
+            "Main Text L1"
+        ].Text = f"This question is ranked {question['Difficulty']}"
         self.DisplayedText["Main Text L2"].Text = f"Category is {question['Category']}"
         self.PopulateButtons(
             textList=["Play", "Skip"],
@@ -161,7 +162,6 @@ class TriviaGame(RoundBasedGame.RoundBasedGame):
         self.GameState = GameStates.Wait
 
     def Results(self) -> None:
-
         scale: float = 1
         match self.QuestionList[self.CurrentRound - 1]["Difficulty"]:
             case "hard":
@@ -172,7 +172,9 @@ class TriviaGame(RoundBasedGame.RoundBasedGame):
                 scale = 1.25
 
         if self.GameState is GameStates.CorrectAnswer:
-            self.DisplayedText["Main Text L1"].Text = (
+            self.DisplayedText[
+                "Main Text L1"
+            ].Text = (
                 f"Correct! You have earned ${((self.CurrentCash * scale) - self.CurrentCash):.2f}"
             )
             self.DisplayedText["Main Text L2"].Text = ""
@@ -185,7 +187,7 @@ class TriviaGame(RoundBasedGame.RoundBasedGame):
             )
             self.DisplayedText["Main Text L2"].Text = (
                 "Correct Answer was "
-                + f"{self.QuestionList[self.CurrentRound -1]['Correct Answer']}"
+                + f"{self.QuestionList[self.CurrentRound - 1]['Correct Answer']}"
             )
             self.ResultsList.append(False)
             self.CurrentCash /= scale
@@ -200,9 +202,9 @@ class TriviaGame(RoundBasedGame.RoundBasedGame):
         )
         deltaMoney = self.CurrentCash - self.StartingCash
         descriptor = "earnings" if deltaMoney > 0 else "losses"
-        self.DisplayedText["Main Text L2"].Text = (
-            f"Resulting in total {descriptor} ${abs(deltaMoney):.2f}"
-        )
+        self.DisplayedText[
+            "Main Text L2"
+        ].Text = f"Resulting in total {descriptor} ${abs(deltaMoney):.2f}"
         self.PopulateButtons(textList=["Exit"])
         self.GameState = GameStates.Wait
 
